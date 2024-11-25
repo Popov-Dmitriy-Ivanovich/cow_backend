@@ -1,1 +1,1 @@
-CREATE DATABASE Cow WITH OWNER = habrpguser;
+CREATE DATABASE cow WITH OWNER = habrpguser;

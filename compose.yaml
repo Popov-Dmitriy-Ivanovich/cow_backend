@@ -62,7 +62,18 @@ services:
           memory: 1G
     networks:
       - postgres
-
+  cow_backend:
+      container_name: cow_backend
+      depends_on:
+        - postgres
+      build: server
+      env_file:
+        - server/.env
+      networks:
+        - postgres
+        - cow_backend
+      ports:
+        - 8080:8080
 
 
 volumes:
@@ -72,7 +83,7 @@ volumes:
 networks:
   postgres:
     driver: bridge
-  auth:
+  cow_backend:
     driver: bridge
   boards:
     driver: bridge
