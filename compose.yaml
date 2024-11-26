@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   postgres:
-    container_name: postgres_container
+    container_name: postgres_container1
     image: postgres:14.8-alpine3.18
     command:
       - "postgres"
@@ -44,7 +44,7 @@ services:
       - postgres
 
   pgadmin:
-    container_name: pgadmin_container
+    container_name: pgadmin_container1
     image: dpage/pgadmin4:7.2
     environment:
       PGADMIN_DEFAULT_EMAIL: "habrpguser@habr.com"
@@ -63,7 +63,7 @@ services:
     networks:
       - postgres
   cow_backend:
-      container_name: cow_backend
+      container_name: cow_backend1
       depends_on:
         - postgres
       build: server
