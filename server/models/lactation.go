@@ -5,8 +5,10 @@ import "time"
 type Lactation struct {
 	ID uint `gorm:"primaryKey"`
 
-	Cow   Cow
 	CowId uint
+
+	CheckMilks []CheckMilk
+	DailyMilks []DailyMilk
 
 	Number uint
 	Date   time.Time

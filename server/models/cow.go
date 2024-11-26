@@ -23,6 +23,8 @@ type Cow struct {
 	Mother   *Cow
 	MotherId *uint
 
+	Lactation []Lactation
+
 	InventoryNumber      string
 	SelecsNumber         string
 	RSHNNumber           string
@@ -32,3 +34,4 @@ type Cow struct {
 	BirthDate time.Time
 	DethDate  time.Time
 }
+

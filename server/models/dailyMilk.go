@@ -6,7 +6,7 @@ import (
 
 type DailyMilk struct {
 	ID uint `gorm:"primaryKey"`
-
+	LactationId    *uint
 	Date           time.Time
 	Milk           int
 	MilkMorning    int
