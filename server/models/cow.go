@@ -31,7 +31,9 @@ type Cow struct {
 	Name                 string
 	IdentificationNumber string
 
-	BirthDate time.Time
-	DethDate  time.Time
-}
+	IsDead bool
 
+	BirthDate  time.Time
+	DepartDate time.Time
+	DeathDate  time.Time
+}

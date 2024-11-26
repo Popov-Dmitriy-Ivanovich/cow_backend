@@ -1,0 +1,319 @@
+basePath: /api
+definitions:
+  models.Breed:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.CheckMilk:
+    properties:
+      checkDate:
+        type: string
+      fat:
+        type: integer
+      id:
+        type: integer
+      lactationId:
+        type: integer
+      milk:
+        type: integer
+      protein:
+        type: integer
+    type: object
+  models.Cow:
+    properties:
+      birthDate:
+        type: string
+      breed:
+        $ref: '#/definitions/models.Breed'
+      breedId:
+        type: integer
+      dethDate:
+        type: string
+      farm:
+        $ref: '#/definitions/models.Farm'
+      farmGroup:
+        $ref: '#/definitions/models.Farm'
+      farmGroupId:
+        type: integer
+      farmID:
+        type: integer
+      father:
+        $ref: '#/definitions/models.Cow'
+      fatherId:
+        type: integer
+      id:
+        type: integer
+      identificationNumber:
+        type: string
+      inventoryNumber:
+        type: string
+      lactation:
+        items:
+          $ref: '#/definitions/models.Lactation'
+        type: array
+      mother:
+        $ref: '#/definitions/models.Cow'
+      motherId:
+        type: integer
+      name:
+        type: string
+      rshnnumber:
+        type: string
+      selecsNumber:
+        type: string
+      sex:
+        $ref: '#/definitions/models.Sex'
+      sexId:
+        type: integer
+    type: object
+  models.DailyMilk:
+    properties:
+      date:
+        type: string
+      fat:
+        type: integer
+      fatEvening:
+        type: integer
+      fatMorning:
+        type: integer
+      fatNoon:
+        type: integer
+      id:
+        type: integer
+      lactationId:
+        type: integer
+      milk:
+        type: integer
+      milkEvening:
+        type: integer
+      milkMorning:
+        type: integer
+      milkNoon:
+        type: integer
+      protein:
+        type: integer
+      proteinEvening:
+        type: integer
+      proteinMorning:
+        type: integer
+      proteinNoon:
+        type: integer
+    type: object
+  models.Farm:
+    properties:
+      address:
+        type: string
+      cowsCount:
+        type: integer
+      description:
+        type: string
+      district:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      inn:
+        type: string
+      name:
+        type: string
+      parrent:
+        $ref: '#/definitions/models.Farm'
+      parrentId:
+        type: integer
+      phone:
+        type: string
+      region:
+        $ref: '#/definitions/models.Region'
+      regionId:
+        type: integer
+      type:
+        type: integer
+    type: object
+  models.Lactation:
+    properties:
+      abort:
+        type: integer
+      checkMilks:
+        items:
+          $ref: '#/definitions/models.CheckMilk'
+        type: array
+      cowId:
+        type: integer
+      dailyMilks:
+        items:
+          $ref: '#/definitions/models.DailyMilk'
+        type: array
+      date:
+        type: string
+      days:
+        type: integer
+      fat305:
+        type: integer
+      fatAll:
+        type: integer
+      id:
+        type: integer
+      milk305:
+        type: integer
+      milkAll:
+        type: integer
+      number:
+        type: integer
+      osemenDate:
+        type: string
+      osemenNum:
+        type: integer
+      otelDate:
+        type: string
+      otelNum:
+        type: integer
+      protein305:
+        type: integer
+      proteinAll:
+        type: integer
+    type: object
+  models.Region:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.Sex:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  routes.cowsFilter:
+    properties:
+      birkingDateFrom:
+        type: string
+      birkingDateTo:
+        type: string
+      birthDateFrom:
+        type: string
+      birthDateTo:
+        type: string
+      breedId:
+        items:
+          type: integer
+        type: array
+      calvingDateFrom:
+        type: string
+      calvingDateTo:
+        type: string
+      controlMilkingDateFrom:
+        type: string
+      controlMilkingDateTo:
+        type: string
+      departDateFrom:
+        type: string
+      departDateTo:
+        type: string
+      entitiesOnPage:
+        type: integer
+      exterior:
+        description: ????
+        type: string
+      farmID:
+        type: integer
+      genotypingDateFrom:
+        type: string
+      genotypingDateTo:
+        type: string
+      inbrindingCoeffByFamilyFrom:
+        type: number
+      inbrindingCoeffByFamilyTo:
+        type: number
+      inbrindingCoeffByFenotypeFrom:
+        type: number
+      inbrindingCoeffByFenotypeTo:
+        type: number
+      inseminationDateFrom:
+        type: string
+      inseminationDateTo:
+        type: string
+      isAborted:
+        type: boolean
+      isDead:
+        type: boolean
+      isIll:
+        type: boolean
+      isStillBorn:
+        type: boolean
+      isTwins:
+        type: boolean
+      monogeneticIllneses:
+        items:
+          type: integer
+        type: array
+      pageNumber:
+        type: integer
+      searchQuery:
+        type: string
+      sex:
+        items:
+          type: integer
+        type: array
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: GenMilk API
+  version: "1.0"
+paths:
+  /CowsList:
+    post:
+      consumes:
+      - application/json
+      description: Get filtered list of cows
+      parameters:
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/routes.cowsFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Cow'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            additionalProperties: {}
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get filtered list of cows
+      tags:
+      - accounts
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
