@@ -3,10 +3,10 @@ package models
 import "time"
 
 type Cow struct {
-	ID uint `gorm:"primaryKey"`
-
-	Farm   Farm
-	FarmID uint
+	ID        uint `gorm:"primaryKey"`
+	CreatedAt time.Time
+	Farm      Farm
+	FarmID    uint
 
 	FarmGroup   Farm
 	FarmGroupId uint
@@ -33,7 +33,12 @@ type Cow struct {
 
 	IsDead bool
 
-	BirthDate  time.Time
-	DepartDate time.Time
-	DeathDate  time.Time
+	Exterior                float64
+	InbrindingCoeffByFamily float64
+
+	Approved    int // int to load database dump
+	BirthDate   time.Time
+	DepartDate  time.Time
+	DeathDate   time.Time
+	BirkingDate time.Time
 }

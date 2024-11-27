@@ -24,9 +24,85 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/CowsList": {
+        "/breeds/get": {
+            "get": {
+                "description": "Get list of breeds.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Breeds"
+                ],
+                "summary": "Get list of breeds",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Breed"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/checkMilks/get": {
+            "get": {
+                "description": "Get list of CheckMilks.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CheckMilks"
+                ],
+                "summary": "Get list of checkMilks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.CheckMilk"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows/filter": {
             "post": {
-                "description": "Get filtered list of cows",
+                "description": "Get filtered list of cows.\nSearchQuery - имя, номер РСХН или инвентарный номер\nPageNumber - номер страницы для отображения\nEntitiesOnPage - количество коров на каждой странице\nSex - массив полов для поиска (можно выбрать несколько)\nFarmID - ID фермы на которой живет корова\nBirthDateFrom - Отображает коров, родившихся после этой даты\nBirthDateTo - Отображает коров, родившихся до этой даты\nIsDead - Если флаг истина - ищет мертвых коров, иначе живых\nDepartDateFrom - Ищет коров отбывших из коровника после данной даты\nDepartDateTo - Ищет коров отбывших из коровника до данной даты\nBreedId - ищет коров имеющих одну из пород по BreedId\nGenotypingDateFrom - НЕ ИСПОЛЬЗУЕТСЯ\nGenotypingDateTo - НЕ ИСПОЛЬЗУЕТСЯ\nControlMilkingDateFrom - ищет коров у которых была хотябы одна контрольная дойка после этой даты\nControlMilkingDateTo - ищет коров у которых была хотябы одна контрольная дойка до этой даты\n\nExterior - Ищет коров с оценкой экстерьера равной этому значению\nInseminationDateFrom - Ищет коров которые были хотябы раз осеменены после данной даты\nInseminationDateTo - Ищет коров которые были хотябы раз осеменены до данной даты\nCalvingDateFrom  - Ищет коров у которых был отел хотябы раз после данной даты\nCalvingDateTo - Ищет коров у которых был отел хотябы раз до данной даты\nIsStillBorn  - Ищет коров у которых хотябы раз было мертворождение\nIsTwins - Ищет коров у которых хотябы раз родились близнецы/двойняшки\nIsAborted - Ищет коров, которым хотябы раз сделали аборт\nIsIll - НЕ ИСОПЛЬЗУЕТСЯ\nBirkingDateFrom - Ищет коров у которых дата перебирковки больше\nBirkingDateTo - Ищет коров у которых дата перебирковки меньше\n\nInbrindingCoeffByFamilyFrom Ищет коров, у которых коэф. инбриндинга по роду больше\nInbrindingCoeffByFamilyTo   - Ищет коров у которых дата перебирковки меньше\n\nInbrindingCoeffByFenotypeFrom Genotiping needed\nInbrindingCoeffByFenotypeTo    Genotiping needed\n\nMonogeneticIllneses []uint Genotiping needed",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,7 +110,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "accounts"
+                    "Cows"
                 ],
                 "summary": "Get filtered list of cows",
                 "parameters": [
@@ -44,7 +120,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/routes.cowsFilter"
+                            "$ref": "#/definitions/cows.cowsFilter"
                         }
                     }
                 ],
@@ -74,9 +150,439 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/cows/get": {
+            "get": {
+                "description": "Get list of farms.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of farms",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Cow"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/dailyMilks/get": {
+            "get": {
+                "description": "Get list of DailyMilks.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DailyMilks"
+                ],
+                "summary": "Get list of DailyMilks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.DailyMilk"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/districts/get": {
+            "get": {
+                "description": "Get list of Districts.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Districtts"
+                ],
+                "summary": "Get list of Districts",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.DailyMilk"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/farms/get": {
+            "get": {
+                "description": "Get list of farms.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farms"
+                ],
+                "summary": "Get list of farms",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Farm"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/lactations/get": {
+            "get": {
+                "description": "Get list of farms.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lactations"
+                ],
+                "summary": "Get list of farms",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Lactation"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/regions/get": {
+            "get": {
+                "description": "Get list of regions.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Regions"
+                ],
+                "summary": "Get list of regions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of region to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Region"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/sexes/get": {
+            "get": {
+                "description": "Get list of breeds.\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sexes"
+                ],
+                "summary": "Get list of breeds",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Sex"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "cows.cowsFilter": {
+            "type": "object",
+            "properties": {
+                "birkingDateFrom": {
+                    "description": "date field",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "birkingDateTo": {
+                    "description": "date field",
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "birthDateFrom": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "birthDateTo": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "breedId": {
+                    "description": "used",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "calvingDateFrom": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "calvingDateTo": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "controlMilkingDateFrom": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "controlMilkingDateTo": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "departDateFrom": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "departDateTo": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "entitiesOnPage": {
+                    "description": "used",
+                    "type": "integer",
+                    "default": 50
+                },
+                "exterior": {
+                    "description": "used",
+                    "type": "number",
+                    "default": 3.14
+                },
+                "farmID": {
+                    "description": "used",
+                    "type": "integer",
+                    "default": 1
+                },
+                "genotypingDateFrom": {
+                    "description": "??? Genotiping needed",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "genotypingDateTo": {
+                    "description": "??? Genotiping needed",
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "inbrindingCoeffByFamilyFrom": {
+                    "description": "used",
+                    "type": "number",
+                    "default": 3.14
+                },
+                "inbrindingCoeffByFamilyTo": {
+                    "description": "used",
+                    "type": "number",
+                    "default": 3.14
+                },
+                "inbrindingCoeffByFenotypeFrom": {
+                    "description": "??? Genotiping needed",
+                    "type": "number",
+                    "default": 3.14
+                },
+                "inbrindingCoeffByFenotypeTo": {
+                    "description": "??? Genotiping needed",
+                    "type": "number",
+                    "default": 3.14
+                },
+                "inseminationDateFrom": {
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "inseminationDateTo": {
+                    "type": "string",
+                    "example": "2800-01-21"
+                },
+                "isAborted": {
+                    "description": "used",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isDead": {
+                    "description": "used",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isIll": {
+                    "description": "??? Genotiping needed",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isStillBorn": {
+                    "description": "used",
+                    "type": "boolean",
+                    "default": false
+                },
+                "isTwins": {
+                    "description": "used",
+                    "type": "boolean",
+                    "default": false
+                },
+                "monogeneticIllneses": {
+                    "description": "??? Genotiping needed",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "pageNumber": {
+                    "description": "used",
+                    "type": "integer",
+                    "default": 1
+                },
+                "searchQuery": {
+                    "description": "used",
+                    "type": "string",
+                    "example": "Буренка"
+                },
+                "sex": {
+                    "description": "used",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
         "models.Breed": {
             "type": "object",
             "properties": {
@@ -114,6 +620,13 @@ const docTemplate = `{
         "models.Cow": {
             "type": "object",
             "properties": {
+                "approved": {
+                    "description": "int to load database dump",
+                    "type": "integer"
+                },
+                "birkingDate": {
+                    "type": "string"
+                },
                 "birthDate": {
                     "type": "string"
                 },
@@ -123,8 +636,17 @@ const docTemplate = `{
                 "breedId": {
                     "type": "integer"
                 },
-                "dethDate": {
+                "createdAt": {
                     "type": "string"
+                },
+                "deathDate": {
+                    "type": "string"
+                },
+                "departDate": {
+                    "type": "string"
+                },
+                "exterior": {
+                    "type": "number"
                 },
                 "farm": {
                     "$ref": "#/definitions/models.Farm"
@@ -150,8 +672,14 @@ const docTemplate = `{
                 "identificationNumber": {
                     "type": "string"
                 },
+                "inbrindingCoeffByFamily": {
+                    "type": "number"
+                },
                 "inventoryNumber": {
                     "type": "string"
+                },
+                "isDead": {
+                    "type": "boolean"
                 },
                 "lactation": {
                     "type": "array",
@@ -232,6 +760,23 @@ const docTemplate = `{
                 }
             }
         },
+        "models.District": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "region": {
+                    "$ref": "#/definitions/models.Region"
+                },
+                "regionId": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.Farm": {
             "type": "object",
             "properties": {
@@ -245,7 +790,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "district": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.District"
+                },
+                "districtId": {
+                    "type": "integer"
                 },
                 "email": {
                     "type": "string"
@@ -257,6 +805,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "nameShort": {
                     "type": "string"
                 },
                 "parrent": {
@@ -283,7 +834,13 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "abort": {
+                    "type": "boolean"
+                },
+                "calvingCount": {
                     "type": "integer"
+                },
+                "calvingDate": {
+                    "type": "string"
                 },
                 "checkMilks": {
                     "type": "array",
@@ -315,6 +872,12 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "insemenationDate": {
+                    "type": "string"
+                },
+                "insemenationNum": {
+                    "type": "integer"
+                },
                 "milk305": {
                     "type": "integer"
                 },
@@ -322,18 +885,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "number": {
-                    "type": "integer"
-                },
-                "osemenDate": {
-                    "type": "string"
-                },
-                "osemenNum": {
-                    "type": "integer"
-                },
-                "otelDate": {
-                    "type": "string"
-                },
-                "otelNum": {
                     "type": "integer"
                 },
                 "protein305": {
@@ -348,10 +899,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "default": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Усть-Каменский"
                 }
             }
         },
@@ -363,114 +916,6 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "routes.cowsFilter": {
-            "type": "object",
-            "properties": {
-                "birkingDateFrom": {
-                    "type": "string"
-                },
-                "birkingDateTo": {
-                    "type": "string"
-                },
-                "birthDateFrom": {
-                    "type": "string"
-                },
-                "birthDateTo": {
-                    "type": "string"
-                },
-                "breedId": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "calvingDateFrom": {
-                    "type": "string"
-                },
-                "calvingDateTo": {
-                    "type": "string"
-                },
-                "controlMilkingDateFrom": {
-                    "type": "string"
-                },
-                "controlMilkingDateTo": {
-                    "type": "string"
-                },
-                "departDateFrom": {
-                    "type": "string"
-                },
-                "departDateTo": {
-                    "type": "string"
-                },
-                "entitiesOnPage": {
-                    "type": "integer"
-                },
-                "exterior": {
-                    "description": "????",
-                    "type": "string"
-                },
-                "farmID": {
-                    "type": "integer"
-                },
-                "genotypingDateFrom": {
-                    "type": "string"
-                },
-                "genotypingDateTo": {
-                    "type": "string"
-                },
-                "inbrindingCoeffByFamilyFrom": {
-                    "type": "number"
-                },
-                "inbrindingCoeffByFamilyTo": {
-                    "type": "number"
-                },
-                "inbrindingCoeffByFenotypeFrom": {
-                    "type": "number"
-                },
-                "inbrindingCoeffByFenotypeTo": {
-                    "type": "number"
-                },
-                "inseminationDateFrom": {
-                    "type": "string"
-                },
-                "inseminationDateTo": {
-                    "type": "string"
-                },
-                "isAborted": {
-                    "type": "boolean"
-                },
-                "isDead": {
-                    "type": "boolean"
-                },
-                "isIll": {
-                    "type": "boolean"
-                },
-                "isStillBorn": {
-                    "type": "boolean"
-                },
-                "isTwins": {
-                    "type": "boolean"
-                },
-                "monogeneticIllneses": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "pageNumber": {
-                    "type": "integer"
-                },
-                "searchQuery": {
-                    "type": "string"
-                },
-                "sex": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
                 }
             }
         }
@@ -490,7 +935,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "localhost:8080",
-	BasePath:         "/api",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "GenMilk API",
 	Description:      "This is a sample server celler server.",

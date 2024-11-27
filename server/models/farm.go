@@ -6,13 +6,16 @@ type Farm struct {
 	Region   Region
 	RegionId uint
 
-	Parrent   *Farm
-	ParrentId *uint
+	District   *District
+	DistrictId *uint
+	Parrent    *Farm
+	ParrentId  *uint
 
-	Type        uint
-	Name        string
-	Inn         string
-	District    string
+	Type      uint
+	Name      string
+	NameShort string
+	Inn       string
+
 	Address     string
 	Phone       string
 	Email       string

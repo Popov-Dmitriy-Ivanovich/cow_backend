@@ -3,6 +3,15 @@ package main
 import (
 	"cow_backend/models"
 	"cow_backend/routes"
+	"cow_backend/routes/breeds"
+	checkmilks "cow_backend/routes/check_milks"
+	"cow_backend/routes/cows"
+	dailymilks "cow_backend/routes/daily_milks"
+	"cow_backend/routes/districts"
+	"cow_backend/routes/farms"
+	"cow_backend/routes/lactations"
+	"cow_backend/routes/regions"
+	"cow_backend/routes/sexes"
 	"fmt"
 
 	// "net/http"
@@ -28,7 +37,7 @@ import (
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
 // @host      localhost:8080
-// @BasePath  /api
+// @BasePath  /
 
 // @securityDefinitions.basic  BasicAuth
 
@@ -43,8 +52,9 @@ func main() {
 	models.GetDb()
 
 	r := gin.Default()
-	apiHandlers := &routes.Api{}
-	apiHandlers.WriteRoutes(&r.RouterGroup)
+
+	routes.WriteRoutes(&r.RouterGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{}, &cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{})
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()
 

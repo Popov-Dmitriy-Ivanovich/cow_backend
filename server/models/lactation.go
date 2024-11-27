@@ -13,13 +13,13 @@ type Lactation struct {
 	Number uint
 	Date   time.Time
 
-	OsemenNum  int
-	OsemenDate time.Time
+	InsemenationNum  int
+	InsemenationDate time.Time
 
-	OtelNum  int
-	OtelDate time.Time
+	CalvingCount int
+	CalvingDate  time.Time
 
-	Abort      int
+	Abort      bool
 	MilkAll    int
 	Milk305    int
 	FatAll     int

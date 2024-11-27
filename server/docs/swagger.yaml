@@ -1,5 +1,133 @@
-basePath: /api
+basePath: /
 definitions:
+  cows.cowsFilter:
+    properties:
+      birkingDateFrom:
+        description: date field
+        example: "1800-01-21"
+        type: string
+      birkingDateTo:
+        description: date field
+        example: "2800-01-21"
+        type: string
+      birthDateFrom:
+        description: used
+        example: "1800-01-21"
+        type: string
+      birthDateTo:
+        description: used
+        example: "2800-01-21"
+        type: string
+      breedId:
+        description: used
+        items:
+          type: integer
+        type: array
+      calvingDateFrom:
+        description: used
+        example: "1800-01-21"
+        type: string
+      calvingDateTo:
+        description: used
+        example: "2800-01-21"
+        type: string
+      controlMilkingDateFrom:
+        description: used
+        example: "1800-01-21"
+        type: string
+      controlMilkingDateTo:
+        description: used
+        example: "2800-01-21"
+        type: string
+      departDateFrom:
+        description: used
+        example: "1800-01-21"
+        type: string
+      departDateTo:
+        description: used
+        example: "2800-01-21"
+        type: string
+      entitiesOnPage:
+        default: 50
+        description: used
+        type: integer
+      exterior:
+        default: 3.14
+        description: used
+        type: number
+      farmID:
+        default: 1
+        description: used
+        type: integer
+      genotypingDateFrom:
+        description: ??? Genotiping needed
+        example: "1800-01-21"
+        type: string
+      genotypingDateTo:
+        description: ??? Genotiping needed
+        example: "2800-01-21"
+        type: string
+      inbrindingCoeffByFamilyFrom:
+        default: 3.14
+        description: used
+        type: number
+      inbrindingCoeffByFamilyTo:
+        default: 3.14
+        description: used
+        type: number
+      inbrindingCoeffByFenotypeFrom:
+        default: 3.14
+        description: ??? Genotiping needed
+        type: number
+      inbrindingCoeffByFenotypeTo:
+        default: 3.14
+        description: ??? Genotiping needed
+        type: number
+      inseminationDateFrom:
+        example: "1800-01-21"
+        type: string
+      inseminationDateTo:
+        example: "2800-01-21"
+        type: string
+      isAborted:
+        default: false
+        description: used
+        type: boolean
+      isDead:
+        default: false
+        description: used
+        type: boolean
+      isIll:
+        default: false
+        description: ??? Genotiping needed
+        type: boolean
+      isStillBorn:
+        default: false
+        description: used
+        type: boolean
+      isTwins:
+        default: false
+        description: used
+        type: boolean
+      monogeneticIllneses:
+        description: ??? Genotiping needed
+        items:
+          type: integer
+        type: array
+      pageNumber:
+        default: 1
+        description: used
+        type: integer
+      searchQuery:
+        description: used
+        example: Буренка
+        type: string
+      sex:
+        description: used
+        items:
+          type: integer
+        type: array
+    type: object
   models.Breed:
     properties:
       id:
@@ -24,14 +152,25 @@ definitions:
     type: object
   models.Cow:
     properties:
+      approved:
+        description: int to load database dump
+        type: integer
+      birkingDate:
+        type: string
       birthDate:
         type: string
       breed:
         $ref: '#/definitions/models.Breed'
       breedId:
         type: integer
-      dethDate:
+      createdAt:
         type: string
+      deathDate:
+        type: string
+      departDate:
+        type: string
+      exterior:
+        type: number
       farm:
         $ref: '#/definitions/models.Farm'
       farmGroup:
@@ -48,8 +187,12 @@ definitions:
         type: integer
       identificationNumber:
         type: string
+      inbrindingCoeffByFamily:
+        type: number
       inventoryNumber:
         type: string
+      isDead:
+        type: boolean
       lactation:
         items:
           $ref: '#/definitions/models.Lactation'
@@ -102,6 +245,17 @@ definitions:
       proteinNoon:
         type: integer
     type: object
+  models.District:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      region:
+        $ref: '#/definitions/models.Region'
+      regionId:
+        type: integer
+    type: object
   models.Farm:
     properties:
       address:
@@ -111,7 +265,9 @@ definitions:
       description:
         type: string
       district:
-        type: string
+        $ref: '#/definitions/models.District'
+      districtId:
+        type: integer
       email:
         type: string
       id:
@@ -119,6 +275,8 @@ definitions:
       inn:
         type: string
       name:
+        type: string
+      nameShort:
         type: string
       parrent:
         $ref: '#/definitions/models.Farm'
@@ -136,7 +294,11 @@ definitions:
   models.Lactation:
     properties:
       abort:
+        type: boolean
+      calvingCount:
         type: integer
+      calvingDate:
+        type: string
       checkMilks:
         items:
           $ref: '#/definitions/models.CheckMilk'
@@ -157,19 +319,15 @@ definitions:
         type: integer
       id:
         type: integer
+      insemenationDate:
+        type: string
+      insemenationNum:
+        type: integer
       milk305:
         type: integer
       milkAll:
         type: integer
       number:
-        type: integer
-      osemenDate:
-        type: string
-      osemenNum:
-        type: integer
-      otelDate:
-        type: string
-      otelNum:
         type: integer
       protein305:
         type: integer
@@ -179,8 +337,10 @@ definitions:
   models.Region:
     properties:
       id:
+        default: 1
         type: integer
       name:
+        example: Усть-Каменский
         type: string
     type: object
   models.Sex:
@@ -189,78 +349,6 @@ definitions:
         type: integer
       name:
         type: string
-    type: object
-  routes.cowsFilter:
-    properties:
-      birkingDateFrom:
-        type: string
-      birkingDateTo:
-        type: string
-      birthDateFrom:
-        type: string
-      birthDateTo:
-        type: string
-      breedId:
-        items:
-          type: integer
-        type: array
-      calvingDateFrom:
-        type: string
-      calvingDateTo:
-        type: string
-      controlMilkingDateFrom:
-        type: string
-      controlMilkingDateTo:
-        type: string
-      departDateFrom:
-        type: string
-      departDateTo:
-        type: string
-      entitiesOnPage:
-        type: integer
-      exterior:
-        description: ????
-        type: string
-      farmID:
-        type: integer
-      genotypingDateFrom:
-        type: string
-      genotypingDateTo:
-        type: string
-      inbrindingCoeffByFamilyFrom:
-        type: number
-      inbrindingCoeffByFamilyTo:
-        type: number
-      inbrindingCoeffByFenotypeFrom:
-        type: number
-      inbrindingCoeffByFenotypeTo:
-        type: number
-      inseminationDateFrom:
-        type: string
-      inseminationDateTo:
-        type: string
-      isAborted:
-        type: boolean
-      isDead:
-        type: boolean
-      isIll:
-        type: boolean
-      isStillBorn:
-        type: boolean
-      isTwins:
-        type: boolean
-      monogeneticIllneses:
-        items:
-          type: integer
-        type: array
-      pageNumber:
-        type: integer
-      searchQuery:
-        type: string
-      sex:
-        items:
-          type: integer
-        type: array
     type: object
 externalDocs:
   description: OpenAPI
@@ -279,18 +367,108 @@ info:
   title: GenMilk API
   version: "1.0"
 paths:
-  /CowsList:
+  /breeds/get:
+    get:
+      description: |-
+        Get list of breeds.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Breed'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of breeds
+      tags:
+      - Breeds
+  /checkMilks/get:
+    get:
+      description: |-
+        Get list of CheckMilks.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CheckMilk'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of checkMilks
+      tags:
+      - CheckMilks
+  /cows/filter:
     post:
       consumes:
       - application/json
-      description: Get filtered list of cows
+      description: |-
+        Get filtered list of cows.
+        SearchQuery - имя, номер РСХН или инвентарный номер
+        PageNumber - номер страницы для отображения
+        EntitiesOnPage - количество коров на каждой странице
+        Sex - массив полов для поиска (можно выбрать несколько)
+        FarmID - ID фермы на которой живет корова
+        BirthDateFrom - Отображает коров, родившихся после этой даты
+        BirthDateTo - Отображает коров, родившихся до этой даты
+        IsDead - Если флаг истина - ищет мертвых коров, иначе живых
+        DepartDateFrom - Ищет коров отбывших из коровника после данной даты
+        DepartDateTo - Ищет коров отбывших из коровника до данной даты
+        BreedId - ищет коров имеющих одну из пород по BreedId
+        GenotypingDateFrom - НЕ ИСПОЛЬЗУЕТСЯ
+        GenotypingDateTo - НЕ ИСПОЛЬЗУЕТСЯ
+        ControlMilkingDateFrom - ищет коров у которых была хотябы одна контрольная дойка после этой даты
+        ControlMilkingDateTo - ищет коров у которых была хотябы одна контрольная дойка до этой даты
+
+        Exterior - Ищет коров с оценкой экстерьера равной этому значению
+        InseminationDateFrom - Ищет коров которые были хотябы раз осеменены после данной даты
+        InseminationDateTo - Ищет коров которые были хотябы раз осеменены до данной даты
+        CalvingDateFrom  - Ищет коров у которых был отел хотябы раз после данной даты
+        CalvingDateTo - Ищет коров у которых был отел хотябы раз до данной даты
+        IsStillBorn  - Ищет коров у которых хотябы раз было мертворождение
+        IsTwins - Ищет коров у которых хотябы раз родились близнецы/двойняшки
+        IsAborted - Ищет коров, которым хотябы раз сделали аборт
+        IsIll - НЕ ИСОПЛЬЗУЕТСЯ
+        BirkingDateFrom - Ищет коров у которых дата перебирковки больше
+        BirkingDateTo - Ищет коров у которых дата перебирковки меньше
+
+        InbrindingCoeffByFamilyFrom Ищет коров, у которых коэф. инбриндинга по роду больше
+        InbrindingCoeffByFamilyTo   - Ищет коров у которых дата перебирковки меньше
+
+        InbrindingCoeffByFenotypeFrom Genotiping needed
+        InbrindingCoeffByFenotypeTo    Genotiping needed
+
+        MonogeneticIllneses []uint Genotiping needed
       parameters:
       - description: applied filters
         in: body
         name: filter
         required: true
         schema:
-          $ref: '#/definitions/routes.cowsFilter'
+          $ref: '#/definitions/cows.cowsFilter'
       produces:
       - application/json
       responses:
@@ -312,7 +490,194 @@ paths:
             type: object
       summary: Get filtered list of cows
       tags:
-      - accounts
+      - Cows
+  /cows/get:
+    get:
+      description: |-
+        Get list of farms.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Cow'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of farms
+      tags:
+      - Cows
+  /dailyMilks/get:
+    get:
+      description: |-
+        Get list of DailyMilks.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.DailyMilk'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of DailyMilks
+      tags:
+      - DailyMilks
+  /districts/get:
+    get:
+      description: |-
+        Get list of Districts.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.DailyMilk'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of Districts
+      tags:
+      - Districtts
+  /farms/get:
+    get:
+      description: |-
+        Get list of farms.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Farm'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of farms
+      tags:
+      - Farms
+  /lactations/get:
+    get:
+      description: |-
+        Get list of farms.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Lactation'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of farms
+      tags:
+      - Lactations
+  /regions/get:
+    get:
+      description: Get list of regions.
+      parameters:
+      - description: id of region to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Region'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of regions
+      tags:
+      - Regions
+  /sexes/get:
+    get:
+      description: |-
+        Get list of breeds.
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id of farm to return
+        in: query
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Sex'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of breeds
+      tags:
+      - Sexes
 securityDefinitions:
   BasicAuth:
     type: basic
