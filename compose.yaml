@@ -3,6 +3,12 @@ services:
   postgres:
     container_name: postgres_container1
     image: postgres:14.8-alpine3.18
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
     command:
       - "postgres"
       - "-c"
@@ -65,7 +71,9 @@ services:
   cow_backend:
       container_name: cow_backend1
       depends_on:
-        - postgres
+        postgres:
+          condition: service_healthy
+          restart: true
       build: server
       env_file:
         - server/.env

@@ -133,7 +133,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("name = ?", searchString).Or("rshn_number = ?", searchString).Or("inventory_number = ?", searchString)
 		}
 
-		if bodyData.Sex != nil && len(bodyData.Sex) != 0 {
+		if len(bodyData.Sex) != 0 {
 			query = query.Where("sex_id IN ?", bodyData.Sex)
 		}
 
@@ -181,7 +181,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("depart_date <= ?", bdTo.UTC())
 		}
 
-		if bodyData.BreedId != nil && len(bodyData.BreedId) != 0 {
+		if len(bodyData.BreedId) != 0 {
 			query = query.Where("breed_id in ?", bodyData.BreedId)
 		}
 
