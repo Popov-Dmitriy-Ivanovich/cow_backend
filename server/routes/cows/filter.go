@@ -133,12 +133,12 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("name = ?", searchString).Or("rshn_number = ?", searchString).Or("inventory_number = ?", searchString)
 		}
 
-		if bodyData.Sex != nil {
+		if bodyData.Sex != nil && len(bodyData.Sex) != 0 {
 			query = query.Where("sex_id IN ?", bodyData.Sex)
 		}
 
 		if bodyData.FarmID != nil {
-			query = query.Where("farm_id = ?", bodyData.FarmID).Preload("Farm")
+			query = query.Where("farm_id = ?", bodyData.FarmID)
 		}
 
 		if bodyData.BirthDateFrom != nil {
@@ -181,7 +181,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("depart_date <= ?", bdTo.UTC())
 		}
 
-		if bodyData.BreedId != nil {
+		if bodyData.BreedId != nil && len(bodyData.BreedId) != 0 {
 			query = query.Where("breed_id in ?", bodyData.BreedId)
 		}
 
@@ -191,7 +191,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC())
 		}
 
 		if bodyData.ControlMilkingDateTo != nil {
@@ -200,7 +200,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date <= ?))", bdTo.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date <= ?))", bdTo.UTC())
 		}
 
 		if bodyData.CalvingDateFrom != nil {
@@ -209,7 +209,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC()).Preload("Lactation")
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC())
 		}
 
 		if bodyData.CalvingDateTo != nil {
@@ -218,11 +218,11 @@ func (c *Cows) Filter() func(*gin.Context) {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date <= ?)", bdTo.UTC()).Preload("Lactation")
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date <= ?)", bdTo.UTC())
 		}
 
 		if bodyData.IsStillBorn != nil && *bodyData.IsStillBorn { // stillborn means, that 0 cows are born
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 0).Preload("Lactation")
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 0)
 		}
 
 		if bodyData.IsTwins != nil && *bodyData.IsTwins { // twins means, that 2 cows are born
