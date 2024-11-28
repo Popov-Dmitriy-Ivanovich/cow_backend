@@ -43,8 +43,8 @@ services:
     volumes:
       - ./dockered_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - habrdb-data:/var/lib/postgresql/data
-    # ports:
-    #   - "5432:5432"
+    ports:
+      - "5432:5432"
     
     networks:
       - postgres
@@ -68,20 +68,20 @@ services:
           memory: 1G
     networks:
       - postgres
-  cow_backend:
-      container_name: cow_backend1
-      depends_on:
-        postgres:
-          condition: service_healthy
-          restart: true
-      build: server
-      env_file:
-        - server/.env
-      networks:
-        - postgres
-        - cow_backend
-      ports:
-        - 8080:8080
+  # cow_backend:
+  #     container_name: cow_backend1
+  #     depends_on:
+  #       postgres:
+  #         condition: service_healthy
+  #         restart: true
+  #     build: server
+  #     env_file:
+  #       - server/.env
+  #     networks:
+  #       - postgres
+  #       - cow_backend
+  #     ports:
+  #       - 8080:8080
 
 
 volumes:

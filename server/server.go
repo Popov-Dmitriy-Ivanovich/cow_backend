@@ -36,7 +36,7 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      83.69.248.180:8080
 // @BasePath  /
 
 // @securityDefinitions.basic  BasicAuth
