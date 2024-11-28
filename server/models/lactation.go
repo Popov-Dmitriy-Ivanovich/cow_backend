@@ -7,8 +7,8 @@ type Lactation struct {
 
 	CowId uint
 
-	CheckMilks []CheckMilk
-	DailyMilks []DailyMilk
+	CheckMilks []CheckMilk `json:"-"`
+	DailyMilks []DailyMilk `json:"-"`
 
 	Number uint
 	Date   time.Time

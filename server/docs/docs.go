@@ -26,7 +26,7 @@ const docTemplate = `{
     "paths": {
         "/breeds/get": {
             "get": {
-                "description": "Get list of breeds.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает список пород",
                 "produces": [
                     "application/json"
                 ],
@@ -37,7 +37,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id of farm to return",
+                        "description": "ID конкретной породы, если нужно вернуть одну",
                         "name": "id",
                         "in": "query"
                     }
@@ -64,7 +64,7 @@ const docTemplate = `{
         },
         "/checkMilks/get": {
             "get": {
-                "description": "Get list of CheckMilks.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает список контрольный доек",
                 "produces": [
                     "application/json"
                 ],
@@ -75,8 +75,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id of farm to return",
+                        "description": "id контрольной дойки",
                         "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id лактации, для корой ищутся котнольные дойки",
+                        "name": "lactation_id",
                         "in": "query"
                     }
                 ],
@@ -130,7 +136,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Cow"
+                                "$ref": "#/definitions/cows.FilterSerializedCow"
                             }
                         }
                     },
@@ -153,19 +159,31 @@ const docTemplate = `{
         },
         "/cows/get": {
             "get": {
-                "description": "Get list of farms.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает список коров.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Cows"
                 ],
-                "summary": "Get list of farms",
+                "summary": "Get list of cows",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id of farm to return",
+                        "description": "ID конкретной коровы, чтобы ее вернуть",
                         "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID фермы (НЕ хозяйства), к которой принадлежит корова",
+                        "name": "farm_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID хозяйства (НЕ фермы), к которому принадлежит корова",
+                        "name": "farm_group_id",
                         "in": "query"
                     }
                 ],
@@ -204,6 +222,12 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "id of farm to return",
                         "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id lactation to search dailimilks",
+                        "name": "lactation_id",
                         "in": "query"
                     }
                 ],
@@ -319,6 +343,12 @@ const docTemplate = `{
                         "description": "id of farm to return",
                         "name": "id",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id of cow for wich lactations should be find",
+                        "name": "cow_id",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -419,163 +449,230 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "cows.FilterSerializedCow": {
+            "type": "object",
+            "required": [
+                "birthDate",
+                "farmGroupName",
+                "genotyped",
+                "inventoryNumber",
+                "name",
+                "rshnnumber"
+            ],
+            "properties": {
+                "birkingDate": {
+                    "type": "string",
+                    "example": "40123-01-15"
+                },
+                "birthDate": {
+                    "type": "string",
+                    "example": "2040-01-21"
+                },
+                "breedName": {
+                    "type": "string",
+                    "example": "Какая-нибудь порода"
+                },
+                "calvingDate": {
+                    "type": "string",
+                    "example": "1999-01-11"
+                },
+                "checkMilkDate": {
+                    "type": "string",
+                    "example": "2020-01-02"
+                },
+                "departDate": {
+                    "type": "string",
+                    "example": "2020-01-30"
+                },
+                "farmGroupName": {
+                    "type": "string",
+                    "example": "ООО Аурус"
+                },
+                "genotyped": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "insemenationDate": {
+                    "type": "string",
+                    "example": "2007-01-01"
+                },
+                "inventoryNumber": {
+                    "type": "string",
+                    "example": "321"
+                },
+                "isDead": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Буренка"
+                },
+                "rshnnumber": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
         "cows.cowsFilter": {
             "type": "object",
             "properties": {
                 "birkingDateFrom": {
-                    "description": "date field",
+                    "description": "Фильтр по дате перебирковки коровы, ищет коров у которых быа перебирковка в эту дату или позднее",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "birkingDateTo": {
-                    "description": "date field",
+                    "description": "Фильтр по дате осеменения коровы, ищет коров у которых была перебирковка в эту дату или позднее",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "birthDateFrom": {
-                    "description": "used",
+                    "description": "Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или позднее)",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "birthDateTo": {
-                    "description": "used",
+                    "description": "Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или раньше)",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "breedId": {
-                    "description": "used",
+                    "description": "Фильтр по ID пород несколько ID пород - возращает всех коров, ID пород которых в списке",
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "calvingDateFrom": {
-                    "description": "used",
+                    "description": "Фильтр по дате отела коровы, ищет коров у которых был отел в эту дату или позднее",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "calvingDateTo": {
-                    "description": "used",
+                    "description": "Фильтр по дате осеменения коровы, ищет коров у которых был отел в эту дату или позднее",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "controlMilkingDateFrom": {
-                    "description": "used",
+                    "description": "Фильтр по дате контрольной дойки, ищет коров у которых была контрольная дойка в эту дату или позднее",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "controlMilkingDateTo": {
-                    "description": "used",
+                    "description": "Фильтр по дате контрольной дойки, ищет коров у которых была контрольная дойка в эту дату или ранее",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "departDateFrom": {
-                    "description": "used",
+                    "description": "Фильтр по дате открепления коровы ищет всех коров открепленных от коровника в эту дату или позднее",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "departDateTo": {
-                    "description": "used",
+                    "description": "Фильтр по дате открепления коровы ищет всех коров открепленных от коровника в эту дату или раньше",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "entitiesOnPage": {
-                    "description": "used",
+                    "description": "Количество сущностей на странице",
                     "type": "integer",
                     "default": 50
                 },
                 "exterior": {
-                    "description": "used",
+                    "description": "Фильтр по оценке экстерьера коровы, будет переработан",
                     "type": "number",
                     "default": 3.14
                 },
                 "farmID": {
-                    "description": "used",
+                    "description": "ID фермы, для которой ищутся коровы",
                     "type": "integer",
-                    "default": 1
+                    "example": 1
                 },
                 "genotypingDateFrom": {
-                    "description": "??? Genotiping needed",
+                    "description": "??? Не реализован",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "genotypingDateTo": {
-                    "description": "??? Genotiping needed",
+                    "description": "??? Не реализован",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "inbrindingCoeffByFamilyFrom": {
-                    "description": "used",
+                    "description": "Не реализован",
                     "type": "number",
                     "default": 3.14
                 },
                 "inbrindingCoeffByFamilyTo": {
-                    "description": "used",
+                    "description": "Не реализован",
                     "type": "number",
                     "default": 3.14
                 },
                 "inbrindingCoeffByFenotypeFrom": {
-                    "description": "??? Genotiping needed",
+                    "description": "?Не реализован",
                     "type": "number",
                     "default": 3.14
                 },
                 "inbrindingCoeffByFenotypeTo": {
-                    "description": "??? Genotiping needed",
+                    "description": "?Не реализован",
                     "type": "number",
                     "default": 3.14
                 },
                 "inseminationDateFrom": {
+                    "description": "Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или позднее",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "inseminationDateTo": {
+                    "description": "Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или ранее",
                     "type": "string",
                     "example": "2800-01-21"
                 },
                 "isAborted": {
-                    "description": "used",
+                    "description": "Фильтр по абортам Был/ не был",
                     "type": "boolean",
                     "default": false
                 },
                 "isDead": {
-                    "description": "used",
+                    "description": "Фильтр живых/мертвых коров (true - ищет мертвых, false - живых)",
                     "type": "boolean",
                     "default": false
                 },
                 "isIll": {
-                    "description": "??? Genotiping needed",
+                    "description": "??? Не реализован",
                     "type": "boolean",
                     "default": false
                 },
                 "isStillBorn": {
-                    "description": "used",
+                    "description": "Фильтр по мертворождению Было/не было",
                     "type": "boolean",
                     "default": false
                 },
                 "isTwins": {
-                    "description": "used",
+                    "description": "Фильтр по родам двойняшек Было / не было",
                     "type": "boolean",
                     "default": false
                 },
                 "monogeneticIllneses": {
-                    "description": "??? Genotiping needed",
+                    "description": "?Не реализован",
                     "type": "array",
                     "items": {
                         "type": "integer"
                     }
                 },
                 "pageNumber": {
-                    "description": "used",
+                    "description": "Номер страницы для отображения",
                     "type": "integer",
                     "default": 1
                 },
                 "searchQuery": {
-                    "description": "used",
+                    "description": "Имя, номер РСХН или инвентарный номер, по которым ищется корова",
                     "type": "string",
                     "example": "Буренка"
                 },
                 "sex": {
-                    "description": "used",
+                    "description": "ID пола коровы (если нужно несколько разных полов - несколько ID)",
                     "type": "array",
                     "items": {
                         "type": "integer"
@@ -587,10 +684,14 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "description": "ID породы",
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "description": "Название породы",
+                    "type": "string",
+                    "example": "Какая-нибудь порода"
                 }
             }
         },
@@ -598,22 +699,34 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "checkDate": {
-                    "type": "string"
+                    "description": "Время конрольной дойки",
+                    "type": "string",
+                    "example": "1999-02-12"
                 },
                 "fat": {
-                    "type": "integer"
+                    "description": "Параметр контрольной дойки, как я понимаю кол-во жира в молоке",
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "description": "ID контрольной дойки",
+                    "type": "integer",
+                    "example": 1
                 },
                 "lactationId": {
-                    "type": "integer"
+                    "description": "ID лактации для которой выполнена контрольная дойка",
+                    "type": "integer",
+                    "example": 1
                 },
                 "milk": {
-                    "type": "integer"
+                    "description": "Параметр контрольной дойки, как я понимаю кол-во молока",
+                    "type": "integer",
+                    "example": 1
                 },
                 "protein": {
-                    "type": "integer"
+                    "description": "Параметр контрольной дойки, как я понимаю кол-во белка в молоке",
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -621,92 +734,109 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "approved": {
-                    "description": "int to load database dump",
-                    "type": "integer"
+                    "description": "Целое число, что-то для админов, чтобы подтверждать коров",
+                    "type": "integer",
+                    "example": 1
                 },
                 "birkingDate": {
-                    "type": "string"
+                    "description": "Дата перебирковки",
+                    "type": "string",
+                    "example": "2007-01-01"
                 },
                 "birthDate": {
-                    "type": "string"
-                },
-                "breed": {
-                    "$ref": "#/definitions/models.Breed"
+                    "description": "День рождения",
+                    "type": "string",
+                    "example": "2007-01-01"
                 },
                 "breedId": {
-                    "type": "integer"
+                    "description": "ID породы коровы",
+                    "type": "integer",
+                    "example": 1
                 },
                 "createdAt": {
-                    "type": "string"
+                    "description": "Время создания коровы в базе данных",
+                    "type": "string",
+                    "example": "2007-01-01"
                 },
                 "deathDate": {
-                    "type": "string"
+                    "description": "Дата смерти",
+                    "type": "string",
+                    "example": "2007-01-01"
                 },
                 "departDate": {
-                    "type": "string"
+                    "description": "День отбытия из коровника",
+                    "type": "string",
+                    "example": "2007-01-01"
                 },
                 "exterior": {
-                    "type": "number"
-                },
-                "farm": {
-                    "$ref": "#/definitions/models.Farm"
-                },
-                "farmGroup": {
-                    "$ref": "#/definitions/models.Farm"
+                    "description": "Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
+                    "type": "number",
+                    "example": 3.14
                 },
                 "farmGroupId": {
-                    "type": "integer"
+                    "description": "ID хозяйства, которому корова принадлежит",
+                    "type": "integer",
+                    "example": 1
                 },
                 "farmID": {
-                    "type": "integer"
-                },
-                "father": {
-                    "$ref": "#/definitions/models.Cow"
+                    "description": "ID фермы, которой корова принадлежит",
+                    "type": "integer",
+                    "example": 1
                 },
                 "fatherId": {
-                    "type": "integer"
+                    "description": "ID коровы отца коровы",
+                    "type": "integer",
+                    "example": 1
                 },
                 "id": {
-                    "type": "integer"
+                    "description": "ID коровы",
+                    "type": "integer",
+                    "example": 1
                 },
                 "identificationNumber": {
-                    "type": "string"
+                    "description": "Инвентарный номер коровы, кажется он уже был",
+                    "type": "string",
+                    "example": "1213321"
                 },
                 "inbrindingCoeffByFamily": {
-                    "type": "number"
+                    "description": "Коэф. инбриндинга по роду",
+                    "type": "number",
+                    "example": 3.14
                 },
                 "inventoryNumber": {
-                    "type": "string"
+                    "description": "Инвентарный номер коровы",
+                    "type": "string",
+                    "example": "1213321"
                 },
                 "isDead": {
-                    "type": "boolean"
-                },
-                "lactation": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.Lactation"
-                    }
-                },
-                "mother": {
-                    "$ref": "#/definitions/models.Cow"
+                    "description": "Флаг мертва / жива",
+                    "type": "boolean",
+                    "example": true
                 },
                 "motherId": {
-                    "type": "integer"
+                    "description": "ID коровы матери коровы",
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "description": "Кличка коровы",
+                    "type": "string",
+                    "example": "Дима"
                 },
                 "rshnnumber": {
-                    "type": "string"
+                    "description": "РСХН номер коровы",
+                    "type": "string",
+                    "example": "1323323232"
                 },
                 "selecsNumber": {
-                    "type": "string"
-                },
-                "sex": {
-                    "$ref": "#/definitions/models.Sex"
+                    "description": "Селекс номер коровы",
+                    "type": "string",
+                    "example": "98989"
                 },
                 "sexId": {
-                    "type": "integer"
+                    "description": "ID пола коровы",
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -760,23 +890,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.District": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "region": {
-                    "$ref": "#/definitions/models.Region"
-                },
-                "regionId": {
-                    "type": "integer"
-                }
-            }
-        },
         "models.Farm": {
             "type": "object",
             "properties": {
@@ -788,9 +901,6 @@ const docTemplate = `{
                 },
                 "description": {
                     "type": "string"
-                },
-                "district": {
-                    "$ref": "#/definitions/models.District"
                 },
                 "districtId": {
                     "type": "integer"
@@ -810,17 +920,11 @@ const docTemplate = `{
                 "nameShort": {
                     "type": "string"
                 },
-                "parrent": {
-                    "$ref": "#/definitions/models.Farm"
-                },
                 "parrentId": {
                     "type": "integer"
                 },
                 "phone": {
                     "type": "string"
-                },
-                "region": {
-                    "$ref": "#/definitions/models.Region"
                 },
                 "regionId": {
                     "type": "integer"
@@ -842,20 +946,8 @@ const docTemplate = `{
                 "calvingDate": {
                     "type": "string"
                 },
-                "checkMilks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.CheckMilk"
-                    }
-                },
                 "cowId": {
                     "type": "integer"
-                },
-                "dailyMilks": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/models.DailyMilk"
-                    }
                 },
                 "date": {
                     "type": "string"
@@ -934,7 +1026,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "83.69.248.180:8080",
+	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "GenMilk API",

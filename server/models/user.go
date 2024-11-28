@@ -6,7 +6,7 @@ type User struct {
 	Role                  int
 	Email                 string
 	Phone                 *string
-	Password              []byte
-	Farm                  *Farm
+	Password              []byte `json:"-"`
+	Farm                  *Farm  `json:"-"`
 	FarmId                *uint
 }

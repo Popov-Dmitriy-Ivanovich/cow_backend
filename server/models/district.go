@@ -1,8 +1,8 @@
 package models
 
 type District struct {
-	ID uint `gorm:"primaryKey"`
-	Region Region
+	ID       uint   `gorm:"primaryKey"`
+	Region   Region `json:"-"`
 	RegionId uint
-	Name string
+	Name     string
 }

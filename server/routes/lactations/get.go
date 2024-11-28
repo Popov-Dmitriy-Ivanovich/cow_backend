@@ -14,10 +14,11 @@ import (
 //	@Description  DOES NOT RETURN SUBOBJECTS
 //	@Tags         Lactations
 //	@Param        id    query     int  false  "id of farm to return"
+//	@Param        cow_id    query     int  false  "id of cow for wich lactations should be find"
 //	@Produce      json
 //	@Success      200  {array}   models.Lactation
 //	@Failure      500  {object}  map[string]error
 //	@Router       /lactations/get [get]
 func (f *Lactations) Get() func(*gin.Context) {
-	return routes.GenerateGetFunction[models.Lactation]()
+	return routes.GenerateGetFunction[models.Lactation]("cow_id")
 }

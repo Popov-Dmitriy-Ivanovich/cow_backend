@@ -6,7 +6,7 @@ type News struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatedAt time.Time
 
-	Region   *Region
+	Region   *Region `json:"-"`
 	RegionId *uint
 	Title    string
 	Text     string

@@ -10,10 +10,9 @@ import (
 // ListAccounts lists all existing accounts
 //
 //	@Summary      Get list of breeds
-//	@Description  Get list of breeds.
-//	@Description  DOES NOT RETURN SUBOBJECTS
+//	@Description  Возращает список пород
 //	@Tags         Breeds
-//	@Param        id    query     int  false  "id of farm to return"
+//	@Param        id    query     int  false  "ID конкретной породы, если нужно вернуть одну"
 //	@Produce      json
 //	@Success      200  {array}   models.Breed
 //	@Failure      500  {object}  map[string]error

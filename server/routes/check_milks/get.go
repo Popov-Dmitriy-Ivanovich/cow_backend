@@ -10,14 +10,14 @@ import (
 // ListAccounts lists all existing accounts
 //
 //	@Summary      Get list of checkMilks
-//	@Description  Get list of CheckMilks.
-//	@Description  DOES NOT RETURN SUBOBJECTS
+//	@Description  Возращает список контрольный доек
 //	@Tags         CheckMilks
-//	@Param        id    query     int  false  "id of farm to return"
+//	@Param        id    query     int  false  "id контрольной дойки"
+//	@Param 		  lactation_id query int false "id лактации, для корой ищутся котнольные дойки"
 //	@Produce      json
 //	@Success      200  {array}   models.CheckMilk
 //	@Failure      500  {object}  map[string]error
 //	@Router       /checkMilks/get [get]
 func (f *CheckMilks) Get() func(*gin.Context) {
-	return routes.GenerateGetFunction[models.CheckMilk]()
+	return routes.GenerateGetFunction[models.CheckMilk]("lactation_id")
 }

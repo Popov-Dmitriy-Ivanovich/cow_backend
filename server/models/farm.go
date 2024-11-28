@@ -3,12 +3,12 @@ package models
 type Farm struct {
 	ID uint `gorm:"primaryKey"`
 
-	Region   Region
+	Region   Region `json:"-"`
 	RegionId uint
 
-	District   *District
+	District   *District `json:"-"`
 	DistrictId *uint
-	Parrent    *Farm
+	Parrent    *Farm `json:"-"`
 	ParrentId  *uint
 
 	Type      uint

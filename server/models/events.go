@@ -5,10 +5,10 @@ import "time"
 type Event struct {
 	ID uint `gorm:"primaryKey"`
 
-	Cow   Cow
+	Cow   Cow `json:"-"`
 	CowId uint
 
-	EventType   EventType
+	EventType   EventType `json:"-"`
 	EventTypeId uint
 
 	Date     time.Time
@@ -19,7 +19,7 @@ type Event struct {
 type EventType struct {
 	ID uint `gorm:"primaryKey"`
 
-	Parent   *EventType
+	Parent   *EventType `json:"-"`
 	ParentId uint
 
 	Name string

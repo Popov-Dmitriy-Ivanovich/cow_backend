@@ -3,42 +3,42 @@ package models
 import "time"
 
 type Cow struct {
-	ID        uint `gorm:"primaryKey"`
-	CreatedAt time.Time
-	Farm      Farm
-	FarmID    uint
+	ID        uint      `gorm:"primaryKey" example:"1"` // ID коровы
+	CreatedAt time.Time `example:"2007-01-01"`          // Время создания коровы в базе данных
+	Farm      Farm      `json:"-"`
+	FarmID    uint      `example:"1"` // ID фермы, которой корова принадлежит
 
-	FarmGroup   Farm
-	FarmGroupId uint
+	FarmGroup   Farm `json:"-"`
+	FarmGroupId uint `example:"1"` // ID хозяйства, которому корова принадлежит
 
-	Breed   Breed
-	BreedId uint
+	Breed   Breed `json:"-"`
+	BreedId uint  `example:"1"` // ID породы коровы
 
-	Sex   Sex
-	SexId uint
+	Sex   Sex  `json:"-"`
+	SexId uint `example:"1"` // ID пола коровы
 
-	Father   *Cow
-	FatherId *uint
+	Father   *Cow  `json:"-"`
+	FatherId *uint `example:"1"` // ID коровы отца коровы
 
-	Mother   *Cow
-	MotherId *uint
+	Mother   *Cow  `json:"-"`
+	MotherId *uint `example:"1"` // ID коровы матери коровы
 
-	Lactation []Lactation
+	Lactation []Lactation `json:"-"`
 
-	InventoryNumber      string
-	SelecsNumber         string
-	RSHNNumber           string
-	Name                 string
-	IdentificationNumber string
+	InventoryNumber      string `example:"1213321"`    // Инвентарный номер коровы
+	SelecsNumber         string `example:"98989"`      // Селекс номер коровы
+	RSHNNumber           string `example:"1323323232"` // РСХН номер коровы
+	Name                 string `example:"Дима"`       // Кличка коровы
+	IdentificationNumber string `example:"1213321"`    // Инвентарный номер коровы, кажется он уже был
 
-	IsDead bool
+	IsDead bool `example:"true"` // Флаг мертва / жива
 
-	Exterior                float64
-	InbrindingCoeffByFamily float64
+	Exterior                float64 `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
+	InbrindingCoeffByFamily float64 `example:"3.14"` // Коэф. инбриндинга по роду
 
-	Approved    int // int to load database dump
-	BirthDate   time.Time
-	DepartDate  time.Time
-	DeathDate   time.Time
-	BirkingDate time.Time
+	Approved    int        `example:"1"`          // Целое число, что-то для админов, чтобы подтверждать коров
+	BirthDate   time.Time  `example:"2007-01-01"` // День рождения
+	DepartDate  *time.Time `example:"2007-01-01"` // День отбытия из коровника
+	DeathDate   time.Time  `example:"2007-01-01"` // Дата смерти
+	BirkingDate time.Time  `example:"2007-01-01"` // Дата перебирковки
 }
