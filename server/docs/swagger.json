@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "83.69.248.180:8080",
     "basePath": "/",
     "paths": {
         "/breeds/get": {
