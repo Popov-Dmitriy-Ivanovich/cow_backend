@@ -439,11 +439,11 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// ============= ============= FILTER BY INBRINDING COEF ============= ============= ============= ===
 		// ====================================================================================================
-		if bodyData.InbrindingCoeffByFamilyFrom != nil {
+		if bodyData.InbrindingCoeffByFamilyFrom != nil && bodyData.InbrindingCoeffByFamilyTo != nil {
+			query = query.Where("inbrinding_coeff_by_family BETWEEN ? AND ?", bodyData.InbrindingCoeffByFamilyFrom, bodyData.InbrindingCoeffByFamilyTo)
+		} else if bodyData.InbrindingCoeffByFamilyFrom != nil {
 			query = query.Where("inbrinding_coeff_by_family >= ?", bodyData.InbrindingCoeffByFamilyFrom)
-		}
-
-		if bodyData.InbrindingCoeffByFamilyTo != nil {
+		} else if bodyData.InbrindingCoeffByFamilyTo != nil {
 			query = query.Where("inbrinding_coeff_by_family <= ?", bodyData.InbrindingCoeffByFamilyTo)
 		}
 
