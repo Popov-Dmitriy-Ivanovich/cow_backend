@@ -12,11 +12,11 @@ import (
 //	@Summary      Get list of breeds
 //	@Description  Возращает список пород
 //	@Tags         Breeds
-//	@Param        id    query     int  false  "ID конкретной породы, если нужно вернуть одну"
+//	@Param        id    path     int  true  "ID конкретной породы, если нужно вернуть одну"
 //	@Produce      json
 //	@Success      200  {array}   models.Breed
 //	@Failure      500  {object}  map[string]error
-//	@Router       /breeds/get [get]
+//	@Router       /breeds/{id} [get]
 func (f *Breeds) Get() func(*gin.Context) {
 	return routes.GenerateGetFunction[models.Breed]()
 }

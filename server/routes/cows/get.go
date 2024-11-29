@@ -42,13 +42,13 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 //	@Summary      Get list of cows
 //	@Description  Возращает список коров.
 //	@Tags         Cows
-//	@Param        id    query     int  false  "ID конкретной коровы, чтобы ее вернуть"
+//	@Param        id   path      int  true  "ID конкретной коровы, чтобы ее вернуть"
 //	@Param        farm_id    query     int  false  "ID фермы (НЕ хозяйства), к которой принадлежит корова"
 //	@Param 		  farm_group_id query int false "ID хозяйства (НЕ фермы), к которому принадлежит корова"
 //	@Produce      json
 //	@Success      200  {array}   models.Cow
 //	@Failure      500  {object}  map[string]error
-//	@Router       /cows/get [get]
+//	@Router       /cows/{id} [get]
 func (f *Cows) Get() func(*gin.Context) {
 	return routes.GenerateReserealizingGetFunction[models.Cow, ReserealizedCow]("farm_id", "farm_group_id")
 	// return routes.GenerateGetFunction[models.Cow]("farm_id", "farm_group_id")

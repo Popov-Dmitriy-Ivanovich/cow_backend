@@ -7,5 +7,5 @@ type CheckMilks struct {
 
 func (cm *CheckMilks) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/checkMilks")
-	apiGroup.GET("/get", cm.Get())
+	apiGroup.GET("/:id", cm.Get())
 }

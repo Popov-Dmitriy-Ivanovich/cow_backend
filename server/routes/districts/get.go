@@ -13,11 +13,11 @@ import (
 //	@Description  Get list of Districts.
 //	@Description  DOES NOT RETURN SUBOBJECTS
 //	@Tags         Districtts
-//	@Param        id    query     int  false  "id of farm to return"
+//	@Param        id    path     int  true  "id of farm to return"
 //	@Produce      json
 //	@Success      200  {array}   models.DailyMilk
 //	@Failure      500  {object}  map[string]error
-//	@Router       /districts/get [get]
+//	@Router       /districts/{id} [get]
 func (f *Districts) Get() func(*gin.Context) {
 	return routes.GenerateGetFunction[models.District]()
 }

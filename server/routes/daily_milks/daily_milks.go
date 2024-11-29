@@ -7,5 +7,5 @@ type DailyMilk struct {
 
 func (b *DailyMilk) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/dailyMilks")
-	apiGroup.GET("/get", b.Get())
+	apiGroup.GET("/:id", b.Get())
 }

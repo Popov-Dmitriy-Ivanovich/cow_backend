@@ -52,7 +52,7 @@ type Reserealizable interface {
 func GenerateReserealizingGetFunction[DbModel any, R Reserealizable](filters ...string) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		db := models.GetDb()
-		id, _ := c.GetQuery("id")
+		id := c.Param("id")
 		objs := []DbModel{}
 		query := db.Where("true")
 		if id != "" {

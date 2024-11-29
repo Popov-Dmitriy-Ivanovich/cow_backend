@@ -7,5 +7,5 @@ type Districts struct {
 
 func (b *Districts) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/districts")
-	apiGroup.GET("/get", b.Get())
+	apiGroup.GET("/:id", b.Get())
 }

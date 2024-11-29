@@ -7,5 +7,5 @@ type Farms struct {
 
 func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/farms")
-	apiGroup.GET("/get", f.Get())
+	apiGroup.GET("/:id", f.Get())
 }

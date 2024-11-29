@@ -7,6 +7,7 @@ type Cows struct {
 
 func (c *Cows) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/cows")
-	apiGroup.GET("/get", c.Get())
+	apiGroup.GET("/:id", c.Get())
+	apiGroup.GET("/:id/checkMilks", c.CheckMilks())
 	apiGroup.POST("/filter", c.Filter())
 }
