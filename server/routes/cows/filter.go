@@ -50,19 +50,19 @@ type cowsFilter struct { // Фильтр коров
 }
 
 type FilterSerializedCow struct {
-	RSHNNumber       string     `validate:"required" example:"123"`
-	InventoryNumber  string     `validate:"required" example:"321"`
-	Name             string     `validate:"required" example:"Буренка"`
-	FarmGroupName    string     `validate:"required" example:"ООО Аурус"`
-	BirthDate        time.Time  `validate:"required" example:"2040-01-21"`
-	Genotyped        bool       `validate:"required" example:"true"`
-	DepartDate       *time.Time `json:",omitempty" validate:"optional" example:"2020-01-30"`
-	IsDead           bool       `json:",omitempty" validate:"optional" example:"false"`
-	BreedName        *string    `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
-	CheckMilkDate    *time.Time `json:",omitempty" validate:"optional" example:"2020-01-02"`
-	InsemenationDate *time.Time `json:",omitempty" validate:"optional" example:"2007-01-01"`
-	CalvingDate      *time.Time `json:",omitempty" validate:"optional" example:"1999-01-11"`
-	BirkingDate      *time.Time `json:",omitempty" validate:"optional" example:"40123-01-15"`
+	RSHNNumber       string      `validate:"required" example:"123"`
+	InventoryNumber  string      `validate:"required" example:"321"`
+	Name             string      `validate:"required" example:"Буренка"`
+	FarmGroupName    string      `validate:"required" example:"ООО Аурус"`
+	BirthDate        time.Time   `validate:"required" example:"2040-01-21"`
+	Genotyped        bool        `validate:"required" example:"true"`
+	DepartDate       *time.Time  `json:",omitempty" validate:"optional" example:"2020-01-30"`
+	IsDead           bool        `json:",omitempty" validate:"optional" example:"false"`
+	BreedName        *string     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
+	CheckMilkDate    []time.Time `json:",omitempty" validate:"optional" example:"2020-01-02"`
+	InsemenationDate []time.Time `json:",omitempty" validate:"optional" example:"2007-01-01"`
+	CalvingDate      []time.Time `json:",omitempty" validate:"optional" example:"1999-01-11"`
+	BirkingDate      *time.Time  `json:",omitempty" validate:"optional" example:"40123-01-15"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
@@ -104,8 +104,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 						continue
 					}
 				}
-				res.CheckMilkDate = &cm.CheckDate
-				break
+				res.CheckMilkDate = append(res.CheckMilkDate, cm.CheckDate)
 			}
 		}
 	}
@@ -130,8 +129,8 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 					continue
 				}
 			}
-			res.InsemenationDate = &lac.InsemenationDate
-			break
+			res.InsemenationDate = append(res.InsemenationDate, lac.InsemenationDate)
+
 		}
 	}
 
@@ -155,8 +154,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 					continue
 				}
 			}
-			res.CalvingDate = &lac.CalvingDate
-			break
+			res.CalvingDate = append(res.CalvingDate, lac.CalvingDate)
 		}
 	}
 
