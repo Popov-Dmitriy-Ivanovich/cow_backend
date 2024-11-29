@@ -242,8 +242,6 @@ func (c *Cows) Filter() func(*gin.Context) {
 			pageNumber = uint64(*bodyData.PageNumber)
 		}
 
-		// query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1))
-
 		if searchString := bodyData.SearchQuery; searchString != nil && *searchString != "" {
 			query = query.Where("name = ?", searchString).Or("rshn_number = ?", searchString).Or("inventory_number = ?", searchString)
 		}
@@ -256,16 +254,37 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("farm_id = ?", bodyData.FarmID).Preload("Farm")
 		}
 
-		if bodyData.BirthDateFrom != nil {
+		if len(bodyData.BreedId) != 0 {
+			query = query.Where("breed_id in ?", bodyData.BreedId).Preload("Breed")
+		}
+
+		if bodyData.IsDead != nil {
+			query = query.Where("is_dead = ?", bodyData.IsDead)
+		}
+
+		// ====================================================================================================
+		// =================================== Filter by brithday date ========================================
+		// ====================================================================================================
+		if bodyData.BirthDateFrom != nil && bodyData.BirthDateTo != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirthDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.BirthDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("birth_date BETWEEN ? AND ?", bdFrom.UTC(), bdTo.UTC())
+		} else if bodyData.BirthDateFrom != nil {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirthDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("birth_date >= ?", bdFrom.UTC())
-		}
-
-		if bodyData.BirthDateTo != nil {
+		} else if bodyData.BirthDateTo != nil {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.BirthDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -274,20 +293,29 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("birth_date <= ?", bdTo.UTC())
 		}
 
-		if bodyData.IsDead != nil {
-			query = query.Where("is_dead = ?", bodyData.IsDead)
-		}
-
-		if bodyData.DepartDateFrom != nil {
+		// ====================================================================================================
+		// ================================ Filter by departation date ========================================
+		// ====================================================================================================
+		if bodyData.DepartDateFrom != nil && bodyData.DepartDateTo != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.DepartDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.DepartDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("depart_date BETWEEN ? AND ?", bdFrom.UTC(), bdTo.UTC())
+		} else if bodyData.DepartDateFrom != nil {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.DepartDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("depart_date >= ?", bdFrom.UTC())
-		}
-
-		if bodyData.DepartDateTo != nil {
+		} else if bodyData.DepartDateTo != nil {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.DepartDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -296,20 +324,29 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("depart_date <= ?", bdTo.UTC())
 		}
 
-		if len(bodyData.BreedId) != 0 {
-			query = query.Where("breed_id in ?", bodyData.BreedId).Preload("Breed")
-		}
-
-		if bodyData.ControlMilkingDateFrom != nil {
+		// ====================================================================================================
+		// ============================ Filter by control milking date ========================================
+		// ====================================================================================================
+		if bodyData.ControlMilkingDateFrom != nil && bodyData.ControlMilkingDateTo != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date BETWEEN ? AND ?))", bdFrom.UTC(), bdTo.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		} else if bodyData.ControlMilkingDateFrom != nil {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
-		}
-
-		if bodyData.ControlMilkingDateTo != nil {
+		} else if bodyData.ControlMilkingDateTo != nil {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -318,16 +355,29 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date <= ?))", bdTo.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
 		}
 
-		if bodyData.CalvingDateFrom != nil {
+		// ====================================================================================================
+		// ==================================== Filter by calving date ========================================
+		// ====================================================================================================
+		if bodyData.CalvingDateFrom != nil && bodyData.CalvingDateTo != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.CalvingDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.CalvingDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date BETWEEN ? AND ?)", bdFrom.UTC(), bdTo.UTC()).Preload("Lactation")
+		} else if bodyData.CalvingDateFrom != nil {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.CalvingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC()).Preload("Lactation")
-		}
-
-		if bodyData.CalvingDateTo != nil {
+		} else if bodyData.CalvingDateTo != nil {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.CalvingDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -336,6 +386,9 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date <= ?)", bdTo.UTC()).Preload("Lactation")
 		}
 
+		// ====================================================================================================
+		// ======================= Filter by birth parameters (e/g stillborn, twins ...)=======================
+		// ====================================================================================================
 		if bodyData.IsStillBorn != nil && *bodyData.IsStillBorn { // stillborn means, that 0 cows are born
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 0).Preload("Lactation")
 		}
@@ -352,16 +405,29 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("exterior = ?", bodyData.Exterior)
 		}
 
-		if bodyData.BirkingDateFrom != nil {
+		// ====================================================================================================
+		// ===================================  Filter by birinkg date ========================================
+		// ====================================================================================================
+		if bodyData.BirkingDateFrom != nil && bodyData.BirkingDateTo != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirkingDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.BirkingDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("birking_date BETWEEN ? AND ?", bdFrom, bdTo)
+		} else if bodyData.BirkingDateFrom != nil {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirkingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("birking_date >= ?", bdFrom)
-		}
-
-		if bodyData.BirkingDateTo != nil {
+		} else if bodyData.BirkingDateTo != nil {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.BirkingDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -370,6 +436,9 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("birking_date <= ?", bdTo)
 		}
 
+		// ====================================================================================================
+		// ============= ============= FILTER BY INBRINDING COEF ============= ============= ============= ===
+		// ====================================================================================================
 		if bodyData.InbrindingCoeffByFamilyFrom != nil {
 			query = query.Where("inbrinding_coeff_by_family >= ?", bodyData.InbrindingCoeffByFamilyFrom)
 		}
@@ -378,23 +447,40 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("inbrinding_coeff_by_family <= ?", bodyData.InbrindingCoeffByFamilyTo)
 		}
 
-		if bodyData.InseminationDateFrom != nil {
+		// ====================================================================================================
+		// ================================== FITLER BY INSEMENTAION DATE =====================================
+		// ====================================================================================================
+		if bodyData.InseminationDateFrom != nil && bodyData.InseminationDateTo != nil {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.InseminationDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.insemenation_date >= ?)", bdFrom).Preload("Lactation")
-		}
-
-		if bodyData.InseminationDateTo != nil {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.InseminationDateTo)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.insemenation_date <= ?)", bdTo).Preload("Lactation")
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.insemenation_date BETWEEN ? and ?)", bdFrom.UTC(), bdTo.UTC()).Preload("Lactation")
+		} else if bodyData.InseminationDateFrom != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.InseminationDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.insemenation_date >= ?)", bdFrom.UTC()).Preload("Lactation")
+		} else if bodyData.InseminationDateTo != nil {
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.InseminationDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.insemenation_date <= ?)", bdTo.UTC()).Preload("Lactation")
 		}
+
+		// ====================================================================================================
+		// ==================================Get final query result ===========================================
+		// ====================================================================================================
 		resCount := int64(0)
 		if err := query.Count(&resCount).Error; err != nil {
 			c.JSON(500, err)
