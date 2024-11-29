@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 type Lactation struct {
 	ID uint `gorm:"primaryKey"`
 
@@ -11,13 +9,13 @@ type Lactation struct {
 	DailyMilks []DailyMilk `json:"-"`
 
 	Number uint
-	Date   time.Time
+	Date   DateOnly
 
 	InsemenationNum  int
-	InsemenationDate time.Time
+	InsemenationDate DateOnly
 
 	CalvingCount int
-	CalvingDate  time.Time
+	CalvingDate  DateOnly
 
 	Abort      bool
 	MilkAll    int

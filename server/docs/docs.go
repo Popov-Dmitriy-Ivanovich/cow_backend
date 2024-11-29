@@ -24,9 +24,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/breeds/get": {
+        "/breeds": {
             "get": {
-                "description": "Возращает список пород",
+                "description": "Возращает список всех пород. Разрешает отсутсвие фильтров",
                 "produces": [
                     "application/json"
                 ],
@@ -34,14 +34,6 @@ const docTemplate = `{
                     "Breeds"
                 ],
                 "summary": "Get list of breeds",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID конкретной породы, если нужно вернуть одну",
-                        "name": "id",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -62,9 +54,45 @@ const docTemplate = `{
                 }
             }
         },
-        "/checkMilks/get": {
+        "/breeds/{id}": {
             "get": {
-                "description": "Возращает список контрольный доек",
+                "description": "Возращает породу.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Breeds"
+                ],
+                "summary": "Get breed",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID конкретной породы, если нужно вернуть одну.",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Breed"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/checkMilks": {
+            "get": {
+                "description": "Возращает список контрольных доек",
                 "produces": [
                     "application/json"
                 ],
@@ -73,12 +101,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get list of checkMilks",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id контрольной дойки",
-                        "name": "id",
-                        "in": "query"
-                    },
                     {
                         "type": "integer",
                         "description": "id лактации, для корой ищутся котнольные дойки",
@@ -106,9 +128,84 @@ const docTemplate = `{
                 }
             }
         },
+        "/checkMilks/{id}": {
+            "get": {
+                "description": "Возращает контрольную дойку",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "CheckMilks"
+                ],
+                "summary": "Get checkMilk",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id контрольной дойки",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CheckMilk"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows": {
+            "get": {
+                "description": "Возращает коров удовлетворяющих условиям фильтрации.",
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of cows",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID фермы (НЕ хозяйства), к которой принадлежит корова",
+                        "name": "farm_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID хозяйства (НЕ фермы), к которому принадлежит корова",
+                        "name": "farm_group_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Cow"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/cows/filter": {
             "post": {
-                "description": "Get filtered list of cows.\nSearchQuery - имя, номер РСХН или инвентарный номер\nPageNumber - номер страницы для отображения\nEntitiesOnPage - количество коров на каждой странице\nSex - массив полов для поиска (можно выбрать несколько)\nFarmID - ID фермы на которой живет корова\nBirthDateFrom - Отображает коров, родившихся после этой даты\nBirthDateTo - Отображает коров, родившихся до этой даты\nIsDead - Если флаг истина - ищет мертвых коров, иначе живых\nDepartDateFrom - Ищет коров отбывших из коровника после данной даты\nDepartDateTo - Ищет коров отбывших из коровника до данной даты\nBreedId - ищет коров имеющих одну из пород по BreedId\nGenotypingDateFrom - НЕ ИСПОЛЬЗУЕТСЯ\nGenotypingDateTo - НЕ ИСПОЛЬЗУЕТСЯ\nControlMilkingDateFrom - ищет коров у которых была хотябы одна контрольная дойка после этой даты\nControlMilkingDateTo - ищет коров у которых была хотябы одна контрольная дойка до этой даты\n\nExterior - Ищет коров с оценкой экстерьера равной этому значению\nInseminationDateFrom - Ищет коров которые были хотябы раз осеменены после данной даты\nInseminationDateTo - Ищет коров которые были хотябы раз осеменены до данной даты\nCalvingDateFrom  - Ищет коров у которых был отел хотябы раз после данной даты\nCalvingDateTo - Ищет коров у которых был отел хотябы раз до данной даты\nIsStillBorn  - Ищет коров у которых хотябы раз было мертворождение\nIsTwins - Ищет коров у которых хотябы раз родились близнецы/двойняшки\nIsAborted - Ищет коров, которым хотябы раз сделали аборт\nIsIll - НЕ ИСОПЛЬЗУЕТСЯ\nBirkingDateFrom - Ищет коров у которых дата перебирковки больше\nBirkingDateTo - Ищет коров у которых дата перебирковки меньше\n\nInbrindingCoeffByFamilyFrom Ищет коров, у которых коэф. инбриндинга по роду больше\nInbrindingCoeffByFamilyTo   - Ищет коров у которых дата перебирковки меньше\n\nInbrindingCoeffByFenotypeFrom Genotiping needed\nInbrindingCoeffByFenotypeTo    Genotiping needed\n\nMonogeneticIllneses []uint Genotiping needed",
                 "consumes": [
                     "application/json"
                 ],
@@ -157,9 +254,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/cows/get": {
+        "/cows/{id}": {
             "get": {
-                "description": "Возращает список коров.",
+                "description": "Возращает конкретную корову.",
                 "produces": [
                     "application/json"
                 ],
@@ -172,19 +269,44 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "ID конкретной коровы, чтобы ее вернуть",
                         "name": "id",
-                        "in": "query"
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Cow"
+                        }
                     },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows/{id}/checkMilks": {
+            "get": {
+                "description": "Возращает список всех контрольных доек для конкретной коровы.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of check milks",
+                "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID фермы (НЕ хозяйства), к которой принадлежит корова",
-                        "name": "farm_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "ID хозяйства (НЕ фермы), к которому принадлежит корова",
-                        "name": "farm_group_id",
-                        "in": "query"
+                        "description": "ID коровы для которой ищутся контрольные дойки",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -193,7 +315,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Cow"
+                                "$ref": "#/definitions/models.CheckMilk"
                             }
                         }
                     },
@@ -207,9 +329,48 @@ const docTemplate = `{
                 }
             }
         },
-        "/dailyMilks/get": {
+        "/cows/{id}/lactations": {
             "get": {
-                "description": "Get list of DailyMilks.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает список всех лактаций для конкретной коровы.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of lactations",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищутся лактации",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Lactation"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/dailyMilks": {
+            "get": {
+                "description": "Возвращает дойки удовлетворяющие фильтрам",
                 "produces": [
                     "application/json"
                 ],
@@ -218,12 +379,6 @@ const docTemplate = `{
                 ],
                 "summary": "Get list of DailyMilks",
                 "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id of farm to return",
-                        "name": "id",
-                        "in": "query"
-                    },
                     {
                         "type": "integer",
                         "description": "id lactation to search dailimilks",
@@ -251,9 +406,45 @@ const docTemplate = `{
                 }
             }
         },
-        "/districts/get": {
+        "/dailyMilks/{id}": {
             "get": {
-                "description": "Get list of Districts.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает конкретную дойку коровы.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DailyMilks"
+                ],
+                "summary": "Get list of DailyMilks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of farm to return",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.DailyMilk"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/districts": {
+            "get": {
+                "description": "Возращает все районы. Разрешает отсутсвие фильтров",
                 "produces": [
                     "application/json"
                 ],
@@ -261,14 +452,6 @@ const docTemplate = `{
                     "Districtts"
                 ],
                 "summary": "Get list of Districts",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id of farm to return",
-                        "name": "id",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -289,9 +472,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/farms/get": {
+        "/farms": {
             "get": {
-                "description": "Get list of farms.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает список ферм. Разрешает отсутсвие фильтров",
                 "produces": [
                     "application/json"
                 ],
@@ -301,9 +484,9 @@ const docTemplate = `{
                 "summary": "Get list of farms",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "id of farm to return",
-                        "name": "id",
+                        "type": "object",
+                        "description": "ID более главной фермы, null для поиска хозяйств",
+                        "name": "parrent_id",
                         "in": "query"
                     }
                 ],
@@ -327,38 +510,30 @@ const docTemplate = `{
                 }
             }
         },
-        "/lactations/get": {
+        "/farms/{id}": {
             "get": {
-                "description": "Get list of farms.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "GВозращает конкретную ферму",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Lactations"
+                    "Farms"
                 ],
-                "summary": "Get list of farms",
+                "summary": "Get farm",
                 "parameters": [
                     {
                         "type": "integer",
                         "description": "id of farm to return",
                         "name": "id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "id of cow for wich lactations should be find",
-                        "name": "cow_id",
-                        "in": "query"
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Lactation"
-                            }
+                            "$ref": "#/definitions/models.Farm"
                         }
                     },
                     "500": {
@@ -371,9 +546,45 @@ const docTemplate = `{
                 }
             }
         },
-        "/regions/get": {
+        "/lactations/{id}": {
             "get": {
-                "description": "Get list of regions.",
+                "description": "Возращает конкретную лактацию\nDOES NOT RETURN SUBOBJECTS",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Lactations"
+                ],
+                "summary": "Get list of farms",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id лактации",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Lactation"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/regions": {
+            "get": {
+                "description": "Возращает все регионы",
                 "produces": [
                     "application/json"
                 ],
@@ -381,14 +592,6 @@ const docTemplate = `{
                     "Regions"
                 ],
                 "summary": "Get list of regions",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id of region to return",
-                        "name": "id",
-                        "in": "query"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -409,24 +612,52 @@ const docTemplate = `{
                 }
             }
         },
-        "/sexes/get": {
+        "/regions/{id}": {
             "get": {
-                "description": "Get list of breeds.\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает регион",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Regions"
+                ],
+                "summary": "Get list of regions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id региона",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Region"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/sexes": {
+            "get": {
+                "description": "Возращает список полов",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Sexes"
                 ],
-                "summary": "Get list of breeds",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id of farm to return",
-                        "name": "id",
-                        "in": "query"
-                    }
-                ],
+                "summary": "Get list of sexes",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -461,28 +692,29 @@ const docTemplate = `{
             ],
             "properties": {
                 "birkingDate": {
-                    "type": "string",
-                    "example": "40123-01-15"
+                    "$ref": "#/definitions/models.DateOnly"
                 },
                 "birthDate": {
-                    "type": "string",
-                    "example": "2040-01-21"
+                    "$ref": "#/definitions/models.DateOnly"
                 },
                 "breedName": {
                     "type": "string",
                     "example": "Какая-нибудь порода"
                 },
                 "calvingDate": {
-                    "type": "string",
-                    "example": "1999-01-11"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DateOnly"
+                    }
                 },
                 "checkMilkDate": {
-                    "type": "string",
-                    "example": "2020-01-02"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DateOnly"
+                    }
                 },
                 "departDate": {
-                    "type": "string",
-                    "example": "2020-01-30"
+                    "$ref": "#/definitions/models.DateOnly"
                 },
                 "farmGroupName": {
                     "type": "string",
@@ -492,17 +724,19 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": true
                 },
+                "inbrindingCoeffByFamily": {
+                    "type": "number",
+                    "example": 3.14
+                },
                 "insemenationDate": {
-                    "type": "string",
-                    "example": "2007-01-01"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.DateOnly"
+                    }
                 },
                 "inventoryNumber": {
                     "type": "string",
                     "example": "321"
-                },
-                "isDead": {
-                    "type": "boolean",
-                    "example": false
                 },
                 "name": {
                     "type": "string",
@@ -584,11 +818,6 @@ const docTemplate = `{
                     "type": "number",
                     "default": 3.14
                 },
-                "farmID": {
-                    "description": "ID фермы, для которой ищутся коровы",
-                    "type": "integer",
-                    "example": 1
-                },
                 "genotypingDateFrom": {
                     "description": "??? Не реализован",
                     "type": "string",
@@ -598,6 +827,11 @@ const docTemplate = `{
                     "description": "??? Не реализован",
                     "type": "string",
                     "example": "2800-01-21"
+                },
+                "hozId": {
+                    "description": "ID фермы, для которой ищутся коровы",
+                    "type": "integer",
+                    "example": 1
                 },
                 "inbrindingCoeffByFamilyFrom": {
                     "description": "Не реализован",
@@ -699,9 +933,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "checkDate": {
-                    "description": "Время конрольной дойки",
-                    "type": "string",
-                    "example": "1999-02-12"
+                    "description": "Дата конрольной дойки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "fat": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во жира в молоке",
@@ -740,13 +977,19 @@ const docTemplate = `{
                 },
                 "birkingDate": {
                     "description": "Дата перебирковки",
-                    "type": "string",
-                    "example": "2007-01-01"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "birthDate": {
                     "description": "День рождения",
-                    "type": "string",
-                    "example": "2007-01-01"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "breedId": {
                     "description": "ID породы коровы",
@@ -760,13 +1003,19 @@ const docTemplate = `{
                 },
                 "deathDate": {
                     "description": "Дата смерти",
-                    "type": "string",
-                    "example": "2007-01-01"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "departDate": {
                     "description": "День отбытия из коровника",
-                    "type": "string",
-                    "example": "2007-01-01"
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "exterior": {
                     "description": "Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
@@ -844,49 +1093,75 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "date": {
-                    "type": "string"
+                    "description": "Дата дойки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "fat": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "fatEvening": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "fatMorning": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "fatNoon": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "lactationId": {
+                    "description": "ID лактации во время котороый была дойка ` + "`" + `example:\"1\"` + "`" + `",
                     "type": "integer"
                 },
                 "milk": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "milkEvening": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "milkMorning": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "milkNoon": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "protein": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "proteinEvening": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "proteinMorning": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "proteinNoon": {
+                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
+                }
+            }
+        },
+        "models.DateOnly": {
+            "type": "object",
+            "properties": {
+                "time.Time": {
+                    "type": "string"
                 }
             }
         },
@@ -944,13 +1219,13 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "calvingDate": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.DateOnly"
                 },
                 "cowId": {
                     "type": "integer"
                 },
                 "date": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.DateOnly"
                 },
                 "days": {
                     "type": "integer"
@@ -965,7 +1240,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "insemenationDate": {
-                    "type": "string"
+                    "$ref": "#/definitions/models.DateOnly"
                 },
                 "insemenationNum": {
                     "type": "integer"

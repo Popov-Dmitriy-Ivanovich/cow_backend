@@ -9,15 +9,28 @@ import (
 
 // ListAccounts lists all existing accounts
 //
+//	@Summary      Get farm
+//	@Description  GВозращает конкретную ферму
+//
+// @Tags         Farms
+// @Param        id    path     int  true  "id of farm to return"
+// @Produce      json
+// @Success      200  {object}   models.Farm
+// @Failure      500  {object}  map[string]error
+// @Router       /farms/{id} [get]
+func (f *Farms) GetByID() func(*gin.Context) {
+	return routes.GenerateGetFunctionById[models.Farm]()
+}
+
 //	@Summary      Get list of farms
-//	@Description  Get list of farms.
-//	@Description  DOES NOT RETURN SUBOBJECTS
-//	@Tags         Farms
-//	@Param        id    path     int  true  "id of farm to return"
-//	@Produce      json
-//	@Success      200  {array}   models.Farm
-//	@Failure      500  {object}  map[string]error
-//	@Router       /farms/{id} [get]
-func (f *Farms) Get() func(*gin.Context) {
-	return routes.GenerateGetFunction[models.Farm]()
+//	@Description  Возращает список ферм. Разрешает отсутсвие фильтров
+//
+// @Tags         Farms
+// @Param        parrent_id    query     object  false  "ID более главной фермы, null для поиска хозяйств"
+// @Produce      json
+// @Success      200  {array}   models.Farm
+// @Failure      500  {object}  map[string]error
+// @Router       /farms [get]
+func (f *Farms) GetByFilter() func(*gin.Context) {
+	return routes.GenerateGetFunctionByFilters[models.Farm](true, "parrent_id")
 }

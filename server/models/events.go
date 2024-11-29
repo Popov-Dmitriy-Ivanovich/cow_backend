@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 type Event struct {
 	ID uint `gorm:"primaryKey"`
 
@@ -11,7 +9,7 @@ type Event struct {
 	EventType   EventType `json:"-"`
 	EventTypeId uint
 
-	Date     time.Time
+	Date     DateOnly
 	Comment1 string
 	Comment2 string
 }

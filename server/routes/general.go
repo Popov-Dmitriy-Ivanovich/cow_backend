@@ -2,6 +2,8 @@ package routes
 
 import (
 	"cow_backend/models"
+	"errors"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,24 +18,53 @@ type RouteWriter interface {
 	WriteRoutes(*gin.RouterGroup)
 }
 
-func GenerateGetFunction[T any](filters ...string) func(c *gin.Context) {
+func GenerateGetFunctionById[T any]() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		db := models.GetDb()
-		id, _ := c.GetQuery("id")
+		id := c.Param("id")
 		objs := []T{}
-		query := db.Where("true")
-		if id != "" {
-			query = db.Where("id = ?", id)
+
+		if m, _ := regexp.MatchString("^[0-9]+$", id); id == "" || !m {
+			c.JSON(422, "wrong ID provided")
+			return
 		}
+
+		if err := db.Find(&objs, id).Error; err != nil {
+			c.JSON(404, "record not found")
+			return
+		}
+		c.JSON(200, objs)
+	}
+
+}
+
+func GenerateGetFunctionByFilters[T any](allowEmpty bool, filters ...string) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		db := models.GetDb()
+
+		objs := []T{}
+
+		query := db.Where("true")
+		emptyConds := true
 		for _, filter := range filters {
 			value, _ := c.GetQuery(filter)
 			if value == "" {
 				continue
 			}
-			query = query.Where(map[string]string{filter: value})
+			emptyConds = false
+			if value == "null" {
+				query = query.Where(map[string]any{filter: nil})
+			} else {
+				query = query.Where(map[string]string{filter: value})
+			}
+
 		}
-		if err := query.Find(&objs, id).Error; err != nil {
-			c.JSON(500, err)
+		if emptyConds && !allowEmpty {
+			c.JSON(422, "all filters empty")
+			return
+		}
+		if err := query.Find(&objs).Error; err != nil {
+			c.JSON(404, "record not found")
 			return
 		}
 		c.JSON(200, objs)
@@ -49,38 +80,73 @@ type Reserealizable interface {
 	GetReserealizer() Reserealizer
 }
 
-func GenerateReserealizingGetFunction[DbModel any, R Reserealizable](filters ...string) func(c *gin.Context) {
+func GenerateReserealizingGetFunctionByID[DbModel any, R Reserealizable](value R) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		db := models.GetDb()
 		id := c.Param("id")
+		obj := new(DbModel)
+
+		if m, _ := regexp.MatchString("^[0-9]+$", id); id == "" || !m {
+			c.JSON(422, "id empty")
+		}
+
+		if err := db.First(&obj, id).Error; err != nil {
+			c.JSON(404, "record not found")
+			return
+		}
+		if obj == nil {
+			c.JSON(404, "Found object is nil")
+			return
+		}
+		reserealizer := value.GetReserealizer()
+		if res, err := reserealizer.FromBaseModel(*obj); err != nil {
+			c.JSON(500, err)
+		} else {
+			c.JSON(200, res)
+		}
+
+	}
+
+}
+
+func GenerateReserealizingGetFunctionByFilters[DbModel any, R Reserealizable](value R, filters ...string) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		db := models.GetDb()
 		objs := []DbModel{}
 		query := db.Where("true")
-		if id != "" {
-			query = db.Where("id = ?", id)
-		}
+		emptyConds := true
+
 		for _, filter := range filters {
 			value, _ := c.GetQuery(filter)
 			if value == "" {
 				continue
 			}
+			emptyConds = false
 			query = query.Where(map[string]string{filter: value})
 		}
-		if err := query.Find(&objs, id).Error; err != nil {
-			c.JSON(500, err)
+
+		if emptyConds {
+			c.JSON(422, "all filters empty")
 			return
 		}
-		res := make([]R, len(objs))
-		for idx, obj := range objs {
-			reserealizer := res[idx].GetReserealizer()
+
+		if err := query.Find(&objs).Error; err != nil {
+			c.JSON(404, "record not found")
+			return
+		}
+
+		res := []R{}
+		reserealizer := value.GetReserealizer()
+
+		for _, obj := range objs {
 			if reserealized, err := reserealizer.FromBaseModel(obj); err != nil {
 				c.JSON(500, err)
 				return
+			} else if typed, ok := reserealized.(R); !ok {
+				c.JSON(500, errors.New("wrong type in reserealizer"))
+				return
 			} else {
-				if typedReserealized, ok := reserealized.(R); !ok {
-					c.JSON(500, gin.H{"error": "reserealizer returned wrong type"})
-				} else {
-					res[idx] = typedReserealized
-				}
+				res = append(res, typed)
 			}
 		}
 		c.JSON(200, res)

@@ -36,9 +36,9 @@ type Cow struct {
 	Exterior                float64 `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
 	InbrindingCoeffByFamily float64 `example:"3.14"` // Коэф. инбриндинга по роду
 
-	Approved    int        `example:"1"`          // Целое число, что-то для админов, чтобы подтверждать коров
-	BirthDate   time.Time  `example:"2007-01-01"` // День рождения
-	DepartDate  *time.Time `example:"2007-01-01"` // День отбытия из коровника
-	DeathDate   time.Time  `example:"2007-01-01"` // Дата смерти
-	BirkingDate time.Time  `example:"2007-01-01"` // Дата перебирковки
+	Approved    int       `example:"1"` // Целое число, что-то для админов, чтобы подтверждать коров
+	BirthDate   DateOnly  // День рождения
+	DepartDate  *DateOnly // День отбытия из коровника
+	DeathDate   DateOnly  // Дата смерти
+	BirkingDate DateOnly  // Дата перебирковки
 }

@@ -11,7 +11,7 @@ import (
 //	@Summary      Get list of check milks
 //	@Description  Возращает список всех контрольных доек для конкретной коровы.
 //	@Tags         Cows
-//	@Param        id   path      int  true  "ID конкретной коровы, чтобы ее вернуть"
+//	@Param        id   path      int  true  "ID коровы для которой ищутся контрольные дойки"
 //
 // @Produce      json
 // @Success      200  {array}   models.CheckMilk

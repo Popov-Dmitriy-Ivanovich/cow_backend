@@ -9,15 +9,13 @@ import (
 
 // ListAccounts lists all existing accounts
 //
-//	@Summary      Get list of breeds
-//	@Description  Get list of breeds.
-//	@Description  DOES NOT RETURN SUBOBJECTS
+//	@Summary      Get list of sexes
+//	@Description  Возращает список полов
 //	@Tags         Sexes
-//	@Param        id    path     int  true  "id of farm to return"
 //	@Produce      json
 //	@Success      200  {array}   models.Sex
 //	@Failure      500  {object}  map[string]error
-//	@Router       /sexes/{id} [get]
+//	@Router       /sexes [get]
 func (s *Sexes) Get() func(*gin.Context) {
-	return routes.GenerateGetFunction[models.Sex]()
+	return routes.GenerateGetFunctionByFilters[models.Sex](true)
 }

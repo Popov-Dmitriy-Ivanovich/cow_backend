@@ -9,15 +9,27 @@ import (
 
 // ListAccounts lists all existing accounts
 //
-//	@Summary      Get list of checkMilks
-//	@Description  Возращает список контрольный доек
+//	@Summary      Get checkMilk
+//	@Description  Возращает контрольную дойку
 //	@Tags         CheckMilks
-//	@Param        id    path     int  true  "id контрольной дойки"
-//	@Param 		  lactation_id query int false "id лактации, для корой ищутся котнольные дойки"
+//	@Param        id    path     int  false  "id контрольной дойки"
 //	@Produce      json
-//	@Success      200  {array}   models.CheckMilk
+//	@Success      200  {object}   models.CheckMilk
 //	@Failure      500  {object}  map[string]error
 //	@Router       /checkMilks/{id} [get]
-func (f *CheckMilks) Get() func(*gin.Context) {
-	return routes.GenerateGetFunction[models.CheckMilk]("lactation_id")
+func (f *CheckMilks) GetByID() func(*gin.Context) {
+	return routes.GenerateGetFunctionById[models.CheckMilk]()
+}
+
+// @Summary      Get list of checkMilks
+// @Description  Возращает список контрольных доек
+// @Tags         CheckMilks
+//
+// @Param 		 lactation_id query int false "id лактации, для корой ищутся котнольные дойки"
+// @Produce      json
+// @Success      200  {array}   models.CheckMilk
+// @Failure      500  {object}  map[string]error
+// @Router       /checkMilks [get]
+func (f *CheckMilks) GetByFilter() func(*gin.Context) {
+	return routes.GenerateGetFunctionByFilters[models.CheckMilk](false, "lactation_id")
 }

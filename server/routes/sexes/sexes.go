@@ -7,5 +7,5 @@ type Sexes struct {
 
 func (s *Sexes) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/sexes")
-	apiGroup.GET("/get", s.Get())
+	apiGroup.GET("/", s.Get())
 }

@@ -3,38 +3,38 @@ definitions:
   cows.FilterSerializedCow:
     properties:
       birkingDate:
-        example: 40123-01-15
-        type: string
+        $ref: '#/definitions/models.DateOnly'
       birthDate:
-        example: "2040-01-21"
-        type: string
+        $ref: '#/definitions/models.DateOnly'
       breedName:
         example: Какая-нибудь порода
         type: string
       calvingDate:
-        example: "1999-01-11"
-        type: string
+        items:
+          $ref: '#/definitions/models.DateOnly'
+        type: array
       checkMilkDate:
-        example: "2020-01-02"
-        type: string
+        items:
+          $ref: '#/definitions/models.DateOnly'
+        type: array
       departDate:
-        example: "2020-01-30"
-        type: string
+        $ref: '#/definitions/models.DateOnly'
       farmGroupName:
         example: ООО Аурус
         type: string
       genotyped:
         example: true
         type: boolean
+      inbrindingCoeffByFamily:
+        example: 3.14
+        type: number
       insemenationDate:
-        example: "2007-01-01"
-        type: string
+        items:
+          $ref: '#/definitions/models.DateOnly'
+        type: array
       inventoryNumber:
         example: "321"
         type: string
-      isDead:
-        example: false
-        type: boolean
       name:
         example: Буренка
         type: string
@@ -115,10 +115,6 @@ definitions:
         default: 3.14
         description: Фильтр по оценке экстерьера коровы, будет переработан
         type: number
-      farmID:
-        description: ID фермы, для которой ищутся коровы
-        example: 1
-        type: integer
       genotypingDateFrom:
         description: ??? Не реализован
         example: "1800-01-21"
@@ -127,6 +123,10 @@ definitions:
         description: ??? Не реализован
         example: "2800-01-21"
         type: string
+      hozId:
+        description: ID фермы, для которой ищутся коровы
+        example: 1
+        type: integer
       inbrindingCoeffByFamilyFrom:
         default: 3.14
         description: Не реализован
@@ -207,9 +207,9 @@ definitions:
   models.CheckMilk:
     properties:
       checkDate:
-        description: Время конрольной дойки
-        example: "1999-02-12"
-        type: string
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата конрольной дойки
       fat:
         description: Параметр контрольной дойки, как я понимаю кол-во жира в молоке
         example: 1
@@ -238,13 +238,13 @@ definitions:
         example: 1
         type: integer
       birkingDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
         description: Дата перебирковки
-        example: "2007-01-01"
-        type: string
       birthDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
         description: День рождения
-        example: "2007-01-01"
-        type: string
       breedId:
         description: ID породы коровы
         example: 1
@@ -254,13 +254,13 @@ definitions:
         example: "2007-01-01"
         type: string
       deathDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
         description: Дата смерти
-        example: "2007-01-01"
-        type: string
       departDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
         description: День отбытия из коровника
-        example: "2007-01-01"
-        type: string
       exterior:
         description: Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
         example: 3.14
@@ -321,35 +321,55 @@ definitions:
   models.DailyMilk:
     properties:
       date:
-        type: string
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата дойки
       fat:
+        description: Параметр дойки `example:"12"`
         type: integer
       fatEvening:
+        description: Параметр дойки `example:"12"`
         type: integer
       fatMorning:
+        description: Параметр дойки `example:"12"`
         type: integer
       fatNoon:
+        description: Параметр дойки `example:"12"`
         type: integer
       id:
         type: integer
       lactationId:
+        description: ID лактации во время котороый была дойка `example:"1"`
         type: integer
       milk:
+        description: Параметр дойки `example:"12"`
         type: integer
       milkEvening:
+        description: Параметр дойки `example:"12"`
         type: integer
       milkMorning:
+        description: Параметр дойки `example:"12"`
         type: integer
       milkNoon:
+        description: Параметр дойки `example:"12"`
         type: integer
       protein:
+        description: Параметр дойки `example:"12"`
         type: integer
       proteinEvening:
+        description: Параметр дойки `example:"12"`
         type: integer
       proteinMorning:
+        description: Параметр дойки `example:"12"`
         type: integer
       proteinNoon:
+        description: Параметр дойки `example:"12"`
         type: integer
+    type: object
+  models.DateOnly:
+    properties:
+      time.Time:
+        type: string
     type: object
   models.Farm:
     properties:
@@ -387,11 +407,11 @@ definitions:
       calvingCount:
         type: integer
       calvingDate:
-        type: string
+        $ref: '#/definitions/models.DateOnly'
       cowId:
         type: integer
       date:
-        type: string
+        $ref: '#/definitions/models.DateOnly'
       days:
         type: integer
       fat305:
@@ -401,7 +421,7 @@ definitions:
       id:
         type: integer
       insemenationDate:
-        type: string
+        $ref: '#/definitions/models.DateOnly'
       insemenationNum:
         type: integer
       milk305:
@@ -448,14 +468,9 @@ info:
   title: GenMilk API
   version: "1.0"
 paths:
-  /breeds/get:
+  /breeds:
     get:
-      description: Возращает список пород
-      parameters:
-      - description: ID конкретной породы, если нужно вернуть одну
-        in: query
-        name: id
-        type: integer
+      description: Возращает список всех пород. Разрешает отсутсвие фильтров
       produces:
       - application/json
       responses:
@@ -473,14 +488,34 @@ paths:
       summary: Get list of breeds
       tags:
       - Breeds
-  /checkMilks/get:
+  /breeds/{id}:
     get:
-      description: Возращает список контрольный доек
+      description: Возращает породу.
       parameters:
-      - description: id контрольной дойки
-        in: query
+      - description: ID конкретной породы, если нужно вернуть одну.
+        in: path
         name: id
+        required: true
         type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Breed'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get breed
+      tags:
+      - Breeds
+  /checkMilks:
+    get:
+      description: Возращает список контрольных доек
+      parameters:
       - description: id лактации, для корой ищутся котнольные дойки
         in: query
         name: lactation_id
@@ -502,47 +537,136 @@ paths:
       summary: Get list of checkMilks
       tags:
       - CheckMilks
+  /checkMilks/{id}:
+    get:
+      description: Возращает контрольную дойку
+      parameters:
+      - description: id контрольной дойки
+        in: path
+        name: id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CheckMilk'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get checkMilk
+      tags:
+      - CheckMilks
+  /cows:
+    get:
+      description: Возращает коров удовлетворяющих условиям фильтрации.
+      parameters:
+      - description: ID фермы (НЕ хозяйства), к которой принадлежит корова
+        in: query
+        name: farm_id
+        type: integer
+      - description: ID хозяйства (НЕ фермы), к которому принадлежит корова
+        in: query
+        name: farm_group_id
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Cow'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of cows
+      tags:
+      - Cows
+  /cows/{id}:
+    get:
+      description: Возращает конкретную корову.
+      parameters:
+      - description: ID конкретной коровы, чтобы ее вернуть
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Cow'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of cows
+      tags:
+      - Cows
+  /cows/{id}/checkMilks:
+    get:
+      description: Возращает список всех контрольных доек для конкретной коровы.
+      parameters:
+      - description: ID коровы для которой ищутся контрольные дойки
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CheckMilk'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of check milks
+      tags:
+      - Cows
+  /cows/{id}/lactations:
+    get:
+      description: Возращает список всех лактаций для конкретной коровы.
+      parameters:
+      - description: ID коровы для которой ищутся лактации
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Lactation'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of lactations
+      tags:
+      - Cows
   /cows/filter:
     post:
       consumes:
       - application/json
-      description: |-
-        Get filtered list of cows.
-        SearchQuery - имя, номер РСХН или инвентарный номер
-        PageNumber - номер страницы для отображения
-        EntitiesOnPage - количество коров на каждой странице
-        Sex - массив полов для поиска (можно выбрать несколько)
-        FarmID - ID фермы на которой живет корова
-        BirthDateFrom - Отображает коров, родившихся после этой даты
-        BirthDateTo - Отображает коров, родившихся до этой даты
-        IsDead - Если флаг истина - ищет мертвых коров, иначе живых
-        DepartDateFrom - Ищет коров отбывших из коровника после данной даты
-        DepartDateTo - Ищет коров отбывших из коровника до данной даты
-        BreedId - ищет коров имеющих одну из пород по BreedId
-        GenotypingDateFrom - НЕ ИСПОЛЬЗУЕТСЯ
-        GenotypingDateTo - НЕ ИСПОЛЬЗУЕТСЯ
-        ControlMilkingDateFrom - ищет коров у которых была хотябы одна контрольная дойка после этой даты
-        ControlMilkingDateTo - ищет коров у которых была хотябы одна контрольная дойка до этой даты
-
-        Exterior - Ищет коров с оценкой экстерьера равной этому значению
-        InseminationDateFrom - Ищет коров которые были хотябы раз осеменены после данной даты
-        InseminationDateTo - Ищет коров которые были хотябы раз осеменены до данной даты
-        CalvingDateFrom  - Ищет коров у которых был отел хотябы раз после данной даты
-        CalvingDateTo - Ищет коров у которых был отел хотябы раз до данной даты
-        IsStillBorn  - Ищет коров у которых хотябы раз было мертворождение
-        IsTwins - Ищет коров у которых хотябы раз родились близнецы/двойняшки
-        IsAborted - Ищет коров, которым хотябы раз сделали аборт
-        IsIll - НЕ ИСОПЛЬЗУЕТСЯ
-        BirkingDateFrom - Ищет коров у которых дата перебирковки больше
-        BirkingDateTo - Ищет коров у которых дата перебирковки меньше
-
-        InbrindingCoeffByFamilyFrom Ищет коров, у которых коэф. инбриндинга по роду больше
-        InbrindingCoeffByFamilyTo   - Ищет коров у которых дата перебирковки меньше
-
-        InbrindingCoeffByFenotypeFrom Genotiping needed
-        InbrindingCoeffByFenotypeTo    Genotiping needed
-
-        MonogeneticIllneses []uint Genotiping needed
       parameters:
       - description: applied filters
         in: body
@@ -572,49 +696,10 @@ paths:
       summary: Get filtered list of cows
       tags:
       - Cows
-  /cows/get:
+  /dailyMilks:
     get:
-      description: Возращает список коров.
+      description: Возвращает дойки удовлетворяющие фильтрам
       parameters:
-      - description: ID конкретной коровы, чтобы ее вернуть
-        in: query
-        name: id
-        type: integer
-      - description: ID фермы (НЕ хозяйства), к которой принадлежит корова
-        in: query
-        name: farm_id
-        type: integer
-      - description: ID хозяйства (НЕ фермы), к которому принадлежит корова
-        in: query
-        name: farm_group_id
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/models.Cow'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: {}
-            type: object
-      summary: Get list of cows
-      tags:
-      - Cows
-  /dailyMilks/get:
-    get:
-      description: |-
-        Get list of DailyMilks.
-        DOES NOT RETURN SUBOBJECTS
-      parameters:
-      - description: id of farm to return
-        in: query
-        name: id
-        type: integer
       - description: id lactation to search dailimilks
         in: query
         name: lactation_id
@@ -636,16 +721,33 @@ paths:
       summary: Get list of DailyMilks
       tags:
       - DailyMilks
-  /districts/get:
+  /dailyMilks/{id}:
     get:
-      description: |-
-        Get list of Districts.
-        DOES NOT RETURN SUBOBJECTS
+      description: Возращает конкретную дойку коровы.
       parameters:
       - description: id of farm to return
-        in: query
+        in: path
         name: id
+        required: true
         type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DailyMilk'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of DailyMilks
+      tags:
+      - DailyMilks
+  /districts:
+    get:
+      description: Возращает все районы. Разрешает отсутсвие фильтров
       produces:
       - application/json
       responses:
@@ -663,16 +765,14 @@ paths:
       summary: Get list of Districts
       tags:
       - Districtts
-  /farms/get:
+  /farms:
     get:
-      description: |-
-        Get list of farms.
-        DOES NOT RETURN SUBOBJECTS
+      description: Возращает список ферм. Разрешает отсутсвие фильтров
       parameters:
-      - description: id of farm to return
+      - description: ID более главной фермы, null для поиска хозяйств
         in: query
-        name: id
-        type: integer
+        name: parrent_id
+        type: object
       produces:
       - application/json
       responses:
@@ -690,19 +790,14 @@ paths:
       summary: Get list of farms
       tags:
       - Farms
-  /lactations/get:
+  /farms/{id}:
     get:
-      description: |-
-        Get list of farms.
-        DOES NOT RETURN SUBOBJECTS
+      description: GВозращает конкретную ферму
       parameters:
       - description: id of farm to return
-        in: query
+        in: path
         name: id
-        type: integer
-      - description: id of cow for wich lactations should be find
-        in: query
-        name: cow_id
+        required: true
         type: integer
       produces:
       - application/json
@@ -710,9 +805,33 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.Lactation'
-            type: array
+            $ref: '#/definitions/models.Farm'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get farm
+      tags:
+      - Farms
+  /lactations/{id}:
+    get:
+      description: |-
+        Возращает конкретную лактацию
+        DOES NOT RETURN SUBOBJECTS
+      parameters:
+      - description: id лактации
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Lactation'
         "500":
           description: Internal Server Error
           schema:
@@ -721,14 +840,9 @@ paths:
       summary: Get list of farms
       tags:
       - Lactations
-  /regions/get:
+  /regions:
     get:
-      description: Get list of regions.
-      parameters:
-      - description: id of region to return
-        in: query
-        name: id
-        type: integer
+      description: Возращает все регионы
       produces:
       - application/json
       responses:
@@ -746,16 +860,33 @@ paths:
       summary: Get list of regions
       tags:
       - Regions
-  /sexes/get:
+  /regions/{id}:
     get:
-      description: |-
-        Get list of breeds.
-        DOES NOT RETURN SUBOBJECTS
+      description: Возращает регион
       parameters:
-      - description: id of farm to return
-        in: query
+      - description: id региона
+        in: path
         name: id
+        required: true
         type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Region'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of regions
+      tags:
+      - Regions
+  /sexes:
+    get:
+      description: Возращает список полов
       produces:
       - application/json
       responses:
@@ -770,7 +901,7 @@ paths:
           schema:
             additionalProperties: {}
             type: object
-      summary: Get list of breeds
+      summary: Get list of sexes
       tags:
       - Sexes
 securityDefinitions:

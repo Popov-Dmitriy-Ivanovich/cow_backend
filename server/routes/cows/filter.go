@@ -50,19 +50,19 @@ type cowsFilter struct { // Фильтр коров
 }
 
 type FilterSerializedCow struct {
-	RSHNNumber              string      `validate:"required" example:"123"`
-	InventoryNumber         string      `validate:"required" example:"321"`
-	Name                    string      `validate:"required" example:"Буренка"`
-	FarmGroupName           string      `validate:"required" example:"ООО Аурус"`
-	BirthDate               time.Time   `validate:"required" example:"2040-01-21"`
-	Genotyped               bool        `validate:"required" example:"true"`
-	DepartDate              *time.Time  `json:",omitempty" validate:"optional" example:"2020-01-30"`
-	BreedName               *string     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
-	CheckMilkDate           []time.Time `json:",omitempty" validate:"optional" example:"2020-01-02"`
-	InsemenationDate        []time.Time `json:",omitempty" validate:"optional" example:"2007-01-01"`
-	CalvingDate             []time.Time `json:",omitempty" validate:"optional" example:"1999-01-11"`
-	BirkingDate             *time.Time  `json:",omitempty" validate:"optional" example:"40123-01-15"`
-	InbrindingCoeffByFamily *float64    `json:",omitempty" validate:"optional" example:"3.14"`
+	RSHNNumber              string            `validate:"required" example:"123"`
+	InventoryNumber         string            `validate:"required" example:"321"`
+	Name                    string            `validate:"required" example:"Буренка"`
+	FarmGroupName           string            `validate:"required" example:"ООО Аурус"`
+	BirthDate               models.DateOnly   `validate:"required"`
+	Genotyped               bool              `validate:"required" example:"true"`
+	DepartDate              *models.DateOnly  `json:",omitempty" validate:"optional"`
+	BreedName               *string           `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
+	CheckMilkDate           []models.DateOnly `json:",omitempty" validate:"optional"`
+	InsemenationDate        []models.DateOnly `json:",omitempty" validate:"optional"`
+	CalvingDate             []models.DateOnly `json:",omitempty" validate:"optional"`
+	BirkingDate             *models.DateOnly  `json:",omitempty" validate:"optional"`
+	InbrindingCoeffByFamily *float64          `json:",omitempty" validate:"optional" example:"3.14"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
@@ -91,7 +91,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 					if err != nil {
 						continue
 					}
-					if !date.Equal(cm.CheckDate) && date.After(cm.CheckDate) {
+					if !date.Equal(cm.CheckDate.Time) && date.After(cm.CheckDate.Time) {
 						continue
 					}
 				}
@@ -100,7 +100,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 					if err != nil {
 						continue
 					}
-					if !date.Equal(cm.CheckDate) && date.Before(cm.CheckDate) {
+					if !date.Equal(cm.CheckDate.Time) && date.Before(cm.CheckDate.Time) {
 						continue
 					}
 				}
@@ -116,7 +116,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 				if err != nil {
 					continue
 				}
-				if !date.Equal(lac.InsemenationDate) && date.After(lac.InsemenationDate) {
+				if !date.Equal(lac.InsemenationDate.Time) && date.After(lac.InsemenationDate.Time) {
 					continue
 				}
 			}
@@ -125,7 +125,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 				if err != nil {
 					continue
 				}
-				if !date.Equal(lac.InsemenationDate) && date.Before(lac.InsemenationDate) {
+				if !date.Equal(lac.InsemenationDate.Time) && date.Before(lac.InsemenationDate.Time) {
 					continue
 				}
 			}
@@ -141,7 +141,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 				if err != nil {
 					continue
 				}
-				if !date.Equal(lac.CalvingDate) && date.After(lac.CalvingDate) {
+				if !date.Equal(lac.CalvingDate.Time) && date.After(lac.CalvingDate.Time) {
 					continue
 				}
 			}
@@ -150,7 +150,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 				if err != nil {
 					continue
 				}
-				if !date.Equal(lac.CalvingDate) && date.Before(lac.CalvingDate) {
+				if !date.Equal(lac.CalvingDate.Time) && date.Before(lac.CalvingDate.Time) {
 					continue
 				}
 			}
