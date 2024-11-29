@@ -24,7 +24,7 @@ func (do *DateOnly) Scan(src any) error {
 	return nil
 }
 
-func (do *DateOnly) MarshalJSON() ([]byte, error) {
+func (do DateOnly) MarshalJSON() ([]byte, error) {
 	timeStr := do.Format(time.DateOnly)
 	return json.Marshal(timeStr)
 }
