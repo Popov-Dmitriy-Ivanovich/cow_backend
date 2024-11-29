@@ -242,7 +242,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			pageNumber = uint64(*bodyData.PageNumber)
 		}
 
-		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1))
+		// query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1))
 
 		if searchString := bodyData.SearchQuery; searchString != nil && *searchString != "" {
 			query = query.Where("name = ?", searchString).Or("rshn_number = ?", searchString).Or("inventory_number = ?", searchString)
@@ -395,6 +395,13 @@ func (c *Cows) Filter() func(*gin.Context) {
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.insemenation_date <= ?)", bdTo).Preload("Lactation")
 		}
+		resCount := int64(0)
+		if err := query.Count(&resCount).Error; err != nil {
+			c.JSON(500, err)
+			return
+		}
+
+		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1))
 		dbCows := []models.Cow{}
 		if err := query.Debug().Find(&dbCows).Error; err != nil {
 			c.JSON(500, gin.H{"error": err})
@@ -407,7 +414,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 		}
 		// fmt.Print(query)
 		c.JSON(200, gin.H{
-			"N":   len(dbCows),
+			"N":   resCount,
 			"LST": res,
 			// "query": query,
 		})
