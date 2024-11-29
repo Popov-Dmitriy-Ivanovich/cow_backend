@@ -16,7 +16,7 @@ type cowsFilter struct { // Фильтр коров
 	PageNumber             *uint   `default:"1" validate:"optional"`       // Номер страницы для отображения
 	EntitiesOnPage         *uint   `default:"50" validate:"optional"`      // Количество сущностей на странице
 	Sex                    []uint  //ID пола коровы (если нужно несколько разных полов - несколько ID)
-	FarmID                 *uint   `example:"1" validate:"optional"`          //ID фермы, для которой ищутся коровы
+	HozId                  *uint   `example:"1" validate:"optional"`          //ID фермы, для которой ищутся коровы
 	BirthDateFrom          *string `example:"1800-01-21" validate:"optional"` //Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или позднее)
 	BirthDateTo            *string `example:"2800-01-21" validate:"optional"` //Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или раньше)
 	IsDead                 *bool   `default:"false" validate:"optional"`      //Фильтр живых/мертвых коров (true - ищет мертвых, false - живых)
@@ -176,7 +176,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 //	@Description  PageNumber - номер страницы для отображения
 //	@Description  EntitiesOnPage - количество коров на каждой странице
 //	@Description  Sex - массив полов для поиска (можно выбрать несколько)
-//	@Description  FarmID - ID фермы на которой живет корова
+//	@Description  HozId - ID фермы на которой живет корова
 //	@Description  BirthDateFrom - Отображает коров, родившихся после этой даты
 //	@Description  BirthDateTo - Отображает коров, родившихся до этой даты
 //	@Description  IsDead - Если флаг истина - ищет мертвых коров, иначе живых
@@ -247,15 +247,16 @@ func (c *Cows) Filter() func(*gin.Context) {
 		}
 
 		if searchString := bodyData.SearchQuery; searchString != nil && *searchString != "" {
-			query = query.Where("name = ?", searchString).Or("rshn_number = ?", searchString).Or("inventory_number = ?", searchString)
+			*searchString = "%" + *searchString + "%"
+			query = query.Where("name LIKE ?", searchString).Or("rshn_number LIKE ?", searchString).Or("inventory_number LIKE ?", searchString)
 		}
 
 		if len(bodyData.Sex) != 0 {
 			query = query.Where("sex_id IN ?", bodyData.Sex).Preload("Sex")
 		}
 
-		if bodyData.FarmID != nil {
-			query = query.Where("farm_id = ?", bodyData.FarmID).Preload("Farm")
+		if bodyData.HozId != nil {
+			query = query.Where("farm_group_id = ?", bodyData.HozId).Preload("Farm")
 		}
 
 		if len(bodyData.BreedId) != 0 {
