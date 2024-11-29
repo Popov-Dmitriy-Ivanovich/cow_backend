@@ -57,7 +57,6 @@ type FilterSerializedCow struct {
 	BirthDate               time.Time   `validate:"required" example:"2040-01-21"`
 	Genotyped               bool        `validate:"required" example:"true"`
 	DepartDate              *time.Time  `json:",omitempty" validate:"optional" example:"2020-01-30"`
-	IsDead                  bool        `json:",omitempty" validate:"optional" example:"false"`
 	BreedName               *string     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
 	CheckMilkDate           []time.Time `json:",omitempty" validate:"optional" example:"2020-01-02"`
 	InsemenationDate        []time.Time `json:",omitempty" validate:"optional" example:"2007-01-01"`
@@ -77,9 +76,6 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	}
 	if filter.DepartDateTo != nil || filter.DepartDateFrom != nil {
 		res.DepartDate = c.DepartDate
-	}
-	if filter.IsDead != nil {
-		res.IsDead = c.IsDead
 	}
 	if len(filter.BreedId) != 0 {
 		res.BreedName = &c.Breed.Name
@@ -171,42 +167,6 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 // ListAccounts lists all existing accounts
 //
 //	@Summary      Get filtered list of cows
-//	@Description  Get filtered list of cows.
-//	@Description  SearchQuery - имя, номер РСХН или инвентарный номер
-//	@Description  PageNumber - номер страницы для отображения
-//	@Description  EntitiesOnPage - количество коров на каждой странице
-//	@Description  Sex - массив полов для поиска (можно выбрать несколько)
-//	@Description  HozId - ID фермы на которой живет корова
-//	@Description  BirthDateFrom - Отображает коров, родившихся после этой даты
-//	@Description  BirthDateTo - Отображает коров, родившихся до этой даты
-//	@Description  IsDead - Если флаг истина - ищет мертвых коров, иначе живых
-//	@Description  DepartDateFrom - Ищет коров отбывших из коровника после данной даты
-//	@Description  DepartDateTo - Ищет коров отбывших из коровника до данной даты
-//	@Description  BreedId - ищет коров имеющих одну из пород по BreedId
-//	@Description	GenotypingDateFrom - НЕ ИСПОЛЬЗУЕТСЯ
-//	@Description	GenotypingDateTo - НЕ ИСПОЛЬЗУЕТСЯ
-//	@Description	ControlMilkingDateFrom - ищет коров у которых была хотябы одна контрольная дойка после этой даты
-//	@Description	ControlMilkingDateTo - ищет коров у которых была хотябы одна контрольная дойка до этой даты
-//	@Description
-//	@Description	Exterior - Ищет коров с оценкой экстерьера равной этому значению
-//	@Description	InseminationDateFrom - Ищет коров которые были хотябы раз осеменены после данной даты
-//	@Description	InseminationDateTo - Ищет коров которые были хотябы раз осеменены до данной даты
-//	@Description	CalvingDateFrom  - Ищет коров у которых был отел хотябы раз после данной даты
-//	@Description	CalvingDateTo - Ищет коров у которых был отел хотябы раз до данной даты
-//	@Description	IsStillBorn  - Ищет коров у которых хотябы раз было мертворождение
-//	@Description	IsTwins - Ищет коров у которых хотябы раз родились близнецы/двойняшки
-//	@Description	IsAborted - Ищет коров, которым хотябы раз сделали аборт
-//	@Description	IsIll - НЕ ИСОПЛЬЗУЕТСЯ
-//	@Description	BirkingDateFrom - Ищет коров у которых дата перебирковки больше
-//	@Description	BirkingDateTo - Ищет коров у которых дата перебирковки меньше
-//	@Description
-//	@Description	InbrindingCoeffByFamilyFrom Ищет коров, у которых коэф. инбриндинга по роду больше
-//	@Description	InbrindingCoeffByFamilyTo   - Ищет коров у которых дата перебирковки меньше
-//	@Description
-//	@Description	InbrindingCoeffByFenotypeFrom Genotiping needed
-//	@Description	InbrindingCoeffByFenotypeTo    Genotiping needed
-//	@Description
-//	@Description	MonogeneticIllneses []uint Genotiping needed
 //	@Tags         Cows
 //	@Param        filter    body     cowsFilter  true  "applied filters"
 //	@Accept       json
@@ -263,8 +223,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("breed_id in ?", bodyData.BreedId).Preload("Breed")
 		}
 
-		if bodyData.IsDead != nil {
-			query = query.Where("is_dead = ?", bodyData.IsDead)
+		if bodyData.IsDead != nil && *bodyData.IsDead {
+			query = query.Where("death_date IS NOT NULL")
 		}
 
 		// ====================================================================================================
