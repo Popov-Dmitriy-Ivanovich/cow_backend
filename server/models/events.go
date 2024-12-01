@@ -10,18 +10,18 @@ type Event struct {
 	EventTypeId uint
 
 	Date     DateOnly
-	Comment1 string
-	Comment2 string
+	Comment1 *string
+	Comment2 *string
 }
 
-type EventType struct {
+type EventType struct { // бывший EventList
 	ID uint `gorm:"primaryKey"`
 
 	Parent   *EventType `json:"-"`
-	ParentId uint
+	ParentId *uint
 
 	Name string
 
-	Code int
-	Type int
+	Code uint
+	Type uint // Should be enum
 }

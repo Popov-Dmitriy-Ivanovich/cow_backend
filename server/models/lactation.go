@@ -8,8 +8,8 @@ type Lactation struct {
 	CheckMilks []CheckMilk `json:"-"`
 	DailyMilks []DailyMilk `json:"-"`
 
-	Number uint
-	Date   DateOnly
+	Number uint // номер лактации
+	Date   DateOnly // дата начала лактации
 
 	InsemenationNum  int
 	InsemenationDate DateOnly
@@ -18,11 +18,11 @@ type Lactation struct {
 	CalvingDate  DateOnly
 
 	Abort      bool
-	MilkAll    int
-	Milk305    int
-	FatAll     int
-	Fat305     int
-	ProteinAll int
-	Protein305 int
-	Days       int
+	MilkAll    *int
+	Milk305    *int
+	FatAll     *int
+	Fat305     *int
+	ProteinAll *int
+	Protein305 *int
+	Days       *int // количество дней, когда корова дает молоко
 }

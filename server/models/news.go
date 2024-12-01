@@ -1,10 +1,10 @@
 package models
 
-import "time"
+// import "time"
 
 type News struct {
 	ID        uint `gorm:"primaryKey"`
-	CreatedAt time.Time
+	Date DateOnly
 
 	Region   *Region `json:"-"`
 	RegionId *uint

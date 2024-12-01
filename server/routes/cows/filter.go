@@ -50,8 +50,8 @@ type cowsFilter struct { // Фильтр коров
 }
 
 type FilterSerializedCow struct {
-	RSHNNumber              string            `validate:"required" example:"123"`
-	InventoryNumber         string            `validate:"required" example:"321"`
+	RSHNNumber              *string            `validate:"required" example:"123"`
+	InventoryNumber         *string            `validate:"required" example:"321"`
 	Name                    string            `validate:"required" example:"Буренка"`
 	FarmGroupName           string            `validate:"required" example:"ООО Аурус"`
 	BirthDate               models.DateOnly   `validate:"required"`
@@ -81,7 +81,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 		res.BreedName = &c.Breed.Name
 	}
 	if filter.InbrindingCoeffByFamilyFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
-		res.InbrindingCoeffByFamily = &c.InbrindingCoeffByFamily
+		res.InbrindingCoeffByFamily = c.InbrindingCoeffByFamily
 	}
 	if filter.ControlMilkingDateFrom != nil || filter.ControlMilkingDateTo != nil {
 		for _, lactation := range c.Lactation {
@@ -159,7 +159,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	}
 
 	if filter.BirkingDateFrom != nil || filter.BirkingDateTo != nil {
-		res.BirkingDate = &c.BirkingDate
+		res.BirkingDate = c.BirkingDate
 	}
 	return res
 }

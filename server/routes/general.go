@@ -22,14 +22,14 @@ func GenerateGetFunctionById[T any]() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		db := models.GetDb()
 		id := c.Param("id")
-		objs := []T{}
+		objs := new(T)
 
 		if m, _ := regexp.MatchString("^[0-9]+$", id); id == "" || !m {
 			c.JSON(422, "wrong ID provided")
 			return
 		}
 
-		if err := db.Find(&objs, id).Error; err != nil {
+		if err := db.First(&objs, id).Error; err != nil {
 			c.JSON(404, "record not found")
 			return
 		}
