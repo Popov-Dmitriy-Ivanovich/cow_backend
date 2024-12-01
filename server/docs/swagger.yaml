@@ -1,4 +1,4 @@
-basePath: /
+basePath: /api
 definitions:
   cows.FilterSerializedCow:
     properties:
@@ -214,6 +214,8 @@ definitions:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
         description: Дата конрольной дойки
+      dryMatter:
+        type: number
       fat:
         description: Параметр контрольной дойки, как я понимаю кол-во жира в молоке
         example: 1
@@ -230,6 +232,8 @@ definitions:
         description: Параметр контрольной дойки, как я понимаю кол-во молока
         example: 1
         type: number
+      probeNumber:
+        type: integer
       protein:
         description: Параметр контрольной дойки, как я понимаю кол-во белка в молоке
         example: 1
@@ -285,10 +289,6 @@ definitions:
         description: ID коровы
         example: 1
         type: integer
-      identificationNumber:
-        description: Инвентарный номер коровы, кажется он уже был
-        example: "1213321"
-        type: string
       inbrindingCoeffByFamily:
         description: Коэф. инбриндинга по роду
         example: 3.14
@@ -297,10 +297,6 @@ definitions:
         description: Инвентарный номер коровы
         example: "1213321"
         type: string
-      isDead:
-        description: Флаг мертва / жива
-        example: true
-        type: boolean
       motherId:
         description: ID коровы матери коровы
         example: 1
@@ -460,7 +456,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: 83.69.248.180:8080
+host: genmilk.ru
 info:
   contact:
     email: support@swagger.io

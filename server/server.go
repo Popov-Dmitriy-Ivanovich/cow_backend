@@ -36,8 +36,8 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      83.69.248.180:8080
-// @BasePath  /
+// @host      genmilk.ru
+// @BasePath  /api
 
 // @securityDefinitions.basic  BasicAuth
 
@@ -52,10 +52,10 @@ func main() {
 	models.GetDb()
 
 	r := gin.Default()
+	apiGroup := r.Group("/api")
+	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{}, &cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{})
 
-	routes.WriteRoutes(&r.RouterGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{}, &cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{})
-
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()
 
 	fmt.Println("Hello world")

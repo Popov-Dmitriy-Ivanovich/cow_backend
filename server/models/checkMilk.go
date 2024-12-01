@@ -9,4 +9,7 @@ type CheckMilk struct {
 	Milk      float64     `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во молока
 	Fat       float64      `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во жира в молоке
 	Protein   float64      `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во белка в молоке
+	
+	ProbeNumber uint
+	DryMatter 	float64
 }

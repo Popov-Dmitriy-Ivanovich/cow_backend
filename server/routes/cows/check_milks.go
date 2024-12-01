@@ -2,9 +2,30 @@ package cows
 
 import (
 	"cow_backend/models"
+	// "cow_backend/routes"
 
 	"github.com/gin-gonic/gin"
 )
+
+// type ReserealizedCheckMilk struct {
+// 	models.CheckMilk
+// 	MilkingDays uint
+// }
+
+// func (rcm ReserealizedCheckMilk) GetReserealizer() routes.Reserealizer {
+// 	return &rcm
+// }
+
+// func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, error) { 
+// 	lac := models.Lactation{}
+// 	db := models.GetDb()
+// 	if err := db.First(&lac, rcm.LactationId).Error; err != nil {
+// 		return ReserealizedCheckMilk{}, err
+// 	}
+// 	lacDate := lac.Date
+// 	cmDate := rcm.CheckDate
+
+// }
 
 // ListAccounts lists all existing accounts
 //

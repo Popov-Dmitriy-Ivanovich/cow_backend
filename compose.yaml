@@ -82,7 +82,16 @@ services:
         - cow_backend
       ports:
         - 8080:8080
-
+  nginx:
+    container_name: nginx1
+    depends_on:
+      - cow_backend
+    build: frontend
+    ports:
+      - 80:80
+      - 433:433
+    networks:
+      - cow_backend
 
 volumes:
   habrdb-data:
@@ -92,6 +101,4 @@ networks:
   postgres:
     driver: bridge
   cow_backend:
-    driver: bridge
-  boards:
     driver: bridge

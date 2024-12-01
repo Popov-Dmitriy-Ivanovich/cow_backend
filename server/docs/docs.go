@@ -945,6 +945,9 @@ const docTemplate = `{
                         }
                     ]
                 },
+                "dryMatter": {
+                    "type": "number"
+                },
                 "fat": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во жира в молоке",
                     "type": "number",
@@ -964,6 +967,9 @@ const docTemplate = `{
                     "description": "Параметр контрольной дойки, как я понимаю кол-во молока",
                     "type": "number",
                     "example": 1
+                },
+                "probeNumber": {
+                    "type": "integer"
                 },
                 "protein": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во белка в молоке",
@@ -1047,11 +1053,6 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
-                "identificationNumber": {
-                    "description": "Инвентарный номер коровы, кажется он уже был",
-                    "type": "string",
-                    "example": "1213321"
-                },
                 "inbrindingCoeffByFamily": {
                     "description": "Коэф. инбриндинга по роду",
                     "type": "number",
@@ -1061,11 +1062,6 @@ const docTemplate = `{
                     "description": "Инвентарный номер коровы",
                     "type": "string",
                     "example": "1213321"
-                },
-                "isDead": {
-                    "description": "Флаг мертва / жива",
-                    "type": "boolean",
-                    "example": true
                 },
                 "motherId": {
                     "description": "ID коровы матери коровы",
@@ -1310,8 +1306,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "83.69.248.180:8080",
-	BasePath:         "/",
+	Host:             "genmilk.ru",
+	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",
 	Description:      "This is a sample server celler server.",
