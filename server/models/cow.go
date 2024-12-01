@@ -30,8 +30,6 @@ type Cow struct {
 	RSHNNumber           *string `example:"1323323232"` // РСХН номер коровы
 	Name                 string `example:"Дима"`       // Кличка коровы
 
-	IsDead bool `example:"true"` // Флаг мертва / жива
-
 	Exterior                float64 `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
 	InbrindingCoeffByFamily *float64 `example:"3.14"` // Коэф. инбриндинга по роду
 
