@@ -117,6 +117,10 @@ export default {
                 this.$emit('changePageButSearch', newValue);
             }
 
+        },
+        search_result(newVal) {
+            if(newVal.length == 0) this.errorr = true;
+            else this.errorr = false;
         }
     },
 }

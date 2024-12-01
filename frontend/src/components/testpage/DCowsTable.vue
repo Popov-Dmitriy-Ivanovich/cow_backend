@@ -95,7 +95,7 @@ export default {
         });
         const res_animals = await response.json();
 
-        console.log('коровы были mounted');
+        console.log('коровы были mounted', this.errorr);
 
         this.animals = res_animals.LST;
         if(res_animals.LST.length == 0) this.errorr = true;
@@ -121,6 +121,10 @@ export default {
                 this.$emit('changePageButSearch', newValue);
             }
 
+        },
+        search_result(newVal) {
+            if(newVal.length == 0) this.errorr = true;
+            else this.errorr = false;
         }
     },
 }
