@@ -29,7 +29,6 @@ type Cow struct {
 	SelecsNumber         *string `example:"98989"`      // Селекс номер коровы
 	RSHNNumber           *string `example:"1323323232"` // РСХН номер коровы
 	Name                 string `example:"Дима"`       // Кличка коровы
-	IdentificationNumber *string `example:"1213321"`    // Инвентарный номер коровы, кажется он уже был
 
 	IsDead bool `example:"true"` // Флаг мертва / жива
 
