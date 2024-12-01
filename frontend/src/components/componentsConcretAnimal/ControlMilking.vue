@@ -18,7 +18,7 @@
                     <th class="cm-date">Дата</th>
                     <th class="cm-nprob">Номер пробы</th>
                     <th class="cm-milkday">Дойные дни</th>
-                    <th class="cm-milk">Удой, кг</th>
+                    <th class="cm-milk">Удой, л</th>
                     <th class="cm-dry">Сухое вещество</th>
                     <th class="cm-zhir">Жир, %</th>
                     <th class="cm-belok">Белок, %</th>
@@ -55,7 +55,6 @@
                 <select v-model="param_milking" class="select-param">
                     <option disabled value="">Выберите параметр</option>
                     <option value="MILK">Удой</option>
-                    <option value="DRY_MATTERS">Сухое вещество</option>
                     <option value="FAT">Жир</option>
                     <option value="PROTEIN">Белок</option>
                 </select>
