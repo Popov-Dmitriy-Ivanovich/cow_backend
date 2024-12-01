@@ -256,7 +256,7 @@ const docTemplate = `{
         },
         "/cows/{id}": {
             "get": {
-                "description": "Возращает конкретную корову.",
+                "description": "Возращает конкретную корову. Поля Father и Mother, имеют FatherId и MotherID null всегда, это неправильно, но так надо",
                 "produces": [
                     "application/json"
                 ],
@@ -686,6 +686,7 @@ const docTemplate = `{
                 "birthDate",
                 "farmGroupName",
                 "genotyped",
+                "id",
                 "inventoryNumber",
                 "name",
                 "rshnnumber"
@@ -723,6 +724,10 @@ const docTemplate = `{
                 "genotyped": {
                     "type": "boolean",
                     "example": true
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 123
                 },
                 "inbrindingCoeffByFamily": {
                     "type": "number",
@@ -942,7 +947,7 @@ const docTemplate = `{
                 },
                 "fat": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во жира в молоке",
-                    "type": "integer",
+                    "type": "number",
                     "example": 1
                 },
                 "id": {
@@ -957,12 +962,12 @@ const docTemplate = `{
                 },
                 "milk": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во молока",
-                    "type": "integer",
+                    "type": "number",
                     "example": 1
                 },
                 "protein": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во белка в молоке",
-                    "type": "integer",
+                    "type": "number",
                     "example": 1
                 }
             }
@@ -1201,9 +1206,6 @@ const docTemplate = `{
                 "phone": {
                     "type": "string"
                 },
-                "regionId": {
-                    "type": "integer"
-                },
                 "type": {
                     "type": "integer"
                 }
@@ -1225,9 +1227,15 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "date": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "дата начала лактации",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "days": {
+                    "description": "количество дней, когда корова дает молоко",
                     "type": "integer"
                 },
                 "fat305": {
@@ -1252,6 +1260,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "number": {
+                    "description": "номер лактации",
                     "type": "integer"
                 },
                 "protein305": {

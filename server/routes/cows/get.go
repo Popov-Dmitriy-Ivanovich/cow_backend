@@ -12,6 +12,10 @@ type ReserealizedCow struct {
 	models.Cow
 	BreedName *string `json:",omitempty"`
 	SexName   *string `json:",omitempty"`
+	FarmName  *string `json:",omitempty"`
+	HozHame   *string `json:",omitempty"`
+	Father    *ReserealizedCow 
+	Mother    *ReserealizedCow 
 }
 
 func (rc ReserealizedCow) GetReserealizer() routes.Reserealizer {
@@ -25,22 +29,146 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 	db := models.GetDb()
 	breed := models.Breed{}
 	sex := models.Sex{}
+	farm := models.Farm{}
+	hoz := models.Farm{}
+
 	if err := db.First(&breed, cow.BreedId).Error; err != nil {
 		return ReserealizedCow{}, err
 	}
 	if err := db.First(&sex, cow.SexId).Error; err != nil {
 		return ReserealizedCow{}, err
 	}
+	if cow.FarmID != nil {
+		if err := db.First(&farm, cow.FarmID).Error; err != nil {
+			return ReserealizedCow{}, err
+		}
+	}
+	if err := db.First(&hoz, cow.FarmGroupId).Error; err != nil {
+		return ReserealizedCow{}, err
+	}
+
+	famTree := make([]*models.Cow, 7)
+	famTree[0] = &cow
+	for i := 1; i < 7; i++ {
+		parentIdx := (i - 1) / 2
+		childIdx := i % 2
+		curCow := famTree[parentIdx]
+		if curCow != nil && childIdx == 0 && curCow.FatherId != nil{ // father
+			father := &models.Cow{}
+			if err := db.First(father, curCow.FatherId).Error; err != nil {
+				return ReserealizedCow{}, err
+			}
+			famTree[i] = father
+		} else if curCow != nil && curCow.MotherId != nil { // mother
+			mother := &models.Cow{}
+			if err := db.First(mother, curCow.MotherId).Error; err != nil {
+				return ReserealizedCow{}, err
+			}
+			famTree[i] = mother
+		}
+	}
+	if famTree[1] != nil {
+		mother := famTree[1]
+		mother.MotherId = nil
+		mother.FatherId = nil
+		rsMother := ReserealizedCow{}
+		rsm, err := rsMother.FromBaseModel(*mother)
+		if err != nil {
+			return ReserealizedCow{}, nil
+		}
+		resMother, ok := rsm.(ReserealizedCow)
+		if !ok {
+			return ReserealizedCow{}, errors.New("error reserealizing")
+		}
+		if famTree[3] != nil {
+			gMother := famTree[3]
+			gMother.MotherId = nil
+			gMother.FatherId = nil
+			rsGMother := ReserealizedCow{}
+			rsgm, err := rsGMother.FromBaseModel(*gMother)
+			if err != nil {
+				return ReserealizedCow{}, nil
+			}
+			resGMother, ok := rsgm.(ReserealizedCow)
+			if !ok {
+				return ReserealizedCow{}, errors.New("error reserealizing")
+			}
+			resMother.Mother = &resGMother
+		}
+		if famTree[4] != nil {
+			gFather := famTree[4]
+			gFather.MotherId = nil
+			gFather.FatherId = nil
+			rsGFather := ReserealizedCow{}
+			rsgm, err := rsGFather.FromBaseModel(*gFather)
+			if err != nil {
+				return ReserealizedCow{}, nil
+			}
+			resGFather, ok := rsgm.(ReserealizedCow)
+			if !ok {
+				return ReserealizedCow{}, errors.New("error reserealizing")
+			}
+			resMother.Father = &resGFather
+		}
+		rc.Mother = &resMother
+	}
+	if famTree[2] != nil {
+		father := famTree[2]
+		father.MotherId = nil
+		father.FatherId = nil
+		rsFather := ReserealizedCow{}
+		rsf, err := rsFather.FromBaseModel(*father)
+		if err != nil {
+			return ReserealizedCow{}, nil
+		}
+		resFather, ok := rsf.(ReserealizedCow)
+		if !ok {
+			return ReserealizedCow{}, errors.New("error reserealizing")
+		}
+		if famTree[5] != nil {
+			gMother := famTree[5]
+			gMother.MotherId = nil
+			gMother.FatherId = nil
+			rsGMother := ReserealizedCow{}
+			rsgm, err := rsGMother.FromBaseModel(*gMother)
+			if err != nil {
+				return ReserealizedCow{}, nil
+			}
+			resGMother, ok := rsgm.(ReserealizedCow)
+			if !ok {
+				return ReserealizedCow{}, errors.New("error reserealizing")
+			}
+			resFather.Mother = &resGMother
+		}
+		if famTree[6] != nil {
+			gFather := famTree[6]
+			gFather.MotherId = nil
+			gFather.FatherId = nil
+			rsGFather := ReserealizedCow{}
+			rsgm, err := rsGFather.FromBaseModel(*gFather)
+			if err != nil {
+				return ReserealizedCow{}, nil
+			}
+			resGFather, ok := rsgm.(ReserealizedCow)
+			if !ok {
+				return ReserealizedCow{}, errors.New("error reserealizing")
+			}
+			resFather.Father = &resGFather
+		}
+		rc.Father = &resFather
+	}
 	rc.Cow = cow
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name
+	rc.FarmName = &farm.Name
+	rc.HozHame = &hoz.Name
 	return *rc, nil
 }
 
 // ListAccounts lists all existing accounts
 //
 //	@Summary      Get list of cows
-//	@Description  Возращает конкретную корову.
+//	@Description  Возращает конкретную корову. Поля Father и Mother, имеют FatherId и MotherID null всегда, это неправильно, но так надо
 //	@Tags         Cows
 //	@Param        id   path      int  true  "ID конкретной коровы, чтобы ее вернуть"
 //	@Produce      json

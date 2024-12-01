@@ -25,6 +25,9 @@ definitions:
       genotyped:
         example: true
         type: boolean
+      id:
+        example: 123
+        type: integer
       inbrindingCoeffByFamily:
         example: 3.14
         type: number
@@ -45,6 +48,7 @@ definitions:
     - birthDate
     - farmGroupName
     - genotyped
+    - id
     - inventoryNumber
     - name
     - rshnnumber
@@ -213,7 +217,7 @@ definitions:
       fat:
         description: Параметр контрольной дойки, как я понимаю кол-во жира в молоке
         example: 1
-        type: integer
+        type: number
       id:
         description: ID контрольной дойки
         example: 1
@@ -225,11 +229,11 @@ definitions:
       milk:
         description: Параметр контрольной дойки, как я понимаю кол-во молока
         example: 1
-        type: integer
+        type: number
       protein:
         description: Параметр контрольной дойки, как я понимаю кол-во белка в молоке
         example: 1
-        type: integer
+        type: number
     type: object
   models.Cow:
     properties:
@@ -395,8 +399,6 @@ definitions:
         type: integer
       phone:
         type: string
-      regionId:
-        type: integer
       type:
         type: integer
     type: object
@@ -411,8 +413,11 @@ definitions:
       cowId:
         type: integer
       date:
-        $ref: '#/definitions/models.DateOnly'
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: дата начала лактации
       days:
+        description: количество дней, когда корова дает молоко
         type: integer
       fat305:
         type: integer
@@ -429,6 +434,7 @@ definitions:
       milkAll:
         type: integer
       number:
+        description: номер лактации
         type: integer
       protein305:
         type: integer
@@ -589,7 +595,8 @@ paths:
       - Cows
   /cows/{id}:
     get:
-      description: Возращает конкретную корову.
+      description: Возращает конкретную корову. Поля Father и Mother, имеют FatherId
+        и MotherID null всегда, это неправильно, но так надо
       parameters:
       - description: ID конкретной коровы, чтобы ее вернуть
         in: path
