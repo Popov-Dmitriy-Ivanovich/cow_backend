@@ -11,6 +11,7 @@ import (
 type ReserealizedCheckMilk struct {
 	models.CheckMilk
 	MilkingDays int
+	LactationNumber uint
 }
 
 func (rcm ReserealizedCheckMilk) GetReserealizer() routes.Reserealizer {
@@ -32,7 +33,7 @@ func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, e
 	cmDate := cm.CheckDate
 	milkingDays := cmDate.Sub(lacDate.Time)
 	
-	
+	rcm.LactationNumber = lac.Number
 	rcm.CheckMilk = cm
 	rcm.MilkingDays = int(milkingDays.Hours() / 24)
 	return rcm, nil
