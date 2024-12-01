@@ -200,6 +200,7 @@ export default {
             this.total_pages = total;
         },
         bullsClick() {
+            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = false;
@@ -209,6 +210,7 @@ export default {
             document.getElementById('search-animals').value = '';
         },
         cowsClick() {
+            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = true;
             this.isChild = false;
@@ -218,6 +220,7 @@ export default {
             document.getElementById('search-animals').value = '';
         },
         childClick() {
+            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = true;

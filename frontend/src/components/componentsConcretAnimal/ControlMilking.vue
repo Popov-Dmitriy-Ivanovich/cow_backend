@@ -28,10 +28,10 @@
                 <tr v-for="milking in cow_info" :key="milking.CheckDate">
                     <td>{{ milking.LactationId }}</td>
                     <td>{{ milking.CheckDate }}</td>
-                    <td>{{ milking.N_CHECK }}</td>
-                    <td>{{ milking.N_DAYS }}</td>
+                    <td>{{ milking.ProbeNumber }}</td>
+                    <td>{{ milking.MilkingDays }}</td>
                     <td>{{ milking.Milk }}</td>
-                    <td>{{ milking.DRY_MATTERS }}</td>
+                    <td>{{ milking.DryMatter }}</td>
                     <td>{{ milking.Fat }}</td>
                     <td>{{ milking.Protein }}</td>
                 </tr>
@@ -54,9 +54,11 @@
                 <div class="chart-param">Показатель: </div>
                 <select v-model="param_milking" class="select-param">
                     <option disabled value="">Выберите параметр</option>
-                    <option value="MILK">Удой</option>
-                    <option value="FAT">Жир</option>
-                    <option value="PROTEIN">Белок</option>
+                    <option value="Milk">Удой</option>
+                    <option value="Fat">Жир</option>
+                    <option value="Protein">Белок</option>
+                    <option value="FatRegard">Жир, %</option>
+                    <option value="ProteinRegard">Белок, %</option>
                 </select>
             </div>
 
@@ -83,7 +85,7 @@ export default {
             },
             series: [],
             count_lactations:[],
-            param_milking: '',
+            param_milking: 'Milk',
             check_lact: [1],
             isLact: false,
         }
@@ -94,6 +96,11 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}/checkMilks`);
         let result = await response.json();
         this.cow_info = result;
+        
+        for (let i = 0; i < this.cow_info.length; i++) {
+            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat / this.cow_info[i].Milk)*100).toFixed(2);
+            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein / this.cow_info[i].Milk)*100).toFixed(2);
+        }
 
         try {
             this.count_lactations.push(this.cow_info[0]['LactationId']);
@@ -105,7 +112,11 @@ export default {
         } catch(err) {
             console.log(err);
         }
- 
+
+        this.addParam(this.cow_info, this.series, this.param_milking, this.check_lact)
+
+        console.log(this.count_lactations);
+        console.log(this.cow_info);
     },
     methods: {
         addInArr(obj, arr, param, nlact) {
@@ -137,16 +148,12 @@ export default {
         param_milking(new_value) {
             this.series = [];
             this.addParam(this.cow_info, this.series, new_value, this.check_lact)
-            console.log(this.series);
+            console.log(this.series, 'данные для столбцов');
         },
-        // check_lact(new_value) {
-        //     console.log('лакт?', new_value);
-        //     this.options.xaxis.categories = [];
-        //     for(let i = 0; i < new_value.length; i++) {
-        //         this.options.xaxis.categories.push(`Лактация ${new_value[i]}`)
-        //     }
-        //     console.log(this.options.xaxis.categories);
-        // }
+        check_lact(new_value) {
+            this.series = [];
+            this.addParam(this.cow_info, this.series, this.param_milking, new_value)
+        }
 
     }
 }

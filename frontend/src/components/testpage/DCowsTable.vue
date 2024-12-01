@@ -95,6 +95,8 @@ export default {
         });
         const res_animals = await response.json();
 
+        console.log('коровы были mounted');
+
         this.animals = res_animals.LST;
         if(res_animals.LST.length == 0) this.errorr = true;
         //Передаю текущую первую страницу и кол-во страниц наверх
