@@ -111,7 +111,7 @@ export default {
     data() {
         return {
             filters: {
-                farmID: null,
+                hozId: null,
                 birthDateFrom: null,
                 birthDateTo: null,
                 departDateFrom: null,
@@ -162,7 +162,7 @@ export default {
             window.scrollTo(0,0);
         },
         setIdHoz(hozid) {
-            this.filters.farmID = [hozid];
+            this.filters.hozId = hozid;
         },
         setIdBreed(breedid) {
             this.filters.breedId = [breedid];
