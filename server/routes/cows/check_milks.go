@@ -2,30 +2,43 @@ package cows
 
 import (
 	"cow_backend/models"
-	// "cow_backend/routes"
+	"cow_backend/routes"
+	"errors"
 
 	"github.com/gin-gonic/gin"
 )
 
-// type ReserealizedCheckMilk struct {
-// 	models.CheckMilk
-// 	MilkingDays uint
-// }
+type ReserealizedCheckMilk struct {
+	models.CheckMilk
+	MilkingDays uint
+}
 
-// func (rcm ReserealizedCheckMilk) GetReserealizer() routes.Reserealizer {
-// 	return &rcm
-// }
+func (rcm ReserealizedCheckMilk) GetReserealizer() routes.Reserealizer {
+	return &rcm
+}
 
-// func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, error) { 
-// 	lac := models.Lactation{}
-// 	db := models.GetDb()
-// 	if err := db.First(&lac, rcm.LactationId).Error; err != nil {
-// 		return ReserealizedCheckMilk{}, err
-// 	}
-// 	lacDate := lac.Date
-// 	cmDate := rcm.CheckDate
+func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, error) { 
+	lac := models.Lactation{}
+	db := models.GetDb()
 
-// }
+	cm, ok := c.(models.CheckMilk)
+	if !ok { return	ReserealizedCheckMilk{}, errors.New("error reserealizing") }
+
+	if err := db.First(&lac, cm.LactationId).Error; err != nil {
+		return ReserealizedCheckMilk{}, err
+	}
+
+	lacDate := lac.Date
+	cmDate := cm.CheckDate
+	milkingDays := cmDate.Sub(lacDate.Time)
+	if cmDate.Before(lacDate.Time) {
+		milkingDays = lacDate.Sub(cmDate.Time)
+	}
+	
+	rcm.CheckMilk = cm
+	rcm.MilkingDays = uint(milkingDays.Hours() / 24)
+	return rcm, nil
+}
 
 // ListAccounts lists all existing accounts
 //
@@ -51,6 +64,16 @@ func (f *Cows) CheckMilks() func(*gin.Context) {
 		for _, lac := range cow.Lactation {
 			cms = append(cms, lac.CheckMilks...)
 		}
-		c.JSON(200, cms)
+		res := make([]routes.Reserealizable, 0, len(cms))
+		for _, cm := range(cms) {
+			reserealizer := &ReserealizedCheckMilk{}
+			if reserealized, err := reserealizer.FromBaseModel(cm); err != nil {
+				c.JSON(500, err)
+				return
+			} else {
+				res = append(res, reserealized)
+			}
+		}
+		c.JSON(200, res)
 	}
 }
