@@ -83,7 +83,7 @@ export default {
         let search_params = this.filters;
         search_params.sex = [1,2];
         search_params.npage = 1;
-        const response = await fetch('/cows/filter', {            
+        const response = await fetch('/api/cows/filter', {            
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -104,7 +104,7 @@ export default {
                 let search_params = {};
                 search_params.sex = [1,2];
                 search_params.npage = newValue;
-                const response = await fetch('/cows/filter', {
+                const response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'

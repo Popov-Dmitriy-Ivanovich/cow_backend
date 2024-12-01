@@ -85,7 +85,7 @@ export default {
         let search_params = this.filters;
         search_params.sex = [3];
         search_params.pageNumber = 1;
-        const response = await fetch('/cows/filter', {
+        const response = await fetch('/api/cows/filter', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -106,7 +106,7 @@ export default {
                 let search_params = {};
                 search_params.sex = [3];
                 search_params.pageNumber = newValue;
-                const response = await fetch('/cows/filter', {
+                const response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'

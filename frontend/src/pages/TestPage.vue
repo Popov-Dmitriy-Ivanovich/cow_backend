@@ -108,7 +108,7 @@ export default {
 
                 console.log(JSON.stringify(search_params), 'параметры для отправки');
 
-                const response = await fetch('/cows/filter', {
+                const response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
@@ -153,7 +153,7 @@ export default {
                 this.current_filters = search_params;
                 this.animal_filters = filters;
 
-                let response = await fetch('/cows/filter', {
+                let response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
@@ -185,7 +185,7 @@ export default {
             this.current_page = newVal;
             this.current_filters.pageNumber = newVal;
 
-            let response = await fetch('/cows/filter', {
+            let response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
