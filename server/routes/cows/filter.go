@@ -50,6 +50,7 @@ type cowsFilter struct { // Фильтр коров
 }
 
 type FilterSerializedCow struct {
+	ID 						uint			   `validate:"required" example:"123"`
 	RSHNNumber              *string            `validate:"required" example:"123"`
 	InventoryNumber         *string            `validate:"required" example:"321"`
 	Name                    string            `validate:"required" example:"Буренка"`
@@ -67,6 +68,7 @@ type FilterSerializedCow struct {
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	res := FilterSerializedCow{
+		ID: c.ID,
 		RSHNNumber:      c.RSHNNumber,
 		InventoryNumber: c.InventoryNumber,
 		Name:            c.Name,
