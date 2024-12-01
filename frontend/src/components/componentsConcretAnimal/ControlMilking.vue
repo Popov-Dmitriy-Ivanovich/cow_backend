@@ -92,7 +92,7 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`/cows/${cow_id}/checkMilks`);
+        let response = await fetch(`/api/cows/${cow_id}/checkMilks`);
         let result = await response.json();
         this.cow_info = result;
 

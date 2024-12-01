@@ -59,6 +59,9 @@
                 <option value="Fat305">Жир 305 дней</option>
                 <option value="ProteinAll">Белок полный</option>
                 <option value="Protein305">Белок 305 дней</option>
+                <option value="MilkDaily">Удой среднесуточный</option>
+                <option value="FatDaily">Жир среднесуточный</option>
+                <option value="ProteinDaily">Белок среднесуточный</option>
             </select>
         </div>
 
@@ -89,11 +92,16 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`/cows/${cow_id}/lactations`);
+        let response = await fetch(`api/cows/${cow_id}/lactations`);
         let result = await response.json();
         this.cow_info = result;
+
         let serie = {name:'Удой полный',data: []};
         for (let i = 0; i < this.cow_info.length; i++) {
+            this.cow_info[i].MilkDaily = (this.cow_info[i].MilkAll / this.cow_info[i].Days).toFixed(2);
+            this.cow_info[i].FatDaily = (this.cow_info[i].FatAll / this.cow_info[i].Days).toFixed(2);
+            this.cow_info[i].ProteinDaily = (this.cow_info[i].ProteinAll / this.cow_info[i].Days).toFixed(2);
+
             this.options.xaxis.categories.push('Лактация ' + this.cow_info[i].Number);
             serie.data.push(this.cow_info[i].MilkAll);
         }
