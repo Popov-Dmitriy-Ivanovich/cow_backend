@@ -1,7 +1,6 @@
-
-INSERT INTO cows (selecs_number,inventory_number,rshn_number,name,farm_group_id,farm_id,birth_date,depart_date,breed_id,sex_id,father_id,mother_id,identification_number,APPROVED,created_at,inbrinding_coeff_by_family,birking_date) VALUES
-	 ('1234567890123','123','RU.123','Бычок №1',16,19,'2024-11-15',NULL,1,1,NULL,NULL,'',NULL,'2024-11-17',5.4,'2020-01-01'),
-	 ('9876543210999','999','РУ.999','Зорька',16,19,'2024-11-14',NULL,2,2,NULL,NULL,'',1,NULL,3.2,'2021-01-01'),
-	 ('1111111111111','123','EN.111','Бык №1',3,4,'2023-12-06',NULL,5,3,NULL,NULL,'',0,'2024-11-15',1.6,'2022-01-01');
-INSERT INTO cows (selecs_number,inventory_number,rshn_number,name,farm_group_id,farm_id,birth_date,depart_date,breed_id,sex_id,father_id,mother_id,identification_number,APPROVED,created_at,inbrinding_coeff_by_family,birking_date) VALUES
-	('2222222222222','222','123','Корова №1',3,5,'2020-07-17','2024-08-01',3,4,'3','2','',1,'2024-11-12',9.8,'2023-01-01');
+INSERT INTO cows (selecs_number,inventory_number,rshn_number,name,farm_group_id,farm_id,birth_date,depart_date,breed_id,sex_id,father_id,mother_id,APPROVED,created_at,inbrinding_coeff_by_family,birking_date) VALUES
+   ('1234567890123','123','RU.123','Бычок №1',16,19,'2024-11-15',NULL,1,1,NULL,NULL,NULL,'2024-11-17',5.4,'2020-01-01'),
+   ('9876543210999','999','РУ.999','Зорька',16,19,'2024-11-14',NULL,2,2,NULL,NULL,1,NULL,3.2,'2021-01-01'),
+   ('1111111111111','123','EN.111','Бык №1',3,4,'2023-12-06',NULL,5,3,NULL,NULL,0,'2024-11-15',1.6,'2022-01-01');
+INSERT INTO cows (selecs_number,inventory_number,rshn_number,name,farm_group_id,farm_id,birth_date,depart_date,breed_id,sex_id,father_id,mother_id,APPROVED,created_at,inbrinding_coeff_by_family,birking_date) VALUES
+  ('2222222222222','222','123','Корова №1',3,5,'2020-07-17','2024-08-01',3,4,'3','2',1,'2024-11-12',9.8,'2023-01-01');
