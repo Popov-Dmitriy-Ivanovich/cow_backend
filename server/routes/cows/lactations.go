@@ -2,6 +2,7 @@ package cows
 
 import (
 	"cow_backend/models"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,9 @@ func (f *Cows) Lactations() func(*gin.Context) {
 			c.JSON(500, err)
 			return
 		}
-
+		sort.Slice(cow.Lactation, func(i, j int) bool {
+			return cow.Lactation[i].Number < cow.Lactation[j].Number
+		})
 		c.JSON(200, cow.Lactation)
 	}
 }

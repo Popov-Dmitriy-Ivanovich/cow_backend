@@ -4,6 +4,7 @@ import (
 	"cow_backend/models"
 	"cow_backend/routes"
 	"errors"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,7 +37,7 @@ func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, e
 	rcm.LactationNumber = lac.Number
 	rcm.CheckMilk = cm
 	rcm.MilkingDays = int(milkingDays.Hours() / 24)
-	return rcm, nil
+	return *rcm, nil
 }
 
 // ListAccounts lists all existing accounts
@@ -63,16 +64,27 @@ func (f *Cows) CheckMilks() func(*gin.Context) {
 		for _, lac := range cow.Lactation {
 			cms = append(cms, lac.CheckMilks...)
 		}
-		res := make([]routes.Reserealizable, 0, len(cms))
+		res := make([]ReserealizedCheckMilk, 0, len(cms))
 		for _, cm := range(cms) {
 			reserealizer := &ReserealizedCheckMilk{}
 			if reserealized, err := reserealizer.FromBaseModel(cm); err != nil {
 				c.JSON(500, err)
 				return
 			} else {
-				res = append(res, reserealized)
+				appended, ok := reserealized.(ReserealizedCheckMilk)
+				if !ok { 
+					c.JSON(500, errors.New("could not resrerealize"))
+					return 
+				}
+				res = append(res, appended)
 			}
 		}
+		sort.Slice(res, func(i, j int) bool {
+			if res[i].LactationNumber == res[j].LactationNumber {
+				return res[i].CheckDate.Before(res[j].CheckDate.Time)
+			}
+			return res[i].LactationNumber < res[j].LactationNumber
+		})
 		c.JSON(200, res)
 	}
 }
