@@ -26,7 +26,7 @@
             </thead>
             <tbody class="cm-tablebody">
                 <tr v-for="milking in cow_info" :key="milking.CheckDate">
-                    <td>{{ milking.Number }}</td>
+                    <td>{{ milking.LactationNumber }}</td>
                     <td>{{ milking.CheckDate }}</td>
                     <td>{{ milking.ProbeNumber }}</td>
                     <td>{{ milking.MilkingDays }}</td>
