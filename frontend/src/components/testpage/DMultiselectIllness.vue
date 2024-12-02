@@ -26,12 +26,12 @@ export default {
     },
     async created() {
         this.options = [];
-        const response = await fetch('https://genmilk.ru:9050/api/genetic_diseases');
-        const illness = await response.json();
-        for (let i = 0; i < illness.length; i++) {
-            let ill = {name: illness[i][1], id: illness[i][0]};
-            this.options.push(ill);
-        }
+        // const response = await fetch('https://genmilk.ru:9050/api/genetic_diseases');
+        // const illness = await response.json();
+        // for (let i = 0; i < illness.length; i++) {
+        //     let ill = {name: illness[i][1], id: illness[i][0]};
+        //     this.options.push(ill);
+        // }
     }
 }
     

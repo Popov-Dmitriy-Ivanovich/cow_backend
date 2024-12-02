@@ -1,21 +1,21 @@
 <template>
     <div>
-        <div class="animal-line" @click="$router.push(`/animals/${animal_item.ID}`)" :class="{'is-approved': animal_item.APPROVED==1}">
+        <div class="animal-line" @click="$router.push(`/animals/${animal_item.ID}`)" :class="{'is-approved': animal_item.Approved==1}">
             <div class="animal-rshn">{{ animal_item.RSHNNumber }}</div>
             <div class="animal-inv">{{ animal_item.InventoryNumber }}</div>
             <div class="animal-name">{{ animal_item.Name }}</div>
             <div class="animal-hoz">{{ animal_item.FarmGroupName }}</div>
             <div class="animal-bdate">{{ bdate(animal_item.BirthDate) }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.genotyped) }}</div>
-            <div v-if="filters.D_OUT_BEGIN || filters.D_OUT_END" class="animal-dateout">{{ animal_item.D_OUT }}</div>
-            <div v-if="filters.ID_BREED" class="animal-breed">{{ animal_item.N_BREED }}</div>
-            <div v-if="filters.D_GEN_BEGIN || filters.D_GEN_END" class="animal-dategen">{{ animal_item.D_GEN }}</div>
-            <div v-if="filters.EXTERIOR" class="animal-exterior">{{ animal_item.EXTER }}</div>
-            <div v-if="filters.D_OSEM_BEGIN || filters.D_OSEM_END" class="animal-dateosem">{{ animal_item.D_OSEMEN }}</div>
-            <div v-if="filters.D_OTEL_BEGIN || filters.D_OTEL_END" class="animal-dateotel">{{ animal_item.D_OTEL }}</div>
-            <div v-if="filters.D_BIRKING_BEGIN || filters.D_BIRKING_END" class="animal-datebirk">{{ animal_item.D_BIRKING }}</div>
-            <div v-if="filters.K_INBR_ROD_BEGIN || filters.K_INBR_ROD_END" class="animal-krod">{{ animal_item.K_INBR }}</div>
-            <div v-if="filters.K_INBR_FEN_BEGIN || filters.K_INBR_FEN_END" class="animal-kfen">{{ animal_item.INBRID_FENOTYPE }}</div>
+            <!-- <div v-if="animal_item.DepartDate" class="animal-dateout">{{ animal_item.DepartDate }}</div>
+            <div v-if="animal_item.BreedName" class="animal-breed">{{ animal_item.BreedName }}</div> -->
+            <!-- <div v-if="filters.genotypingDateFrom || genotypingDateTo" class="animal-dategen">{{ animal_item.D_GEN }}</div> -->
+            <!-- <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
+            <div v-if="animal_item.insemenationDate" class="animal-dateosem">{{ animal_item.animal_item.insemenationDate }}</div>
+            <div v-if="animal_item.CalvingDate" class="animal-dateotel">{{ animal_item.calvingDate }}</div>
+            <div v-if="animal_item.BirkingDate" class="animal-datebirk">{{ animal_item.Birkingdate }}</div>
+            <div v-if="animal_item.InbrindingCoeffByFamily" class="animal-krod">{{ animal_item.InbrindingCoeffByFamily }}</div> -->
+            <!-- <div v-if="animal_item." class="animal-kfen">{{ animal_item.INBRID_FENOTYPE }}</div> -->
         </div>
     </div>
 </template>

@@ -1,10 +1,10 @@
 <template>
 <div class="main-info">
-    <div class="cowname">{{ cow_info.NAME }}</div>
-    <div class="pol"> | {{ getPol(cow_info.POL) }}</div>
+    <div class="cowname">{{ cow_info.Name }}</div>
+    <div class="pol"> | {{ cow_info.SexName }}</div>
     <div class="cow-microinfo">
-        <div>Дата рождения: {{ cow_info.D_BIRTH}}</div> 
-        <div>Номер РСХН: {{ cow_info.NRSHN }}</div>
+        <div>Дата рождения: {{ cow_info.BirthDate}}</div> 
+        <div>Номер РСХН: {{ cow_info.RSHNNumber }}</div>
     </div>
 
 </div>
@@ -20,7 +20,7 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`https://genmilk.ru:9050/api/cow_common?ID_COW=${cow_id}`);
+        let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
     },
