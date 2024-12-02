@@ -33,6 +33,7 @@
             <div v-if="search_error || errorr" class="search-error">
                 Ничего не найдено
             </div>
+            <div v-if="isLoading || isLoadingCows" class="search-error">Идёт загрузка...</div>
         </div>
         <NumberPages v-bind:current-page="cp" v-bind:total-pages="tp" @changePage="changePage"/>
     </div>
@@ -52,6 +53,7 @@ export default {
             curr_page: 1,
             total_pages: 1,
             errorr: false,
+            isLoadingCows: false,
         }
     },
     props: {
@@ -74,6 +76,9 @@ export default {
         },
         filters: {
             type: Object,
+        },
+        isLoading: {
+            type: Boolean,
         }
     },
     methods: {
@@ -82,6 +87,7 @@ export default {
         }
     },
     async mounted() {
+        this.isLoadingCows = true;
         this.errorr = false;
         let search_params = this.filters;
         search_params.sex = [4];
@@ -101,6 +107,7 @@ export default {
         if(res_animals.LST.length == 0) this.errorr = true;
         //Передаю текущую первую страницу и кол-во страниц наверх
         this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/50));
+        this.isLoadingCows = false;
     },
     watch: {
         async cp(newValue) {
@@ -123,7 +130,7 @@ export default {
 
         },
         search_result(newVal) {
-            if(newVal.length == 0) this.errorr = true;
+            if(newVal.length == 0 && this.isSearch) this.errorr = true;
             else this.errorr = false;
         }
     },

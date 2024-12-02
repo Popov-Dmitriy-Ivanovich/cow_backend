@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody class="lac-tablebody">
-                <tr v-for="lact in cow_info" :key="lact.LACTATION_NUM">
+                <tr v-for="lact in cow_info" :key="lact.Number">
                     <td>{{ lact.Number }}</td>
                     <td>{{ lact.Date }}</td>
                     <td>{{ lact.InsemenationNum }}</td>
@@ -95,6 +95,7 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}/lactations`);
         let result = await response.json();
         this.cow_info = result;
+        console.log(this.cow_info);
 
         let serie = {name:'Удой полный',data: []};
         for (let i = 0; i < this.cow_info.length; i++) {

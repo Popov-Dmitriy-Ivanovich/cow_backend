@@ -8,7 +8,8 @@ module.exports = defineConfig({
   transpileDependencies: true,
     devServer: {
       webSocketServer: false,
-      proxy: 'http://localhost:8080/'
+      // proxy: 'http://localhost:8080/'
+      proxy: 'http://genmilk.ru/'
       
       // {
       //   '^/api': {
