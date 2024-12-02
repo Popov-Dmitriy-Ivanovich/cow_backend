@@ -168,6 +168,8 @@ export default {
                 if(this.isBulls) this.search_error_bulls = false;
                 if(this.isChild) this.search_error_child = false;
 
+                console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
+
                 if(result.LST.length == 0 || result.N == 0) {
                     if(this.isCows) this.search_error_cows = true;
                     if(this.isBulls) this.search_error_bulls = true;
@@ -200,30 +202,33 @@ export default {
             this.total_pages = total;
         },
         bullsClick() {
+            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = false;
             this.isBulls = true;
             this.search = false;
-            //this.search_error_bulls = false;
+            this.search_error_bulls = false;
             document.getElementById('search-animals').value = '';
         },
         cowsClick() {
+            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = true;
             this.isChild = false;
             this.isBulls = false;
             this.search = false;
-            //this.search_error_cows = false;
+            this.search_error_cows = false;
             document.getElementById('search-animals').value = '';
         },
         childClick() {
+            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = true;
             this.isBulls = false;
             this.isSearch = false;
-            //this.search_error_child = false;
+            this.search_error_child = false;
             document.getElementById('search-animals').value = '';
         }
     }

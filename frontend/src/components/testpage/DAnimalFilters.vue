@@ -148,6 +148,8 @@ export default {
     methods: {
         fetchFilters(){
             let send_filters = this.filters;
+            console.log(send_filters, 'filers');
+            console.log(JSON.stringify(send_filters))
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },
@@ -158,6 +160,7 @@ export default {
             this.clearBreed = !this.clearBreed;
             this.clearHoz = !this.clearHoz;
             this.clearIllness = !this.clearIllness;
+            console.log(this.filters, 'сбросить');
             this.$emit('applyFilters', this.filters);
             window.scrollTo(0,0);
         },

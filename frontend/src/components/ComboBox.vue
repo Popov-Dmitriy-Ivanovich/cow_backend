@@ -70,6 +70,8 @@ export default {
         },
         clearValue(){
             this.text1="";
+            this.selected_value = [];
+            this.$emit('valueHasSelected', null);
             this.isVisible = false;
         }
     },
