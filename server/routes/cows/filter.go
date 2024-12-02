@@ -79,7 +79,8 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 		BirthDate:       c.BirthDate,
 		Genotyped:       true,
 	}
-	if filter.DepartDateTo != nil || filter.DepartDateFrom != nil {
+	if 	filter.DepartDateTo != nil && *filter.DepartDateTo != "" || 
+		filter.DepartDateFrom != nil  && *filter.DepartDateFrom != ""{
 		res.DepartDate = c.DepartDate
 	}
 	if len(filter.BreedId) != 0 {
@@ -91,13 +92,15 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.InbrindingCoeffByGenotypeFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
 		res.InbrindingCoeffByGenotype = &c.Genetic.InbrindingCoeffByGenotype
 	}
-	if filter.GenotypingDateFrom != nil || filter.GenotypingDateTo != nil {
+	if 	filter.GenotypingDateFrom != nil && *filter.GenotypingDateFrom != "" || 
+		filter.GenotypingDateTo != nil  && *filter.GenotypingDateTo != ""{
 		res.GenotypingDate = &c.Genetic.ResultDate
 	}
 	if len(filter.MonogeneticIllneses) != 0 {
 		res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
 	}
-	if filter.ControlMilkingDateFrom != nil || filter.ControlMilkingDateTo != nil {
+	if 	filter.ControlMilkingDateFrom != nil && *filter.ControlMilkingDateFrom != "" || 
+		filter.ControlMilkingDateTo != nil  && *filter.ControlMilkingDateTo != "" {
 		for _, lactation := range c.Lactation {
 			for _, cm := range lactation.CheckMilks {
 				if filter.ControlMilkingDateFrom != nil {
@@ -123,7 +126,8 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 		}
 	}
 
-	if filter.InseminationDateFrom != nil || filter.InseminationDateTo != nil {
+	if 	filter.InseminationDateFrom != nil && *filter.InseminationDateFrom != "" || 
+		filter.InseminationDateTo != nil && *filter.InseminationDateTo != ""{
 		for _, lac := range c.Lactation {
 			if filter.InseminationDateFrom != nil {
 				date, err := time.Parse(time.DateOnly, *filter.InseminationDateFrom)
@@ -148,7 +152,8 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 		}
 	}
 
-	if filter.CalvingDateFrom != nil || filter.CalvingDateTo != nil {
+	if 	filter.CalvingDateFrom != nil && *filter.CalvingDateFrom != "" || 
+		filter.CalvingDateTo != nil  && *filter.CalvingDateTo != ""{
 		for _, lac := range c.Lactation {
 			if filter.CalvingDateFrom != nil {
 				date, err := time.Parse(time.DateOnly, *filter.CalvingDateFrom)
@@ -172,7 +177,8 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 		}
 	}
 
-	if filter.BirkingDateFrom != nil || filter.BirkingDateTo != nil {
+	if 	filter.BirkingDateFrom != nil && *filter.BirkingDateFrom != "" ||
+	 	filter.BirkingDateTo != nil && *filter.BirkingDateTo != "" {
 		res.BirkingDate = c.BirkingDate
 	}
 	return res
@@ -250,7 +256,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// ========================= Filter by inbrinding coeff by date of genotyping =========================
 		// ====================================================================================================
-		if bodyData.GenotypingDateFrom != nil && bodyData.GenotypingDateTo != nil {
+		if bodyData.GenotypingDateFrom != nil && bodyData.GenotypingDateTo != nil &&
+		 *bodyData.GenotypingDateFrom != "" && *bodyData.GenotypingDateTo != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
@@ -264,14 +271,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.result_date BETWEEN ? AND ?)",
 				bdFrom,
 				bdTo).Preload("Genetic")
-		} else if bodyData.GenotypingDateFrom != nil {
+		} else if bodyData.GenotypingDateFrom != nil && *bodyData.GenotypingDateFrom != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.result_date >= ?)", bdFrom.UTC()).Preload("Genetic")
-		} else if bodyData.GenotypingDateTo != nil {
+		} else if bodyData.GenotypingDateTo != nil && *bodyData.GenotypingDateTo != ""{
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -297,7 +304,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// =================================== Filter by brithday date ========================================
 		// ====================================================================================================
-		if bodyData.BirthDateFrom != nil && bodyData.BirthDateTo != nil {
+		if bodyData.BirthDateFrom != nil && bodyData.BirthDateTo != nil && 
+		*bodyData.BirthDateFrom != "" && *bodyData.BirthDateTo != ""{
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirthDateFrom)
 			if err != nil {
 				c.JSON(422, err)
@@ -309,14 +317,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 				return
 			}
 			query = query.Where("birth_date BETWEEN ? AND ?", bdFrom.UTC(), bdTo.UTC())
-		} else if bodyData.BirthDateFrom != nil {
+		} else if bodyData.BirthDateFrom != nil && *bodyData.BirthDateFrom != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirthDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("birth_date >= ?", bdFrom.UTC())
-		} else if bodyData.BirthDateTo != nil {
+		} else if bodyData.BirthDateTo != nil && *bodyData.BirthDateTo != ""{
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.BirthDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -328,7 +336,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// ================================ Filter by departation date ========================================
 		// ====================================================================================================
-		if bodyData.DepartDateFrom != nil && bodyData.DepartDateTo != nil {
+		if bodyData.DepartDateFrom != nil && bodyData.DepartDateTo != nil && 
+		*bodyData.DepartDateFrom != "" && *bodyData.DepartDateTo != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.DepartDateFrom)
 			if err != nil {
 				c.JSON(422, err)
@@ -340,14 +349,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 				return
 			}
 			query = query.Where("depart_date BETWEEN ? AND ?", bdFrom.UTC(), bdTo.UTC())
-		} else if bodyData.DepartDateFrom != nil {
+		} else if bodyData.DepartDateFrom != nil && *bodyData.DepartDateFrom != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.DepartDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("depart_date >= ?", bdFrom.UTC())
-		} else if bodyData.DepartDateTo != nil {
+		} else if bodyData.DepartDateTo != nil && *bodyData.DepartDateTo != ""{
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.DepartDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -359,7 +368,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// ============================ Filter by control milking date ========================================
 		// ====================================================================================================
-		if bodyData.ControlMilkingDateFrom != nil && bodyData.ControlMilkingDateTo != nil {
+		if bodyData.ControlMilkingDateFrom != nil && bodyData.ControlMilkingDateTo != nil &&
+		*bodyData.ControlMilkingDateFrom != "" && *bodyData.ControlMilkingDateTo != ""{
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
@@ -371,14 +381,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 				return
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date BETWEEN ? AND ?))", bdFrom.UTC(), bdTo.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
-		} else if bodyData.ControlMilkingDateFrom != nil {
+		} else if bodyData.ControlMilkingDateFrom != nil && *bodyData.ControlMilkingDateFrom != ""{
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
-		} else if bodyData.ControlMilkingDateTo != nil {
+		} else if bodyData.ControlMilkingDateTo != nil && *bodyData.ControlMilkingDateTo != "" {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -390,7 +400,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// ==================================== Filter by calving date ========================================
 		// ====================================================================================================
-		if bodyData.CalvingDateFrom != nil && bodyData.CalvingDateTo != nil {
+		if bodyData.CalvingDateFrom != nil && bodyData.CalvingDateTo != nil &&
+		*bodyData.CalvingDateFrom != "" && *bodyData.CalvingDateTo != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.CalvingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
@@ -402,14 +413,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 				return
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date BETWEEN ? AND ?)", bdFrom.UTC(), bdTo.UTC()).Preload("Lactation")
-		} else if bodyData.CalvingDateFrom != nil {
+		} else if bodyData.CalvingDateFrom != nil && *bodyData.CalvingDateFrom != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.CalvingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC()).Preload("Lactation")
-		} else if bodyData.CalvingDateTo != nil {
+		} else if bodyData.CalvingDateTo != nil && *bodyData.CalvingDateTo != ""{
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.CalvingDateTo)
 			if err != nil {
 				c.JSON(422, err)
@@ -449,7 +460,8 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		// ===================================  Filter by birinkg date ========================================
 		// ====================================================================================================
-		if bodyData.BirkingDateFrom != nil && bodyData.BirkingDateTo != nil {
+		if bodyData.BirkingDateFrom != nil && bodyData.BirkingDateTo != nil &&
+		*bodyData.BirkingDateFrom != "" && *bodyData.BirkingDateTo != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirkingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
@@ -461,14 +473,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 				return
 			}
 			query = query.Where("birking_date BETWEEN ? AND ?", bdFrom, bdTo)
-		} else if bodyData.BirkingDateFrom != nil {
+		} else if bodyData.BirkingDateFrom != nil && *bodyData.BirkingDateFrom != "" {
 			bdFrom, err := time.Parse(time.DateOnly, *bodyData.BirkingDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
 			query = query.Where("birking_date >= ?", bdFrom)
-		} else if bodyData.BirkingDateTo != nil {
+		} else if bodyData.BirkingDateTo != nil && *bodyData.BirkingDateTo != "" {
 			bdTo, err := time.Parse(time.DateOnly, *bodyData.BirkingDateTo)
 			if err != nil {
 				c.JSON(422, err)
