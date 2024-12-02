@@ -25,10 +25,15 @@ definitions:
       genotyped:
         example: true
         type: boolean
+      genotypingDate:
+        $ref: '#/definitions/models.DateOnly'
       id:
         example: 123
         type: integer
       inbrindingCoeffByFamily:
+        example: 3.14
+        type: number
+      inbrindingCoeffByGenotype:
         example: 3.14
         type: number
       insemenationDate:
@@ -38,6 +43,10 @@ definitions:
       inventoryNumber:
         example: "321"
         type: string
+      monogeneticIllneses:
+        items:
+          $ref: '#/definitions/models.GeneticIllness'
+        type: array
       name:
         example: Буренка
         type: string
@@ -223,11 +232,11 @@ definitions:
         description: Фильтр по оценке экстерьера коровы, будет переработан
         type: number
       genotypingDateFrom:
-        description: ??? Не реализован
+        description: фильтр по дате генотипирования ОТ
         example: "1800-01-21"
         type: string
       genotypingDateTo:
-        description: ??? Не реализован
+        description: фильтр по дате генотипирования ДО
         example: "2800-01-21"
         type: string
       hozId:
@@ -236,19 +245,19 @@ definitions:
         type: integer
       inbrindingCoeffByFamilyFrom:
         default: 3.14
-        description: Не реализован
+        description: фильтр по коэф. инбриндинга по роду ОТ
         type: number
       inbrindingCoeffByFamilyTo:
         default: 3.14
-        description: Не реализован
+        description: фильтр по коэф. инбриндинга по роду ДО
         type: number
-      inbrindingCoeffByFenotypeFrom:
+      inbrindingCoeffByGenotypeFrom:
         default: 3.14
-        description: ?Не реализован
+        description: фильтр по коэф. инбриндинга по генотипу ОТ
         type: number
-      inbrindingCoeffByFenotypeTo:
+      inbrindingCoeffByGenotypeTo:
         default: 3.14
-        description: ?Не реализован
+        description: фильтр по коэф. инбриндинга по генотипу ДО
         type: number
       inseminationDateFrom:
         description: Фильтр по дате осеменения коровы, ищет коров у которых было осеменение
@@ -281,7 +290,7 @@ definitions:
         description: Фильтр по родам двойняшек Было / не было
         type: boolean
       monogeneticIllneses:
-        description: ?Не реализован
+        description: ID ген. заболеваний их /api/mongenetic_illnesses
         items:
           type: integer
         type: array
@@ -524,7 +533,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: localhost
+host: genmilk.ru
 info:
   contact:
     email: support@swagger.io
@@ -538,6 +547,57 @@ info:
   title: GenMilk API
   version: "1.0"
 paths:
+  /analitics/genotyped/{year}/regions:
+    get:
+      description: Возращает словарь регион - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                type: integer
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+  /analitics/genotyped/years:
+    get:
+      description: Возращает словарь год - количеств генотипированных коров, по ключу
+        -1 генотипированные за все годы
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                type: integer
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
   /breeds:
     get:
       description: Возращает список всех пород. Разрешает отсутсвие фильтров
@@ -933,6 +993,26 @@ paths:
       summary: Get list of farms
       tags:
       - Lactations
+  /monogenetic_illnesses:
+    get:
+      description: Возращает список генетических заболеваний
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.GeneticIllness'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of monogenetic illnesses
+      tags:
+      - MonogeneticIllnessses
   /regions:
     get:
       description: Возращает все регионы

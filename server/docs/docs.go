@@ -24,6 +24,81 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/analitics/genotyped/years": {
+            "get": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/genotyped/{year}/regions": {
+            "get": {
+                "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/breeds": {
             "get": {
                 "description": "Возращает список всех пород. Разрешает отсутсвие фильтров",
@@ -615,6 +690,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/monogenetic_illnesses": {
+            "get": {
+                "description": "Возращает список генетических заболеваний",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "MonogeneticIllnessses"
+                ],
+                "summary": "Get list of monogenetic illnesses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.GeneticIllness"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/regions": {
             "get": {
                 "description": "Возращает все регионы",
@@ -758,11 +863,18 @@ const docTemplate = `{
                     "type": "boolean",
                     "example": true
                 },
+                "genotypingDate": {
+                    "$ref": "#/definitions/models.DateOnly"
+                },
                 "id": {
                     "type": "integer",
                     "example": 123
                 },
                 "inbrindingCoeffByFamily": {
+                    "type": "number",
+                    "example": 3.14
+                },
+                "inbrindingCoeffByGenotype": {
                     "type": "number",
                     "example": 3.14
                 },
@@ -775,6 +887,12 @@ const docTemplate = `{
                 "inventoryNumber": {
                     "type": "string",
                     "example": "321"
+                },
+                "monogeneticIllneses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GeneticIllness"
+                    }
                 },
                 "name": {
                     "type": "string",
@@ -1009,12 +1127,12 @@ const docTemplate = `{
                     "default": 3.14
                 },
                 "genotypingDateFrom": {
-                    "description": "??? Не реализован",
+                    "description": "фильтр по дате генотипирования ОТ",
                     "type": "string",
                     "example": "1800-01-21"
                 },
                 "genotypingDateTo": {
-                    "description": "??? Не реализован",
+                    "description": "фильтр по дате генотипирования ДО",
                     "type": "string",
                     "example": "2800-01-21"
                 },
@@ -1024,22 +1142,22 @@ const docTemplate = `{
                     "example": 1
                 },
                 "inbrindingCoeffByFamilyFrom": {
-                    "description": "Не реализован",
+                    "description": "фильтр по коэф. инбриндинга по роду ОТ",
                     "type": "number",
                     "default": 3.14
                 },
                 "inbrindingCoeffByFamilyTo": {
-                    "description": "Не реализован",
+                    "description": "фильтр по коэф. инбриндинга по роду ДО",
                     "type": "number",
                     "default": 3.14
                 },
-                "inbrindingCoeffByFenotypeFrom": {
-                    "description": "?Не реализован",
+                "inbrindingCoeffByGenotypeFrom": {
+                    "description": "фильтр по коэф. инбриндинга по генотипу ОТ",
                     "type": "number",
                     "default": 3.14
                 },
-                "inbrindingCoeffByFenotypeTo": {
-                    "description": "?Не реализован",
+                "inbrindingCoeffByGenotypeTo": {
+                    "description": "фильтр по коэф. инбриндинга по генотипу ДО",
                     "type": "number",
                     "default": 3.14
                 },
@@ -1079,7 +1197,7 @@ const docTemplate = `{
                     "default": false
                 },
                 "monogeneticIllneses": {
-                    "description": "?Не реализован",
+                    "description": "ID ген. заболеваний их /api/mongenetic_illnesses",
                     "type": "array",
                     "items": {
                         "type": "integer"
@@ -1445,7 +1563,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost",
+	Host:             "genmilk.ru",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",

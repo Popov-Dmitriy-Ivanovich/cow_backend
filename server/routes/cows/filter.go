@@ -23,8 +23,8 @@ type cowsFilter struct { // Фильтр коров
 	DepartDateFrom         *string `example:"1800-01-21" validate:"optional"` //Фильтр по дате открепления коровы ищет всех коров открепленных от коровника в эту дату или позднее
 	DepartDateTo           *string `example:"2800-01-21" validate:"optional"` //Фильтр по дате открепления коровы ищет всех коров открепленных от коровника в эту дату или раньше
 	BreedId                []uint  //Фильтр по ID пород несколько ID пород - возращает всех коров, ID пород которых в списке
-	GenotypingDateFrom     *string `example:"1800-01-21" validate:"optional"` //??? Не реализован
-	GenotypingDateTo       *string `example:"2800-01-21" validate:"optional"` //??? Не реализован
+	GenotypingDateFrom     *string `example:"1800-01-21" validate:"optional"` //фильтр по дате генотипирования ОТ
+	GenotypingDateTo       *string `example:"2800-01-21" validate:"optional"` //фильтр по дате генотипирования ДО
 	ControlMilkingDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате контрольной дойки, ищет коров у которых была контрольная дойка в эту дату или позднее
 	ControlMilkingDateTo   *string `example:"2800-01-21" validate:"optional"` // Фильтр по дате контрольной дойки, ищет коров у которых была контрольная дойка в эту дату или ранее
 
@@ -40,35 +40,38 @@ type cowsFilter struct { // Фильтр коров
 	BirkingDateFrom      *string  `example:"1800-01-21" validate:"optional"` // Фильтр по дате перебирковки коровы, ищет коров у которых быа перебирковка в эту дату или позднее
 	BirkingDateTo        *string  `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых была перебирковка в эту дату или позднее
 
-	InbrindingCoeffByFamilyFrom *float64 `default:"3.14" validate:"optional"` // Не реализован
-	InbrindingCoeffByFamilyTo   *float64 `default:"3.14" validate:"optional"` // Не реализован
+	InbrindingCoeffByFamilyFrom *float64 `default:"3.14" validate:"optional"` // фильтр по коэф. инбриндинга по роду ОТ
+	InbrindingCoeffByFamilyTo   *float64 `default:"3.14" validate:"optional"` // фильтр по коэф. инбриндинга по роду ДО
 
-	InbrindingCoeffByFenotypeFrom *float64 `default:"3.14" validate:"optional"` //?Не реализован
-	InbrindingCoeffByFenotypeTo   *float64 `default:"3.14" validate:"optional"` //?Не реализован
+	InbrindingCoeffByGenotypeFrom *float64 `default:"3.14" validate:"optional"` //фильтр по коэф. инбриндинга по генотипу ОТ
+	InbrindingCoeffByGenotypeTo   *float64 `default:"3.14" validate:"optional"` //фильтр по коэф. инбриндинга по генотипу ДО
 
-	MonogeneticIllneses []uint //?Не реализован
+	MonogeneticIllneses []uint // ID ген. заболеваний их /api/mongenetic_illnesses
 }
 
 type FilterSerializedCow struct {
-	ID 						uint			   `validate:"required" example:"123"`
-	RSHNNumber              *string            `validate:"required" example:"123"`
-	InventoryNumber         *string            `validate:"required" example:"321"`
-	Name                    string            `validate:"required" example:"Буренка"`
-	FarmGroupName           string            `validate:"required" example:"ООО Аурус"`
-	BirthDate               models.DateOnly   `validate:"required"`
-	Genotyped               bool              `validate:"required" example:"true"`
-	DepartDate              *models.DateOnly  `json:",omitempty" validate:"optional"`
-	BreedName               *string           `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
-	CheckMilkDate           []models.DateOnly `json:",omitempty" validate:"optional"`
-	InsemenationDate        []models.DateOnly `json:",omitempty" validate:"optional"`
-	CalvingDate             []models.DateOnly `json:",omitempty" validate:"optional"`
-	BirkingDate             *models.DateOnly  `json:",omitempty" validate:"optional"`
-	InbrindingCoeffByFamily *float64          `json:",omitempty" validate:"optional" example:"3.14"`
+	ID                        uint                    `validate:"required" example:"123"`
+	RSHNNumber                *string                 `validate:"required" example:"123"`
+	InventoryNumber           *string                 `validate:"required" example:"321"`
+	Name                      string                  `validate:"required" example:"Буренка"`
+	FarmGroupName             string                  `validate:"required" example:"ООО Аурус"`
+	BirthDate                 models.DateOnly         `validate:"required"`
+	Genotyped                 bool                    `validate:"required" example:"true"`
+	DepartDate                *models.DateOnly        `json:",omitempty" validate:"optional"`
+	BreedName                 *string                 `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
+	CheckMilkDate             []models.DateOnly       `json:",omitempty" validate:"optional"`
+	InsemenationDate          []models.DateOnly       `json:",omitempty" validate:"optional"`
+	CalvingDate               []models.DateOnly       `json:",omitempty" validate:"optional"`
+	BirkingDate               *models.DateOnly        `json:",omitempty" validate:"optional"`
+	GenotypingDate            *models.DateOnly        `json:",omitempty" validate:"optional"`
+	InbrindingCoeffByFamily   *float64                `json:",omitempty" validate:"optional" example:"3.14"`
+	InbrindingCoeffByGenotype *float64                `json:",omitempty" validate:"optional" example:"3.14"`
+	MonogeneticIllneses       []models.GeneticIllness `json:",omitempty" validate:"optional"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	res := FilterSerializedCow{
-		ID: c.ID,
+		ID:              c.ID,
 		RSHNNumber:      c.RSHNNumber,
 		InventoryNumber: c.InventoryNumber,
 		Name:            c.Name,
@@ -84,6 +87,15 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	}
 	if filter.InbrindingCoeffByFamilyFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
 		res.InbrindingCoeffByFamily = c.InbrindingCoeffByFamily
+	}
+	if filter.InbrindingCoeffByGenotypeFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
+		res.InbrindingCoeffByGenotype = &c.Genetic.InbrindingCoeffByGenotype
+	}
+	if filter.GenotypingDateFrom != nil || filter.GenotypingDateTo != nil {
+		res.GenotypingDate = &c.Genetic.ResultDate
+	}
+	if len(filter.MonogeneticIllneses) != 0 {
+		res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
 	}
 	if filter.ControlMilkingDateFrom != nil || filter.ControlMilkingDateTo != nil {
 		for _, lactation := range c.Lactation {
@@ -225,8 +237,58 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("breed_id in ?", bodyData.BreedId).Preload("Breed")
 		}
 
+		if len(bodyData.MonogeneticIllneses) != 0 {
+			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND EXISTS (SELECT 1 FROM genetic_genetic_illnesses WHERE genetic_genetic_illnesses.genetic_id = genetics.id AND genetic_illness_id IN ?) )", bodyData.MonogeneticIllneses).Preload("Genetic").Preload("Genetic.GeneticIllnesses")
+		}
 		if bodyData.IsDead != nil && *bodyData.IsDead {
 			query = query.Where("death_date IS NOT NULL")
+		}
+
+		// ====================================================================================================
+		// ========================= Filter by inbrinding coeff by date of genotyping =========================
+		// ====================================================================================================
+		if bodyData.GenotypingDateFrom != nil && bodyData.GenotypingDateTo != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.result_date BETWEEN ? AND ?)",
+				bdFrom,
+				bdTo).Preload("Genetic")
+		} else if bodyData.GenotypingDateFrom != nil {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.result_date >= ?)", bdFrom.UTC()).Preload("Genetic")
+		} else if bodyData.GenotypingDateTo != nil {
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.result_date <= ?)", bdTo.UTC()).Preload("Genetic")
+		}
+		// ====================================================================================================
+		// =================================== Filter by inbrinding coeff by genotype =========================
+		// ====================================================================================================
+		if bodyData.InbrindingCoeffByGenotypeFrom != nil && bodyData.InbrindingCoeffByGenotypeTo != nil {
+			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.inbrinding_coeff_by_genotype BETWEEN ? AND ?)",
+				bodyData.InbrindingCoeffByGenotypeFrom,
+				bodyData.InbrindingCoeffByGenotypeTo).Preload("Genetic")
+		} else if bodyData.InbrindingCoeffByGenotypeFrom != nil {
+			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.inbrinding_coeff_by_genotype >= ?)",
+				bodyData.InbrindingCoeffByGenotypeFrom).Preload("Genetic")
+		} else if bodyData.InbrindingCoeffByGenotypeTo != nil {
+			query = query.Where("EXISTS( SELECT 1 FROM genetics where genetics.cow_id = cows.id AND genetics.inbrinding_coeff_by_genotype >= ?)",
+				bodyData.InbrindingCoeffByGenotypeTo).Preload("Genetic")
 		}
 
 		// ====================================================================================================

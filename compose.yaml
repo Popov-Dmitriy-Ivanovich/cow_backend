@@ -89,7 +89,7 @@ services:
     build: frontend
     ports:
       - 80:80
-      - 433:433
+      - 443:443
     networks:
       - cow_backend
 

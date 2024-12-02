@@ -3,6 +3,7 @@ package main
 import (
 	"cow_backend/models"
 	"cow_backend/routes"
+	"cow_backend/routes/analitics"
 	"cow_backend/routes/breeds"
 	checkmilks "cow_backend/routes/check_milks"
 	"cow_backend/routes/cows"
@@ -10,6 +11,7 @@ import (
 	"cow_backend/routes/districts"
 	"cow_backend/routes/farms"
 	"cow_backend/routes/lactations"
+	"cow_backend/routes/monogenetic_illnesses"
 	"cow_backend/routes/regions"
 	"cow_backend/routes/sexes"
 	"fmt"
@@ -53,7 +55,7 @@ func main() {
 
 	r := gin.Default()
 	apiGroup := r.Group("/api")
-	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{}, &cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{})
+	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{}, &cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{}, &monogenetic_illnesses.MonogeneticIllneses{})
 
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()
