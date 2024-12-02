@@ -425,21 +425,21 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 0).Preload("Lactation")
 		}
 		if bodyData.IsStillBorn != nil && !*bodyData.IsStillBorn { // stillborn means, that 0 cows are born
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count != ?)", 0).Preload("Lactation")
+			query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 0).Preload("Lactation")
 		}
 
 		if bodyData.IsTwins != nil && *bodyData.IsTwins { // twins means, that 2 cows are born
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 2).Preload("Lactation")
 		}
 		if bodyData.IsTwins != nil && !*bodyData.IsTwins { // twins means, that 2 cows are born
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count != ?)", 2).Preload("Lactation")
+			query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_count = ?)", 2).Preload("Lactation")
 		}
 
 		if bodyData.IsAborted != nil && *bodyData.IsAborted { // abort is marked by flag for some reason
 			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
 		}
 		if bodyData.IsAborted != nil && !*bodyData.IsAborted { // abort is marked by flag for some reason
-			query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", false).Preload("Lactation")
+			query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
 		}
 
 		if bodyData.Exterior != nil {
