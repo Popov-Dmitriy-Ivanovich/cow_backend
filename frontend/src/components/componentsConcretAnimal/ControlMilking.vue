@@ -103,10 +103,10 @@ export default {
         }
 
         try {
-            this.count_lactations.push(this.cow_info[0]['LactationId']);
+            this.count_lactations.push(this.cow_info[0]['LactationNumber']);
             for (let i = 1; i < this.cow_info.length; i++) {
-                if (this.cow_info[i]['LactationId'] !== this.cow_info[i-1]['LactationId']) {
-                    this.count_lactations.push(this.cow_info[i]['LactationId']);
+                if (this.cow_info[i]['LactationNumber'] !== this.cow_info[i-1]['LactationNumber']) {
+                    this.count_lactations.push(this.cow_info[i]['LactationNumber']);
                 }
             }
         } catch(err) {
@@ -122,7 +122,7 @@ export default {
         addInArr(obj, arr, param, nlact) {
             for (let i=0; i<obj.length; i++) {
                 for (let j=0; j<nlact.length; j++) {
-                    if(nlact[j] === obj[i].LactationId) {
+                    if(nlact[j] === obj[i].LactationNumber) {
                         arr.push(obj[i][param]);
                     }
                 }
@@ -136,7 +136,7 @@ export default {
                     data: []
                 };
                 for (let j = 0; j < obj.length; j++) {
-                    if (obj[j].LactationId === nlact[i]) {
+                    if (obj[j].LactationNumber === nlact[i]) {
                         serie.data.push(obj[j][param]);
                     }
                 }

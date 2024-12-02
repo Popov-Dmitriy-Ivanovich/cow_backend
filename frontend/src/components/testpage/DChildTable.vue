@@ -88,7 +88,7 @@ export default {
         this.isLoadingChild = true;
         let search_params = this.filters;
         search_params.sex = [1,2];
-        search_params.npage = 1;
+        search_params.pageNumber = 1;
         const response = await fetch('/api/cows/filter', {            
             method: 'POST',
             headers: {
@@ -111,7 +111,7 @@ export default {
             if(!this.isSearch) {
                 let search_params = {};
                 search_params.sex = [1,2];
-                search_params.npage = newValue;
+                search_params.pageNumber = newValue;
                 const response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
@@ -121,6 +121,7 @@ export default {
                 });
                 const res_animals = await response.json();
                 this.animals = res_animals.LST;
+                console.log(response);
             } else {
                 this.$emit('changePageButSearch', newValue);
             }
