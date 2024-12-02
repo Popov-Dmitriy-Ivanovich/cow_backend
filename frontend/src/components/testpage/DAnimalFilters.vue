@@ -168,12 +168,14 @@ export default {
             this.filters.hozId = hozid;
         },
         setIdBreed(breedid) {
-            this.filters.breedId = [breedid];
+            if(breedid) this.filters.breedId = [breedid];
+            else this.filters.breedId = breedid;
             
         },
         setIdIllness(illid) {
-            this.filters.monogeneticIllneses = [illid];
-        }
+            if (illid) this.filters.monogeneticIllneses = [illid];
+            else this.filters.monogeneticIllneses = illid;
+        },
     }
 }
 </script>

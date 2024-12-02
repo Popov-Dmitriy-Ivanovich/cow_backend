@@ -36,6 +36,7 @@
             v-bind:filters="animal_filters"
             @defPages="setPages"
             @changePageButSearch="changePage"
+            v-bind:isLoading="isLoading"
             /> 
             
             <DBullsTable 
@@ -48,6 +49,7 @@
             v-bind:filters="animal_filters"
             @defPages="setPages"
             @changePageButSearch="changePage"
+            v-bind:isLoading="isLoading"
             />
 
             <DChildTable 
@@ -60,6 +62,7 @@
             v-bind:filters="animal_filters"
             @defPages="setPages"
             @changePageButSearch="changePage"
+            v-bind:isLoading="isLoading"
             />
         </div>
     </div>
@@ -89,11 +92,15 @@ export default {
             current_page: 1,
             total_pages: 1,
             animal_filters: {},
+
+            isLoading: false,
         }
     },
     methods: {
         async searchCowsOrBulls() {
             try {
+                this.isLoading = true;
+                console.log(this.isLoading);
                 this.current_page = 1;
 
                 this.searching_animal = [];
@@ -136,9 +143,12 @@ export default {
                 if(this.isBulls) this.search_error_bulls = true;
                 if(this.isChild) this.search_error_child = true;
             }
+            this.isLoading = false;
+            console.log(this.isLoading);
         },
         async findAnimals(filters){
             try {
+                this.isLoading = true;
                 this.current_page = 1;
                 this.search = true;
                 this.searching_animal = [];
@@ -182,8 +192,10 @@ export default {
                 if(this.isBulls) this.search_error_bulls = true;
                 if(this.isChild) this.search_error_child = true;
             }
+            this.isLoading = false;
         },
         async changePage(newVal) {
+            this.isLoading = true;
             this.current_page = newVal;
             this.current_filters.pageNumber = newVal;
 
@@ -196,6 +208,7 @@ export default {
                 });
             let result = await response.json();
             this.searching_animal = result.LST;
+            this.isLoading = false;
         },
         setPages(npage, total) {
             this.current_page = npage;
@@ -209,7 +222,7 @@ export default {
             this.isBulls = true;
             this.search = false;
             this.search_error_bulls = false;
-            document.getElementById('search-animals').value = '';
+            // document.getElementById('search-animals').value = '';
         },
         cowsClick() {
             console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
@@ -219,7 +232,7 @@ export default {
             this.isBulls = false;
             this.search = false;
             this.search_error_cows = false;
-            document.getElementById('search-animals').value = '';
+            // document.getElementById('search-animals').value = '';
         },
         childClick() {
             console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
@@ -227,9 +240,9 @@ export default {
             this.isCows = false;
             this.isChild = true;
             this.isBulls = false;
-            this.isSearch = false;
+            this.search = false;
             this.search_error_child = false;
-            document.getElementById('search-animals').value = '';
+            // document.getElementById('search-animals').value = '';
         }
     }
 }

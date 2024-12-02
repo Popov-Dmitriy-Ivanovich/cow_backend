@@ -7,14 +7,14 @@
             <div class="animal-hoz">{{ animal_item.FarmGroupName }}</div>
             <div class="animal-bdate">{{ bdate(animal_item.BirthDate) }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.genotyped) }}</div>
-            <!-- <div v-if="animal_item.DepartDate" class="animal-dateout">{{ animal_item.DepartDate }}</div>
-            <div v-if="animal_item.BreedName" class="animal-breed">{{ animal_item.BreedName }}</div> -->
-            <!-- <div v-if="filters.genotypingDateFrom || genotypingDateTo" class="animal-dategen">{{ animal_item.D_GEN }}</div> -->
-            <!-- <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
+            <div v-if="animal_item.DepartDate" class="animal-dateout">{{ animal_item.DepartDate }}</div>
+            <div v-if="animal_item.BreedName" class="animal-breed">{{ animal_item.BreedName }}</div>
+            <div v-if="filters.GenotypingDate" class="animal-dategen">{{ animal_item.D_GEN }}</div>
+            <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
             <div v-if="animal_item.insemenationDate" class="animal-dateosem">{{ animal_item.animal_item.insemenationDate }}</div>
             <div v-if="animal_item.CalvingDate" class="animal-dateotel">{{ animal_item.calvingDate }}</div>
             <div v-if="animal_item.BirkingDate" class="animal-datebirk">{{ animal_item.Birkingdate }}</div>
-            <div v-if="animal_item.InbrindingCoeffByFamily" class="animal-krod">{{ animal_item.InbrindingCoeffByFamily }}</div> -->
+            <div v-if="animal_item.InbrindingCoeffByFamily" class="animal-krod">{{ animal_item.InbrindingCoeffByFamily }}</div>
             <!-- <div v-if="animal_item." class="animal-kfen">{{ animal_item.INBRID_FENOTYPE }}</div> -->
         </div>
     </div>

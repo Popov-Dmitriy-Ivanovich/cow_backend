@@ -30,7 +30,7 @@ export default {
         const breeds = await response.json();
         for (let i = 0; i < breeds.length; i++) {
             let breed = {name: breeds[i].Name, id: breeds[i].ID};
-            this.options.push(breed);
+            this.options.push(breed); 
         }
     },
 }

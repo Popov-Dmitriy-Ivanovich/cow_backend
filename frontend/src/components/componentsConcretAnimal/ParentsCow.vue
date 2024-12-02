@@ -14,7 +14,7 @@
         <div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по родословной</div>
-                <!-- <div>{{ cow_info.InbrindingCoeffByFamily }}</div> -->
+                <div>{{ cow_info.InbrindingCoeffByFamily }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по генотипу</div>
@@ -37,16 +37,17 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
+        console.log(this.cow_info);
     },
     methods: {
         clickFather() {
-            if (this.cow_info.ID_OTCA) {
-                this.$router.push(`/animals/${this.cow_info.ID_OTCA}`)
+            if (this.cow_info.Father.ID) {
+                this.$router.push(`/animals/${this.cow_info.Father.ID}`)
             }
         },
         clickMother() {
-            if (this.cow_info.ID_MATERI) {
-                this.$router.push(`/animals/${this.cow_info.ID_MATERI}`)
+            if (this.cow_info.Mother.ID) {
+                this.$router.push(`/animals/${this.cow_info.Mother.ID}`)
             }
         }
     }
