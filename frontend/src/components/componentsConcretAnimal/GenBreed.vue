@@ -4,15 +4,15 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">№ образца</div>
-                <div></div>
+                <div>{{ genetic.ProbeNumber }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Статус генотипирования</div>
-                <div></div>
+                <div>{{ genetic.status }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Дата генотипирования</div>
-                <div></div>
+                <div>{{ genetic.ResultDate }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Порода</div>
@@ -27,6 +27,7 @@ export default {
     data() {
         return {
             cow_info: {},
+            genetic: {},
         }
     },
     methods: {
@@ -41,6 +42,11 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
+        let response1 = await fetch(`/api/cows/${cow_id}/genetic`);
+        let result1 = await response1.json();
+        this.genetic = result1;
+        if(this.genetic.ResultDate) this.genetic.status = 'Да';
+        else this.genetic.status = 'Нет'
     },
 }
 </script>

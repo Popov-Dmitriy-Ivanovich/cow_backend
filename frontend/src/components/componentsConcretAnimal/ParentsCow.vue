@@ -4,11 +4,11 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">Отец</div>
-                <!-- <div @click="clickFather" class="link-parent">{{ cow_info.Father.Name }}</div> -->
+                <div @click="clickFather" class="link-parent">{{ father.Name }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Мать</div>
-                <!-- <div @click="clickMother" class="link-parent">{{ cow_info.Mother.Name }}</div> -->
+                <div @click="clickMother" class="link-parent">{{ mother.Name }}</div>
             </div>
         </div>
         <div>
@@ -18,7 +18,7 @@
             </div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по генотипу</div>
-                <div></div>
+                <div>{{ genetic.InbrindingCoeffByGenotype }}</div>
             </div>
         </div>
     </div>
@@ -29,6 +29,9 @@ export default {
     data() {
         return {
             cow_info: {},
+            mother: {},
+            father: {},
+            genetic: {},
         }
     },
     async created() {
@@ -37,6 +40,9 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
+        this.mother = this.cow_info.Mother;
+        this.father = this.cow_info.Father;
+        this.genetic = this.cow_info.Genetic;
         console.log(this.cow_info);
     },
     methods: {
