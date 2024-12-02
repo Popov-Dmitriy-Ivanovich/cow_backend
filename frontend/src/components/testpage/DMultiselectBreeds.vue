@@ -26,10 +26,10 @@ export default {
     },
     async created() {
         this.options = [];
-        const response = await fetch('https://genmilk.ru:9050/api/breeds');
+        const response = await fetch('/api/breeds');
         const breeds = await response.json();
         for (let i = 0; i < breeds.length; i++) {
-            let breed = {name: breeds[i][1], id: breeds[i][0]};
+            let breed = {name: breeds[i].Name, id: breeds[i].ID};
             this.options.push(breed);
         }
     },

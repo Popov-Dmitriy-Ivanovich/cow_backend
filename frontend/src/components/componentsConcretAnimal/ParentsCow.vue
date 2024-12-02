@@ -4,21 +4,21 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">Отец</div>
-                <div @click="clickFather" class="link-parent">{{ cow_info.NAME_OTCA }}</div>
+                <!-- <div @click="clickFather" class="link-parent">{{ cow_info.Father.Name }}</div> -->
             </div>
             <div class="item-block">
                 <div class="id-min-title">Мать</div>
-                <div @click="clickMother" class="link-parent">{{ cow_info.NAME_MATERI }}</div>
+                <!-- <div @click="clickMother" class="link-parent">{{ cow_info.Mother.Name }}</div> -->
             </div>
         </div>
         <div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по родословной</div>
-                <div>{{ cow_info.K_INBR_ROD }}</div>
+                <!-- <div>{{ cow_info.InbrindingCoeffByFamily }}</div> -->
             </div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по генотипу</div>
-                <div>{{ cow_info.K_INBR_GEN }}</div>
+                <div></div>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`https://genmilk.ru:9050/api/cow_common?ID_COW=${cow_id}`);
+        let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
     },

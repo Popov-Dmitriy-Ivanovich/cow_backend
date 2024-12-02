@@ -4,19 +4,19 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">№ образца</div>
-                <div>{{ cow_info.GEN_N }}</div>
+                <div></div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Статус генотипирования</div>
-                <div>{{ true_false(cow_info.GEN_STAT) }}</div>
+                <div></div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Дата генотипирования</div>
-                <div>{{  cow_info.D_GEN }}</div>
+                <div></div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Порода</div>
-                <div>{{ cow_info.BREED }}</div>
+                <div>{{ cow_info.BreedName }}</div>
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`https://genmilk.ru:9050/api/cow_common?ID_COW=${cow_id}`);
+        let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
     },

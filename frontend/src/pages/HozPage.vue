@@ -24,7 +24,7 @@ export default {
         }
     },
     async created() {
-        const response = await fetch ('https://genmilk.ru:9050/api/holdings?ID_FARMER=1');
+        const response = await fetch ('/api/farms');
         const res_farms = await response.json();
         this.farms = res_farms;
     }

@@ -2,10 +2,10 @@
 <div class="hoz-item">
     <div class="hoz-text">
         <div class="hoz-title"> 
-            {{ farm_item[4] }}
+            {{ farm_item.Name }}
         </div>
         <div class="hoz-description">
-            {{ farm_item[11] }}
+            {{ farm_item.Description }}
         </div>
     </div>
 </div>
@@ -15,7 +15,7 @@
 export default {
     props: {
         farm_item: {
-            type: Array,
+            type: Object,
             Required: true,
         }
     }

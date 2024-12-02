@@ -4,11 +4,11 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">Инвентарный номер</div>
-                <div>{{ cow_info.NINV }}</div>
+                <div>{{ cow_info.InventoryNumber }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">ID Селекса</div>
-                <div>{{ cow_info.NSELEKS }}</div>
+                <div>{{ cow_info.SelecsNumber }}</div>
             </div>
             <!-- <div class="item-block">
                 <div class="id-min-title">UN</div>
@@ -16,11 +16,11 @@
             </div> -->
             <div class="item-block">
                 <div class="id-min-title">Хозяйство</div>
-                <div>{{ cow_info.NAMEHOZ }}</div>
+                <div>{{ cow_info.HozHame }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Ферма</div>
-                <div>{{ cow_info.NAMEFARM }}</div>
+                <div>{{ cow_info.FarmName }}</div>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`https://genmilk.ru:9050/api/cow_common?ID_COW=${cow_id}`);
+        let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
     },

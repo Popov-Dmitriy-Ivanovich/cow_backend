@@ -52,9 +52,9 @@ export default {
     },
     async mounted() {
         try {
-            let response = await fetch('https://genmilk.ru:9050/api/last_write')
-            let result = await response.json();
-            this.dateBD = this.dateConverter(result);
+            // let response = await fetch('https://genmilk.ru:9050/api/last_write')
+            // let result = await response.json();
+            // this.dateBD = this.dateConverter(result);
         } catch(err) {
             this.dateBD = '';
         }
