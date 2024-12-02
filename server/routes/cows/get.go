@@ -158,13 +158,20 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 		}
 		rc.Father = &resFather
 	}
+	rc.Cow = cow
 	genetic := &models.Genetic{}
 	if qRes := db.Preload("GeneticIllnesses").Limit(1).Find(genetic, map[string]any{"cow_id": cow.ID}); qRes.Error != nil {
 		return ReserealizedCow{}, qRes.Error
 	} else if qRes.RowsAffected != 0 {
 		rc.Genetic = genetic
 	}
-	rc.Cow = cow
+	exterior := &models.Exterior{}
+	if qRes := db.Limit(1).Find(exterior, map[string]any{"cow_id": cow.ID}); qRes.Error != nil {
+		return ReserealizedCow{}, qRes.Error
+	} else if qRes.RowsAffected != 0 {
+		rc.Exterior = exterior
+	}
+	
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name
 	rc.FarmName = &farm.Name

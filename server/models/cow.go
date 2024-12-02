@@ -23,8 +23,8 @@ type Cow struct {
 	Mother   *Cow  `json:"-"`
 	MotherId *uint `example:"1"` // ID коровы матери коровы
 
-	Genetic *Genetic `json:"-"`
-
+	Genetic *Genetic `json:",omitempty"`
+	Exterior *Exterior `json:",omitempty"`
 	Lactation []Lactation `json:"-"`
 
 	InventoryNumber *string `example:"1213321"`    // Инвентарный номер коровы
@@ -32,7 +32,7 @@ type Cow struct {
 	RSHNNumber      *string `example:"1323323232"` // РСХН номер коровы
 	Name            string  `example:"Дима"`       // Кличка коровы
 
-	Exterior                float64  `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
+	// Exterior                float64  `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
 	InbrindingCoeffByFamily *float64 `example:"3.14"` // Коэф. инбриндинга по роду
 
 	Approved    int       `example:"1"` // Целое число, что-то для админов, чтобы подтверждать коров

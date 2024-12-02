@@ -401,6 +401,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/cows/{id}/exterior": {
+            "get": {
+                "description": "Возращает информацию об экстерьере, null, если нет",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get exterior",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищется экстерьер",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Exterior"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/cows/{id}/genetic": {
             "get": {
                 "description": "Возращает генетическую информацию для коровы, null, если нет",
@@ -855,6 +891,9 @@ const docTemplate = `{
                 "departDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
+                "exteriorRating": {
+                    "type": "number"
+                },
                 "farmGroupName": {
                     "type": "string",
                     "example": "ООО Аурус"
@@ -959,9 +998,7 @@ const docTemplate = `{
                     ]
                 },
                 "exterior": {
-                    "description": "Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
-                    "type": "number",
-                    "example": 3.14
+                    "$ref": "#/definitions/models.Exterior"
                 },
                 "farmGroupId": {
                     "description": "ID хозяйства, которому корова принадлежит",
@@ -1008,7 +1045,7 @@ const docTemplate = `{
                     "example": 1
                 },
                 "inbrindingCoeffByFamily": {
-                    "description": "Коэф. инбриндинга по роду",
+                    "description": "Exterior                float64  ` + "`" + `example:\"3.14\"` + "`" + ` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
                     "type": "number",
                     "example": 3.14
                 },
@@ -1356,6 +1393,110 @@ const docTemplate = `{
             "properties": {
                 "time.Time": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Exterior": {
+            "type": "object",
+            "properties": {
+                "bodyDepth": {
+                    "type": "number"
+                },
+                "bodyStructure": {
+                    "type": "number"
+                },
+                "boneQHockJointRear": {
+                    "type": "number"
+                },
+                "centerLigamentDepth": {
+                    "type": "number"
+                },
+                "chestWidth": {
+                    "type": "number"
+                },
+                "conditioning": {
+                    "type": "number"
+                },
+                "cowID": {
+                    "type": "integer"
+                },
+                "exteriorType": {
+                    "type": "number"
+                },
+                "foreLegPosFront": {
+                    "type": "number"
+                },
+                "foreTeatDiameter": {
+                    "type": "number"
+                },
+                "foreTeatLendth": {
+                    "type": "number"
+                },
+                "foreUdderAttach": {
+                    "type": "number"
+                },
+                "foreUdderPlcRear": {
+                    "type": "number"
+                },
+                "harmonyOfMovement": {
+                    "type": "number"
+                },
+                "heightOfUdderAttach": {
+                    "type": "number"
+                },
+                "hindLegPosRead": {
+                    "type": "number"
+                },
+                "hindLegPosSide": {
+                    "type": "number"
+                },
+                "hindTeatPlc": {
+                    "type": "number"
+                },
+                "hoofAngle": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "limbs": {
+                    "type": "number"
+                },
+                "milkStrength": {
+                    "type": "number"
+                },
+                "pelvicWidth": {
+                    "type": "number"
+                },
+                "prominenceOfMilkVeins": {
+                    "type": "number"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "rearTeatDiameter": {
+                    "type": "number"
+                },
+                "rearTeatLength": {
+                    "type": "number"
+                },
+                "sacrumAngle": {
+                    "type": "number"
+                },
+                "sacrumHeight": {
+                    "type": "number"
+                },
+                "topLine": {
+                    "type": "number"
+                },
+                "udder": {
+                    "type": "number"
+                },
+                "udderBalance": {
+                    "type": "number"
+                },
+                "udderDepth": {
+                    "type": "number"
                 }
             }
         },

@@ -19,6 +19,8 @@ definitions:
         type: array
       departDate:
         $ref: '#/definitions/models.DateOnly'
+      exteriorRating:
+        type: number
       farmGroupName:
         example: ООО Аурус
         type: string
@@ -96,9 +98,7 @@ definitions:
         - $ref: '#/definitions/models.DateOnly'
         description: День отбытия из коровника
       exterior:
-        description: Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
-        example: 3.14
-        type: number
+        $ref: '#/definitions/models.Exterior'
       farmGroupId:
         description: ID хозяйства, которому корова принадлежит
         example: 1
@@ -130,7 +130,8 @@ definitions:
         example: 1
         type: integer
       inbrindingCoeffByFamily:
-        description: Коэф. инбриндинга по роду
+        description: Exterior                float64  `example:"3.14"` // Оценка экстерьера
+          коровы, будет переделано в ID экстерьера коровы
         example: 3.14
         type: number
       inventoryNumber:
@@ -405,6 +406,75 @@ definitions:
     properties:
       time.Time:
         type: string
+    type: object
+  models.Exterior:
+    properties:
+      bodyDepth:
+        type: number
+      bodyStructure:
+        type: number
+      boneQHockJointRear:
+        type: number
+      centerLigamentDepth:
+        type: number
+      chestWidth:
+        type: number
+      conditioning:
+        type: number
+      cowID:
+        type: integer
+      exteriorType:
+        type: number
+      foreLegPosFront:
+        type: number
+      foreTeatDiameter:
+        type: number
+      foreTeatLendth:
+        type: number
+      foreUdderAttach:
+        type: number
+      foreUdderPlcRear:
+        type: number
+      harmonyOfMovement:
+        type: number
+      heightOfUdderAttach:
+        type: number
+      hindLegPosRead:
+        type: number
+      hindLegPosSide:
+        type: number
+      hindTeatPlc:
+        type: number
+      hoofAngle:
+        type: number
+      id:
+        type: integer
+      limbs:
+        type: number
+      milkStrength:
+        type: number
+      pelvicWidth:
+        type: number
+      prominenceOfMilkVeins:
+        type: number
+      rating:
+        type: number
+      rearTeatDiameter:
+        type: number
+      rearTeatLength:
+        type: number
+      sacrumAngle:
+        type: number
+      sacrumHeight:
+        type: number
+      topLine:
+        type: number
+      udder:
+        type: number
+      udderBalance:
+        type: number
+      udderDepth:
+        type: number
     type: object
   models.Farm:
     properties:
@@ -764,6 +834,30 @@ paths:
             additionalProperties: {}
             type: object
       summary: Get list of check milks
+      tags:
+      - Cows
+  /cows/{id}/exterior:
+    get:
+      description: Возращает информацию об экстерьере, null, если нет
+      parameters:
+      - description: ID коровы для которой ищется экстерьер
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Exterior'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get exterior
       tags:
       - Cows
   /cows/{id}/genetic:

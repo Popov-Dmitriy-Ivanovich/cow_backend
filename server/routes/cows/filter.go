@@ -67,6 +67,7 @@ type FilterSerializedCow struct {
 	InbrindingCoeffByFamily   *float64                `json:",omitempty" validate:"optional" example:"3.14"`
 	InbrindingCoeffByGenotype *float64                `json:",omitempty" validate:"optional" example:"3.14"`
 	MonogeneticIllneses       []models.GeneticIllness `json:",omitempty" validate:"optional"`
+	ExteriorRating 			  *float64 				  `json:",omitempty" validate:"optional"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
@@ -180,6 +181,10 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if 	filter.BirkingDateFrom != nil && *filter.BirkingDateFrom != "" ||
 	 	filter.BirkingDateTo != nil && *filter.BirkingDateTo != "" {
 		res.BirkingDate = c.BirkingDate
+	}
+
+	if filter.Exterior != nil {
+		res.ExteriorRating = &c.Exterior.Rating
 	}
 	return res
 }
@@ -454,7 +459,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 		}
 
 		if bodyData.Exterior != nil {
-			query = query.Where("exterior = ?", bodyData.Exterior)
+			query = query.Where("EXISTS(SELECT 1 FROM exteriors WHERE exteriors.cow_id = cows.id AND exteriors.rating = ?)", bodyData.Exterior).Preload("Exterior")
 		}
 
 		// ====================================================================================================
