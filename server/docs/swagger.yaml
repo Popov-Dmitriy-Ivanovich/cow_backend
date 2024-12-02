@@ -53,6 +53,109 @@ definitions:
     - name
     - rshnnumber
     type: object
+  cows.ReserealizedCow:
+    properties:
+      approved:
+        description: Целое число, что-то для админов, чтобы подтверждать коров
+        example: 1
+        type: integer
+      birkingDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата перебирковки
+      birthDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: День рождения
+      breedId:
+        description: ID породы коровы
+        example: 1
+        type: integer
+      breedName:
+        description: порода, null если нет
+        type: string
+      createdAt:
+        description: Время создания коровы в базе данных
+        example: "2007-01-01"
+        type: string
+      deathDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата смерти
+      departDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: День отбытия из коровника
+      exterior:
+        description: Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
+        example: 3.14
+        type: number
+      farmGroupId:
+        description: ID хозяйства, которому корова принадлежит
+        example: 1
+        type: integer
+      farmID:
+        description: ID фермы, которой корова принадлежит
+        example: 1
+        type: integer
+      farmName:
+        description: ферма на которой живет, null если нет
+        type: string
+      father:
+        allOf:
+        - $ref: '#/definitions/cows.ReserealizedCow'
+        description: Отец, null если нет
+      fatherId:
+        description: ID коровы отца коровы
+        example: 1
+        type: integer
+      genetic:
+        allOf:
+        - $ref: '#/definitions/models.Genetic'
+        description: Информация о генотипировании, null если нет
+      hozHame:
+        description: хозяйство на котором живет, null, если нет
+        type: string
+      id:
+        description: ID коровы
+        example: 1
+        type: integer
+      inbrindingCoeffByFamily:
+        description: Коэф. инбриндинга по роду
+        example: 3.14
+        type: number
+      inventoryNumber:
+        description: Инвентарный номер коровы
+        example: "1213321"
+        type: string
+      mother:
+        allOf:
+        - $ref: '#/definitions/cows.ReserealizedCow'
+        description: Мать, null, если нет
+      motherId:
+        description: ID коровы матери коровы
+        example: 1
+        type: integer
+      name:
+        description: Кличка коровы
+        example: Дима
+        type: string
+      rshnnumber:
+        description: РСХН номер коровы
+        example: "1323323232"
+        type: string
+      selecsNumber:
+        description: Селекс номер коровы
+        example: "98989"
+        type: string
+      sexId:
+        description: ID пола коровы
+        example: 1
+        type: integer
+      sexName:
+        description: пол, null если нет
+        type: string
+    type: object
   cows.cowsFilter:
     properties:
       birkingDateFrom:
@@ -215,6 +318,7 @@ definitions:
         - $ref: '#/definitions/models.DateOnly'
         description: Дата конрольной дойки
       dryMatter:
+        description: сухой материал
         type: number
       fat:
         description: Параметр контрольной дойки, как я понимаю кол-во жира в молоке
@@ -233,90 +337,12 @@ definitions:
         example: 1
         type: number
       probeNumber:
+        description: номер пробы
         type: integer
       protein:
         description: Параметр контрольной дойки, как я понимаю кол-во белка в молоке
         example: 1
         type: number
-    type: object
-  models.Cow:
-    properties:
-      approved:
-        description: Целое число, что-то для админов, чтобы подтверждать коров
-        example: 1
-        type: integer
-      birkingDate:
-        allOf:
-        - $ref: '#/definitions/models.DateOnly'
-        description: Дата перебирковки
-      birthDate:
-        allOf:
-        - $ref: '#/definitions/models.DateOnly'
-        description: День рождения
-      breedId:
-        description: ID породы коровы
-        example: 1
-        type: integer
-      createdAt:
-        description: Время создания коровы в базе данных
-        example: "2007-01-01"
-        type: string
-      deathDate:
-        allOf:
-        - $ref: '#/definitions/models.DateOnly'
-        description: Дата смерти
-      departDate:
-        allOf:
-        - $ref: '#/definitions/models.DateOnly'
-        description: День отбытия из коровника
-      exterior:
-        description: Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
-        example: 3.14
-        type: number
-      farmGroupId:
-        description: ID хозяйства, которому корова принадлежит
-        example: 1
-        type: integer
-      farmID:
-        description: ID фермы, которой корова принадлежит
-        example: 1
-        type: integer
-      fatherId:
-        description: ID коровы отца коровы
-        example: 1
-        type: integer
-      id:
-        description: ID коровы
-        example: 1
-        type: integer
-      inbrindingCoeffByFamily:
-        description: Коэф. инбриндинга по роду
-        example: 3.14
-        type: number
-      inventoryNumber:
-        description: Инвентарный номер коровы
-        example: "1213321"
-        type: string
-      motherId:
-        description: ID коровы матери коровы
-        example: 1
-        type: integer
-      name:
-        description: Кличка коровы
-        example: Дима
-        type: string
-      rshnnumber:
-        description: РСХН номер коровы
-        example: "1323323232"
-        type: string
-      selecsNumber:
-        description: Селекс номер коровы
-        example: "98989"
-        type: string
-      sexId:
-        description: ID пола коровы
-        example: 1
-        type: integer
     type: object
   models.DailyMilk:
     properties:
@@ -398,6 +424,48 @@ definitions:
       type:
         type: integer
     type: object
+  models.Genetic:
+    properties:
+      bloodDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата взятия пробы крови
+      cowID:
+        description: ID коровы
+        type: integer
+      geneticIllnesses:
+        description: Список генетических заболеваний, пустой если нет
+        items:
+          $ref: '#/definitions/models.GeneticIllness'
+        type: array
+      id:
+        description: ID записи о генотипировании
+        type: integer
+      inbrindingCoeffByGenotype:
+        description: Коэф. инбриндинга по генотипу
+        type: number
+      probeNumber:
+        description: Номер пробы
+        type: string
+      resultDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата получения  результата
+    type: object
+  models.GeneticIllness:
+    properties:
+      description:
+        description: описание генетического заболевания
+        type: string
+      id:
+        type: integer
+      name:
+        description: имя генетического заболевания
+        type: string
+      omia:
+        description: Какой-то там ОМИЯ номер
+        type: string
+    type: object
   models.Lactation:
     properties:
       abort:
@@ -456,7 +524,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: genmilk.ru
+host: localhost
 info:
   contact:
     email: support@swagger.io
@@ -578,9 +646,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/models.Cow'
-            type: array
+            $ref: '#/definitions/cows.ReserealizedCow'
         "500":
           description: Internal Server Error
           schema:
@@ -605,7 +671,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Cow'
+            $ref: '#/definitions/cows.ReserealizedCow'
         "500":
           description: Internal Server Error
           schema:
@@ -632,6 +698,30 @@ paths:
             items:
               $ref: '#/definitions/models.CheckMilk'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of check milks
+      tags:
+      - Cows
+  /cows/{id}/genetic:
+    get:
+      description: Возращает генетическую информацию для коровы, null, если нет
+      parameters:
+      - description: ID коровы для которой ищется генетическая информация
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Genetic'
         "500":
           description: Internal Server Error
           schema:

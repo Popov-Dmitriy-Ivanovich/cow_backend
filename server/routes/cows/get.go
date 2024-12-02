@@ -10,12 +10,13 @@ import (
 
 type ReserealizedCow struct {
 	models.Cow
-	BreedName *string `json:",omitempty"`
-	SexName   *string `json:",omitempty"`
-	FarmName  *string `json:",omitempty"`
-	HozHame   *string `json:",omitempty"`
-	Father    *ReserealizedCow 
-	Mother    *ReserealizedCow 
+	BreedName *string          // порода, null если нет
+	SexName   *string          // пол, null если нет
+	FarmName  *string          // ферма на которой живет, null если нет
+	HozHame   *string          // хозяйство на котором живет, null, если нет
+	Father    *ReserealizedCow // Отец, null если нет
+	Mother    *ReserealizedCow // Мать, null, если нет
+	Genetic   *models.Genetic  // Информация о генотипировании, null если нет
 }
 
 func (rc ReserealizedCow) GetReserealizer() routes.Reserealizer {
@@ -53,7 +54,7 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 		parentIdx := (i - 1) / 2
 		childIdx := i % 2
 		curCow := famTree[parentIdx]
-		if curCow != nil && childIdx == 0 && curCow.FatherId != nil{ // father
+		if curCow != nil && childIdx == 0 && curCow.FatherId != nil { // father
 			father := &models.Cow{}
 			if err := db.First(father, curCow.FatherId).Error; err != nil {
 				return ReserealizedCow{}, err
@@ -157,6 +158,12 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 		}
 		rc.Father = &resFather
 	}
+	genetic := &models.Genetic{}
+	if qRes := db.Preload("GeneticIllnesses").Limit(1).Find(genetic, map[string]any{"cow_id": cow.ID}); qRes.Error != nil {
+		return ReserealizedCow{}, qRes.Error
+	} else if qRes.RowsAffected != 0 {
+		rc.Genetic = genetic
+	}
 	rc.Cow = cow
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name
@@ -172,7 +179,7 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 //	@Tags         Cows
 //	@Param        id   path      int  true  "ID конкретной коровы, чтобы ее вернуть"
 //	@Produce      json
-//	@Success      200  {object}   models.Cow
+//	@Success      200  {object}   ReserealizedCow
 //	@Failure      500  {object}  map[string]error
 //	@Router       /cows/{id} [get]
 func (f *Cows) GetByID() func(*gin.Context) {
@@ -185,7 +192,7 @@ func (f *Cows) GetByID() func(*gin.Context) {
 // @Tags         Cows
 // @Param        farm_id    query     int  false  "ID фермы (НЕ хозяйства), к которой принадлежит корова"
 // @Param 		 farm_group_id query int false "ID хозяйства (НЕ фермы), к которому принадлежит корова"
-// @Success      200  {array}   models.Cow
+// @Success      200  {object}   ReserealizedCow
 // @Failure      500  {object}  map[string]error
 // @Router       /cows [get]
 func (f *Cows) GetByFilter() func(*gin.Context) {

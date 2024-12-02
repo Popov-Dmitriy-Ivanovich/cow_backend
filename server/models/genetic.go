@@ -1,17 +1,17 @@
 package models
 
 type Genetic struct {
-	ID                       uint `gorm:"primaryKey"`
-	CowID                    uint
-	ProbeNumber              string
-	BloodDate                DateOnly
-	ResultDate               DateOnly
-	IbrindingCoeffByGenotype float64
-	GeneticIllnesses         []GeneticIllness `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;many2many:genetic_genetic_illnesses;"`
+	ID                        uint             `gorm:"primaryKey"` // ID записи о генотипировании
+	CowID                     uint             // ID коровы
+	ProbeNumber               string           // Номер пробы
+	BloodDate                 DateOnly         // Дата взятия пробы крови
+	ResultDate                DateOnly         // Дата получения  результата
+	InbrindingCoeffByGenotype float64          // Коэф. инбриндинга по генотипу
+	GeneticIllnesses          []GeneticIllness `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;many2many:genetic_genetic_illnesses;"` // Список генетических заболеваний, пустой если нет
 }
 type GeneticIllness struct {
-	ID          uint `gorm:"primaryKey"`
-	Name        string
-	Descritpion string
-	OMIA        *string
+	ID          uint    `gorm:"primaryKey"`
+	Name        string  // имя генетического заболевания
+	Description string  // описание генетического заболевания
+	OMIA        *string // Какой-то там ОМИЯ номер
 }

@@ -188,10 +188,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Cow"
-                            }
+                            "$ref": "#/definitions/cows.ReserealizedCow"
                         }
                     },
                     "500": {
@@ -277,7 +274,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Cow"
+                            "$ref": "#/definitions/cows.ReserealizedCow"
                         }
                     },
                     "500": {
@@ -317,6 +314,42 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/models.CheckMilk"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows/{id}/genetic": {
+            "get": {
+                "description": "Возращает генетическую информацию для коровы, null, если нет",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of check milks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищется генетическая информация",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Genetic"
                         }
                     },
                     "500": {
@@ -753,6 +786,158 @@ const docTemplate = `{
                 }
             }
         },
+        "cows.ReserealizedCow": {
+            "type": "object",
+            "properties": {
+                "approved": {
+                    "description": "Целое число, что-то для админов, чтобы подтверждать коров",
+                    "type": "integer",
+                    "example": 1
+                },
+                "birkingDate": {
+                    "description": "Дата перебирковки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "birthDate": {
+                    "description": "День рождения",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "breedId": {
+                    "description": "ID породы коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "breedName": {
+                    "description": "порода, null если нет",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "description": "Время создания коровы в базе данных",
+                    "type": "string",
+                    "example": "2007-01-01"
+                },
+                "deathDate": {
+                    "description": "Дата смерти",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "departDate": {
+                    "description": "День отбытия из коровника",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "exterior": {
+                    "description": "Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
+                    "type": "number",
+                    "example": 3.14
+                },
+                "farmGroupId": {
+                    "description": "ID хозяйства, которому корова принадлежит",
+                    "type": "integer",
+                    "example": 1
+                },
+                "farmID": {
+                    "description": "ID фермы, которой корова принадлежит",
+                    "type": "integer",
+                    "example": 1
+                },
+                "farmName": {
+                    "description": "ферма на которой живет, null если нет",
+                    "type": "string"
+                },
+                "father": {
+                    "description": "Отец, null если нет",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/cows.ReserealizedCow"
+                        }
+                    ]
+                },
+                "fatherId": {
+                    "description": "ID коровы отца коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "genetic": {
+                    "description": "Информация о генотипировании, null если нет",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Genetic"
+                        }
+                    ]
+                },
+                "hozHame": {
+                    "description": "хозяйство на котором живет, null, если нет",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "inbrindingCoeffByFamily": {
+                    "description": "Коэф. инбриндинга по роду",
+                    "type": "number",
+                    "example": 3.14
+                },
+                "inventoryNumber": {
+                    "description": "Инвентарный номер коровы",
+                    "type": "string",
+                    "example": "1213321"
+                },
+                "mother": {
+                    "description": "Мать, null, если нет",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/cows.ReserealizedCow"
+                        }
+                    ]
+                },
+                "motherId": {
+                    "description": "ID коровы матери коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "description": "Кличка коровы",
+                    "type": "string",
+                    "example": "Дима"
+                },
+                "rshnnumber": {
+                    "description": "РСХН номер коровы",
+                    "type": "string",
+                    "example": "1323323232"
+                },
+                "selecsNumber": {
+                    "description": "Селекс номер коровы",
+                    "type": "string",
+                    "example": "98989"
+                },
+                "sexId": {
+                    "description": "ID пола коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "sexName": {
+                    "description": "пол, null если нет",
+                    "type": "string"
+                }
+            }
+        },
         "cows.cowsFilter": {
             "type": "object",
             "properties": {
@@ -946,6 +1131,7 @@ const docTemplate = `{
                     ]
                 },
                 "dryMatter": {
+                    "description": "сухой материал",
                     "type": "number"
                 },
                 "fat": {
@@ -969,123 +1155,12 @@ const docTemplate = `{
                     "example": 1
                 },
                 "probeNumber": {
+                    "description": "номер пробы",
                     "type": "integer"
                 },
                 "protein": {
                     "description": "Параметр контрольной дойки, как я понимаю кол-во белка в молоке",
                     "type": "number",
-                    "example": 1
-                }
-            }
-        },
-        "models.Cow": {
-            "type": "object",
-            "properties": {
-                "approved": {
-                    "description": "Целое число, что-то для админов, чтобы подтверждать коров",
-                    "type": "integer",
-                    "example": 1
-                },
-                "birkingDate": {
-                    "description": "Дата перебирковки",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.DateOnly"
-                        }
-                    ]
-                },
-                "birthDate": {
-                    "description": "День рождения",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.DateOnly"
-                        }
-                    ]
-                },
-                "breedId": {
-                    "description": "ID породы коровы",
-                    "type": "integer",
-                    "example": 1
-                },
-                "createdAt": {
-                    "description": "Время создания коровы в базе данных",
-                    "type": "string",
-                    "example": "2007-01-01"
-                },
-                "deathDate": {
-                    "description": "Дата смерти",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.DateOnly"
-                        }
-                    ]
-                },
-                "departDate": {
-                    "description": "День отбытия из коровника",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.DateOnly"
-                        }
-                    ]
-                },
-                "exterior": {
-                    "description": "Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
-                    "type": "number",
-                    "example": 3.14
-                },
-                "farmGroupId": {
-                    "description": "ID хозяйства, которому корова принадлежит",
-                    "type": "integer",
-                    "example": 1
-                },
-                "farmID": {
-                    "description": "ID фермы, которой корова принадлежит",
-                    "type": "integer",
-                    "example": 1
-                },
-                "fatherId": {
-                    "description": "ID коровы отца коровы",
-                    "type": "integer",
-                    "example": 1
-                },
-                "id": {
-                    "description": "ID коровы",
-                    "type": "integer",
-                    "example": 1
-                },
-                "inbrindingCoeffByFamily": {
-                    "description": "Коэф. инбриндинга по роду",
-                    "type": "number",
-                    "example": 3.14
-                },
-                "inventoryNumber": {
-                    "description": "Инвентарный номер коровы",
-                    "type": "string",
-                    "example": "1213321"
-                },
-                "motherId": {
-                    "description": "ID коровы матери коровы",
-                    "type": "integer",
-                    "example": 1
-                },
-                "name": {
-                    "description": "Кличка коровы",
-                    "type": "string",
-                    "example": "Дима"
-                },
-                "rshnnumber": {
-                    "description": "РСХН номер коровы",
-                    "type": "string",
-                    "example": "1323323232"
-                },
-                "selecsNumber": {
-                    "description": "Селекс номер коровы",
-                    "type": "string",
-                    "example": "98989"
-                },
-                "sexId": {
-                    "description": "ID пола коровы",
-                    "type": "integer",
                     "example": 1
                 }
             }
@@ -1207,6 +1282,70 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Genetic": {
+            "type": "object",
+            "properties": {
+                "bloodDate": {
+                    "description": "Дата взятия пробы крови",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "cowID": {
+                    "description": "ID коровы",
+                    "type": "integer"
+                },
+                "geneticIllnesses": {
+                    "description": "Список генетических заболеваний, пустой если нет",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GeneticIllness"
+                    }
+                },
+                "id": {
+                    "description": "ID записи о генотипировании",
+                    "type": "integer"
+                },
+                "inbrindingCoeffByGenotype": {
+                    "description": "Коэф. инбриндинга по генотипу",
+                    "type": "number"
+                },
+                "probeNumber": {
+                    "description": "Номер пробы",
+                    "type": "string"
+                },
+                "resultDate": {
+                    "description": "Дата получения  результата",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                }
+            }
+        },
+        "models.GeneticIllness": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "описание генетического заболевания",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "имя генетического заболевания",
+                    "type": "string"
+                },
+                "omia": {
+                    "description": "Какой-то там ОМИЯ номер",
+                    "type": "string"
+                }
+            }
+        },
         "models.Lactation": {
             "type": "object",
             "properties": {
@@ -1306,7 +1445,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "genmilk.ru",
+	Host:             "localhost",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",
