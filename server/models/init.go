@@ -31,7 +31,7 @@ func initDb() error {
 		panic(err)
 	}
 
-	db.AutoMigrate(&User{}, &Region{}, &News{}, &Partner{}, &Breed{}, &Farm{}, &Role{}, &Sex{}, &Cow{}, &Event{}, &EventType{}, &Lactation{}, &CheckMilk{}, &DailyMilk{}, &District{})
+	db.AutoMigrate(&User{}, &Region{}, &News{}, &Partner{}, &Breed{}, &Farm{}, &Role{}, &Sex{}, &Cow{}, &Event{}, &EventType{}, &Lactation{}, &CheckMilk{}, &DailyMilk{}, &District{}, &Genetic{}, &GeneticIllness{})
 	dbConnection = db
 	return nil
 }

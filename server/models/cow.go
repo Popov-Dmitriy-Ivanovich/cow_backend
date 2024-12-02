@@ -23,6 +23,8 @@ type Cow struct {
 	Mother   *Cow  `json:"-"`
 	MotherId *uint `example:"1"` // ID коровы матери коровы
 
+	Genetic []Genetic `json:"-"`
+
 	Lactation []Lactation `json:"-"`
 
 	InventoryNumber      *string `example:"1213321"`    // Инвентарный номер коровы
