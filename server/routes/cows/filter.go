@@ -90,7 +90,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.InbrindingCoeffByFamilyFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
 		res.InbrindingCoeffByFamily = c.InbrindingCoeffByFamily
 	}
-	if filter.InbrindingCoeffByGenotypeFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
+	if filter.InbrindingCoeffByGenotypeFrom != nil || filter.InbrindingCoeffByGenotypeTo != nil {
 		res.InbrindingCoeffByGenotype = &c.Genetic.InbrindingCoeffByGenotype
 	}
 	if 	filter.GenotypingDateFrom != nil && *filter.GenotypingDateFrom != "" || 
