@@ -79,8 +79,8 @@
             <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFamilyFrom"></label><br>
             <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFamilyTo"></label>
             <div>Значения коэффициента инбридинга по генотипу</div>
-            <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFenotypeFrom"></label><br>
-            <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFenotypeTo"></label>
+            <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.InbrindingCoeffByGenotypeFrom"></label><br>
+            <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.InbrindingCoeffByGenotypeTo"></label>
         </div>
         <div class="filter-category category-last">
             <div>Наличие моногенных заболеваний</div>
@@ -134,8 +134,8 @@ export default {
                 birkingDateTo: null,
                 inbrindingCoeffByFamilyFrom: null,
                 inbrindingCoeffByFamilyTo: null,
-                inbrindingCoeffByFenotypeFrom: null,
-                inbrindingCoeffByFenotypeTo: null,
+                InbrindingCoeffByGenotypeFrom: null,
+                inbrindingCoeffByGenotypeTo: null,
                 monogeneticIllneses: null,
                 isIll: null,
             },
