@@ -2,3 +2,5 @@ frontend/nginx/*.cert
 frontend/nginx/*.pem
 frontend/nginx/*.crt
 frontend/nginx/*.key
+server/csv
+server/csv/*
