@@ -27,9 +27,11 @@
         .UserChoise {
             background-color: #ffffff; /* Белый фон для блока */
             border-radius: 8px;
-            padding: 20px;
+            padding: 20px 20px 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center; /* Центрирование текста внутри блока */
+			min-width: 20%;
+			margin: 10px;
         }
 
         .UserChoiseButton {
@@ -37,10 +39,12 @@
             color: #ffffff; /* Белый текст на кнопке */
             border: none;
             border-radius: 5px;
-            padding: 10px 20px;
+            padding: 10px 20px 5px;
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s; /* Плавное изменение цвета */
+			min-width: 80%;
+			min-height: 80%;
         }
 
         .UserChoiseButton:hover {
@@ -86,9 +90,6 @@
         <form action="/api/gui/lactationLoad">
             <button class="UserChoiseButton" type="submit">Загрузка лактаций</button> 
         </form>
-    </div>
-    <div class="UserChoise message">
-        Ещё не сделано
     </div>
 </body>
 </html>
