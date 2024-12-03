@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const LACTATION_CSV_PATH = "./csv/grades/"
+const LACTATION_CSV_PATH = "./csv/lactations/"
 
 var lactationUniqueIndex uint64 = 0
 
