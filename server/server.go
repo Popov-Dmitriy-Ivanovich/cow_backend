@@ -10,7 +10,9 @@ import (
 	dailymilks "cow_backend/routes/daily_milks"
 	"cow_backend/routes/districts"
 	"cow_backend/routes/farms"
+	"cow_backend/routes/gui"
 	"cow_backend/routes/lactations"
+	"cow_backend/routes/load"
 	"cow_backend/routes/monogenetic_illnesses"
 	"cow_backend/routes/regions"
 	"cow_backend/routes/sexes"
@@ -54,8 +56,11 @@ func main() {
 	models.GetDb()
 
 	r := gin.Default()
+	r.LoadHTMLGlob("templates/*")
 	apiGroup := r.Group("/api")
-	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{}, &cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{}, &monogenetic_illnesses.MonogeneticIllneses{})
+	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{},
+		&cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{},
+		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{})
 
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()

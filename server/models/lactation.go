@@ -8,8 +8,8 @@ type Lactation struct {
 	CheckMilks []CheckMilk `json:"-"`
 	DailyMilks []DailyMilk `json:"-"`
 
-	Number uint // номер лактации
-	Date   DateOnly // дата начала лактации
+	Number uint     // номер лактации
+	Date   DateOnly // дата начала лактации = CalvingDate
 
 	InsemenationNum  int
 	InsemenationDate DateOnly
