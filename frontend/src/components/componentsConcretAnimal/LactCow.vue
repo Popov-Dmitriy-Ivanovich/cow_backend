@@ -15,7 +15,6 @@
             <thead>
                 <tr class="lac-header">
                     <th>Номер лактации</th>
-                    <th>Дата лактации</th>
                     <th>Кратность осеменения</th>
                     <th>Дата осеменения</th>
                     <th>Количество рожденных телят</th>
@@ -32,11 +31,10 @@
             <tbody class="lac-tablebody">
                 <tr v-for="lact in cow_info" :key="lact.Number">
                     <td>{{ lact.Number }}</td>
-                    <td>{{ lact.Date }}</td>
                     <td>{{ lact.InsemenationNum }}</td>
-                    <td>{{ lact.InsemenationDate }}</td>
+                    <td>{{ dateConverter(lact.InsemenationDate) }}</td>
                     <td>{{ lact.CalvingCount }}</td>
-                    <td>{{ lact.CalvingDate }}</td>
+                    <td>{{ dateConverter(lact.CalvingDate) }}</td>
                     <td>{{ lact.MilkAll }}</td>
                     <td>{{ lact.Milk305 }}</td>
                     <td>{{ lact.FatAll }}</td>
@@ -118,6 +116,14 @@ export default {
                 serie.data.push(obj[i][param]);
             }
             arr.push(serie);
+        },
+        dateConverter(date) {
+            let arr = date.split('-');
+            let result = '';
+            result += arr[2]; result += '.';
+            result += arr[1]; result += '.';
+            result += arr[0];
+            return result;
         }
     },
     watch: {
