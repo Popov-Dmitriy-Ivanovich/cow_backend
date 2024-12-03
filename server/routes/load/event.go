@@ -7,11 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const COW_CSV_PATH = "./csv/cows/"
+const EVENT_CSV_PATH = "./csv/events/"
 
-var cowUniqueIndex uint64 = 0
+var eventUniqueIndex uint64 = 0
 
-func (l *Load) Cow() func(*gin.Context) {
+func (l *Load) Event() func(*gin.Context) {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
 		if err != nil {
@@ -25,12 +25,12 @@ func (l *Load) Cow() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := COW_CSV_PATH + "cow_" + now.Format(time.Stamp) + "_" + strconv.FormatUint(cowUniqueIndex, 10) + ".csv"
+		uploadedName := EVENT_CSV_PATH + "event" + now.Format(time.Stamp) + "_" + strconv.FormatUint(eventUniqueIndex, 10) + ".csv"
 		if err := c.SaveUploadedFile(csv[0], uploadedName); err != nil {
 			c.JSON(500, err)
 			return
 		}
-		cowUniqueIndex++
+		eventUniqueIndex++
 		c.JSON(200, "OK")
 	}
 }

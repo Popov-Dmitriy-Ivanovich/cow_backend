@@ -1,6 +1,10 @@
 package gui
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Gui struct {
 }
@@ -8,5 +12,40 @@ type Gui struct {
 func (s *Gui) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/gui")
 	apiGroup.GET("/cowLoad", s.CowLoad())
+	apiGroup.GET("/checkMilkLoad", s.CheckMilkLoad())
+	apiGroup.GET("/eventLoad", s.EventLoad())
+	apiGroup.GET("/geneticLoad", s.GeneticLoad())
+	apiGroup.GET("/gradeLoad", s.GradeLoad())
+	apiGroup.GET("/lactationLoad", s.LactationLoad())
 	apiGroup.GET("", s.Index())
+}
+
+func (s *Gui) CheckMilkLoad() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "CheckMilkLoadPage.tmpl", gin.H{"title": "контрольные доения"})
+	}
+}
+
+func (s *Gui) EventLoad() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "EventLoadPage.tmpl", gin.H{"title": "вет. события"})
+	}
+}
+
+func (s *Gui) GeneticLoad() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "GeneticLoadPage.tmpl", gin.H{"title": "генотипирование"})
+	}
+}
+
+func (s *Gui) GradeLoad() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "GradeLoadPage.tmpl", gin.H{"title": "оценки"})
+	}
+}
+
+func (s *Gui) LactationLoad() func(*gin.Context) {
+	return func(c *gin.Context) {
+		c.HTML(http.StatusOK, "LactationLoadPage.tmpl", gin.H{"title": "лактации"})
+	}
 }

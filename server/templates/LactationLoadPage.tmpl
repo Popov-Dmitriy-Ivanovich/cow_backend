@@ -1,4 +1,4 @@
-{{ define "CowLoadPage.tmpl"}}
+{{ define "LactationLoadPage.tmpl"}}
 <!DOCTYPE html>
 <html lang="ru">
 <head> 
@@ -82,8 +82,8 @@
 <body>
     <button class="back-button" onclick="window.history.back();">Назад</button>
     <div class="form-example">
-        <h1>Загрузка коровы</h1>
-        <form action="/api/load/cow" method="post" enctype="multipart/form-data">
+        <h1>Загрузка лактаций</h1>
+        <form action="/api/load/lactation" method="post" enctype="multipart/form-data">
             <label for="csv">Выберите файл:</label>
             <input type="file" id="csv" name="csv" required>
             <input type="submit" value="Загрузить">
