@@ -68,6 +68,13 @@ type FilterSerializedCow struct {
 	InbrindingCoeffByGenotype *float64                `json:",omitempty" validate:"optional" example:"3.14"`
 	MonogeneticIllneses       []models.GeneticIllness `json:",omitempty" validate:"optional"`
 	ExteriorRating 			  *float64 				  `json:",omitempty" validate:"optional"`
+	SexName *string `json:",omitempty" validate:"optional"`
+	HozName *string `json:",omitempty" validate:"optional"`
+	DeathDate *models.DateOnly `json:",omitempty" validate:"optional"`
+	IsDead *bool `json:",omitempty" validate:"optional"`
+	IsTwins *bool `json:",omitempty" validate:"optional"`
+	IsStillBorn *bool `json:",omitempty" validate:"optional"`
+	IsAborted *bool `json:",omitempty" validate:"optional"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
@@ -182,7 +189,25 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	 	filter.BirkingDateTo != nil && *filter.BirkingDateTo != "" {
 		res.BirkingDate = c.BirkingDate
 	}
-
+	if len(filter.Sex) != 0 {
+		res.SexName = &c.Sex.Name
+	}
+	if filter.HozId != nil {
+		res.HozName = &c.FarmGroup.Name
+	}
+	if filter.IsDead != nil {
+		res.DeathDate = c.DeathDate
+		res.IsDead = filter.IsDead
+	}
+	if filter.IsStillBorn != nil {
+		res.IsStillBorn = filter.IsStillBorn
+	}
+	if filter.IsAborted != nil {
+		res.IsAborted = filter.IsAborted
+	}
+	if filter.IsTwins != nil {
+		res.IsTwins = filter.IsTwins
+	}
 	if filter.Exterior != nil {
 		res.ExteriorRating = &c.Exterior.Rating
 	}
