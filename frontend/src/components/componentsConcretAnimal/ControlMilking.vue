@@ -19,15 +19,17 @@
                     <th class="cm-nprob">Номер пробы</th>
                     <th class="cm-milkday">Дойные дни</th>
                     <th class="cm-milk">Удой, л</th>
-                    <th class="cm-dry">Сухое вещество</th>
+                    <th class="cm-dry">Сухое вещество, %</th>
                     <th class="cm-zhir">Жир, %</th>
                     <th class="cm-belok">Белок, %</th>
+                    <th>Жир, кг</th>
+                    <th>Белок, кг</th>
                 </tr>
             </thead>
             <tbody class="cm-tablebody">
                 <tr v-for="milking in cow_info" :key="milking.CheckDate">
                     <td>{{ milking.LactationNumber }}</td>
-                    <td>{{ milking.CheckDate }}</td>
+                    <td>{{ dateConverter(milking.CheckDate) }}</td>
                     <td>{{ milking.ProbeNumber }}</td>
                     <td>{{ milking.MilkingDays }}</td>
                     <td>{{ milking.Milk }}</td>
@@ -42,18 +44,20 @@
     <div v-if="isChart">
         <div>
             <div class="nlact">
-                <div class="chart-nlact" @click="isLact=!isLact">> Номер лактации </div>
-                <div v-if="isLact" class="check-lact">
-                    <div v-for="nlact in count_lactations" :key="nlact">
-                        <label><input type="checkbox" :value="nlact" v-model="check_lact">Лактация {{ nlact }}</label>
+                <div class="chart-flex">
+                    <div class="chart-nlact" >Номер лактации: </div>
+                    <div class="check-lact">
+                        <select v-model="check_lact" class="select-param">
+                            <option v-for="nlact in count_lactations" :value="nlact" :key="nlact">Лактация {{ nlact }}</option>
+                        </select>
                     </div>
                 </div>
+
             </div>
 
             <div class="chart-flex">
                 <div class="chart-param">Показатель: </div>
                 <select v-model="param_milking" class="select-param">
-                    <option disabled value="">Выберите параметр</option>
                     <option value="Milk">Удой</option>
                     <option value="Fat">Жир</option>
                     <option value="Protein">Белок</option>
@@ -63,7 +67,7 @@
             </div>
 
         </div>
-        <apexchart id="ControlMilking" width="600" type="bar" :options="options" :series="series"></apexchart>
+        <apexchart ref="linechart" id="ControlMilking" width="600" type="line" :options="options" :series="series"></apexchart>
     </div>
 </div>
 </template>
@@ -86,7 +90,7 @@ export default {
             series: [],
             count_lactations:[],
             param_milking: 'Milk',
-            check_lact: [1],
+            check_lact: 1,
             isLact: false,
         }
     },
@@ -100,6 +104,9 @@ export default {
         for (let i = 0; i < this.cow_info.length; i++) {
             this.cow_info[i].FatRegard = ((this.cow_info[i].Fat / this.cow_info[i].Milk)*100).toFixed(2);
             this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein / this.cow_info[i].Milk)*100).toFixed(2);
+            if (this.cow_info[i].LactationNumber == this.check_lact) {
+                this.options.xaxis.categories.push(this.dateConverter(this.cow_info[i].CheckDate));
+            }
         }
 
         try {
@@ -121,27 +128,31 @@ export default {
     methods: {
         addInArr(obj, arr, param, nlact) {
             for (let i=0; i<obj.length; i++) {
-                for (let j=0; j<nlact.length; j++) {
-                    if(nlact[j] === obj[i].LactationNumber) {
-                        arr.push(obj[i][param]);
-                    }
+                if(nlact === obj[i].LactationNumber) {
+                    arr.push(obj[i][param]);
                 }
             }
             console.log('параметры',arr);
         },
         addParam(obj, arr, param, nlact) {
-            for (let i = 0; i < nlact.length; i++) {
-                let serie = {
-                    name: `Лактация ${nlact[i]}`,
-                    data: []
-                };
-                for (let j = 0; j < obj.length; j++) {
-                    if (obj[j].LactationNumber === nlact[i]) {
-                        serie.data.push(obj[j][param]);
-                    }
+            let serie = {
+                name: `Лактация ${nlact}`,
+                data: []
+            };
+            for (let j = 0; j < obj.length; j++) {
+                if (obj[j].LactationNumber === nlact) {
+                    serie.data.push(obj[j][param]);
                 }
-                arr.push(serie);
             }
+            arr.push(serie);
+        },
+        dateConverter(date) {
+            let arr = date.split('-');
+            let result = '';
+            result += arr[2]; result += '.';
+            result += arr[1]; result += '.';
+            result += arr[0];
+            return result;
         }
     },
     watch: {
@@ -152,7 +163,19 @@ export default {
         },
         check_lact(new_value) {
             this.series = [];
-            this.addParam(this.cow_info, this.series, this.param_milking, new_value)
+            this.addParam(this.cow_info, this.series, this.param_milking, new_value);
+            let newX = [];
+            for (let i = 0; i < this.cow_info.length; i++) {
+                if (this.cow_info[i].LactationNumber == new_value) {
+                    newX.push(this.dateConverter(this.cow_info[i].CheckDate));
+                }
+            }
+            this.$refs.linechart.updateOptions({
+                xaxis: {
+                    categories: newX,
+                }
+            });
+            console.log(this.options.xaxis.categories);
         }
 
     }
@@ -167,7 +190,7 @@ export default {
 }
 
 .parent-table {
-    width: 50vw;
+    width: 49vw;
     overflow-x: auto;
 }
 
@@ -180,6 +203,11 @@ export default {
 
 th {
     font-weight: normal;
+}
+
+td {
+    width: auto;
+    min-width: 100px;
 }
 
 .cm-header {

@@ -7,7 +7,7 @@
                 <thead>
                     <tr class="child-header">
                         <th>UN</th>
-                        <th>Уровень</th>
+                        <th>Хозяйство</th>
                         <th>Дата рождения</th>
                         <th>Кличка</th>
                         <th>Селекционный индекс</th>
