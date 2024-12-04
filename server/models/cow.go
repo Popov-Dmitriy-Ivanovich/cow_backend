@@ -44,4 +44,13 @@ type Cow struct {
 	DepartDate  *DateOnly // День отбытия из коровника
 	DeathDate   *DateOnly // Дата смерти
 	BirkingDate *DateOnly // Дата перебирковки
+
+	// Новые поля
+	PreviousHoz             *Farm   `json:"-"`
+	PreviousHozId           *uint   // ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится "новой коровой"
+	BirthHoz                *Farm   `json:"-"`
+	BirthHozId              *uint   // ID хозяйства рождения
+	PreviousReincarnation   *Cow    `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это указатель на эту же корову в другом хоз-ве с другим инв. номером
+	PreviousReincarnationId *uint   // см PreviousReincarnation
+	BirthMethod             *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 }
