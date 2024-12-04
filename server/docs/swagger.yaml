@@ -1,7 +1,32 @@
 basePath: /api
 definitions:
+  auth.AuthData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  auth.RegisterData:
+    properties:
+      email:
+        type: string
+      farmId:
+        type: integer
+      nameSurnamePatronimic:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      role:
+        type: integer
+    type: object
   cows.FilterSerializedCow:
     properties:
+      approved:
+        example: true
+        type: boolean
       birkingDate:
         $ref: '#/definitions/models.DateOnly'
       birthDate:
@@ -17,6 +42,8 @@ definitions:
         items:
           $ref: '#/definitions/models.DateOnly'
         type: array
+      deathDate:
+        $ref: '#/definitions/models.DateOnly'
       departDate:
         $ref: '#/definitions/models.DateOnly'
       exteriorRating:
@@ -29,6 +56,8 @@ definitions:
         type: boolean
       genotypingDate:
         $ref: '#/definitions/models.DateOnly'
+      hozName:
+        type: string
       id:
         example: 123
         type: integer
@@ -45,6 +74,14 @@ definitions:
       inventoryNumber:
         example: "321"
         type: string
+      isAborted:
+        type: boolean
+      isDead:
+        type: boolean
+      isStillBorn:
+        type: boolean
+      isTwins:
+        type: boolean
       monogeneticIllneses:
         items:
           $ref: '#/definitions/models.GeneticIllness'
@@ -55,7 +92,10 @@ definitions:
       rshnnumber:
         example: "123"
         type: string
+      sexName:
+        type: string
     required:
+    - approved
     - birthDate
     - farmGroupName
     - genotyped
@@ -78,6 +118,13 @@ definitions:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
         description: День рождения
+      birthHozId:
+        description: ID хозяйства рождения
+        type: integer
+      birthMethod:
+        description: 'способ зачатия: клон, эмбрион, искусственное осеменени, естественное
+          осеменение'
+        type: string
       breedId:
         description: ID породы коровы
         example: 1
@@ -129,6 +176,9 @@ definitions:
         description: ID коровы
         example: 1
         type: integer
+      identificationNumber:
+        description: он все-таки есть! это какой-то не российский номер коровы
+        type: string
       inbrindingCoeffByFamily:
         description: Exterior                float64  `example:"3.14"` // Оценка экстерьера
           коровы, будет переделано в ID экстерьера коровы
@@ -150,6 +200,13 @@ definitions:
         description: Кличка коровы
         example: Дима
         type: string
+      previousHozId:
+        description: ID предыдущего хозяйства, когда корову продают, она переходит
+          к новому владельцу и становится "новой коровой"
+        type: integer
+      previousReincarnationId:
+        description: см PreviousReincarnation
+        type: integer
       rshnnumber:
         description: РСХН номер коровы
         example: "1323323232"
@@ -353,6 +410,9 @@ definitions:
         description: Параметр контрольной дойки, как я понимаю кол-во белка в молоке
         example: 1
         type: number
+      somaticNucCount:
+        description: количество соматических клеток
+        type: number
     type: object
   models.DailyMilk:
     properties:
@@ -488,6 +548,11 @@ definitions:
         type: integer
       email:
         type: string
+      hozNumber:
+        description: |-
+          Region   Region `json:"-"`
+          RegionId uint
+        type: string
       id:
         type: integer
       inn:
@@ -555,10 +620,6 @@ definitions:
         $ref: '#/definitions/models.DateOnly'
       cowId:
         type: integer
-      date:
-        allOf:
-        - $ref: '#/definitions/models.DateOnly'
-        description: дата начала лактации
       days:
         description: количество дней, когда корова дает молоко
         type: integer
@@ -582,6 +643,9 @@ definitions:
       protein305:
         type: integer
       proteinAll:
+        type: integer
+      servicePeriod:
+        description: 'сервис период коровы: время от отела до осеменения'
         type: integer
     type: object
   models.Region:
@@ -668,6 +732,72 @@ paths:
       summary: Get list of years
       tags:
       - Analitics
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: applied filters
+        in: body
+        name: AuthData
+        required: true
+        schema:
+          $ref: '#/definitions/auth.AuthData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            additionalProperties: {}
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: LOGIN
+      tags:
+      - LOGIN
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: applied filters
+        in: body
+        name: RegisterData
+        required: true
+        schema:
+          $ref: '#/definitions/auth.RegisterData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            additionalProperties: {}
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: REGISTER
+      tags:
+      - REGISTER
   /breeds:
     get:
       description: Возращает список всех пород. Разрешает отсутсвие фильтров

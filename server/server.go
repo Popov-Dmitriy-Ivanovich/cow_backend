@@ -4,6 +4,7 @@ import (
 	"cow_backend/models"
 	"cow_backend/routes"
 	"cow_backend/routes/analitics"
+	"cow_backend/routes/auth"
 	"cow_backend/routes/breeds"
 	checkmilks "cow_backend/routes/check_milks"
 	"cow_backend/routes/cows"
@@ -60,7 +61,7 @@ func main() {
 	apiGroup := r.Group("/api")
 	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{},
 		&cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{},
-		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{})
+		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{})
 
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()

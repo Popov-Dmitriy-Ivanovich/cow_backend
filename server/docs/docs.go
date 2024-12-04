@@ -99,6 +99,106 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "LOGIN"
+                ],
+                "summary": "LOGIN",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "AuthData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.AuthData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "REGISTER"
+                ],
+                "summary": "REGISTER",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "RegisterData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.RegisterData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/breeds": {
             "get": {
                 "description": "Возращает список всех пород. Разрешает отсутсвие фильтров",
@@ -854,9 +954,44 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "auth.AuthData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "auth.RegisterData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "farmId": {
+                    "type": "integer"
+                },
+                "nameSurnamePatronimic": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "integer"
+                }
+            }
+        },
         "cows.FilterSerializedCow": {
             "type": "object",
             "required": [
+                "approved",
                 "birthDate",
                 "farmGroupName",
                 "genotyped",
@@ -866,6 +1001,10 @@ const docTemplate = `{
                 "rshnnumber"
             ],
             "properties": {
+                "approved": {
+                    "type": "boolean",
+                    "example": true
+                },
                 "birkingDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
@@ -888,6 +1027,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.DateOnly"
                     }
                 },
+                "deathDate": {
+                    "$ref": "#/definitions/models.DateOnly"
+                },
                 "departDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
@@ -904,6 +1046,9 @@ const docTemplate = `{
                 },
                 "genotypingDate": {
                     "$ref": "#/definitions/models.DateOnly"
+                },
+                "hozName": {
+                    "type": "string"
                 },
                 "id": {
                     "type": "integer",
@@ -927,6 +1072,18 @@ const docTemplate = `{
                     "type": "string",
                     "example": "321"
                 },
+                "isAborted": {
+                    "type": "boolean"
+                },
+                "isDead": {
+                    "type": "boolean"
+                },
+                "isStillBorn": {
+                    "type": "boolean"
+                },
+                "isTwins": {
+                    "type": "boolean"
+                },
                 "monogeneticIllneses": {
                     "type": "array",
                     "items": {
@@ -940,6 +1097,9 @@ const docTemplate = `{
                 "rshnnumber": {
                     "type": "string",
                     "example": "123"
+                },
+                "sexName": {
+                    "type": "string"
                 }
             }
         },
@@ -966,6 +1126,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.DateOnly"
                         }
                     ]
+                },
+                "birthHozId": {
+                    "description": "ID хозяйства рождения",
+                    "type": "integer"
+                },
+                "birthMethod": {
+                    "description": "способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение",
+                    "type": "string"
                 },
                 "breedId": {
                     "description": "ID породы коровы",
@@ -1044,6 +1212,10 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "identificationNumber": {
+                    "description": "он все-таки есть! это какой-то не российский номер коровы",
+                    "type": "string"
+                },
                 "inbrindingCoeffByFamily": {
                     "description": "Exterior                float64  ` + "`" + `example:\"3.14\"` + "`" + ` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
                     "type": "number",
@@ -1071,6 +1243,14 @@ const docTemplate = `{
                     "description": "Кличка коровы",
                     "type": "string",
                     "example": "Дима"
+                },
+                "previousHozId": {
+                    "description": "ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится \"новой коровой\"",
+                    "type": "integer"
+                },
+                "previousReincarnationId": {
+                    "description": "см PreviousReincarnation",
+                    "type": "integer"
                 },
                 "rshnnumber": {
                     "description": "РСХН номер коровы",
@@ -1317,6 +1497,10 @@ const docTemplate = `{
                     "description": "Параметр контрольной дойки, как я понимаю кол-во белка в молоке",
                     "type": "number",
                     "example": 1
+                },
+                "somaticNucCount": {
+                    "description": "количество соматических клеток",
+                    "type": "number"
                 }
             }
         },
@@ -1518,6 +1702,10 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "hozNumber": {
+                    "description": "Region   Region ` + "`" + `json:\"-\"` + "`" + `\nRegionId uint",
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -1620,14 +1808,6 @@ const docTemplate = `{
                 "cowId": {
                     "type": "integer"
                 },
-                "date": {
-                    "description": "дата начала лактации",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.DateOnly"
-                        }
-                    ]
-                },
                 "days": {
                     "description": "количество дней, когда корова дает молоко",
                     "type": "integer"
@@ -1661,6 +1841,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "proteinAll": {
+                    "type": "integer"
+                },
+                "servicePeriod": {
+                    "description": "сервис период коровы: время от отела до осеменения",
                     "type": "integer"
                 }
             }
