@@ -193,22 +193,22 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	if res.Sex.Name != cr.SexName {
 		return nil, errors.New("Wrong sex name, sex with id has name " + res.Sex.Name + " but " + cr.SexName + " provided")
 	}
-	if cr.FatherSelecs != nil {
-		if err := tx.Order("birking_date DESC").First(&res.Father,
-			map[string]any{"selecs_number": cr.FatherSelecs}).Error; err != nil {
-			return nil, errors.New("не удалось найти отца с селксом " + *cr.FatherSelecs)
-		}
-	}
-	if cr.MotherSelecs != nil {
-		if err := tx.Order("birking_date DESC").First(&res.Mother,
-			map[string]any{"selecs_number": cr.MotherSelecs}).Error; err != nil {
-			return nil, errors.New("не удалось найти мать с селексом " + *cr.MotherSelecs)
-		}
-	}
+	// if cr.FatherSelecs != nil {
+	// 	if err := tx.Order("birking_date DESC").First(&res.Father,
+	// 		map[string]any{"selecs_number": cr.FatherSelecs}).Error; err != nil {
+	// 		return nil, errors.New("не удалось найти отца с селксом " + *cr.FatherSelecs)
+	// 	}
+	// }
+	// if cr.MotherSelecs != nil {
+	// 	if err := tx.Order("birking_date DESC").First(&res.Mother,
+	// 		map[string]any{"selecs_number": cr.MotherSelecs}).Error; err != nil {
+	// 		return nil, errors.New("не удалось найти мать с селексом " + *cr.MotherSelecs)
+	// 	}
+	// }
 
 	res.IdentificationNumber = cr.IdentificationNumber
 	res.InventoryNumber = &cr.InventoryNumber
-	res.SelecsNumber = &cr.Selecs
+	// res.SelecsNumber = &cr.Selecs
 	res.RSHNNumber = cr.RSHNNumber
 	res.Name = cr.Name
 	res.InbrindingCoeffByFamily = cr.InbrindingCoeffByFamily

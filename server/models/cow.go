@@ -17,11 +17,9 @@ type Cow struct {
 	Sex   Sex  `json:"-"`
 	SexId uint `example:"1"` // ID пола коровы
 
-	Father   *Cow  `json:"-"`
-	FatherId *uint `example:"1"` // ID коровы отца коровы
+	FatherSelecs *uint64 // ID коровы отца коровы
 
-	Mother   *Cow  `json:"-"`
-	MotherId *uint `example:"1"` // ID коровы матери коровы
+	MotherSelecs *uint64 // ID коровы матери коровы
 
 	// CreatedBy   *User `json:"-"` // пользователь, создавший корову
 	// CreatedByID *uint `example:"1"`
@@ -32,7 +30,7 @@ type Cow struct {
 
 	IdentificationNumber *string // он все-таки есть! это какой-то не российский номер коровы
 	InventoryNumber      *string `example:"1213321"`    // Инвентарный номер коровы
-	SelecsNumber         *string `example:"98989"`      // Селекс номер коровы
+	SelecsNumber         *uint64 `example:"98989"`      // Селекс номер коровы
 	RSHNNumber           *string `example:"1323323232"` // РСХН номер коровы
 	Name                 string  `example:"Дима"`       // Кличка коровы
 
