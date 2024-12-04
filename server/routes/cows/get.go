@@ -14,9 +14,9 @@ type ReserealizedCow struct {
 	SexName   *string          // пол, null если нет
 	FarmName  *string          // ферма на которой живет, null если нет
 	HozHame   *string          // хозяйство на котором живет, null, если нет
-	Father    *ReserealizedCow // Отец, null если нет
-	Mother    *ReserealizedCow // Мать, null, если нет
-	Genetic   *models.Genetic  // Информация о генотипировании, null если нет
+	
+	Father  *models.Cow	
+	Mother  *models.Cow
 }
 
 func (rc ReserealizedCow) GetReserealizer() routes.Reserealizer {
@@ -32,7 +32,8 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 	sex := models.Sex{}
 	farm := models.Farm{}
 	hoz := models.Farm{}
-
+	father := models.Cow{}
+	mother := models.Cow{}
 	if err := db.First(&breed, cow.BreedId).Error; err != nil {
 		return ReserealizedCow{}, err
 	}
@@ -48,21 +49,21 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 		return ReserealizedCow{}, err
 	}
 
+	if cow.FatherSelecs != nil {
+		if err := db.Limit(1).Order("depart_date desc").Find(&father, 
+		map[string]any{"selecs_number": cow.FatherSelecs}).Error; err != nil {
+			rc.Father = &father
+		}
+	}
+	
+	if cow.MotherSelecs != nil {
+		if err := db.Limit(1).Order("depart_date desc").Find(&mother, 
+		map[string]any{"selecs_number": cow.MotherSelecs}).Error; err != nil {
+			rc.Mother = &mother
+		}
+	}
 	
 	rc.Cow = cow
-	genetic := &models.Genetic{}
-	if qRes := db.Preload("GeneticIllnesses").Limit(1).Find(genetic, map[string]any{"cow_id": cow.ID}); qRes.Error != nil {
-		return ReserealizedCow{}, qRes.Error
-	} else if qRes.RowsAffected != 0 {
-		rc.Genetic = genetic
-	}
-	exterior := &models.Exterior{}
-	if qRes := db.Limit(1).Find(exterior, map[string]any{"cow_id": cow.ID}); qRes.Error != nil {
-		return ReserealizedCow{}, qRes.Error
-	} else if qRes.RowsAffected != 0 {
-		rc.Exterior = exterior
-	}
-	
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name
 	rc.FarmName = &farm.Name
