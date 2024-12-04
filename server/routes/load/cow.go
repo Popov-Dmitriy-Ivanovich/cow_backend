@@ -244,7 +244,7 @@ func (l *Load) Cow() func(*gin.Context) {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
 		if err != nil {
-			c.JSON(500, err)
+			c.JSON(500, "ошибка чтения формы")
 			return
 		}
 		csvField, ok := form.File["csv"]
@@ -256,7 +256,7 @@ func (l *Load) Cow() func(*gin.Context) {
 		now := time.Now()
 		uploadedName := COW_CSV_PATH + "cow_" + strconv.FormatInt(now.Unix(), 10) + "_" + strconv.FormatUint(cowUniqueIndex, 10) + ".csv"
 		if err := c.SaveUploadedFile(csvField[0], uploadedName); err != nil {
-			c.JSON(500, err)
+			c.JSON(500, "ошибка сохранения загруженного файла")
 			return
 		}
 		cowUniqueIndex++
@@ -283,7 +283,7 @@ func (l *Load) Cow() func(*gin.Context) {
 			}
 			return nil
 		}); err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 			return
 		}
 
