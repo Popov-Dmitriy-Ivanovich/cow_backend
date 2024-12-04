@@ -178,17 +178,17 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 
 	if cr.FarmNumber != nil {
 		if err := tx.First(&res.Farm, map[string]any{"hoz_number": cr.FarmNumber}).Error; err != nil {
-			return nil, err
+			return nil, errors.New("не удалось найти ферму с hoz_number = " + *cr.FarmNumber)
 		}
 	}
 	if err := tx.First(&res.FarmGroup, map[string]any{"hoz_number": cr.HozNumber}).Error; err != nil {
-		return nil, err
+		return nil, errors.New("не удалось найти хозяйство с hoz_number = " + cr.HozNumber)
 	}
 	if err := tx.First(&res.Breed, map[string]any{"name": cr.BreedName}).Error; err != nil {
-		return nil, err
+		return nil, errors.New("не удалось найти породу с BreedName = " + cr.BreedName)
 	}
 	if err := tx.First(&res.Sex, map[string]any{"id": cr.SexId}).Error; err != nil {
-		return nil, err
+		return nil, errors.New("не удалось найти пол с ID = " + strconv.FormatUint(uint64(cr.SexId), 10))
 	}
 	if res.Sex.Name != cr.SexName {
 		return nil, errors.New("Wrong sex name, sex with id has name " + res.Sex.Name + " but " + cr.SexName + " provided")
@@ -196,13 +196,13 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	if cr.FatherSelecs != nil {
 		if err := tx.Order("birking_date DESC").First(&res.Father,
 			map[string]any{"selecs_number": cr.FatherSelecs}).Error; err != nil {
-			return nil, err
+			return nil, errors.New("не удалось найти отца с селксом " + *cr.FatherSelecs)
 		}
 	}
 	if cr.MotherSelecs != nil {
 		if err := tx.Order("birking_date DESC").First(&res.Mother,
 			map[string]any{"selecs_number": cr.MotherSelecs}).Error; err != nil {
-			return nil, err
+			return nil, errors.New("не удалось найти мать с селексом " + *cr.MotherSelecs)
 		}
 	}
 
@@ -220,13 +220,13 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	res.BirthMethod = cr.BirthMethod
 	if cr.PrevHozNumber != nil {
 		if err := tx.First(&res.PreviousHoz, map[string]any{"hoz_number": cr.PrevHozNumber}).Error; err != nil {
-			return nil, err
+			return nil, errors.New("не удалось найти хозяйство с номером " + *cr.PrevHozNumber)
 		}
 	}
 
 	if cr.BirthHozNumber != nil {
 		if err := tx.First(&res.BirthHoz, map[string]any{"hoz_number": cr.BirthHozNumber}).Error; err != nil {
-			return nil, err
+			return nil, errors.New("не удалось найти хозяйство с номером " + *cr.BirthHozNumber)
 		}
 	}
 
@@ -234,7 +234,7 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 		if err := tx.First(&res.PreviousReincarnation, map[string]any{
 			"inventory_number": cr.OldInvNumber,
 			"selecs_number":    cr.Selecs}).Error; err != nil {
-			return nil, err
+			return nil, errors.New("не удалось найти корову с номерами селекса и инв. номером: " + cr.Selecs + " , " + *cr.OldInvNumber)
 		}
 	}
 	return res, nil
