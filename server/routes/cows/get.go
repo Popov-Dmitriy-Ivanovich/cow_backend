@@ -54,6 +54,7 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 		map[string]any{"selecs_number": cow.FatherSelecs}).Error; err != nil {
 			return ReserealizedCow{}, err
 		}
+		rc.Father = father
 	}
 	
 	if cow.MotherSelecs != nil {
@@ -61,9 +62,10 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 		map[string]any{"selecs_number": cow.MotherSelecs}).Error; err != nil {
 			return ReserealizedCow{}, err
 		}
+		rc.Mother = mother
 	}
-	rc.Father = father
-	rc.Mother = mother
+	
+	
 	rc.Cow = cow
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name
