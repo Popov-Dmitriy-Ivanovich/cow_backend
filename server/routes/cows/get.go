@@ -32,8 +32,8 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 	sex := models.Sex{}
 	farm := models.Farm{}
 	hoz := models.Farm{}
-	father := models.Cow{}
-	mother := models.Cow{}
+	father := &models.Cow{}
+	mother := &models.Cow{}
 	if err := db.First(&breed, cow.BreedId).Error; err != nil {
 		return ReserealizedCow{}, err
 	}
@@ -50,19 +50,20 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 	}
 
 	if cow.FatherSelecs != nil {
-		if err := db.Limit(1).Order("depart_date desc").Find(&father, 
+		if err := db.Limit(1).Order("depart_date desc").Find(father, 
 		map[string]any{"selecs_number": cow.FatherSelecs}).Error; err != nil {
-			rc.Father = &father
+			return ReserealizedCow{}, err
 		}
 	}
 	
 	if cow.MotherSelecs != nil {
-		if err := db.Limit(1).Order("depart_date desc").Find(&mother, 
+		if err := db.Limit(1).Order("depart_date desc").Find(mother, 
 		map[string]any{"selecs_number": cow.MotherSelecs}).Error; err != nil {
-			rc.Mother = &mother
+			return ReserealizedCow{}, err
 		}
 	}
-	
+	rc.Father = father
+	rc.Mother = mother
 	rc.Cow = cow
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name

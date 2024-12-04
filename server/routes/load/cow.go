@@ -230,13 +230,13 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 		}
 	}
 
-	if cr.OldInvNumber != nil {
-		if err := tx.First(&res.PreviousReincarnation, map[string]any{
-			"inventory_number": cr.OldInvNumber,
-			"selecs_number":    cr.Selecs}).Error; err != nil {
-			return nil, errors.New("не удалось найти корову с номерами селекса и инв. номером: " + cr.Selecs + " , " + *cr.OldInvNumber)
-		}
-	}
+	// if cr.OldInvNumber != nil {
+	// 	if err := tx.First(&res.PreviousReincarnation, map[string]any{
+	// 		"inventory_number": cr.OldInvNumber,
+	// 		"selecs_number":    cr.Selecs}).Error; err != nil {
+	// 		return nil, errors.New("не удалось найти корову с номерами селекса и инв. номером: " + cr.Selecs + " , " + *cr.OldInvNumber)
+	// 	}
+	// }
 	return res, nil
 }
 
