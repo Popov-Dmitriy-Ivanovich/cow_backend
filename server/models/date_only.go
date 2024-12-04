@@ -11,7 +11,7 @@ type DateOnly struct {
 	time.Time
 }
 
-func (do *DateOnly) Value() (driver.Value, error) {
+func (do DateOnly) Value() (driver.Value, error) {
 	return do.Add(0), nil
 }
 
