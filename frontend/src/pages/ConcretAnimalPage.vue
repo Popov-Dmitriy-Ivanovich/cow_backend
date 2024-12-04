@@ -66,7 +66,7 @@ export default {
 <style scoped>
 .concret-animal {
     font-family: Open Sans, sans-serif;
-    margin-top: 110px;
+    margin-top: 140px;
     display: flex;
 }
 

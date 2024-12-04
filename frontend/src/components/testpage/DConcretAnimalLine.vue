@@ -5,15 +5,20 @@
             <div class="animal-inv">{{ animal_item.InventoryNumber }}</div>
             <div class="animal-name">{{ animal_item.Name }}</div>
             <div class="animal-hoz">{{ animal_item.FarmGroupName }}</div>
-            <div class="animal-bdate">{{ bdate(animal_item.BirthDate) }}</div>
+            <div class="animal-bdate">{{ dateConverter(bdate(animal_item.BirthDate)) }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.genotyped) }}</div>
-            <div v-if="animal_item.DepartDate" class="animal-dateout">{{ animal_item.DepartDate }}</div>
+            <div v-if="animal_item.DepartDate" class="animal-dateout">{{ dateConverter(animal_item.DepartDate) }}</div>
+            <div v-if="animal_item.IsDead===true || animal_item.IsDead===false" class="animal_dead">{{ isGen(animal_item.IsDead) }}</div>
             <div v-if="animal_item.BreedName" class="animal-breed">{{ animal_item.BreedName }}</div>
-            <div v-if="filters.GenotypingDate" class="animal-dategen">{{ animal_item.D_GEN }}</div>
+            <div v-if="animal_item.GenotypingDate" class="animal-dategen">{{ dateConverter(animal_item.GenotypingDate) }}</div>
+            <!-- contol milking -->
             <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
-            <div v-if="animal_item.insemenationDate" class="animal-dateosem">{{ animal_item.animal_item.insemenationDate }}</div>
-            <div v-if="animal_item.CalvingDate" class="animal-dateotel">{{ animal_item.calvingDate }}</div>
-            <div v-if="animal_item.BirkingDate" class="animal-datebirk">{{ animal_item.Birkingdate }}</div>
+            <!-- <div v-if="animal_item.InsemenationDate" class="animal-dateosem">{{ animal_item.InsemenationDate }}</div> -->
+            <!-- <div v-if="animal_item.CalvingDate" class="animal-dateotel">{{ animal_item.calvingDate }}</div> -->
+            <div v-if="animal_item.IsTwins===true || animal_item.IsTwins===false" class="animal-genfact">{{ isGen(animal_item.IsTwins) }}</div>
+            <div v-if="animal_item.IsTwins===true || animal_item.IsTwins===false" class="animal-genfact">{{ isGen(animal_item.IsStillBorn) }}</div>
+            <div v-if="animal_item.IsAborted===true || animal_item.IsAborted===false" class="animal-genfact">{{ isGen(animal_item.IsAborted) }}</div>
+            <div v-if="animal_item.BirkingDate" class="animal-datebirk">{{ dateConverter(animal_item.Birkingdate) }}</div>
             <div v-if="animal_item.InbrindingCoeffByFamily" class="animal-krod">{{ animal_item.InbrindingCoeffByFamily }}</div>
             <!-- <div v-if="animal_item." class="animal-kfen">{{ animal_item.INBRID_FENOTYPE }}</div> -->
         </div>
@@ -38,6 +43,14 @@ export default {
         },
         bdate(birth) {
             return birth.split('T')[0];
+        },
+        dateConverter(date) {
+            let arr = date.split('-');
+            let result = '';
+            result += arr[2]; result += '.';
+            result += arr[1]; result += '.';
+            result += arr[0];
+            return result;
         }
     }
 }

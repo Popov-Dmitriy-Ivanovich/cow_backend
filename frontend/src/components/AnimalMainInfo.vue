@@ -1,12 +1,12 @@
 <template>
 <div class="main-info">
-    <div class="cowname">{{ cow_info.Name }}</div>
-    <div class="pol"> | {{ cow_info.SexName }}</div>
+    <div class="cowname">{{ cow_info.Name || 'Нет информации'}}</div>
+    <div class="pol"> | {{ cow_info.SexName  || 'Нет информации' }}</div>
     <div class="cow-microinfo">
-        <div>Дата рождения: {{ cow_info.BirthDate}}</div> 
-        <div>Номер РСХН: {{ cow_info.RSHNNumber }}</div>
-    </div>
-
+        <div class="bdate">Дата рождения: {{ cow_info.BirthDate  || 'Нет информации'}}</div> 
+        <div class="rshn">Номер РСХН: {{ cow_info.RSHNNumber  || 'Нет информации'}}</div>
+        <div class="pol">| {{ status }}</div>
+    </div> 
 </div>
 </template>
 
@@ -15,6 +15,7 @@ export default {
     data() {
         return {
             cow_info: {},
+            status:"",
         }
     },
     async created() {
@@ -23,6 +24,14 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
+        this.cow_info.BirthDate = this.dateConverter(this.cow_info.BirthDate);
+        if (this.cow_info.DepartDate) {
+            if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Выбыла'
+            else this.status = 'Выбыл'
+        } else {
+            if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Не выбыла'
+            else this.status = 'Не выбыл'
+        }
     },
     methods: {
         getPol(id_pol) {
@@ -30,6 +39,14 @@ export default {
             if (id_pol === 3) return 'Бык';
             if (id_pol === 2) return 'Тёлка';
             if (id_pol === 1) return 'Бычок';
+        },
+        dateConverter(date) {
+            let arr = date.split('-');
+            let result = '';
+            result += arr[2]; result += '.';
+            result += arr[1]; result += '.';
+            result += arr[0];
+            return result;
         }
     }
 }
@@ -45,7 +62,7 @@ export default {
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     font-size: 120%; 
     position: sticky;
-    top: 80px;
+    top: 100px;
     z-index: 30;
 }
 
@@ -65,7 +82,11 @@ export default {
     display: flex;
 }
 
-.cow-microinfo div {
-    margin-right: 30px;
+.bdate {
+    margin-right: 25px;
+}
+
+.rshn {
+    margin-right: 10px;
 }
 </style>

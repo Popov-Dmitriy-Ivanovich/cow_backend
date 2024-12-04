@@ -4,21 +4,21 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">Отец</div>
-                <div @click="clickFather" class="link-parent">{{ father.Name }}</div>
+                <div @click="clickFather" class="link-parent">{{ father.Name || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Мать</div>
-                <div @click="clickMother" class="link-parent">{{ mother.Name }}</div>
+                <div @click="clickMother" class="link-parent">{{ mother.Name || 'Нет информации' }}</div>
             </div>
         </div>
         <div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по родословной</div>
-                <div>{{ cow_info.InbrindingCoeffByFamily }}</div>
+                <div>{{ coeffByFamily || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Коэффициент инбридинга по генотипу</div>
-                <div>{{ genetic.InbrindingCoeffByGenotype }}</div>
+                <div>{{ genetic.InbrindingCoeffByGenotype || 'Нет информации' }}</div>
             </div>
         </div>
     </div>
@@ -26,34 +26,32 @@
     
 <script>
 export default {
-    data() {
-        return {
-            cow_info: {},
-            mother: {},
-            father: {},
-            genetic: {},
+    props: {
+        mother: {
+            type: Object,
+            required: true,
+        },
+        father: {
+            type: Object,
+            required: true,
+        },
+        genetic: {
+            type: Object,
+            required: true,
+        },
+        coeffByFamily: {
+            type: Number,
         }
-    },
-    async created() {
-        let mass_route = this.$route.path.split('/');
-        let cow_id = mass_route[2];
-        let response = await fetch(`/api/cows/${cow_id}`);
-        let result = await response.json();
-        this.cow_info = result;
-        this.mother = this.cow_info.Mother;
-        this.father = this.cow_info.Father;
-        this.genetic = this.cow_info.Genetic;
-        console.log(this.cow_info);
     },
     methods: {
         clickFather() {
-            if (this.cow_info.Father.ID) {
-                this.$router.push(`/animals/${this.cow_info.Father.ID}`)
+            if (this.cow_info.FatherId) {
+                this.$router.push(`/animals/${this.cow_info.FatherId}`)
             }
         },
         clickMother() {
-            if (this.cow_info.Mother.ID) {
-                this.$router.push(`/animals/${this.cow_info.Mother.ID}`)
+            if (this.cow_info.MotherId) {
+                this.$router.push(`/animals/${this.cow_info.MotherId}`)
             }
         }
     }
