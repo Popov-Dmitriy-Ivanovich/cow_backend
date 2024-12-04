@@ -5,7 +5,7 @@ type Farm struct {
 
 	// Region   Region `json:"-"`
 	// RegionId uint
-
+	HozNumber  *string  // номер хоз-ва, интересно а можно ли его сдлеать интом?
 	District   District `json:"-"`
 	DistrictId uint
 	Parrent    *Farm `json:"-"`

@@ -5,11 +5,11 @@ type CheckMilk struct {
 
 	LactationId uint `example:"1"` // ID лактации для которой выполнена контрольная дойка
 
-	CheckDate DateOnly // Дата конрольной дойки
-	Milk      float64  `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во молока
-	Fat       float64  `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во жира в молоке
-	Protein   float64  `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во белка в молоке
-
-	ProbeNumber uint    // номер пробы
-	DryMatter   float64 // сухой материал
+	CheckDate       DateOnly // Дата конрольной дойки
+	Milk            float64  `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во молока
+	Fat             float64  `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во жира в молоке
+	Protein         float64  `example:"1"` // Параметр контрольной дойки, как я понимаю кол-во белка в молоке
+	SomaticNucCount float64  // количество соматических клеток
+	ProbeNumber     uint     // номер пробы
+	DryMatter       float64  // сухой материал
 }

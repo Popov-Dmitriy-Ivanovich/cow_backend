@@ -9,6 +9,9 @@ type Event struct {
 	EventType   EventType `json:"-"`
 	EventTypeId uint
 
+	DataResourse      string // источник данные
+	DaysFromLactation uint   // дни от начала лактации
+
 	Date     DateOnly
 	Comment1 *string
 	Comment2 *string

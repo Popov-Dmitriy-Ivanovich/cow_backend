@@ -23,14 +23,18 @@ type Cow struct {
 	Mother   *Cow  `json:"-"`
 	MotherId *uint `example:"1"` // ID коровы матери коровы
 
-	Genetic *Genetic `json:",omitempty"`
-	Exterior *Exterior `json:",omitempty"`
+	CreatedBy   *User `json:"-"` // пользователь, создавший корову
+	CreatedByID *uint `example:"1"`
+
+	Genetic   *Genetic
+	Exterior  *Exterior
 	Lactation []Lactation `json:"-"`
 
-	InventoryNumber *string `example:"1213321"`    // Инвентарный номер коровы
-	SelecsNumber    *string `example:"98989"`      // Селекс номер коровы
-	RSHNNumber      *string `example:"1323323232"` // РСХН номер коровы
-	Name            string  `example:"Дима"`       // Кличка коровы
+	IdentificationNumber *string // он все-таки есть! это какой-то не российский номер коровы
+	InventoryNumber      *string `example:"1213321"`    // Инвентарный номер коровы
+	SelecsNumber         *string `example:"98989"`      // Селекс номер коровы
+	RSHNNumber           *string `example:"1323323232"` // РСХН номер коровы
+	Name                 string  `example:"Дима"`       // Кличка коровы
 
 	// Exterior                float64  `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
 	InbrindingCoeffByFamily *float64 `example:"3.14"` // Коэф. инбриндинга по роду
