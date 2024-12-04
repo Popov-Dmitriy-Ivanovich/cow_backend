@@ -74,7 +74,7 @@ func (g Genotyped) Regions() func(*gin.Context) {
 		regionNames := []string{} // regions where alive cows are registered
 		db.Model(&models.Region{}).Where("EXISTS(SELECT 1 FROM districts WHERE districts.region_id = regions.id AND "+
 			" EXISTS (SELECT 1 FROM farms WHERE farms.district_id = districts.id AND "+
-			" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND (cows.death_date IS NULL OR cows.death_date < ? AND cows.birth_date < ?))))",
+			" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_id is NULL AND cows.farm_group_id = farms.id) AND (cows.death_date IS NULL OR cows.death_date < ? AND cows.birth_date < ?))))",
 			time.Date(int(yearInt+1), 1, 1, 0, 0, 0, 0, time.UTC), time.Date(int(yearInt+1), 1, 1, 0, 0, 0, 0, time.UTC)).Pluck("name", &regionNames)
 
 		res := make(map[string]byRegionStatistics)

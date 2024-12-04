@@ -23,8 +23,8 @@ type Cow struct {
 	Mother   *Cow  `json:"-"`
 	MotherId *uint `example:"1"` // ID коровы матери коровы
 
-	CreatedBy   *User `json:"-"` // пользователь, создавший корову
-	CreatedByID *uint `example:"1"`
+	// CreatedBy   *User `json:"-"` // пользователь, создавший корову
+	// CreatedByID *uint `example:"1"`
 
 	Genetic   *Genetic
 	Exterior  *Exterior
