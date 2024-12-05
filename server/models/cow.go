@@ -17,6 +17,12 @@ type Cow struct {
 	Sex   Sex  `json:"-"`
 	SexId uint `example:"1"` // ID пола коровы
 
+	GradeRegion   *Grade `json:"-"`
+	GradeRegionId *uint  `example:"1"` // оценка по региону
+
+	GradeHoz   *Grade `json:"-"`
+	GradeHozId *uint  `example:"1"` // оценка по хозяйству
+
 	FatherSelecs *uint64 // ID коровы отца коровы
 
 	MotherSelecs *uint64 // ID коровы матери коровы
@@ -44,11 +50,11 @@ type Cow struct {
 	BirkingDate *DateOnly // Дата перебирковки
 
 	// Новые поля
-	PreviousHoz             *Farm   `json:"-"`
-	PreviousHozId           *uint   // ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится "новой коровой"
-	BirthHoz                *Farm   `json:"-"`
-	BirthHozId              *uint   // ID хозяйства рождения
-	BirthMethod             *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
+	PreviousHoz   *Farm   `json:"-"`
+	PreviousHozId *uint   // ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится "новой коровой"
+	BirthHoz      *Farm   `json:"-"`
+	BirthHozId    *uint   // ID хозяйства рождения
+	BirthMethod   *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 
-	PreviousInventoryNumber   *string    `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это указатель на эту же корову в другом хоз-ве с другим инв. номером
+	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это указатель на эту же корову в другом хоз-ве с другим инв. номером
 }
