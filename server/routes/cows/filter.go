@@ -264,7 +264,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 
 		if searchString := bodyData.SearchQuery; searchString != nil && *searchString != "" {
 			*searchString = "%" + *searchString + "%"
-			query = query.Where("name LIKE ? or rshn_number LIKE ? or inventory_number LIKE ?", searchString, searchString, searchString)
+			query = query.Where("name LIKE ? or rshn_number LIKE ? or inventory_number LIKE ? or selecs_number like ?", searchString, searchString, searchString, searchString)
 		}
 
 		if len(bodyData.Sex) != 0 {
