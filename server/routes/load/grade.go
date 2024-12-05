@@ -25,7 +25,7 @@ func (l *Load) Grade() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := GRADE_CSV_PATH + "grade_" + now.Format(time.Stamp) + "_" + strconv.FormatUint(gradeUniqueIndex, 10) + ".csv"
+		uploadedName := GRADE_CSV_PATH + "grade_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(gradeUniqueIndex, 16) + ".csv"
 		if err := c.SaveUploadedFile(csv[0], uploadedName); err != nil {
 			c.JSON(500, err)
 			return

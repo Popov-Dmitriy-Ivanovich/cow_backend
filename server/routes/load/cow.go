@@ -246,7 +246,7 @@ func (l *Load) Cow() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := COW_CSV_PATH + "cow_" + strconv.FormatInt(now.Unix(), 10) + "_" + strconv.FormatUint(cowUniqueIndex, 10) + ".csv"
+		uploadedName := COW_CSV_PATH + "cow_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(cowUniqueIndex, 16) + ".csv"
 		if err := c.SaveUploadedFile(csvField[0], uploadedName); err != nil {
 			c.JSON(500, "ошибка сохранения загруженного файла")
 			return

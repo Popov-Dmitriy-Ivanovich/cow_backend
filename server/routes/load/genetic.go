@@ -25,7 +25,7 @@ func (l *Load) Genetic() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := GENETIC_CSV_PATH + "genetic_" + now.Format(time.Stamp) + "_" + strconv.FormatUint(geneticUniqueIndex, 10) + ".csv"
+		uploadedName := GENETIC_CSV_PATH + "genetic_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(geneticUniqueIndex, 16) + ".csv"
 		if err := c.SaveUploadedFile(csv[0], uploadedName); err != nil {
 			c.JSON(500, err)
 			return

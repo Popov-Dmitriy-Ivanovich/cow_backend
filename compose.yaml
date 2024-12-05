@@ -43,8 +43,8 @@ services:
     volumes:
       - ./dockered_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - habrdb-data:/var/lib/postgresql/data
-    # ports:
-    #   - "5432:5432"
+    ports:
+      - "5432:5432"
     
     networks:
       - postgres
@@ -83,7 +83,7 @@ services:
       ports:
         - 8080:8080
       volumes:
-        - backend-static-data:/build
+        - backend-static-data:/build/static
   nginx:
     container_name: nginx1
     depends_on:

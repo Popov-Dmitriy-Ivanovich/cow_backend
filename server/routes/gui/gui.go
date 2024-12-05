@@ -17,6 +17,9 @@ func (s *Gui) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/geneticLoad", s.GeneticLoad())
 	apiGroup.GET("/gradeLoad", s.GradeLoad())
 	apiGroup.GET("/lactationLoad", s.LactationLoad())
+	apiGroup.GET("/exteriorLoad", func(c *gin.Context) { c.HTML(200, "ExteriorLoadPage.tmpl", gin.H{"title": "экстерьер"}) })
+	apiGroup.GET("/gtcLoad", func(c *gin.Context) { c.HTML(200, "GtcLoadPage.tmpl", gin.H{"title": "gtc"}) })
+	apiGroup.GET("/partnerLoad", func(c *gin.Context) { c.HTML(200, "PartnerLoadPage.tmpl", gin.H{"title": "gtc"}) })
 	apiGroup.GET("", s.Index())
 }
 

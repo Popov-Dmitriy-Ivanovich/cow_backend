@@ -25,7 +25,7 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := CM_CSV_PATH + "check_milk_" + now.Format(time.Stamp) + "_" + strconv.FormatUint(cmUniqueIndex, 10) + ".csv"
+		uploadedName := CM_CSV_PATH + "check_milk_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(cmUniqueIndex, 16) + ".csv"
 		if err := c.SaveUploadedFile(csv[0], uploadedName); err != nil {
 			c.JSON(500, err)
 			return
