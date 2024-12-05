@@ -158,17 +158,20 @@ definitions:
         description: ферма на которой живет, null если нет
         type: string
       father:
-        allOf:
-        - $ref: '#/definitions/cows.ReserealizedCow'
-        description: Отец, null если нет
-      fatherId:
+        $ref: '#/definitions/models.Cow'
+      fatherSelecs:
         description: ID коровы отца коровы
-        example: 1
         type: integer
       genetic:
-        allOf:
-        - $ref: '#/definitions/models.Genetic'
-        description: Информация о генотипировании, null если нет
+        $ref: '#/definitions/models.Genetic'
+      gradeHozId:
+        description: оценка по хозяйству
+        example: 1
+        type: integer
+      gradeRegionId:
+        description: оценка по региону
+        example: 1
+        type: integer
       hozHame:
         description: хозяйство на котором живет, null, если нет
         type: string
@@ -189,12 +192,9 @@ definitions:
         example: "1213321"
         type: string
       mother:
-        allOf:
-        - $ref: '#/definitions/cows.ReserealizedCow'
-        description: Мать, null, если нет
-      motherId:
+        $ref: '#/definitions/models.Cow'
+      motherSelecs:
         description: ID коровы матери коровы
-        example: 1
         type: integer
       name:
         description: Кличка коровы
@@ -204,17 +204,14 @@ definitions:
         description: ID предыдущего хозяйства, когда корову продают, она переходит
           к новому владельцу и становится "новой коровой"
         type: integer
-      previousReincarnationId:
-        description: см PreviousReincarnation
-        type: integer
       rshnnumber:
         description: РСХН номер коровы
         example: "1323323232"
         type: string
       selecsNumber:
         description: Селекс номер коровы
-        example: "98989"
-        type: string
+        example: 98989
+        type: integer
       sexId:
         description: ID пола коровы
         example: 1
@@ -285,9 +282,13 @@ definitions:
         default: 50
         description: Количество сущностей на странице
         type: integer
-      exterior:
+      exteriorFrom:
         default: 3.14
-        description: Фильтр по оценке экстерьера коровы, будет переработан
+        description: Фильтр по оценке экстерьера коровы ОТ
+        type: number
+      exteriorTo:
+        default: 3.14
+        description: Фильтр по оценке экстерьера коровы ДО
         type: number
       genotypingDateFrom:
         description: фильтр по дате генотипирования ОТ
@@ -297,6 +298,11 @@ definitions:
         description: фильтр по дате генотипирования ДО
         example: "2800-01-21"
         type: string
+      hasAnyIllnes:
+        default: false
+        description: Флаг true - возращает коров у которых есть хотябы одно заболевение,
+          false - возращает коров, у которых нет ни одного
+        type: boolean
       hozId:
         description: ID фермы, для которой ищутся коровы
         example: 1
@@ -318,8 +324,8 @@ definitions:
         description: фильтр по коэф. инбриндинга по генотипу ДО
         type: number
       inseminationDateFrom:
-        description: Фильтр по дате осеменения коровы, ищет коров у которых было осеменение
-          в эту дату или позднее
+        description: Exterior             *float64 `default:"3.14" validate:"optional"`       //
+          Фильтр по оценке экстерьера коровы, будет переработан
         example: "1800-01-21"
         type: string
       inseminationDateTo:
@@ -414,6 +420,106 @@ definitions:
         description: количество соматических клеток
         type: number
     type: object
+  models.Cow:
+    properties:
+      approved:
+        description: Целое число, что-то для админов, чтобы подтверждать коров
+        example: 1
+        type: integer
+      birkingDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата перебирковки
+      birthDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: День рождения
+      birthHozId:
+        description: ID хозяйства рождения
+        type: integer
+      birthMethod:
+        description: 'способ зачатия: клон, эмбрион, искусственное осеменени, естественное
+          осеменение'
+        type: string
+      breedId:
+        description: ID породы коровы
+        example: 1
+        type: integer
+      createdAt:
+        description: Время создания коровы в базе данных
+        example: "2007-01-01"
+        type: string
+      deathDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: Дата смерти
+      departDate:
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: День отбытия из коровника
+      exterior:
+        $ref: '#/definitions/models.Exterior'
+      farmGroupId:
+        description: ID хозяйства, которому корова принадлежит
+        example: 1
+        type: integer
+      farmID:
+        description: ID фермы, которой корова принадлежит
+        example: 1
+        type: integer
+      fatherSelecs:
+        description: ID коровы отца коровы
+        type: integer
+      genetic:
+        $ref: '#/definitions/models.Genetic'
+      gradeHozId:
+        description: оценка по хозяйству
+        example: 1
+        type: integer
+      gradeRegionId:
+        description: оценка по региону
+        example: 1
+        type: integer
+      id:
+        description: ID коровы
+        example: 1
+        type: integer
+      identificationNumber:
+        description: он все-таки есть! это какой-то не российский номер коровы
+        type: string
+      inbrindingCoeffByFamily:
+        description: Exterior                float64  `example:"3.14"` // Оценка экстерьера
+          коровы, будет переделано в ID экстерьера коровы
+        example: 3.14
+        type: number
+      inventoryNumber:
+        description: Инвентарный номер коровы
+        example: "1213321"
+        type: string
+      motherSelecs:
+        description: ID коровы матери коровы
+        type: integer
+      name:
+        description: Кличка коровы
+        example: Дима
+        type: string
+      previousHozId:
+        description: ID предыдущего хозяйства, когда корову продают, она переходит
+          к новому владельцу и становится "новой коровой"
+        type: integer
+      rshnnumber:
+        description: РСХН номер коровы
+        example: "1323323232"
+        type: string
+      selecsNumber:
+        description: Селекс номер коровы
+        example: 98989
+        type: integer
+      sexId:
+        description: ID пола коровы
+        example: 1
+        type: integer
+    type: object
   models.DailyMilk:
     properties:
       date:
@@ -466,6 +572,27 @@ definitions:
     properties:
       time.Time:
         type: string
+    type: object
+  models.Event:
+    properties:
+      comment1:
+        type: string
+      comment2:
+        type: string
+      cowId:
+        type: integer
+      dataResourse:
+        description: источник данные
+        type: string
+      date:
+        $ref: '#/definitions/models.DateOnly'
+      daysFromLactation:
+        description: дни от начала лактации
+        type: integer
+      eventTypeId:
+        type: integer
+      id:
+        type: integer
     type: object
   models.Exterior:
     properties:
@@ -609,6 +736,25 @@ definitions:
       omia:
         description: Какой-то там ОМИЯ номер
         type: string
+    type: object
+  models.Grade:
+    properties:
+      ebvFat:
+        type: number
+      ebvInsemenation:
+        type: number
+      ebvMilk:
+        type: number
+      ebvProtein:
+        type: number
+      evbService:
+        type: number
+      generalValue:
+        type: number
+      id:
+        description: ID оценки
+        example: 1
+        type: integer
     type: object
   models.Lactation:
     properties:
@@ -966,6 +1112,32 @@ paths:
       summary: Get list of check milks
       tags:
       - Cows
+  /cows/{id}/children:
+    get:
+      description: Возращает список всех детей для конкретной коровы.
+      parameters:
+      - description: ID коровы для которой ищутся лактации
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Lactation'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of children
+      tags:
+      - Cows
   /cows/{id}/exterior:
     get:
       description: Возращает информацию об экстерьере, null, если нет
@@ -1012,6 +1184,58 @@ paths:
             additionalProperties: {}
             type: object
       summary: Get list of check milks
+      tags:
+      - Cows
+  /cows/{id}/grades:
+    get:
+      description: Возращает список всех оценок конкретной коровы.
+      parameters:
+      - description: ID коровы для которой ищутся оценки
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/models.Grade'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of children
+      tags:
+      - Cows
+  /cows/{id}/health:
+    get:
+      description: Возращает список всех ветеренарных мероприятий для конкретной коровы.
+      parameters:
+      - description: ID коровы для которой ищутся вет мероприятия
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Event'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of health events
       tags:
       - Cows
   /cows/{id}/lactations:

@@ -501,6 +501,45 @@ const docTemplate = `{
                 }
             }
         },
+        "/cows/{id}/children": {
+            "get": {
+                "description": "Возращает список всех детей для конкретной коровы.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of children",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищутся лактации",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Lactation"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/cows/{id}/exterior": {
             "get": {
                 "description": "Возращает информацию об экстерьере, null, если нет",
@@ -561,6 +600,84 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Genetic"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows/{id}/grades": {
+            "get": {
+                "description": "Возращает список всех оценок конкретной коровы.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of children",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищутся оценки",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/models.Grade"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows/{id}/health": {
+            "get": {
+                "description": "Возращает список всех ветеренарных мероприятий для конкретной коровы.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of health events",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищутся вет мероприятия",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Event"
+                            }
                         }
                     },
                     "500": {
@@ -1183,25 +1300,24 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "father": {
-                    "description": "Отец, null если нет",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/cows.ReserealizedCow"
-                        }
-                    ]
+                    "$ref": "#/definitions/models.Cow"
                 },
-                "fatherId": {
+                "fatherSelecs": {
                     "description": "ID коровы отца коровы",
+                    "type": "integer"
+                },
+                "genetic": {
+                    "$ref": "#/definitions/models.Genetic"
+                },
+                "gradeHozId": {
+                    "description": "оценка по хозяйству",
                     "type": "integer",
                     "example": 1
                 },
-                "genetic": {
-                    "description": "Информация о генотипировании, null если нет",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.Genetic"
-                        }
-                    ]
+                "gradeRegionId": {
+                    "description": "оценка по региону",
+                    "type": "integer",
+                    "example": 1
                 },
                 "hozHame": {
                     "description": "хозяйство на котором живет, null, если нет",
@@ -1227,17 +1343,11 @@ const docTemplate = `{
                     "example": "1213321"
                 },
                 "mother": {
-                    "description": "Мать, null, если нет",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/cows.ReserealizedCow"
-                        }
-                    ]
+                    "$ref": "#/definitions/models.Cow"
                 },
-                "motherId": {
+                "motherSelecs": {
                     "description": "ID коровы матери коровы",
-                    "type": "integer",
-                    "example": 1
+                    "type": "integer"
                 },
                 "name": {
                     "description": "Кличка коровы",
@@ -1248,10 +1358,6 @@ const docTemplate = `{
                     "description": "ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится \"новой коровой\"",
                     "type": "integer"
                 },
-                "previousReincarnationId": {
-                    "description": "см PreviousReincarnation",
-                    "type": "integer"
-                },
                 "rshnnumber": {
                     "description": "РСХН номер коровы",
                     "type": "string",
@@ -1259,8 +1365,8 @@ const docTemplate = `{
                 },
                 "selecsNumber": {
                     "description": "Селекс номер коровы",
-                    "type": "string",
-                    "example": "98989"
+                    "type": "integer",
+                    "example": 98989
                 },
                 "sexId": {
                     "description": "ID пола коровы",
@@ -1338,8 +1444,13 @@ const docTemplate = `{
                     "type": "integer",
                     "default": 50
                 },
-                "exterior": {
-                    "description": "Фильтр по оценке экстерьера коровы, будет переработан",
+                "exteriorFrom": {
+                    "description": "Фильтр по оценке экстерьера коровы ОТ",
+                    "type": "number",
+                    "default": 3.14
+                },
+                "exteriorTo": {
+                    "description": "Фильтр по оценке экстерьера коровы ДО",
                     "type": "number",
                     "default": 3.14
                 },
@@ -1352,6 +1463,11 @@ const docTemplate = `{
                     "description": "фильтр по дате генотипирования ДО",
                     "type": "string",
                     "example": "2800-01-21"
+                },
+                "hasAnyIllnes": {
+                    "description": "Флаг true - возращает коров у которых есть хотябы одно заболевение, false - возращает коров, у которых нет ни одного",
+                    "type": "boolean",
+                    "default": false
                 },
                 "hozId": {
                     "description": "ID фермы, для которой ищутся коровы",
@@ -1379,7 +1495,7 @@ const docTemplate = `{
                     "default": 3.14
                 },
                 "inseminationDateFrom": {
-                    "description": "Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или позднее",
+                    "description": "Exterior             *float64 ` + "`" + `default:\"3.14\" validate:\"optional\"` + "`" + `       // Фильтр по оценке экстерьера коровы, будет переработан",
                     "type": "string",
                     "example": "1800-01-21"
                 },
@@ -1504,6 +1620,143 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Cow": {
+            "type": "object",
+            "properties": {
+                "approved": {
+                    "description": "Целое число, что-то для админов, чтобы подтверждать коров",
+                    "type": "integer",
+                    "example": 1
+                },
+                "birkingDate": {
+                    "description": "Дата перебирковки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "birthDate": {
+                    "description": "День рождения",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "birthHozId": {
+                    "description": "ID хозяйства рождения",
+                    "type": "integer"
+                },
+                "birthMethod": {
+                    "description": "способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение",
+                    "type": "string"
+                },
+                "breedId": {
+                    "description": "ID породы коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "createdAt": {
+                    "description": "Время создания коровы в базе данных",
+                    "type": "string",
+                    "example": "2007-01-01"
+                },
+                "deathDate": {
+                    "description": "Дата смерти",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "departDate": {
+                    "description": "День отбытия из коровника",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "exterior": {
+                    "$ref": "#/definitions/models.Exterior"
+                },
+                "farmGroupId": {
+                    "description": "ID хозяйства, которому корова принадлежит",
+                    "type": "integer",
+                    "example": 1
+                },
+                "farmID": {
+                    "description": "ID фермы, которой корова принадлежит",
+                    "type": "integer",
+                    "example": 1
+                },
+                "fatherSelecs": {
+                    "description": "ID коровы отца коровы",
+                    "type": "integer"
+                },
+                "genetic": {
+                    "$ref": "#/definitions/models.Genetic"
+                },
+                "gradeHozId": {
+                    "description": "оценка по хозяйству",
+                    "type": "integer",
+                    "example": 1
+                },
+                "gradeRegionId": {
+                    "description": "оценка по региону",
+                    "type": "integer",
+                    "example": 1
+                },
+                "id": {
+                    "description": "ID коровы",
+                    "type": "integer",
+                    "example": 1
+                },
+                "identificationNumber": {
+                    "description": "он все-таки есть! это какой-то не российский номер коровы",
+                    "type": "string"
+                },
+                "inbrindingCoeffByFamily": {
+                    "description": "Exterior                float64  ` + "`" + `example:\"3.14\"` + "`" + ` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы",
+                    "type": "number",
+                    "example": 3.14
+                },
+                "inventoryNumber": {
+                    "description": "Инвентарный номер коровы",
+                    "type": "string",
+                    "example": "1213321"
+                },
+                "motherSelecs": {
+                    "description": "ID коровы матери коровы",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "Кличка коровы",
+                    "type": "string",
+                    "example": "Дима"
+                },
+                "previousHozId": {
+                    "description": "ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится \"новой коровой\"",
+                    "type": "integer"
+                },
+                "rshnnumber": {
+                    "description": "РСХН номер коровы",
+                    "type": "string",
+                    "example": "1323323232"
+                },
+                "selecsNumber": {
+                    "description": "Селекс номер коровы",
+                    "type": "integer",
+                    "example": 98989
+                },
+                "sexId": {
+                    "description": "ID пола коровы",
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
         "models.DailyMilk": {
             "type": "object",
             "properties": {
@@ -1577,6 +1830,37 @@ const docTemplate = `{
             "properties": {
                 "time.Time": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Event": {
+            "type": "object",
+            "properties": {
+                "comment1": {
+                    "type": "string"
+                },
+                "comment2": {
+                    "type": "string"
+                },
+                "cowId": {
+                    "type": "integer"
+                },
+                "dataResourse": {
+                    "description": "источник данные",
+                    "type": "string"
+                },
+                "date": {
+                    "$ref": "#/definitions/models.DateOnly"
+                },
+                "daysFromLactation": {
+                    "description": "дни от начала лактации",
+                    "type": "integer"
+                },
+                "eventTypeId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
                 }
             }
         },
@@ -1790,6 +2074,34 @@ const docTemplate = `{
                 "omia": {
                     "description": "Какой-то там ОМИЯ номер",
                     "type": "string"
+                }
+            }
+        },
+        "models.Grade": {
+            "type": "object",
+            "properties": {
+                "ebvFat": {
+                    "type": "number"
+                },
+                "ebvInsemenation": {
+                    "type": "number"
+                },
+                "ebvMilk": {
+                    "type": "number"
+                },
+                "ebvProtein": {
+                    "type": "number"
+                },
+                "evbService": {
+                    "type": "number"
+                },
+                "generalValue": {
+                    "type": "number"
+                },
+                "id": {
+                    "description": "ID оценки",
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
