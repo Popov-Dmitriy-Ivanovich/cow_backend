@@ -29,3 +29,23 @@ func (r *Regions) GetByFilter() func(*gin.Context) {
 func (r *Regions) GetByID() func(*gin.Context) {
 	return routes.GenerateGetFunctionById[models.Region]()
 }
+
+// @Summary      Get list of regions
+// @Description  Возращает новости региона
+// @Tags         Regions
+// @Param        id    path     int  true  "id региона"
+// @Produce      json
+// @Success      200  {object}   models.News
+// @Failure      500  {object}  map[string]error
+// @Router       /regions/{id}/news [get]
+func (r *Regions) News() func(*gin.Context) {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+		db := models.GetDb()
+		region := models.Region{}
+		if err := db.First(&region, id).Error; err != nil {
+			c.JSON(404, err.Error())
+		}
+		c.JSON(200, region.News)
+	}
+}
