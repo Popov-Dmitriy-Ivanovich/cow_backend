@@ -43,7 +43,7 @@ func (r *Regions) News() func(*gin.Context) {
 		id := c.Param("id")
 		db := models.GetDb()
 		region := models.Region{}
-		if err := db.First(&region, id).Error; err != nil {
+		if err := db.Preload("News").First(&region, id).Error; err != nil {
 			c.JSON(404, err.Error())
 		}
 		c.JSON(200, region.News)
