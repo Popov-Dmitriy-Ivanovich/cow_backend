@@ -39,5 +39,5 @@ type Exterior struct {
 	HindUdderWidth float64
 	AcrumLength    float64
 
-	PicturePath string
+	PicturePath *string
 }

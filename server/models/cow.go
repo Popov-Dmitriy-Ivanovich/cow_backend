@@ -17,6 +17,8 @@ type Cow struct {
 	Sex   Sex  `json:"-"`
 	SexId uint `example:"1"` // ID пола коровы
 
+	Events []Event `json:"-"`
+
 	GradeRegion   *Grade `json:"-"`
 	GradeRegionId *uint  `example:"1"` // оценка по региону
 

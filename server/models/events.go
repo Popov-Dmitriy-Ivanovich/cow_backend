@@ -3,7 +3,6 @@ package models
 type Event struct {
 	ID uint `gorm:"primaryKey"`
 
-	Cow   Cow `json:"-"`
 	CowId uint
 
 	EventType   EventType `json:"-"`
