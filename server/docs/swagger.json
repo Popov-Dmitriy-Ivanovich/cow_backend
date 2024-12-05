@@ -1144,6 +1144,12 @@
                 "departDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Event"
+                    }
+                },
                 "exteriorRating": {
                     "type": "number"
                 },
@@ -1467,6 +1473,16 @@
                     "description": "ID фермы, для которой ищутся коровы",
                     "type": "integer",
                     "example": 1
+                },
+                "illDateFrom": {
+                    "description": "Фильтр по дате начала болезни ОТ",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "illDateTo": {
+                    "description": "Фильтр по дате начала болезни ДО",
+                    "type": "string",
+                    "example": "1800-01-21"
                 },
                 "inbrindingCoeffByFamilyFrom": {
                     "description": "фильтр по коэф. инбриндинга по роду ОТ",
@@ -1861,6 +1877,9 @@
         "models.Exterior": {
             "type": "object",
             "properties": {
+                "acrumLength": {
+                    "type": "number"
+                },
                 "bodyDepth": {
                     "type": "number"
                 },
@@ -1900,6 +1919,9 @@
                 "foreUdderPlcRear": {
                     "type": "number"
                 },
+                "foreUdderWidth": {
+                    "type": "number"
+                },
                 "harmonyOfMovement": {
                     "type": "number"
                 },
@@ -1913,6 +1935,9 @@
                     "type": "number"
                 },
                 "hindTeatPlc": {
+                    "type": "number"
+                },
+                "hindUdderWidth": {
                     "type": "number"
                 },
                 "hoofAngle": {
@@ -1929,6 +1954,9 @@
                 },
                 "pelvicWidth": {
                     "type": "number"
+                },
+                "picturePath": {
+                    "type": "string"
                 },
                 "prominenceOfMilkVeins": {
                     "type": "number"
@@ -2028,6 +2056,9 @@
                     "items": {
                         "$ref": "#/definitions/models.GeneticIllness"
                     }
+                },
+                "gtcFilePath": {
+                    "type": "string"
                 },
                 "id": {
                     "description": "ID записи о генотипировании",

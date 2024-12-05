@@ -46,6 +46,10 @@ definitions:
         $ref: '#/definitions/models.DateOnly'
       departDate:
         $ref: '#/definitions/models.DateOnly'
+      events:
+        items:
+          $ref: '#/definitions/models.Event'
+        type: array
       exteriorRating:
         type: number
       farmGroupName:
@@ -307,6 +311,14 @@ definitions:
         description: ID фермы, для которой ищутся коровы
         example: 1
         type: integer
+      illDateFrom:
+        description: Фильтр по дате начала болезни ОТ
+        example: "1800-01-21"
+        type: string
+      illDateTo:
+        description: Фильтр по дате начала болезни ДО
+        example: "1800-01-21"
+        type: string
       inbrindingCoeffByFamilyFrom:
         default: 3.14
         description: фильтр по коэф. инбриндинга по роду ОТ
@@ -596,6 +608,8 @@ definitions:
     type: object
   models.Exterior:
     properties:
+      acrumLength:
+        type: number
       bodyDepth:
         type: number
       bodyStructure:
@@ -622,6 +636,8 @@ definitions:
         type: number
       foreUdderPlcRear:
         type: number
+      foreUdderWidth:
+        type: number
       harmonyOfMovement:
         type: number
       heightOfUdderAttach:
@@ -631,6 +647,8 @@ definitions:
       hindLegPosSide:
         type: number
       hindTeatPlc:
+        type: number
+      hindUdderWidth:
         type: number
       hoofAngle:
         type: number
@@ -642,6 +660,8 @@ definitions:
         type: number
       pelvicWidth:
         type: number
+      picturePath:
+        type: string
       prominenceOfMilkVeins:
         type: number
       rating:
@@ -709,6 +729,8 @@ definitions:
         items:
           $ref: '#/definitions/models.GeneticIllness'
         type: array
+      gtcFilePath:
+        type: string
       id:
         description: ID записи о генотипировании
         type: integer

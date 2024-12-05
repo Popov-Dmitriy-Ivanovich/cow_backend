@@ -1150,6 +1150,12 @@ const docTemplate = `{
                 "departDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
+                "events": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Event"
+                    }
+                },
                 "exteriorRating": {
                     "type": "number"
                 },
@@ -1473,6 +1479,16 @@ const docTemplate = `{
                     "description": "ID фермы, для которой ищутся коровы",
                     "type": "integer",
                     "example": 1
+                },
+                "illDateFrom": {
+                    "description": "Фильтр по дате начала болезни ОТ",
+                    "type": "string",
+                    "example": "1800-01-21"
+                },
+                "illDateTo": {
+                    "description": "Фильтр по дате начала болезни ДО",
+                    "type": "string",
+                    "example": "1800-01-21"
                 },
                 "inbrindingCoeffByFamilyFrom": {
                     "description": "фильтр по коэф. инбриндинга по роду ОТ",
@@ -1867,6 +1883,9 @@ const docTemplate = `{
         "models.Exterior": {
             "type": "object",
             "properties": {
+                "acrumLength": {
+                    "type": "number"
+                },
                 "bodyDepth": {
                     "type": "number"
                 },
@@ -1906,6 +1925,9 @@ const docTemplate = `{
                 "foreUdderPlcRear": {
                     "type": "number"
                 },
+                "foreUdderWidth": {
+                    "type": "number"
+                },
                 "harmonyOfMovement": {
                     "type": "number"
                 },
@@ -1919,6 +1941,9 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "hindTeatPlc": {
+                    "type": "number"
+                },
+                "hindUdderWidth": {
                     "type": "number"
                 },
                 "hoofAngle": {
@@ -1935,6 +1960,9 @@ const docTemplate = `{
                 },
                 "pelvicWidth": {
                     "type": "number"
+                },
+                "picturePath": {
+                    "type": "string"
                 },
                 "prominenceOfMilkVeins": {
                     "type": "number"
@@ -2034,6 +2062,9 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.GeneticIllness"
                     }
+                },
+                "gtcFilePath": {
+                    "type": "string"
                 },
                 "id": {
                     "description": "ID записи о генотипировании",
