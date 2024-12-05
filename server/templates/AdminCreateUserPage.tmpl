@@ -50,6 +50,18 @@
             margin-bottom: 15px;
             border: 1px solid #ccc; /* Цвет рамки */
             border-radius: 5px; /* Скругление углов */
+            box-sizing: border-box; /* Учет границ и отступов в ширине */
+        }
+
+        /* Скрытие кнопок для ввода чисел */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none; /* Скрыть кнопки для WebKit-браузеров */
+            margin: 0; /* Удалить отступы */
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield; /* Скрыть кнопки для Firefox */
         }
 
         .submit-button {
@@ -77,28 +89,36 @@
 </head>
 <body>
     <h1>Создать пользователя</h1>
-    <form action="/create" method="post">
-        <label for="fullname">ФИО:</label>
-        <input type="text" id="fullname" name="fullname" required><br><br>
 
-        <label for="role">Роль:</label>
-        <input type="text" id="role" name="role" required><br><br>
+    <div class="form-container">
+        <form action="/create" method="post">
+            <label for="fullname">ФИО:</label>
+            <input type="text" id="fullname" name="fullname" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
+            <label for="role">Роль:</label>
+            <input type="text" id="role" name="role" required>
 
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" name="phone" required><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
 
-        <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required><br><br>
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
 
-        <label for="farm_id">ID фермы:</label>
-        <input type="number" id="farm_id" name="farm_id" required><br><br>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
 
-        <input type="submit" value="Создать пользователя">
-    </form>
+            <label for="farm_id">ID фермы:</label>
+            <input type="number" id="farm_id" name="farm_id" required>
+
+            <button class="submit-button" type="submit">Создать пользователя</button>
+        </form>
+    </div>
+
+    <div class="message">
+        {{if .Message}}
+            <p>{{.Message}}</p>
+        {{end}}
+    </div>
 </body>
 </html>
-
 {{ end }}
