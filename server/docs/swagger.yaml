@@ -168,14 +168,6 @@ definitions:
         type: integer
       genetic:
         $ref: '#/definitions/models.Genetic'
-      gradeHozId:
-        description: оценка по хозяйству
-        example: 1
-        type: integer
-      gradeRegionId:
-        description: оценка по региону
-        example: 1
-        type: integer
       hozHame:
         description: хозяйство на котором живет, null, если нет
         type: string
@@ -484,14 +476,6 @@ definitions:
         type: integer
       genetic:
         $ref: '#/definitions/models.Genetic'
-      gradeHozId:
-        description: оценка по хозяйству
-        example: 1
-        type: integer
-      gradeRegionId:
-        description: оценка по региону
-        example: 1
-        type: integer
       id:
         description: ID коровы
         example: 1
@@ -761,6 +745,8 @@ definitions:
     type: object
   models.Grade:
     properties:
+      cowID:
+        type: integer
       ebvFat:
         type: number
       ebvInsemenation:
@@ -816,6 +802,38 @@ definitions:
         description: 'сервис период коровы: время от отела до осеменения'
         type: integer
     type: object
+  models.News:
+    properties:
+      date:
+        $ref: '#/definitions/models.DateOnly'
+      id:
+        type: integer
+      regionId:
+        description: Region   *Region `json:"-"`
+        type: integer
+      text:
+        type: string
+      title:
+        type: string
+    type: object
+  models.Partner:
+    properties:
+      address:
+        type: string
+      description:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      logoPath:
+        description: replaced byte data
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
   models.Region:
     properties:
       id:
@@ -824,6 +842,10 @@ definitions:
       name:
         example: Усть-Каменский
         type: string
+      news:
+        items:
+          $ref: '#/definitions/models.News'
+        type: array
     type: object
   models.Sex:
     properties:
@@ -1483,6 +1505,26 @@ paths:
       summary: Get list of monogenetic illnesses
       tags:
       - MonogeneticIllnessses
+  /partners:
+    get:
+      description: Возращает список партнеров
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Partner'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of partners
+      tags:
+      - Partners
   /regions:
     get:
       description: Возращает все регионы
@@ -1519,6 +1561,30 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Region'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of regions
+      tags:
+      - Regions
+  /regions/{id}/news:
+    get:
+      description: Возращает новости региона
+      parameters:
+      - description: id региона
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.News'
         "500":
           description: Internal Server Error
           schema:

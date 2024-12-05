@@ -973,6 +973,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/partners": {
+            "get": {
+                "description": "Возращает список партнеров",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Partners"
+                ],
+                "summary": "Get list of partners",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Partner"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/regions": {
             "get": {
                 "description": "Возращает все регионы",
@@ -1027,6 +1057,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/models.Region"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/regions/{id}/news": {
+            "get": {
+                "description": "Возращает новости региона",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Regions"
+                ],
+                "summary": "Get list of regions",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id региона",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.News"
                         }
                     },
                     "500": {
@@ -1314,16 +1380,6 @@ const docTemplate = `{
                 },
                 "genetic": {
                     "$ref": "#/definitions/models.Genetic"
-                },
-                "gradeHozId": {
-                    "description": "оценка по хозяйству",
-                    "type": "integer",
-                    "example": 1
-                },
-                "gradeRegionId": {
-                    "description": "оценка по региону",
-                    "type": "integer",
-                    "example": 1
                 },
                 "hozHame": {
                     "description": "хозяйство на котором живет, null, если нет",
@@ -1714,16 +1770,6 @@ const docTemplate = `{
                 "genetic": {
                     "$ref": "#/definitions/models.Genetic"
                 },
-                "gradeHozId": {
-                    "description": "оценка по хозяйству",
-                    "type": "integer",
-                    "example": 1
-                },
-                "gradeRegionId": {
-                    "description": "оценка по региону",
-                    "type": "integer",
-                    "example": 1
-                },
                 "id": {
                     "description": "ID коровы",
                     "type": "integer",
@@ -2111,6 +2157,9 @@ const docTemplate = `{
         "models.Grade": {
             "type": "object",
             "properties": {
+                "cowID": {
+                    "type": "integer"
+                },
                 "ebvFat": {
                     "type": "number"
                 },
@@ -2192,6 +2241,54 @@ const docTemplate = `{
                 }
             }
         },
+        "models.News": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "$ref": "#/definitions/models.DateOnly"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "regionId": {
+                    "description": "Region   *Region ` + "`" + `json:\"-\"` + "`" + `",
+                    "type": "integer"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Partner": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "logoPath": {
+                    "description": "replaced byte data",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Region": {
             "type": "object",
             "properties": {
@@ -2202,6 +2299,12 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Усть-Каменский"
+                },
+                "news": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.News"
+                    }
                 }
             }
         },
