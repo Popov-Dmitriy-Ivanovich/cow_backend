@@ -25,7 +25,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := LACTATION_CSV_PATH + "lactation_" + now.Format(time.Stamp) + "_" + strconv.FormatUint(lactationUniqueIndex, 10) + ".csv"
+		uploadedName := LACTATION_CSV_PATH + "lactation_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(lactationUniqueIndex, 16) + ".csv"
 		if err := c.SaveUploadedFile(csv[0], uploadedName); err != nil {
 			c.JSON(500, err)
 			return

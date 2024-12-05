@@ -19,13 +19,13 @@
                     <th>Дата осеменения</th>
                     <th>Количество рожденных телят</th>
                     <th>Дата отела</th>
-                    <th>Удой полный, л</th>
+                    <th>Удой за лактацию, л</th>
                     <th>Удой 305 дней, л</th>
-                    <th>Жир полный, кг</th>
-                    <th>Жир 305 дней, кг</th>
-                    <th>Белок полный, кг</th>
-                    <th>Белок 305 дней, кг</th>
-                    <th>Количество дней дойки</th>
+                    <th>Жир за лактацию, %</th>
+                    <th>Жир 305 дней, %</th>
+                    <th>Белок за лактацию, %</th>
+                    <th>Белок 305 дней, %</th>
+                    <th>Дойные дни</th>
                 </tr>
             </thead>
             <tbody class="lac-tablebody">
@@ -97,9 +97,9 @@ export default {
 
         let serie = {name:'Удой полный',data: []};
         for (let i = 0; i < this.cow_info.length; i++) {
-            this.cow_info[i].MilkDaily = (this.cow_info[i].MilkAll / this.cow_info[i].Days).toFixed(2);
-            this.cow_info[i].FatDaily = (this.cow_info[i].FatAll / this.cow_info[i].Days).toFixed(2);
-            this.cow_info[i].ProteinDaily = (this.cow_info[i].ProteinAll / this.cow_info[i].Days).toFixed(2);
+            this.cow_info[i].MilkDaily = Math.round(this.cow_info[i].MilkAll / this.cow_info[i].Days);
+            this.cow_info[i].FatDaily = Math.round(this.cow_info[i].FatAll / this.cow_info[i].Days);
+            this.cow_info[i].ProteinDaily = Math.round(this.cow_info[i].ProteinAll / this.cow_info[i].Days);
 
             this.options.xaxis.categories.push('Лактация ' + this.cow_info[i].Number);
             serie.data.push(this.cow_info[i].MilkAll);

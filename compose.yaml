@@ -82,6 +82,8 @@ services:
         - cow_backend
       ports:
         - 8080:8080
+      volumes:
+        - backend-static-data:/build/static
   nginx:
     container_name: nginx1
     depends_on:
@@ -96,7 +98,7 @@ services:
 volumes:
   habrdb-data:
   pgadmin-data:
-
+  backend-static-data:
 networks:
   postgres:
     driver: bridge

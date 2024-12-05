@@ -28,17 +28,19 @@ type cowsFilter struct { // Фильтр коров
 	ControlMilkingDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате контрольной дойки, ищет коров у которых была контрольная дойка в эту дату или позднее
 	ControlMilkingDateTo   *string `example:"2800-01-21" validate:"optional"` // Фильтр по дате контрольной дойки, ищет коров у которых была контрольная дойка в эту дату или ранее
 
-	Exterior             *float64 `default:"3.14" validate:"optional"`       // Фильтр по оценке экстерьера коровы, будет переработан
-	InseminationDateFrom *string  `example:"1800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или позднее
-	InseminationDateTo   *string  `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или ранее
-	CalvingDateFrom      *string  `example:"1800-01-21" validate:"optional"` // Фильтр по дате отела коровы, ищет коров у которых был отел в эту дату или позднее
-	CalvingDateTo        *string  `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых был отел в эту дату или позднее
-	IsStillBorn          *bool    `default:"false" validate:"optional"`      // Фильтр по мертворождению Было/не было
-	IsTwins              *bool    `default:"false" validate:"optional"`      // Фильтр по родам двойняшек Было / не было
-	IsAborted            *bool    `default:"false" validate:"optional"`      // Фильтр по абортам Был/ не был
-	IsIll                *bool    `default:"false" validate:"optional"`      //??? Не реализован
-	BirkingDateFrom      *string  `example:"1800-01-21" validate:"optional"` // Фильтр по дате перебирковки коровы, ищет коров у которых быа перебирковка в эту дату или позднее
-	BirkingDateTo        *string  `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых была перебирковка в эту дату или позднее
+	ExteriorFrom *float64 `default:"3.14" validate:"optional"` // Фильтр по оценке экстерьера коровы ОТ
+	ExteriorTo   *float64 `default:"3.14" validate:"optional"` // Фильтр по оценке экстерьера коровы ДО
+	// Exterior             *float64 `default:"3.14" validate:"optional"`       // Фильтр по оценке экстерьера коровы, будет переработан
+	InseminationDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или позднее
+	InseminationDateTo   *string `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых было осеменение в эту дату или ранее
+	CalvingDateFrom      *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате отела коровы, ищет коров у которых был отел в эту дату или позднее
+	CalvingDateTo        *string `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых был отел в эту дату или позднее
+	IsStillBorn          *bool   `default:"false" validate:"optional"`      // Фильтр по мертворождению Было/не было
+	IsTwins              *bool   `default:"false" validate:"optional"`      // Фильтр по родам двойняшек Было / не было
+	IsAborted            *bool   `default:"false" validate:"optional"`      // Фильтр по абортам Был/ не был
+
+	BirkingDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате перебирковки коровы, ищет коров у которых быа перебирковка в эту дату или позднее
+	BirkingDateTo   *string `example:"2800-01-21" validate:"optional"` // Фильтр по дате осеменения коровы, ищет коров у которых была перебирковка в эту дату или позднее
 
 	InbrindingCoeffByFamilyFrom *float64 `default:"3.14" validate:"optional"` // фильтр по коэф. инбриндинга по роду ОТ
 	InbrindingCoeffByFamilyTo   *float64 `default:"3.14" validate:"optional"` // фильтр по коэф. инбриндинга по роду ДО
@@ -46,7 +48,12 @@ type cowsFilter struct { // Фильтр коров
 	InbrindingCoeffByGenotypeFrom *float64 `default:"3.14" validate:"optional"` //фильтр по коэф. инбриндинга по генотипу ОТ
 	InbrindingCoeffByGenotypeTo   *float64 `default:"3.14" validate:"optional"` //фильтр по коэф. инбриндинга по генотипу ДО
 
+	HasAnyIllnes        *bool  `default:"false" validate:"optional"` //Флаг true - возращает коров у которых есть хотябы одно заболевение, false - возращает коров, у которых нет ни одного
+	IsIll               *bool  `default:"false" validate:"optional"` //??? Не реализован
 	MonogeneticIllneses []uint // ID ген. заболеваний их /api/mongenetic_illnesses
+
+	IllDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате начала болезни ОТ
+	IllDateTo   *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате начала болезни ДО
 }
 
 type FilterSerializedCow struct {
@@ -76,6 +83,7 @@ type FilterSerializedCow struct {
 	IsTwins                   *bool                   `json:",omitempty" validate:"optional"`
 	IsStillBorn               *bool                   `json:",omitempty" validate:"optional"`
 	IsAborted                 *bool                   `json:",omitempty" validate:"optional"`
+	Events                    []models.Event          `json:",omitempty" validate:"optional"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
@@ -106,7 +114,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 		filter.GenotypingDateTo != nil && *filter.GenotypingDateTo != "" {
 		res.GenotypingDate = &c.Genetic.ResultDate
 	}
-	if len(filter.MonogeneticIllneses) != 0 {
+	if len(filter.MonogeneticIllneses) != 0 || filter.HasAnyIllnes != nil {
 		res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
 	}
 	if filter.ControlMilkingDateFrom != nil && *filter.ControlMilkingDateFrom != "" ||
@@ -165,7 +173,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.CalvingDateFrom != nil && *filter.CalvingDateFrom != "" ||
 		filter.CalvingDateTo != nil && *filter.CalvingDateTo != "" {
 		for _, lac := range c.Lactation {
-			if filter.CalvingDateFrom != nil {
+			if filter.CalvingDateFrom != nil && *filter.CalvingDateFrom != "" {
 				date, err := time.Parse(time.DateOnly, *filter.CalvingDateFrom)
 				if err != nil {
 					continue
@@ -174,7 +182,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 					continue
 				}
 			}
-			if filter.CalvingDateTo != nil {
+			if filter.CalvingDateTo != nil && *filter.CalvingDateTo != "" {
 				date, err := time.Parse(time.DateOnly, *filter.CalvingDateTo)
 				if err != nil {
 					continue
@@ -190,6 +198,34 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.BirkingDateFrom != nil && *filter.BirkingDateFrom != "" ||
 		filter.BirkingDateTo != nil && *filter.BirkingDateTo != "" {
 		res.BirkingDate = c.BirkingDate
+	}
+	if filter.IllDateFrom != nil && *filter.IllDateFrom != "" ||
+		filter.IllDateTo != nil && *filter.IllDateTo != "" {
+		for _, event := range c.Events {
+			if event.EventTypeId > 4 {
+				continue
+			}
+			eventDate := event.Date.Time
+			if filter.IllDateFrom != nil && *filter.IllDateFrom != "" {
+				dateFrom, err := time.Parse(time.DateOnly, *filter.IllDateFrom)
+				if err != nil {
+					continue
+				}
+				if dateFrom.After(eventDate) && !dateFrom.Equal(eventDate) {
+					continue
+				}
+			}
+			if filter.IllDateTo != nil && *filter.IllDateTo != "" {
+				dateTo, err := time.Parse(time.DateOnly, *filter.IllDateTo)
+				if err != nil {
+					continue
+				}
+				if dateTo.Before(eventDate) && !dateTo.Equal(eventDate) {
+					continue
+				}
+			}
+			res.Events = append(res.Events, event)
+		}
 	}
 	if len(filter.Sex) != 0 {
 		res.SexName = &c.Sex.Name
@@ -210,7 +246,7 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.IsTwins != nil {
 		res.IsTwins = filter.IsTwins
 	}
-	if filter.Exterior != nil {
+	if filter.ExteriorFrom != nil || filter.ExteriorTo != nil {
 		res.ExteriorRating = &c.Exterior.Rating
 	}
 	return res
@@ -260,7 +296,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 
 		if searchString := bodyData.SearchQuery; searchString != nil && *searchString != "" {
 			*searchString = "%" + *searchString + "%"
-			query = query.Where("name LIKE ? or rshn_number LIKE ? or inventory_number LIKE ?", searchString, searchString, searchString)
+			query = query.Where("name LIKE ? or rshn_number LIKE ? or inventory_number LIKE ? or selecs_number like ?", searchString, searchString, searchString, searchString)
 		}
 
 		if len(bodyData.Sex) != 0 {
@@ -274,15 +310,62 @@ func (c *Cows) Filter() func(*gin.Context) {
 		if len(bodyData.BreedId) != 0 {
 			query = query.Where("breed_id in ?", bodyData.BreedId).Preload("Breed")
 		}
-
-		if len(bodyData.MonogeneticIllneses) != 0 {
-			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND EXISTS (SELECT 1 FROM genetic_genetic_illnesses WHERE genetic_genetic_illnesses.genetic_id = genetics.id AND genetic_illness_id IN ?) )", bodyData.MonogeneticIllneses).Preload("Genetic").Preload("Genetic.GeneticIllnesses")
+		if bodyData.IsIll != nil && *bodyData.IsIll {
+			if len(bodyData.MonogeneticIllneses) != 0 {
+				query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND EXISTS (SELECT 1 FROM genetic_genetic_illnesses WHERE genetic_genetic_illnesses.genetic_id = genetics.id AND genetic_illness_id IN ?) )", bodyData.MonogeneticIllneses).Preload("Genetic").Preload("Genetic.GeneticIllnesses")
+			}
+		}
+		if bodyData.IsIll != nil && !*bodyData.IsIll {
+			if len(bodyData.MonogeneticIllneses) != 0 {
+				query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND NOT EXISTS (SELECT 1 FROM genetic_genetic_illnesses WHERE genetic_genetic_illnesses.genetic_id = genetics.id AND genetic_illness_id IN ?) )", bodyData.MonogeneticIllneses).Preload("Genetic").Preload("Genetic.GeneticIllnesses")
+			}
+		}
+		if bodyData.HasAnyIllnes != nil && *bodyData.HasAnyIllnes {
+			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND EXISTS (SELECT 1 FROM genetic_genetic_illnesses WHERE genetic_genetic_illnesses.genetic_id = genetics.id) )").Preload("Genetic").Preload("Genetic.GeneticIllnesses")
+		}
+		if bodyData.HasAnyIllnes != nil && !*bodyData.HasAnyIllnes {
+			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND NOT EXISTS (SELECT 1 FROM genetic_genetic_illnesses WHERE genetic_genetic_illnesses.genetic_id = genetics.id) )").Preload("Genetic").Preload("Genetic.GeneticIllnesses")
 		}
 		if bodyData.IsDead != nil && *bodyData.IsDead {
 			query = query.Where("death_date IS NOT NULL")
 		}
 		if bodyData.IsDead != nil && !*bodyData.IsDead {
 			query = query.Where("death_date IS NULL")
+		}
+
+		// ====================================================================================================
+		// ============================== Filter by Ill date from events  =====================================
+		// ====================================================================================================
+
+		if bodyData.IllDateFrom != nil && bodyData.IllDateTo != nil &&
+			*bodyData.IllDateFrom != "" && *bodyData.IllDateTo != "" {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.IllDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.IllDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date BETWEEN ? AND ? )",
+				bdFrom,
+				bdTo).Preload("Events")
+		} else if bodyData.GenotypingDateFrom != nil && *bodyData.GenotypingDateFrom != "" {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date >= ? ))", bdFrom.UTC()).Preload("Events")
+		} else if bodyData.GenotypingDateTo != nil && *bodyData.GenotypingDateTo != "" {
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date <= ?))", bdTo.UTC()).Preload("Events")
 		}
 
 		// ====================================================================================================
@@ -485,8 +568,12 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
 		}
 
-		if bodyData.Exterior != nil {
-			query = query.Where("EXISTS(SELECT 1 FROM exteriors WHERE exteriors.cow_id = cows.id AND exteriors.rating = ?)", bodyData.Exterior).Preload("Exterior")
+		if bodyData.ExteriorFrom != nil && bodyData.ExteriorTo != nil {
+			query = query.Where("EXISTS(SELECT 1 FROM exteriors WHERE exteriors.cow_id = cows.id AND exteriors.rating BETWEEN ? AND ?)", bodyData.ExteriorFrom, bodyData.ExteriorTo).Preload("Exterior")
+		} else if bodyData.ExteriorFrom != nil {
+			query = query.Where("EXISTS(SELECT 1 FROM exteriors WHERE exteriors.cow_id = cows.id AND exteriors.rating >= ?)", bodyData.ExteriorFrom).Preload("Exterior")
+		} else if bodyData.ExteriorTo != nil {
+			query = query.Where("EXISTS(SELECT 1 FROM exteriors WHERE exteriors.cow_id = cows.id AND exteriors.rating <= ?)", bodyData.ExteriorTo).Preload("Exterior")
 		}
 
 		// ====================================================================================================

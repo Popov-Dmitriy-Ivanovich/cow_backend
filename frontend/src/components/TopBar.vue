@@ -64,7 +64,7 @@ export default {
 
 <style>
     .topbar {
-        height: 100px;
+        height: 110px;
         width: 100%;
         background-color: none;
         transition: 0.4s;
@@ -85,8 +85,8 @@ export default {
         position: absolute;
         bottom: 0;
         right: 0;
-        padding: 3px 0;
-        font-size: smaller;
+        padding: 5px 0;
+        font-size: 90%;
         width: 100%;
         text-align: end;
         padding-right: 30px;

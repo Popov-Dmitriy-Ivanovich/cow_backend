@@ -1,0 +1,207 @@
+{{ define "ExteriorLoadPage.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-example {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            display: block;
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            background-color: #6f42c1; /* Светло-фиолетовый цвет */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5a32a3; /* Темнее фиолетового при наведении */
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #d1b7e3; /* Темнее фиолетового при наведении */
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.history.back();">Назад</button>
+    <div class="form-example">
+        <h1>Загрузка информации о генотипировании</h1>
+        <form action="/api/load/exterior" method="post" enctype="multipart/form-data">
+            
+            
+            <label for="CowID">CowID:</label>
+            <input type="text" id="CowID" name="CowID" required>
+            
+            <label for="Rating">Rating</label>
+            <input type="text" id="Rating" name="Rating" required>
+            
+            <label for="ChestWidth">ChestWidth</label>
+            <input type="text" id="ChestWidth" name="ChestWidth" required>
+            
+            <label for="PelvicWidth">PelvicWidth</label>
+            <input type="text" id="PelvicWidth" name="PelvicWidth" required>
+            
+            <label for="SacrumHeight">SacrumHeight</label>
+            <input type="text" id="SacrumHeight" name="SacrumHeight" required>
+            
+            <label for="BodyDepth">BodyDepth</label>
+            <input type="text" id="BodyDepth" name="BodyDepth" required>
+            
+            <label for="ExteriorType">ExteriorType</label>
+            <input type="text" id="ExteriorType" name="ExteriorType" required>
+            
+            <label for="BoneQHockJointRear">Фото экстерьера:</label>
+            <input type="text" id="BoneQHockJointRear" name="BoneQHockJointRear" required>
+            
+            
+            <label for="SacrumAngle">SacrumAngle</label>
+            <input type="text" id="SacrumAngle" name="SacrumAngle" required>
+            
+            <label for="TopLine">TopLine</label>
+            <input type="text" id="TopLine" name="TopLine" required>
+            
+            <label for="HoofAngle">HoofAngle</label>
+            <input type="text" id="HoofAngle" name="HoofAngle" required>
+            
+            <label for="HindLegPosSide">HindLegPosSide</label>
+            <input type="text" id="HindLegPosSide" name="HindLegPosSide" required>
+            
+            <label for="HindLegPosRead">HindLegPosRead</label>
+            <input type="text" id="HindLegPosRead" name="HindLegPosRead" required>
+            
+            <label for="ForeLegPosFront">ForeLegPosFront</label>
+            <input type="text" id="ForeLegPosFront" name="ForeLegPosFront" required>
+            
+            <label for="UdderDepth">UdderDepth</label>
+            <input type="text" id="UdderDepth" name="UdderDepth" required>
+            
+            <label for="UdderBalance">UdderBalance</label>
+            <input type="text" id="UdderBalance" name="UdderBalance" required>
+            
+            <label for="HeightOfUdderAttach">HeightOfUdderAttach</label>
+            <input type="text" id="HeightOfUdderAttach" name="HeightOfUdderAttach" required>
+            
+            <label for="ForeUdderAttach">ForeUdderAttach</label>
+            <input type="text" id="ForeUdderAttach" name="ForeUdderAttach" required>  
+            
+            <label for="ForeUdderPlcRear">ForeUdderPlcRear</label>
+            <input type="text" id="ForeUdderPlcRear" name="ForeUdderPlcRear" required>  
+            
+            <label for="HindTeatPlc">HindTeatPlc</label>
+            <input type="text" id="HindTeatPlc" name="HindTeatPlc" required>
+            
+            <label for="ForeTeatLendth">ForeTeatLendth</label>
+            <input type="text" id="ForeTeatLendth" name="ForeTeatLendth" required>
+            
+            <label for="RearTeatLength">RearTeatLength</label>
+            <input type="text" id="RearTeatLength" name="RearTeatLength" required>
+            
+            <label for="ForeTeatDiameter">ForeTeatDiameter</label>
+            <input type="text" id="ForeTeatDiameter" name="ForeTeatDiameter" required>        
+            
+            <label for="RearTeatDiameter">RearTeatDiameter</label>
+            <input type="text" id="RearTeatDiameter" name="RearTeatDiameter" required>  
+            
+            <label for="CenterLigamentDepth">CenterLigamentDepth</label>
+            <input type="text" id="CenterLigamentDepth" name="CenterLigamentDepth" required>  
+            
+            <label for="HarmonyOfMovement">HarmonyOfMovement</label>
+            <input type="text" id="HarmonyOfMovement" name="HarmonyOfMovement" required>  
+            
+            <label for="Conditioning">Conditioning</label>
+            <input type="text" id="Conditioning" name="Conditioning" required>
+            
+            <label for="ProminenceOfMilkVeins">ProminenceOfMilkVeins</label>
+            <input type="text" id="ProminenceOfMilkVeins" name="ProminenceOfMilkVeins" required>
+            
+            <label for="MilkStrength">MilkStrength</label>
+            <input type="text" id="MilkStrength" name="MilkStrength" required>
+
+            <label for="BodyStructure">BodyStructure</label>
+            <input type="text" id="BodyStructure" name="BodyStructure" required>          
+            
+            <label for="Limbs">Limbs</label>
+            <input type="text" id="Limbs" name="Limbs" required>    
+            
+            <label for="Udder">Udder</label>
+            <input type="text" id="Udder" name="Udder" required>  
+                             
+            <label for="ForeUdderWidth">ForeUdderWidth</label>
+            <input type="text" id="ForeUdderWidth" name="ForeUdderWidth" required>  
+            
+            <label for="HindUdderWidth">HindUdderWidth</label>
+            <input type="text" id="HindUdderWidth" name="HindUdderWidth" required>   
+            
+            <label for="AcrumLength">AcrumLength</label>
+            <input type="text" id="AcrumLength" name="AcrumLength" required>   
+                
+            
+            <label for="PicturePath">Фото экстерьера:</label>
+            <input type="file" id="PicturePath" name="PicturePath" required>
+
+
+            <input type="submit" value="Загрузить">
+        </form>
+    </div>
+</body>
+</html>
+{{ end }}

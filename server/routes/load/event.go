@@ -25,7 +25,7 @@ func (l *Load) Event() func(*gin.Context) {
 		}
 
 		now := time.Now()
-		uploadedName := EVENT_CSV_PATH + "event" + now.Format(time.Stamp) + "_" + strconv.FormatUint(eventUniqueIndex, 10) + ".csv"
+		uploadedName := EVENT_CSV_PATH + "event" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(eventUniqueIndex, 16) + ".csv"
 		if err := c.SaveUploadedFile(csv[0], uploadedName); err != nil {
 			c.JSON(500, err)
 			return

@@ -8,6 +8,8 @@ type Genetic struct {
 	ResultDate                DateOnly         // Дата получения  результата
 	InbrindingCoeffByGenotype float64          // Коэф. инбриндинга по генотипу
 	GeneticIllnesses          []GeneticIllness `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;many2many:genetic_genetic_illnesses;"` // Список генетических заболеваний, пустой если нет
+
+	GtcFilePath *string
 }
 type GeneticIllness struct {
 	ID          uint    `gorm:"primaryKey"`

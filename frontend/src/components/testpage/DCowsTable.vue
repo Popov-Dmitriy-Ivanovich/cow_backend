@@ -9,16 +9,20 @@
                 <div class="animal-bdate">Дата рождения</div>
                 <div class="animal-genfact">Факт генотипирования</div>
                 
-                <div v-if="filters.D_OUT_BEGIN || filters.D_OUT_END" class="animal-dateout">Дата выбытия</div>
-                <div v-if="filters.ID_BREED" class="animal-breed">Порода</div>
-                <div v-if="filters.D_GEN_BEGIN || filters.D_GEN_END" class="animal-dategen">Дата генотипирования</div>
-                <div v-if="filters.D_MILKING_BEGIN || filters.D_MILKING_END" class="animal-datemilking">Контрольная дойка</div>
-                <div v-if="filters.EXTERIOR" class="animal-exterior">Оценка экстерьера</div>
-                <div v-if="filters.D_OSEM_BEGIN || filters.D_OSEM_END" class="animal-dateosem">Дата осеменения</div>
-                <div v-if="filters.D_OTEL_BEGIN || filters.D_OTEL_END" class="animal-dateotel">Дата отела</div>
-                <div v-if="filters.D_BIRKING_BEGIN || filters.D_BIRKING_END" class="animal-datebirk">Дата перебирковки</div>
-                <div v-if="filters.K_INBR_ROD_BEGIN || filters.K_INBR_ROD_END" class="animal-krod">Коэффициент инбридинга по родословной</div>
-                <div v-if="filters.K_INBR_FEN_BEGIN || filters.K_INBR_FEN_END" class="animal-kfen">Коэффициент инбридинга по фенотипу</div>
+                <div v-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout">Дата выбытия</div>
+                <div v-if="filters.isDead===true || filters.isDead===false" class="animal_dead">Животное мертво</div>
+                <div v-if="filters.breedId" class="animal-breed">Порода</div>
+                <div v-if="filters.genotypingDateFrom || filters.genotypingDateTo" class="animal-dategen">Дата генотипирования</div>
+                <!-- contol milking -->
+                <div v-if="filters.exterior" class="animal-exterior">Оценка экстерьера</div>
+                <!-- <div v-if="animals[0].InsemenationDate" class="animal-dateosem">{{ animals[0].InsemenationDate }}</div> -->
+                <!-- <div v-if="animals[0].CalvingDate" class="animal-dateotel">{{ animals[0].calvingDate }}</div> -->
+                <div v-if="filters.isTwins===true || filters.isTwins===false" class="animal-genfact">Двойня</div>
+                <div v-if="filters.isStillBorn===true || filters.isStillBorn===false" class="animal-genfact">Мертворождённый</div>
+                <div v-if="filters.isAborted===true || filters.isAborted===false" class="animal-genfact">Аборт</div>
+                <div v-if="filters.birkingDateFrom || filters.birkingDateTo" class="animal-datebirk">Дата перебирковки</div>
+                <div v-if="filters.inbrindingCoeffByFamilyFrom || filters.inbrindingCoeffByFamilyTo" class="animal-krod">Коэффициент инбридинга по родословной</div>
+                <!-- <div v-if="animals[0]." class="animal-kfen">{{ animals[0].INBRID_FENOTYPE }}</div> -->
             </div>
             <div v-if="!isSearch&!search_error">
                 <div v-for="animal in animals" :key="animal[0]">
@@ -100,8 +104,6 @@ export default {
             body: JSON.stringify(search_params),
         });
         const res_animals = await response.json();
-
-        console.log('коровы были mounted', this.errorr);
 
         this.animals = res_animals.LST;
         if(res_animals.LST.length == 0) this.errorr = true;
