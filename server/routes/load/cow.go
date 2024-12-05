@@ -28,8 +28,8 @@ type cowRecord struct {
 	BreedName               string
 	SexId                   uint
 	SexName                 string
-	FatherSelecs            *string
-	MotherSelecs            *string
+	FatherSelecs            *uint64
+	MotherSelecs            *uint64
 	IdentificationNumber    *string
 	RSHNNumber              *string
 	Name                    string
@@ -85,11 +85,19 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	res.SexName = rec[9]
 
 	if rec[10] != "" {
-		res.FatherSelecs = &rec[10]
+		sel, err := strconv.ParseUint(rec[10], 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		res.FatherSelecs = &sel
 	}
 
 	if rec[11] != "" {
-		res.MotherSelecs = &rec[11]
+		sel, err := strconv.ParseUint(rec[11], 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		res.MotherSelecs = &sel
 	}
 
 	if rec[12] != "" {
@@ -193,19 +201,9 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	if res.Sex.Name != cr.SexName {
 		return nil, errors.New("Wrong sex name, sex with id has name " + res.Sex.Name + " but " + cr.SexName + " provided")
 	}
-	// if cr.FatherSelecs != nil {
-	// 	if err := tx.Order("birking_date DESC").First(&res.Father,
-	// 		map[string]any{"selecs_number": cr.FatherSelecs}).Error; err != nil {
-	// 		return nil, errors.New("не удалось найти отца с селксом " + *cr.FatherSelecs)
-	// 	}
-	// }
-	// if cr.MotherSelecs != nil {
-	// 	if err := tx.Order("birking_date DESC").First(&res.Mother,
-	// 		map[string]any{"selecs_number": cr.MotherSelecs}).Error; err != nil {
-	// 		return nil, errors.New("не удалось найти мать с селексом " + *cr.MotherSelecs)
-	// 	}
-	// }
 
+	res.FatherSelecs = cr.FatherSelecs
+	res.MotherSelecs = cr.MotherSelecs
 	res.IdentificationNumber = cr.IdentificationNumber
 	res.InventoryNumber = &cr.InventoryNumber
 	// res.SelecsNumber = &cr.Selecs
@@ -223,20 +221,14 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 			return nil, errors.New("не удалось найти хозяйство с номером " + *cr.PrevHozNumber)
 		}
 	}
-
 	if cr.BirthHozNumber != nil {
 		if err := tx.First(&res.BirthHoz, map[string]any{"hoz_number": cr.BirthHozNumber}).Error; err != nil {
 			return nil, errors.New("не удалось найти хозяйство с номером " + *cr.BirthHozNumber)
 		}
 	}
-
-	// if cr.OldInvNumber != nil {
-	// 	if err := tx.First(&res.PreviousReincarnation, map[string]any{
-	// 		"inventory_number": cr.OldInvNumber,
-	// 		"selecs_number":    cr.Selecs}).Error; err != nil {
-	// 		return nil, errors.New("не удалось найти корову с номерами селекса и инв. номером: " + cr.Selecs + " , " + *cr.OldInvNumber)
-	// 	}
-	// }
+	if cr.OldInvNumber != nil {
+		res.PreviousInventoryNumber = cr.OldInvNumber
+	}
 	return res, nil
 }
 

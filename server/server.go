@@ -17,6 +17,7 @@ import (
 	"cow_backend/routes/monogenetic_illnesses"
 	"cow_backend/routes/regions"
 	"cow_backend/routes/sexes"
+	"cow_backend/routes/updates"
 	"fmt"
 
 	// "net/http"
@@ -61,7 +62,7 @@ func main() {
 	apiGroup := r.Group("/api")
 	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{},
 		&cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{},
-		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{})
+		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{}, &updates.Update{})
 
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Run()
