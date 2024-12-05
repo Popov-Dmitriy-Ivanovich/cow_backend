@@ -202,6 +202,9 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.IllDateFrom != nil && *filter.IllDateFrom != "" ||
 		filter.IllDateTo != nil && *filter.IllDateTo != "" {
 		for _, event := range c.Events {
+			if event.EventTypeId > 4 {
+				continue
+			}
 			eventDate := event.Date.Time
 			if filter.IllDateFrom != nil && *filter.IllDateFrom != "" {
 				dateFrom, err := time.Parse(time.DateOnly, *filter.IllDateFrom)
