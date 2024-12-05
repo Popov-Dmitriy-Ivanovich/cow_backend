@@ -19,11 +19,11 @@ type Cow struct {
 
 	Events []Event `json:"-"`
 
-	GradeRegion *Grade `json:"-"`
-	// GradeRegionId *uint  `example:"1"` // оценка по региону
+	GradeRegion   *Grade `json:"-"`
+	GradeRegionId *uint  `example:"1"` // оценка по региону
 
-	GradeHoz *Grade `json:"-"`
-	// GradeHozId *uint  `example:"1"` // оценка по хозяйству
+	GradeHoz   *Grade `json:"-"`
+	GradeHozId *uint  `example:"1"` // оценка по хозяйству
 
 	FatherSelecs *uint64 // ID коровы отца коровы
 
