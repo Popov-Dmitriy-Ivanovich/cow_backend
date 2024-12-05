@@ -3,7 +3,7 @@
         <div class="id-title">Идентификаторы</div>
         <div class="idnum-flex">
             <div class="item-block">
-                <div class="id-min-title">Инвентарный номер</div>
+                <div class="id-min-title">Инв. номер</div>
                 <div>{{ cow_info.InventoryNumber || 'Нет информации' }}</div>
             </div>
             <div class="item-block">

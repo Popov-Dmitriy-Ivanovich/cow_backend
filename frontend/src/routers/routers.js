@@ -8,6 +8,8 @@ import ConcretAnimalPage from '@/pages/ConcretAnimalPage.vue';
 import ParticipantPage from '@/pages/ParticipantPage.vue';
 import HozPage from '@/pages/HozPage.vue';
 import TestPage from '@/pages/TestPage.vue';
+import AnaliticPage from '@/pages/AnaliticPage.vue';
+import AnaliticYear from '@/pages/AnaliticYear.vue'
 
 const routes = [
     {
@@ -46,6 +48,14 @@ const routes = [
     //     path: '/test',
     //     component: TestPage
     // }
+    {
+        path: '/analytics',
+        component: AnaliticPage
+    },
+    {
+        path: '/analytics/:id',
+        component: AnaliticYear
+    },
 ];
 
 // const scrollBehavior = function () {

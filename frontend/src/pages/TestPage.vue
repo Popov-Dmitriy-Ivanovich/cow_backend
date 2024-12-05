@@ -11,7 +11,7 @@
             </div>
             <div class="search-block">
                 <div>
-                    <div class="search-text">Поиск по кличке, инвентарному номеру или идентификационному номеру РСХН</div>
+                    <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div>
                     <input class="search-animals" 
                     type="text" 
                     placeholder="Введите значение" 

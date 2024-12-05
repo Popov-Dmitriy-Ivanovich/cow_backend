@@ -23,7 +23,7 @@ export default {
 
 .health-info {
     background-color: white;
-    width: 80%;
+    width: 800px;
     height: max-content;
     min-height: 500px;
     border-radius: 10px;

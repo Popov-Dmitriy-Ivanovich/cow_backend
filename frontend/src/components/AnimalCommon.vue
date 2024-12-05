@@ -3,9 +3,11 @@
     <div class="general-info">
         <ID v-bind:cow_info="cow_info"/>
         <hr class="com-sep">
-        <GenBreed v-bind:cow_info="cow_info"/>
+        <GenBreed v-bind:cow_info="cow_info" v-bind:genetic="genetic"/>
         <hr class="com-sep">
         <ParentsCow v-bind:father="father" v-bind:mother="mother" v-bind:genetic="genetic" v-bind:coeff-by-family="koeff"></ParentsCow>
+        <hr class="com-sep">
+        <MovementCow v-bind:cow_info="cow_info"></MovementCow>
     </div>
 </template>
 
@@ -13,10 +15,11 @@
 import ID from '@/components/componentsConcretAnimal/ID.vue';
 import GenBreed from '@/components/componentsConcretAnimal/GenBreed.vue';
 import ParentsCow from '@/components/componentsConcretAnimal/ParentsCow.vue';
+import MovementCow from './componentsConcretAnimal/MovementCow.vue';
 
 export default {
     components: {
-        ID, GenBreed, ParentsCow
+        ID, GenBreed, ParentsCow, MovementCow
     },
     data() {
         return {
@@ -33,11 +36,12 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}`);
         let result = await response.json();
         this.cow_info = result;
+        let response1 = await fetch(`/api/cows/${cow_id}/genetic`);
+        let result1 = await response1.json();
+        this.genetic = result1;
         this.mother = this.cow_info.Mother;
         this.father = this.cow_info.Father;
-        this.genetic = this.cow_info.Genetic;
         this.koeff = this.cow_info.InbrindingCoeffByFamily;
-        console.log(this.cow_info, '32');
     }
 }
 </script>
@@ -50,7 +54,7 @@ export default {
 
 .general-info {
     background-color: white;
-    width: 80%;
+    width: 800px;
     height: max-content;
     min-height: 500px;
     border-radius: 10px;
