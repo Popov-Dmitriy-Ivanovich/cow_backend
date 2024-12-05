@@ -1,11 +1,11 @@
 <template>
     <div class="common-title">Общая информация</div>
     <div class="general-info">
-        <ID/>
+        <ID v-bind:cow_info="cow_info"/>
         <hr class="com-sep">
-        <GenBreed/>
+        <GenBreed v-bind:cow_info="cow_info"/>
         <hr class="com-sep">
-        <ParentsCow/>
+        <ParentsCow v-bind:father="father" v-bind:mother="mother" v-bind:genetic="genetic" v-bind:coeff-by-family="koeff"></ParentsCow>
     </div>
 </template>
 
@@ -17,6 +17,27 @@ import ParentsCow from '@/components/componentsConcretAnimal/ParentsCow.vue';
 export default {
     components: {
         ID, GenBreed, ParentsCow
+    },
+    data() {
+        return {
+            cow_info: {},
+            father: {},
+            mother: {},
+            genetic: {},
+            koeff: 0,
+        }
+    },
+    async mounted() {
+        let mass_route = this.$route.path.split('/');
+        let cow_id = mass_route[2];
+        let response = await fetch(`/api/cows/${cow_id}`);
+        let result = await response.json();
+        this.cow_info = result;
+        this.mother = this.cow_info.Mother;
+        this.father = this.cow_info.Father;
+        this.genetic = this.cow_info.Genetic;
+        this.koeff = this.cow_info.InbrindingCoeffByFamily;
+        console.log(this.cow_info, '32');
     }
 }
 </script>

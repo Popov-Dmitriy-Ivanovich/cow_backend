@@ -4,11 +4,11 @@
         <div class="idnum-flex">
             <div class="item-block">
                 <div class="id-min-title">Инвентарный номер</div>
-                <div>{{ cow_info.InventoryNumber }}</div>
+                <div>{{ cow_info.InventoryNumber || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">ID Селекса</div>
-                <div>{{ cow_info.SelecsNumber }}</div>
+                <div>{{ cow_info.SelecsNumber || 'Нет информации' }}</div>
             </div>
             <!-- <div class="item-block">
                 <div class="id-min-title">UN</div>
@@ -16,11 +16,11 @@
             </div> -->
             <div class="item-block">
                 <div class="id-min-title">Хозяйство</div>
-                <div>{{ cow_info.HozHame }}</div>
+                <div>{{ cow_info.HozHame || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Ферма</div>
-                <div>{{ cow_info.FarmName }}</div>
+                <div>{{ cow_info.FarmName || 'Нет информации' }}</div>
             </div>
         </div>
     </div>
@@ -28,18 +28,11 @@
     
 <script>
 export default {
-    data() {
-        return {
-            cow_info: {},
+    props: {
+        cow_info: {
+            type: Object,
         }
-    },
-    async created() {
-        let mass_route = this.$route.path.split('/');
-        let cow_id = mass_route[2];
-        let response = await fetch(`/api/cows/${cow_id}`);
-        let result = await response.json();
-        this.cow_info = result;
-    },
+    }
 }
 </script>
 

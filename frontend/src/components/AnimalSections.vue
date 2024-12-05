@@ -27,7 +27,7 @@ export default {
 .sections {
     font-family: Open Sans, sans-serif;
     position: sticky;
-    top: 100px;
+    top: 130px;
 }
 
 .animal-links {
