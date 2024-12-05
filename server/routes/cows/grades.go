@@ -6,6 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//	@Summary      Get list of children
+//	@Description  Возращает список всех оценок конкретной коровы.
+//	@Tags         Cows
+//	@Param        id   path      int  true  "ID коровы для которой ищутся оценки"
+//
+// @Produce      json
+// @Success      200  {object}   map[string]models.Grade
+// @Failure      500  {object}  map[string]error
+// @Router       /cows/{id}/grades [get]
 func (c *Cows) Grades() func(*gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")
