@@ -21,6 +21,7 @@ import (
 	"cow_backend/routes/sexes"
 	"cow_backend/routes/updates"
 	"fmt"
+	"text/template"
 
 	// "net/http"
 	_ "cow_backend/docs"
@@ -31,6 +32,14 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	// "github.com/swaggo/gin-swagger/swaggerFiles"
 )
+
+func seq(start, end int) []int {
+	var nums []int
+	for i := start; i <= end; i++ {
+		nums = append(nums, i)
+	}
+	return nums
+}
 
 // @title           GenMilk API
 // @version         1.0
@@ -60,6 +69,11 @@ func main() {
 	models.GetDb()
 
 	r := gin.Default()
+
+	r.SetFuncMap(template.FuncMap{
+		"seq": seq,
+	})
+
 	r.LoadHTMLGlob("templates/*")
 
 	apiGroup := r.Group("/api")
@@ -71,5 +85,5 @@ func main() {
 	apiGroup.Static("/static", "static")
 	r.Run()
 
-	fmt.Println("Hello world")
+	fmt.Println("Hell the world")
 }
