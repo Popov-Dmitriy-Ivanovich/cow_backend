@@ -206,7 +206,11 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	res.MotherSelecs = cr.MotherSelecs
 	res.IdentificationNumber = cr.IdentificationNumber
 	res.InventoryNumber = &cr.InventoryNumber
-	// res.SelecsNumber = &cr.Selecs
+	if sel, err := strconv.ParseUint(cr.Selecs,10,64); err != nil {
+		return nil, err
+	} else {
+		res.SelecsNumber = &sel
+	}
 	res.RSHNNumber = cr.RSHNNumber
 	res.Name = cr.Name
 	res.InbrindingCoeffByFamily = cr.InbrindingCoeffByFamily
