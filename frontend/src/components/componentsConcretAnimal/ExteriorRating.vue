@@ -38,7 +38,7 @@
                 </div>
                 <div class="mark-with-num">
                     <div class="ext-param">Длина крестца: </div>
-                    <div>{{ cow_info.ACRUM_LENGTH }}</div>
+                    <div>{{ cow_info.AcrumLength }}</div>
                 </div>
                 <div class="mark-with-num">
                     <div class="ext-param">Линия верха: </div>
@@ -78,11 +78,11 @@
                 </div>
                 <div class="mark-with-num">
                     <div class="ext-param">Ширина задних долей вымени: </div>
-                    <div>{{ cow_info.HIND_UDDER_WIDTH }}</div>
+                    <div>{{ cow_info.HindUdderWidth }}</div>
                 </div>
                 <div class="mark-with-num">
                     <div class="ext-param">Длина передних долей вымени: </div>
-                    <div>{{ cow_info.FORE_UDDER_LENGTH }}</div>
+                    <div>{{ cow_info.ForeUdderWidth }}</div>
                 </div>
                 <div class="mark-with-num">
                     <div class="ext-param">Расположение передних сосков (вид сзади): </div>
@@ -155,6 +155,7 @@ export default {
             isVisible9Mark: false,
             isVisible100Mark: false,
             cow_info: {},
+            img: '',
         }
     },
     async created() {
@@ -163,7 +164,10 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}/exterior`);
         let result = await response.json();
         this.cow_info = result;
-        console.log(this.cow_info);
+        if(this.cow_info.PicturePath) {
+            this.img = this.cow_info.PicturePath;
+            this.setImg(this.img);
+        }
     },
     methods: {
         show9Mark () {
@@ -179,6 +183,10 @@ export default {
             } else {
                 this.isVisible100Mark = true;
             }
+        },
+        setImg(path, id) {
+            let block = document.getElementsByClassName('krs-photo');
+            block.style.backgroundImage = `/api/static/cows/${id}/experior/${path}`;
         }
     }
 }

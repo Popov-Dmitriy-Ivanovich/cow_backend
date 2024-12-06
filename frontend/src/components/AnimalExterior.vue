@@ -2,18 +2,16 @@
     <div class="exterior-title">Экстерьер</div>
     <div class="exterior-info">
         <ExteriorRating/>
-        <hr class="exterior-sep">
-        <VetEvents/>
+
     </div>
 </template>
 
 <script>
-import VetEvents from '@/components/componentsConcretAnimal/VetEvents.vue';
 import ExteriorRating from '@/components/componentsConcretAnimal/ExteriorRating.vue'
 
 export default {
     components: {
-        VetEvents, ExteriorRating
+        ExteriorRating
     }
 }
 </script>

@@ -24,7 +24,7 @@ export default {
         ParticipantItem
     },
     async created() {
-        const response = await fetch('https://genmilk.ru:9050/api/partners');
+        const response = await fetch('/api/partners');
         const result = await response.json();
         this.all_participants = result;
     }

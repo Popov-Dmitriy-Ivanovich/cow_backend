@@ -25,11 +25,18 @@ export default {
         }
     },
     async created() {
-        const response = await fetch('https://genmilk.ru:9050/api/partners');
+        const response = await fetch('/api/partners');
         const result = await response.json();
-        for (let i = 0; i < 4; i++) {
-            this.participants.push(result[i]);
+        if(result.length > 3) {
+            for (let i = 0; i < 4; i++) {
+                this.participants.push(result[i]);
+            }
+        } else {
+            for (let i = 0; i < result.length; i++) {
+                this.participants.push(result[i]);
+            }
         }
+
     }
 }
 </script>

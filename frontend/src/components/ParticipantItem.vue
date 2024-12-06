@@ -3,7 +3,7 @@
     <div class="partic-logo">
         <img  width="100%" :src="logo">
     </div>
-    <div class="partic-description"> {{ participant[5] }}</div>
+    <div class="partic-description"> {{ participant.Description }}</div>
 </div>
 </template>
 
@@ -11,13 +11,22 @@
 export default {
     props: {
         participant: {
-            type: Array,
+            type: Object,
             Required: true
         }
     },
+    // created() {
+
+    // },
+    // watch: {
+    //     participant(new_val) {
+    //         let logo = document.getElementsByClassName('partic-logo');
+    //         logo.style.backgroundImage = `/api/static/partners/${new_val.LogoPath}`;
+    //     }
+    // },
     computed: {
         logo() {
-            return "data:image/jpg;base64," + this.participant[6];
+            return `/api/static/partners/` + this.participant.LogoPath;
         }
     }
 }

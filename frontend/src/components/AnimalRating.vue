@@ -1,12 +1,18 @@
 <template>
     <div class="rating-title">Оценки</div>
     <div class="rating-info">
-        <div>Оценки</div>
+        <RatingCow/>
     </div>
 </template>
 
 <script>
+import RatingCow from '@/components/componentsConcretAnimal/RatingCow.vue'
 
+export default {
+    components: {
+        RatingCow
+    }
+}
 </script>
 
 <style scoped>

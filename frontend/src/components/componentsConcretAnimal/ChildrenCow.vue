@@ -6,22 +6,22 @@
             <table class="child-table">
                 <thead>
                     <tr class="child-header">
-                        <th>Сэлекс</th>
-                        <th>Хозяйство</th>
-                        <th>Дата рождения</th>
+                        <th>Идентификационный номер</th>
+                        <th>Номер РСХН</th>
                         <th>Кличка</th>
-                        <!-- <th>Селекционный индекс</th>
-                        <th>Молочный индекс</th> -->
+                        <th>Дата рождения</th>
+                        <th>Порода</th>
+                        <th>Хозяйство</th>
                     </tr>
                 </thead>
                 <tbody class="child-tablebody">
                     <tr v-for="child in children" :key="child.ID" class="child-line" @click="clickChild(child.ID)">
-                        <td>{{child.SelecsNumber}}</td>
-                        <td></td>
-                        <td>{{child.BirthDate}}</td>
-                        <td>{{child.Name}}</td>
-                        <!-- <td>test</td>
-                        <td>test</td> -->
+                        <td>{{child.IdentificationNumber || 'Нет информации'}}</td>
+                        <td>{{child.RSHNNumber || 'Нет информации'}}</td>
+                        <td>{{child.Name || 'Нет информации'}}</td>
+                        <td>{{dateConverter(child.BirthDate) || 'Нет информации'}}</td>
+                        <td>{{ }}</td>
+                        <td>{{ }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -34,6 +34,8 @@ export default {
     data() {
         return {
             children: [],
+            farm: {},
+            namefarm: '',
         }
     },
     async created() {
@@ -52,6 +54,14 @@ export default {
                 this.children = result;
             }
         },
+        dateConverter(date) {
+            let arr = date.split('-');
+            let result = '';
+            result += arr[2]; result += '.';
+            result += arr[1]; result += '.';
+            result += arr[0];
+            return result;
+        }
     },
     computed: {
         nChildren() {
@@ -61,7 +71,7 @@ export default {
     watch: {
         $route(new_val) {
             this.fetchInfo(new_val.params.id);
-        }
+        },
     }
 }
 </script>
@@ -94,6 +104,7 @@ th {
 }
 th, td {
     border: none;
+    padding: 0 4px;
 }
 
 .child-header {
