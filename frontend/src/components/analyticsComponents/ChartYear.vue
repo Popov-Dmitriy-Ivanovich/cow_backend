@@ -17,11 +17,13 @@ export default {
             options: {
                 chart: {
                     id: 'analytics-years',
-                    stacked: true
+                    stacked: true,
+                    
                 },
                 xaxis: {
                     categories: []
                 },
+                colors: ['#6e5add','#75a2e7']
             },
             series: [],
         }
@@ -38,8 +40,9 @@ export default {
             genyear_serie.data.push(result[key].Genotyped);
             allyear_serie.data.push(result[key].Alive);
         }
-        this.series.push(genyear_serie);
         this.series.push(allyear_serie);
+        this.series.push(genyear_serie);
+        
     }
 }
 </script>

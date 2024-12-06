@@ -5,10 +5,10 @@
         <div class="news-item"  v-for="item in news" :key="item[0]">
             <div class="news-icon">✎</div>
             <div class="news-text">
-                <div class="piece-news-title">{{ item[2] }}</div>
-                <div class="news-description">{{ item[3] }}</div>
+                <div class="piece-news-title">{{ item.Title }}</div>
+                <div class="news-description">{{ item.Text }}</div>
             </div>
-            <div class="news-date">{{ dateConverter(item[4]) }}</div>
+            <div class="news-date">{{ dateConverter(item.Date) }}</div>
         </div>
     </div>
 </div>
@@ -32,7 +32,8 @@ export default {
         }
     },
     async created() {
-        const response = await fetch('https://genmilk.ru:9050/api/news?ID_FARMER=1');
+        let id_region = 1;
+        const response = await fetch(`/api/regions/${id_region}/news`);
         const news_result = await response.json();
         this.news = news_result;
     }

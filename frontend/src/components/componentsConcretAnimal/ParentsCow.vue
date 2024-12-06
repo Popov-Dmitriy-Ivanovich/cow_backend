@@ -2,11 +2,11 @@
     <div>
         <div class="id-title">Родословная</div>
         <div class="idnum-flex">
-            <div class="item-block">
+            <div class="item-block animal-parent">
                 <div class="id-min-title">Отец</div>
                 <div @click="clickFather" class="link-parent">{{ father.Name || 'Нет информации' }}</div>
             </div>
-            <div class="item-block">
+            <div class="item-block animal-parent">
                 <div class="id-min-title">Мать</div>
                 <div @click="clickMother" class="link-parent">{{ mother.Name || 'Нет информации' }}</div>
             </div>
@@ -72,6 +72,7 @@ export default {
 .item-block {
     width: max-content;
     margin: 0 25px 30px 0;
+    padding: 7px;
 }
 
 .id-min-title {
@@ -79,7 +80,13 @@ export default {
     margin-bottom: 7px;
 }
 
-.link-parent {
+.animal-parent {
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.animal-parent:hover {
+    background-color: rgb(236, 232, 245);
+    border-radius: 10px;
 }
 </style>

@@ -1,27 +1,27 @@
 <template>
     <div>
         <div class="child-title">Потомки</div>
-        <div class="n-children">Количество потомков: </div>
+        <div class="n-children">Количество потомков: {{ nChildren }}</div>
         <div class="parent-table">
             <table class="child-table">
                 <thead>
                     <tr class="child-header">
-                        <th>UN</th>
+                        <th>Сэлекс</th>
                         <th>Хозяйство</th>
                         <th>Дата рождения</th>
                         <th>Кличка</th>
-                        <th>Селекционный индекс</th>
-                        <th>Молочный индекс</th>
+                        <!-- <th>Селекционный индекс</th>
+                        <th>Молочный индекс</th> -->
                     </tr>
                 </thead>
                 <tbody class="child-tablebody">
-                    <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
+                    <tr v-for="child in children" :key="child.ID" class="child-line" @click="clickChild(child.ID)">
+                        <td>{{child.SelecsNumber}}</td>
+                        <td></td>
+                        <td>{{child.BirthDate}}</td>
+                        <td>{{child.Name}}</td>
+                        <!-- <td>test</td>
+                        <td>test</td> -->
                     </tr>
                 </tbody>
             </table>
@@ -30,7 +30,40 @@
 </template>
     
 <script>
-
+export default {
+    data() {
+        return {
+            children: [],
+        }
+    },
+    async created() {
+        let mass_route = this.$route.path.split('/');
+        let cow_id = mass_route[2];
+        this.fetchInfo(cow_id);
+    },
+    methods: {
+        clickChild(id) {
+            if(id) this.$router.push(`/animals/${id}`);
+        },
+        async fetchInfo(param) {
+            let response = await fetch(`/api/cows/${param}/children`);
+            let result = await response.json();
+            if(result) {
+                this.children = result;
+            }
+        },
+    },
+    computed: {
+        nChildren() {
+            return this.children.length || 0;
+        }
+    },
+    watch: {
+        $route(new_val) {
+            this.fetchInfo(new_val.params.id);
+        }
+    }
+}
 </script>
 
 <style scoped>
@@ -59,6 +92,9 @@
 th {
     font-weight: normal;
 }
+th, td {
+    border: none;
+}
 
 .child-header {
     color: grey;
@@ -85,5 +121,14 @@ th {
     background-color: rgb(183, 183, 183);
     border-radius: 20px;
     border: 3px solid rgb(241, 241, 241);
+}
+
+.child-line {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.child-line:hover {
+    color: rgb(74, 58, 107);
 }
 </style>
