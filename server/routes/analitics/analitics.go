@@ -8,6 +8,7 @@ type Analitics struct {
 func (b *Analitics) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/analitics")
 	genotypedWriter := Genotyped{}
+	checkMilksWriter := CheckMilks{}
+	checkMilksWriter.WriteRoutes(apiGroup)
 	genotypedWriter.WriteRoutes(apiGroup)
-
 }

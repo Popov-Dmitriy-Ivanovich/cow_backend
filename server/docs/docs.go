@@ -57,6 +57,153 @@ const docTemplate = `{
                 }
             }
         },
+        "/analitics/genotyped/{year}/byDistrict/{district}/hold": {
+            "get": {
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "район за который собирается статистика",
+                        "name": "district",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/genotyped/{year}/byHold/{hold}/hoz": {
+            "get": {
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "холдинг за который собирается статистика",
+                        "name": "hold",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/genotyped/{year}/byRegion/{region}/districts": {
+            "get": {
+                "description": "Возращает словарь район - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "регион за который собирается статистика",
+                        "name": "region",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byDistrictStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/analitics/genotyped/{year}/regions": {
             "get": {
                 "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
@@ -84,7 +231,7 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "type": "integer"
+                                    "$ref": "#/definitions/analitics.byRegionStatistics"
                                 }
                             }
                         }
@@ -1137,6 +1284,48 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "analitics.byDistrictStatistics": {
+            "type": "object",
+            "properties": {
+                "alive": {
+                    "type": "integer"
+                },
+                "districtID": {
+                    "type": "integer"
+                },
+                "genotyped": {
+                    "type": "integer"
+                }
+            }
+        },
+        "analitics.byHoldStatistics": {
+            "type": "object",
+            "properties": {
+                "alive": {
+                    "type": "integer"
+                },
+                "genotyped": {
+                    "type": "integer"
+                },
+                "holdID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "analitics.byRegionStatistics": {
+            "type": "object",
+            "properties": {
+                "alive": {
+                    "type": "integer"
+                },
+                "genotyped": {
+                    "type": "integer"
+                },
+                "regionID": {
+                    "type": "integer"
+                }
+            }
+        },
         "auth.AuthData": {
             "type": "object",
             "properties": {
@@ -1380,6 +1569,16 @@ const docTemplate = `{
                 },
                 "genetic": {
                     "$ref": "#/definitions/models.Genetic"
+                },
+                "gradeHozId": {
+                    "description": "оценка по хозяйству",
+                    "type": "integer",
+                    "example": 1
+                },
+                "gradeRegionId": {
+                    "description": "оценка по региону",
+                    "type": "integer",
+                    "example": 1
                 },
                 "hozHame": {
                     "description": "хозяйство на котором живет, null, если нет",
@@ -1770,6 +1969,16 @@ const docTemplate = `{
                 "genetic": {
                     "$ref": "#/definitions/models.Genetic"
                 },
+                "gradeHozId": {
+                    "description": "оценка по хозяйству",
+                    "type": "integer",
+                    "example": 1
+                },
+                "gradeRegionId": {
+                    "description": "оценка по региону",
+                    "type": "integer",
+                    "example": 1
+                },
                 "id": {
                     "description": "ID коровы",
                     "type": "integer",
@@ -2157,9 +2366,6 @@ const docTemplate = `{
         "models.Grade": {
             "type": "object",
             "properties": {
-                "cowID": {
-                    "type": "integer"
-                },
                 "ebvFat": {
                     "type": "number"
                 },
@@ -2176,6 +2382,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "generalValue": {
+                    "description": "CowID           uint",
                     "type": "number"
                 },
                 "id": {

@@ -1,5 +1,32 @@
 basePath: /api
 definitions:
+  analitics.byDistrictStatistics:
+    properties:
+      alive:
+        type: integer
+      districtID:
+        type: integer
+      genotyped:
+        type: integer
+    type: object
+  analitics.byHoldStatistics:
+    properties:
+      alive:
+        type: integer
+      genotyped:
+        type: integer
+      holdID:
+        type: integer
+    type: object
+  analitics.byRegionStatistics:
+    properties:
+      alive:
+        type: integer
+      genotyped:
+        type: integer
+      regionID:
+        type: integer
+    type: object
   auth.AuthData:
     properties:
       email:
@@ -168,6 +195,14 @@ definitions:
         type: integer
       genetic:
         $ref: '#/definitions/models.Genetic'
+      gradeHozId:
+        description: оценка по хозяйству
+        example: 1
+        type: integer
+      gradeRegionId:
+        description: оценка по региону
+        example: 1
+        type: integer
       hozHame:
         description: хозяйство на котором живет, null, если нет
         type: string
@@ -476,6 +511,14 @@ definitions:
         type: integer
       genetic:
         $ref: '#/definitions/models.Genetic'
+      gradeHozId:
+        description: оценка по хозяйству
+        example: 1
+        type: integer
+      gradeRegionId:
+        description: оценка по региону
+        example: 1
+        type: integer
       id:
         description: ID коровы
         example: 1
@@ -745,8 +788,6 @@ definitions:
     type: object
   models.Grade:
     properties:
-      cowID:
-        type: integer
       ebvFat:
         type: number
       ebvInsemenation:
@@ -758,6 +799,7 @@ definitions:
       evbService:
         type: number
       generalValue:
+        description: CowID           uint
         type: number
       id:
         description: ID оценки
@@ -871,6 +913,107 @@ info:
   title: GenMilk API
   version: "1.0"
 paths:
+  /analitics/genotyped/{year}/byDistrict/{district}/hold:
+    get:
+      description: Возращает словарь хозяйство - количество живых коров, количество
+        генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: район за который собирается статистика
+        in: path
+        name: district
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byHoldStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+  /analitics/genotyped/{year}/byHold/{hold}/hoz:
+    get:
+      description: Возращает словарь хозяйство - количество живых коров, количество
+        генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: холдинг за который собирается статистика
+        in: path
+        name: hold
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byHoldStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+  /analitics/genotyped/{year}/byRegion/{region}/districts:
+    get:
+      description: Возращает словарь район - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: регион за который собирается статистика
+        in: path
+        name: region
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byDistrictStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
   /analitics/genotyped/{year}/regions:
     get:
       description: Возращает словарь регион - количество живых коров, количество генотипированных
@@ -888,7 +1031,7 @@ paths:
           schema:
             items:
               additionalProperties:
-                type: integer
+                $ref: '#/definitions/analitics.byRegionStatistics'
               type: object
             type: array
         "500":

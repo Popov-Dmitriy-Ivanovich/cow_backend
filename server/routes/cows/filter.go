@@ -352,20 +352,20 @@ func (c *Cows) Filter() func(*gin.Context) {
 			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date BETWEEN ? AND ? )",
 				bdFrom,
 				bdTo).Preload("Events")
-		} else if bodyData.GenotypingDateFrom != nil && *bodyData.GenotypingDateFrom != "" {
-			bdFrom, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateFrom)
+		} else if bodyData.IllDateFrom != nil && *bodyData.IllDateFrom != "" {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.IllDateFrom)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date >= ? ))", bdFrom.UTC()).Preload("Events")
-		} else if bodyData.GenotypingDateTo != nil && *bodyData.GenotypingDateTo != "" {
-			bdTo, err := time.Parse(time.DateOnly, *bodyData.GenotypingDateTo)
+			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date >= ? )", bdFrom.UTC()).Preload("Events")
+		} else if bodyData.IllDateTo != nil && *bodyData.IllDateTo != "" {
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.IllDateTo)
 			if err != nil {
 				c.JSON(422, err)
 				return
 			}
-			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date <= ?))", bdTo.UTC()).Preload("Events")
+			query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date <= ?)", bdTo.UTC()).Preload("Events")
 		}
 
 		// ====================================================================================================
