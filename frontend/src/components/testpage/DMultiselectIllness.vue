@@ -28,6 +28,11 @@ export default {
         this.options = [];
         const response = await fetch('/api/monogenetic_illnesses');
         const illness = await response.json();
+        let il = {name: 'Все', id: []};
+        for (let i = 0; i < illness.length; i++) {
+            il.id.push(illness[i].ID);
+        }
+        this.options.push(il);
         for (let i = 0; i < illness.length; i++) {
             let ill = {name: illness[i].Name, id: illness[i].ID};
             this.options.push(ill);

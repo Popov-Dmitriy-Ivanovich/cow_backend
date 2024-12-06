@@ -10,14 +10,12 @@
                 <div class="id-min-title">Мать</div>
                 <div @click="clickMother" class="link-parent">{{ mother.Name || 'Нет информации' }}</div>
             </div>
-        </div>
-        <div>
-            <div class="item-block">
-                <div class="id-min-title">Коэффициент инбридинга по родословной</div>
+                <div class="item-block">
+                <div class="id-min-title">Коэф. инбридинга по родословной</div>
                 <div>{{ coeffByFamily || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
-                <div class="id-min-title">Коэффициент инбридинга по генотипу</div>
+                <div class="id-min-title">Коэф. инбридинга по генотипу</div>
                 <div>{{ genetic.InbrindingCoeffByGenotype || 'Нет информации' }}</div>
             </div>
         </div>
@@ -45,13 +43,13 @@ export default {
     },
     methods: {
         clickFather() {
-            if (this.cow_info.FatherId) {
-                this.$router.push(`/animals/${this.cow_info.FatherId}`)
+            if (this.father.ID) {
+                this.$router.push(`/animals/${this.father.ID}`)
             }
         },
         clickMother() {
-            if (this.cow_info.MotherId) {
-                this.$router.push(`/animals/${this.cow_info.MotherId}`)
+            if (this.mother.ID) {
+                this.$router.push(`/animals/${this.mother.ID}`)
             }
         }
     }

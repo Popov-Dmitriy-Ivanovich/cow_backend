@@ -8,7 +8,7 @@
             </div>
             <div class="item-block">
                 <div class="id-min-title">Статус генотипирования</div>
-                <div>{{ genetic.status || 'Нет информации' }}</div>
+                <div>{{ status || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Дата генотипирования</div>
@@ -18,20 +18,21 @@
                 <div class="id-min-title">Порода</div>
                 <div>{{ cow_info.BreedName || 'Нет информации' }}</div>
             </div>
+            <div class="item-block">
+                <div class="id-min-title">Метод происхождения</div>
+                <div>{{ cow_info.BirthMethod || 'Нет информации' }}</div>
+            </div>
         </div>
     </div>
 </template>
     
 <script>
 export default {
-    data() {
-        return {
-            genetic: {},
-            gendate: '',
-        }
-    },
     props: {
         cow_info: {
+            type: Object,
+        },
+        genetic: {
             type: Object,
         }
     },
@@ -49,19 +50,19 @@ export default {
             return result;
         }
     },
-    async created() {
-        let mass_route = this.$route.path.split('/');
-        let cow_id = mass_route[2];
-        let response1 = await fetch(`/api/cows/${cow_id}/genetic`);
-        let result1 = await response1.json();
-        this.genetic = result1 || {};
-        console.log(this.genetic);
-        if(this.genetic.ResultDate) {
-            this.genetic.status = 'Да';
-            this.gendate = this.dateConverter(this.genetic.ResultDate);
-        } 
-        else this.genetic.status = 'Нет'
-    },
+    computed: {
+        status() {
+            let a;
+            if(this.genetic.ResultDate) a = 'Да';
+            else a = 'Нет';
+            return a
+        },
+        gendate() {
+            let a;
+            if(this.genetic.ResultDate) a = this.dateConverter(this.genetic.ResultDate);
+            return a
+        }
+    }
 }
 </script>
 

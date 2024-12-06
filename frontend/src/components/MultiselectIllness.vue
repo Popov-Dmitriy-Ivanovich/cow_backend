@@ -28,6 +28,11 @@ export default {
         this.options = [];
         const response = await fetch('https://genmilk.ru:9050/api/genetic_diseases');
         const illness = await response.json();
+        let il = {name: 'все', id: []};
+        for (let i = 0; i < illness.length; i++) {
+            il.id.push(illness[i][0]);
+        }
+        this.options.push(il);
         for (let i = 0; i < illness.length; i++) {
             let ill = {name: illness[i][1], id: illness[i][0]};
             this.options.push(ill);
