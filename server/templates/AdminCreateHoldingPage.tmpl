@@ -1,0 +1,130 @@
+{{ define "AdminCreateHoldingPage.tmpl" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #6f42c1;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: grid; /* Используем сетку для компоновки */
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Автозаполнение с минимальной шириной */
+            gap: 15px; /* Отступы между полями */
+            width: 100%; 
+            max-width: 300px; /* Максимальная ширина контейнера */
+            margin: 10px;
+        }
+
+        label {
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin: 5px;
+        }
+
+        .submit-button {
+            background-color: #6f42c1;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            grid-column: span 2; /* Кнопка занимает две колонки */
+        }
+
+        .submit-button:hover {
+            background-color: #5a32a1;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Создать холдинг</h1>
+    
+    <div class="form-container">
+        <form action="/createHolding" method="post">
+            <label for="holding_number">Номер холдинга:</label>
+            <input type="text" id="holding_number" name="holding_number" required>
+
+            <label for="district_id">ID района:</label>
+            <input type="number" id="district_id" name="district_id" required>
+            
+            <label for="full_name">Полное имя:</label>
+            <input type="text" id="full_name" name="full_name" required>
+
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="type">Тип:</label>
+            <input type="text" id="type" name="type" required>
+
+            <label for="inn">ИНН:</label>
+            <input type="text" id="inn" name="inn" required>
+
+            <label for="address">Адрес:</label>
+            <input type="text" id="address" name="address" required>
+
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="cow_count">Количество коров:</label>
+            <input type="number" id="cow_count" name="cow_count" required>
+
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <button class="submit-button" type="submit">Создать холдинг</button>
+        </form>
+    </div>
+
+    <div class="message">
+        {{if .Message}}
+            <p>{{.Message}}</p>
+        {{end}}
+    </div>
+</body>
+</html>
+{{ end }}

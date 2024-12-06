@@ -1,0 +1,124 @@
+{{ define "AdminCreateUserPage.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Светлый фон */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Высота на весь экран */
+        }
+
+        h1 {
+            text-align: center;
+            color: #6f42c1; /* Светло-фиолетовый цвет */
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            background-color: #ffffff; /* Белый фон для формы */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Центрирование текста внутри блока */
+            min-width: 300px; /* Минимальная ширина контейнера */
+            margin: 10px;
+        }
+
+        label {
+            display: block; /* Блоки для меток */
+            margin: 10px 0 5px;
+            text-align: left; /* Выравнивание текста в левой части */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="number"] {
+            width: 100%; /* Ширина полей ввода */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc; /* Цвет рамки */
+            border-radius: 5px; /* Скругление углов */
+            box-sizing: border-box; /* Учет границ и отступов в ширине */
+        }
+
+        /* Скрытие кнопок для ввода чисел */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none; /* Скрыть кнопки для WebKit-браузеров */
+            margin: 0; /* Удалить отступы */
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield; /* Скрыть кнопки для Firefox */
+        }
+
+        .submit-button {
+            background-color: #6f42c1; /* Светло-фиолетовый цвет кнопки */
+            color: #ffffff; /* Белый текст на кнопке */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Плавное изменение цвета */
+            width: 100%; /* Кнопка занимает всю ширину */
+        }
+
+        .submit-button:hover {
+            background-color: #5a32a1; /* Темнее при наведении */
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #666; /* Цвет текста сообщения */
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Создать пользователя</h1>
+
+    <div class="form-container">
+        <form action="/create" method="post">
+            <label for="fullname">ФИО:</label>
+            <input type="text" id="fullname" name="fullname" required>
+
+            <label for="role">Роль:</label>
+            <input type="text" id="role" name="role" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="farm_id">ID фермы:</label>
+            <input type="number" id="farm_id" name="farm_id" required>
+
+            <button class="submit-button" type="submit">Создать пользователя</button>
+        </form>
+    </div>
+
+    <div class="message">
+        {{if .Message}}
+            <p>{{.Message}}</p>
+        {{end}}
+    </div>
+</body>
+</html>
+{{ end }}

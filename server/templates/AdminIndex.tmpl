@@ -1,0 +1,91 @@
+{{ define "AdminIndex.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Светлый фон */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Высота на весь экран */
+        }
+
+        h1 {
+            text-align: center;
+            color: #6f42c1; /* Светло-фиолетовый цвет */
+            margin-bottom: 20px;
+        }
+
+        .AdminChoise {
+            background-color: #ffffff; /* Белый фон для блока */
+            border-radius: 8px;
+            padding: 20px 20px 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Центрирование текста внутри блока */
+			min-width: 20%;
+			margin: 10px;
+        }
+
+        .AdminChoiseButton {
+            background-color: #6f42c1; /* Светло-фиолетовый цвет кнопки */
+            color: #ffffff; /* Белый текст на кнопке */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Плавное изменение цвета */
+			min-width: 80%;
+			min-height: 80%;
+        }
+
+        .AdminChoiseButton:hover {
+            background-color: #5a32a1; /* Темнее при наведении */
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #666; /* Цвет текста сообщения */
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Выбор действия</h1>
+    
+    <div class="AdminChoise">
+        <form action="/api/admin/cowTable">
+            <button class="AdminChoiseButton" type="submit">Просмотр таблицы коров</button> 
+        </form>
+    </div>
+    <div class="AdminChoise">
+        <form action="/api/admin/checkUsers">
+            <button class="AdminChoiseButton" type="submit">Промотр пользователей</button> 
+        </form>
+    </div>
+    <div class="AdminChoise">
+        <form action="/api/admin/createUser">
+            <button class="AdminChoiseButton" type="submit">Создать пользователя</button> 
+        </form>
+    </div>
+    <div class="AdminChoise">
+        <form action="/api/admin/checkHoldings">
+            <button class="AdminChoiseButton" type="submit">Просмотр холдингов</button> 
+        </form>
+    </div>
+    <div class="AdminChoise">
+        <form action="/api/admin/createHolding">
+            <button class="AdminChoiseButton" type="submit">Создать холдинг</button> 
+        </form>
+    </div>
+</body>
+</html>
+{{ end }}

@@ -1,0 +1,160 @@
+{{ define "AdminHoldingsPage.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Светлый фон */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .header {
+            position: rel;
+            height: 60px
+        }
+
+        h1 {
+            color: #6f42c1; /* Светло-фиолетовый цвет */
+        }
+        
+        .admin-select-button {
+            position: relative;
+            left: 10px
+        }
+
+        .container-table {
+            margin-top: 30px;
+            width: 100%;
+            height: 85vh;
+            overflow: scroll;
+        }
+        
+        table {
+            width: 100%; /* Ширина таблицы */
+            border-collapse: collapse; /* Убираем двойные границы */
+            background-color: #fff; /* Белый фон для таблицы */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        }
+
+        th {
+            position: sticky;
+            top: 0px;
+            z-index: 999;
+        }
+
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #dddddd; /* Светло-серая граница */
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #6f42c1; /* Фон заголовка таблицы */
+            color: white; /* Цвет текста заголовка */
+        }
+
+        .pagination {
+            margin: 20px 0;
+        }
+
+        .page-item {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .page-link {
+            text-decoration: none;
+            color: #6f42c1;
+            padding: 8px 12px;
+            border: 1px solid #6f42c1;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .page-link:hover {
+            background-color: #6f42c1;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Список холдингов</h1>
+    </div>
+    <div class="container-table">
+        <table>
+        <thead>
+            <tr>
+                <th>ID <input type="checkbox" id="check-all" onclick="toggle(this)"></th>
+                <th>Номер холдинга</th>
+                <th>ID Район</th>
+                <th>Тип</th>
+                <th>Полное имя</th>
+                <th>Имя</th>
+                <th>ИНН</th>
+                <th>Адрес</th>
+                <th>Телефон</th>
+                <th>EMAIL</th>
+                <th>Кол-во коров</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .holds}} <!-- Итерация по списку коров -->
+            <tr>
+                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox"></td>
+                <td>{{if .HozNumber}}{{.HozNumber}}{{end}}</td>
+                <td>{{if .DistrictId}}{{.DistrictId}}{{end}}</td>
+                <td>{{if .Type}}{{.Type}}{{end}}</td>
+                <td>{{if .Name}}{{.Name}}{{end}}</td>
+                <td>{{if .NameShort}}{{.NameShort}}{{end}}</td>
+                <td>{{if .Inn}}{{.Inn}}{{end}}</td>
+                <td>{{if .Address}}{{.Address}}{{end}}</td>
+                <td>{{if .Phone}}{{.Phone}}{{end}}</td>
+                <td>{{if .Email}}{{.Email}}{{end}}</td>
+                <td>{{if .CowsCount}}{{.CowsCount}}{{end}}</td>
+                <td>{{if .Description}}{{.Description}}{{end}}</td>
+                
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    </div>
+    
+    <div class="pagination">
+        {{if .HasPrevPage}} <!-- Проверка на наличие предыдущей страницы -->
+        <a class="page-link" href="?page={{.PrevPage}}">« Назад</a>
+        {{end}}
+        {{range .Pages}} <!-- Пагинация -->
+        <div class="page-item">
+            <a class="page-link" href="?page={{.}}">{{.}}</a>
+        </div>
+        {{end}}
+        {{if .HasNextPage}} <!-- Проверка на наличие следующей страницы -->
+        <a class="page-link" href="?page={{.NextPage}}">Вперед »</a>
+        {{end}}
+    </div>
+</body>
+
+<script>
+    function toggle(source) {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"].cow-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
+        });
+    }
+</script>
+</html>
+{{ end }}
