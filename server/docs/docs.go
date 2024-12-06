@@ -1281,6 +1281,36 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/updates": {
+            "get": {
+                "description": "Возращает дату апдейта БД",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Sexes"
+                ],
+                "summary": "Get update date and ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Update"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2538,6 +2568,17 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "models.Update": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 }
             }
         }

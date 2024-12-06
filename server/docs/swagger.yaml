@@ -906,6 +906,13 @@ definitions:
       name:
         type: string
     type: object
+  models.Update:
+    properties:
+      date:
+        type: string
+      id:
+        type: integer
+    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
@@ -1764,6 +1771,26 @@ paths:
             additionalProperties: {}
             type: object
       summary: Get list of sexes
+      tags:
+      - Sexes
+  /updates:
+    get:
+      description: Возращает дату апдейта БД
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Update'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get update date and ID
       tags:
       - Sexes
 securityDefinitions:
