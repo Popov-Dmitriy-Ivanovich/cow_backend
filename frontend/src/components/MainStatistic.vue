@@ -1,9 +1,9 @@
 <template>
 <div class="statistic">
     <div class="statistic-title">Статистика по генотипированию</div>
-    <div v-for="item in stat" :key="item[0]" class="statis-text">
-        <div>{{ item[2] }}</div>
-        <div>{{ item[1] }} животных</div>
+    <div v-for="item in stat" :key="item.name" class="statis-text">
+        <div>{{ item.name }}</div>
+        <div>{{ item.value }} животных</div>
     </div>
 </div>
 </template>
@@ -16,9 +16,13 @@ export default {
         }
     },
     async created() {
-        const response = await fetch('https://genmilk.ru:9050/api/statistic');
+        this.stat = [];
+        const response = await fetch('/api/analitics/genotyped/40000/regions');
         const result = await response.json();
-        this.stat = result;
+        for( let key in result) {
+            let item = {name: key, value: result[key].Genotyped}
+            this.stat.push(item);
+        }
     }
 }
 </script>

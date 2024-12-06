@@ -3,22 +3,22 @@
         <div class="datagen-title">Данные о генотипировании</div>
         <div>Файл</div>
         <div class="datagen-download">    
-            <div class="download-file"></div>
+            <div class="download-file">{{ cow_info.GtcFilePath }}</div>
             <div class="download-btn">Скачать файл</div>
         </div>
         <table class="genfile-table">
                 <thead>
                     <tr class="genfile-header">
-                        <th>Дата загрузки</th>
+                        <th>Факт генотипирования</th>
                         <th>№ образца</th>
-                        <th>Лаборатория</th>
+                        <th>Дата отбора образца</th>
                     </tr>
                 </thead>
                 <tbody class="genfile-tablebody">
                     <tr>
-                        <td>test</td>
-                        <td>test</td>
-                        <td>test</td>
+                        <td>{{true_false(cow_info.ResultDate)}}</td>
+                        <td>{{cow_info.ProbeNumber}}</td>
+                        <td>{{ blood_date }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -26,7 +26,36 @@
 </template>
     
 <script>
-    
+export default {
+    data() {
+        return {
+            cow_info:{},
+            blood_date: '',
+        }
+    },
+    async created() {
+        let mass_route = this.$route.path.split('/');
+        let cow_id = mass_route[2];
+        let response = await fetch(`/api/cows/${cow_id}/genetic`);
+        let result = await response.json();
+        this.cow_info = result;
+        this.blood_date = this.dateConverter(this.cow_info.BloodDate);
+    },
+    methods: {
+        true_false(val) {
+            if(val) return 'Да';
+            else return 'Нет';
+        },
+        dateConverter(date) {
+            let arr = date.split('-');
+            let result = '';
+            result += arr[2]; result += '.';
+            result += arr[1]; result += '.';
+            result += arr[0];
+            return result;
+        }
+    }
+}
 </script>
     
 <style scoped>
@@ -47,6 +76,7 @@
     height: 25px;
     background-color: rgb(241, 240, 246);
     margin: 10px 20px 0 0;
+    padding: 7px 0 0 7px;
 }
 
 .download-btn {
