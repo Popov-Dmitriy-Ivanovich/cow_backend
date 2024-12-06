@@ -36,6 +36,7 @@ export default {
                 dataLabels: {
                     enabled: false
                 },
+                colors: ['#6e5add']
             },
             series: [],
         }
@@ -58,7 +59,7 @@ export default {
     methods: {
         clickHandler(event, chartContext, config){
             let year = this.options.xaxis.categories[config.dataPointIndex];
-            if(year == 'Все года') year = -1;
+            if(year == 'Все года') year = 40000;
             else year = Number(year);
             this.$router.push(`/analytics/${year}`)
         },

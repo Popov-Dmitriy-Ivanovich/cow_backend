@@ -21,17 +21,7 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`/api/cows/${cow_id}`);
-        let result = await response.json();
-        this.cow_info = result;
-        this.cow_info.BirthDate = this.dateConverter(this.cow_info.BirthDate);
-        if (this.cow_info.DepartDate) {
-            if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Выбыла'
-            else this.status = 'Выбыл'
-        } else {
-            if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Не выбыла'
-            else this.status = 'Не выбыл'
-        }
+        this.fetchInfo(cow_id);
     },
     methods: {
         getPol(id_pol) {
@@ -47,6 +37,24 @@ export default {
             result += arr[1]; result += '.';
             result += arr[0];
             return result;
+        },
+        async fetchInfo(param) {
+            let response = await fetch(`/api/cows/${param}`);
+            let result = await response.json();
+            this.cow_info = result;
+            this.cow_info.BirthDate = this.dateConverter(this.cow_info.BirthDate);
+            if (this.cow_info.DepartDate) {
+                if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Выбыла'
+                else this.status = 'Выбыл'
+            } else {
+                if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Не выбыла'
+                else this.status = 'Не выбыл'
+            }
+        }
+    },
+    watch: {
+        $route(new_val) {
+            this.fetchInfo(new_val.params.id);
         }
     }
 }

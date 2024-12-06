@@ -33,15 +33,37 @@ export default {
     async mounted() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`/api/cows/${cow_id}`);
-        let result = await response.json();
-        this.cow_info = result;
-        let response1 = await fetch(`/api/cows/${cow_id}/genetic`);
-        let result1 = await response1.json();
-        this.genetic = result1;
-        this.mother = this.cow_info.Mother;
-        this.father = this.cow_info.Father;
-        this.koeff = this.cow_info.InbrindingCoeffByFamily;
+        this.fetchInfo(cow_id);
+    },
+    methods: {
+        async fetchInfo(param) {
+            let response = await fetch(`/api/cows/${param}`);
+            let result = await response.json();
+            this.cow_info = result;
+            let response1 = await fetch(`/api/cows/${param}/genetic`);
+            let result1 = await response1.json();
+            if(result1) {
+                this.genetic = result1;
+            } else {
+                this.genetic = {}
+            }
+            if (this.cow_info.Mother) {
+                this.mother = this.cow_info.Mother;
+            } else {
+                this.mother = {};
+            }
+            if(this.cow_info.Father) {
+                this.father = this.cow_info.Father;
+            } else {
+                this.father = {};
+            }
+            this.koeff = this.cow_info.InbrindingCoeffByFamily;
+        }
+    },
+    watch: {
+        $route(new_val) {
+            this.fetchInfo(new_val.params.id);
+        }
     }
 }
 </script>
