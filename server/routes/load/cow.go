@@ -19,7 +19,7 @@ var cowUniqueIndex uint64 = 0
 
 type cowRecord struct {
 	Selecs                  string
-	InventoryNumber         string
+	InventoryNumber         *string
 	FarmNumber              *string
 	FarmName                *string
 	HozNumber               string
@@ -47,130 +47,173 @@ type cowRecord struct {
 	BirthHozNumber *string
 	BirthHozName   *string
 	BirthMethod    *string
+	HeaderIndexes  map[string]int
+}
+
+func NewCowRecord(header []string) (*cowRecord, error) {
+	cr := cowRecord{}
+	headerIndexes := make(map[string]int)
+	for idx, colName := range header {
+		headerIndexes[colName] = idx
+	}
+	cr.HeaderIndexes = headerIndexes
+	requiredColumns := []string{
+		"CowSelecs",
+		"CowInvNumber",
+		"FarmID",
+		"FarmName",
+		"HozID",
+		"HozName",
+		"BreedID",
+		"BreedName",
+		"SexID",
+		"SexName",
+		"FatherSelecs",
+		"MotherSelecs",
+		"IdentificationNumber",
+		"InventoryNumber",
+		"RSHNNumber",
+		"Name",
+		"InbrindingCoeffByFamily",
+		"BirthDate",
+		"DepartDate",
+		"DeathDate",
+		"OldInvNumber",
+		"BirkingDate",
+		"PrevHozId",
+		"PrevHozName",
+		"BirthHozID",
+		"BirthHozName",
+		"BirthWay",
+	}
+	for _, col := range requiredColumns {
+		if _, ok := cr.HeaderIndexes[col]; !ok {
+			return nil, errors.New("Column " + col + " not found in CSV")
+		}
+	}
+	return &cr, nil
 }
 
 func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	res := cowRecord{}
 
-	res.Selecs = rec[0]
+	res.Selecs = rec[cr.HeaderIndexes["CowSelecs"]]
 
-	res.InventoryNumber = rec[1]
-
-	if rec[2] != "" {
-		res.FarmNumber = &rec[2]
+	if rec[cr.HeaderIndexes["CowInvNumber"]] != "" {
+		res.InventoryNumber = &rec[cr.HeaderIndexes["CowInvNumber"]]
 	}
 
-	if rec[3] != "" {
-		res.FarmName = &rec[3]
+	if rec[cr.HeaderIndexes["FarmID"]] != "" {
+		res.FarmNumber = &rec[cr.HeaderIndexes["FarmID"]]
 	}
 
-	res.HozNumber = rec[4]
+	if rec[cr.HeaderIndexes["FarmID"]] != "" {
+		res.FarmName = &rec[cr.HeaderIndexes["FarmName"]]
+	}
 
-	res.HozName = rec[5]
+	res.HozNumber = rec[cr.HeaderIndexes["HozID"]]
 
-	if breedId, err := strconv.ParseUint(rec[6], 10, 64); err != nil {
+	res.HozName = rec[cr.HeaderIndexes["HozName"]]
+
+	if breedId, err := strconv.ParseUint(rec[cr.HeaderIndexes["BreedID"]], 10, 64); err != nil {
 		return nil, err
 	} else {
 		res.BreedId = uint(breedId)
 	}
 
-	res.BreedName = rec[7]
+	res.BreedName = rec[cr.HeaderIndexes["BreedName"]]
 
-	if sexId, err := strconv.ParseUint(rec[8], 10, 64); err != nil {
+	if sexId, err := strconv.ParseUint(rec[cr.HeaderIndexes["SexID"]], 10, 64); err != nil {
 		return nil, err
 	} else {
 		res.SexId = uint(sexId)
 	}
 
-	res.SexName = rec[9]
+	res.SexName = rec[cr.HeaderIndexes["SexName"]]
 
-	if rec[10] != "" {
-		sel, err := strconv.ParseUint(rec[10], 10, 64)
+	if rec[cr.HeaderIndexes["FatherSelecs"]] != "" {
+		sel, err := strconv.ParseUint(rec[cr.HeaderIndexes["FatherSelecs"]], 10, 64)
 		if err != nil {
 			return nil, err
 		}
 		res.FatherSelecs = &sel
 	}
 
-	if rec[11] != "" {
-		sel, err := strconv.ParseUint(rec[11], 10, 64)
+	if rec[cr.HeaderIndexes["MotherSelecs"]] != "" {
+		sel, err := strconv.ParseUint(rec[cr.HeaderIndexes["MotherSelecs"]], 10, 64)
 		if err != nil {
 			return nil, err
 		}
 		res.MotherSelecs = &sel
 	}
 
-	if rec[12] != "" {
-		res.IdentificationNumber = &rec[12]
+	if rec[cr.HeaderIndexes["IdentificationNumber"]] != "" {
+		res.IdentificationNumber = &rec[cr.HeaderIndexes["IdentificationNumber"]]
 	}
 
-	if rec[13] != "" {
-		// res.InventoryNumber = &rec[13] inventory number twice
+	if rec[cr.HeaderIndexes["RSHNNumber"]] != "" {
+		res.RSHNNumber = &rec[cr.HeaderIndexes["RSHNNumber"]]
 	}
 
-	if rec[14] != "" {
-		res.RSHNNumber = &rec[14]
-	}
+	res.Name = rec[cr.HeaderIndexes["Name"]]
 
-	res.Name = rec[15]
-
-	if rec[16] != "" {
-		if icbf, err := strconv.ParseFloat(rec[16], 64); err != nil {
+	if rec[cr.HeaderIndexes["InbrindingCoeffByFamily"]] != "" {
+		if icbf, err := strconv.ParseFloat(rec[cr.HeaderIndexes["InbrindingCoeffByFamily"]], 64); err != nil {
 			return nil, err
 		} else {
 			res.InbrindingCoeffByFamily = &icbf
 		}
 	}
 
-	if birthDate, err := time.Parse("02.01.2006", rec[17]); err != nil {
+	if birthDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirthDate"]]); err != nil {
 		return nil, err
 	} else {
 		res.BirthDate = models.DateOnly{Time: birthDate}
 	}
 
-	if rec[18] != "" {
-		if depDate, err := time.Parse("02.01.2006", rec[18]); err != nil {
+	if rec[cr.HeaderIndexes["DepartDate"]] != "" {
+		if depDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["DepartDate"]]); err != nil {
 			return nil, err
 		} else {
 			res.DepartDate = &models.DateOnly{Time: depDate}
 		}
 	}
-	if rec[19] != "" {
-		if deathDate, err := time.Parse("02.01.2006", rec[19]); err != nil {
+	if rec[cr.HeaderIndexes["DeathDate"]] != "" {
+		if deathDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["DeathDate"]]); err != nil {
 			return nil, err
 		} else {
 			res.DepartDate = &models.DateOnly{Time: deathDate}
 		}
 	}
 
-	if rec[20] != "" {
-		res.OldInvNumber = &rec[20]
+	if rec[cr.HeaderIndexes["OldInvNumber"]] != "" {
+		res.OldInvNumber = &rec[cr.HeaderIndexes["OldInvNumber"]]
 	}
 
-	if rec[21] != "" {
-		if birkingDate, err := time.Parse("02.01.2006", rec[21]); err != nil {
+	if rec[cr.HeaderIndexes["BirkingDate"]] != "" {
+		if birkingDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirkingDate"]]); err != nil {
 			return nil, err
 		} else {
-			res.DepartDate = &models.DateOnly{Time: birkingDate}
+			res.BirkingDate = &models.DateOnly{Time: birkingDate}
 		}
 	}
 
-	if rec[22] != "" {
-		res.PrevHozNumber = &rec[22]
+	if rec[cr.HeaderIndexes["PrevHozId"]] != "" {
+		res.PrevHozNumber = &rec[cr.HeaderIndexes["PrevHozId"]]
 	}
 
-	if rec[23] != "" {
-		res.PrevHozName = &rec[23]
+	if rec[cr.HeaderIndexes["PrevHozName"]] != "" {
+		res.PrevHozName = &rec[cr.HeaderIndexes["PrevHozName"]]
 	}
 
-	if rec[24] != "" {
-		res.BirthHozNumber = &rec[24]
+	if rec[cr.HeaderIndexes["BirthHozID"]] != "" {
+		res.BirthHozNumber = &rec[cr.HeaderIndexes["BirthHozID"]]
 	}
-	if rec[25] != "" {
-		res.BirthHozName = &rec[25]
+	if rec[cr.HeaderIndexes["BirthHozName"]] != "" {
+		res.BirthHozName = &rec[cr.HeaderIndexes["BirthHozName"]]
 	}
-	if rec[26] != "" {
-		res.BirthMethod = &rec[26]
+	if rec[cr.HeaderIndexes["BirthWay"]] != "" {
+		res.BirthMethod = &rec[cr.HeaderIndexes["BirthWay"]]
 	}
 
 	return &res, nil
@@ -205,12 +248,14 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	res.FatherSelecs = cr.FatherSelecs
 	res.MotherSelecs = cr.MotherSelecs
 	res.IdentificationNumber = cr.IdentificationNumber
-	res.InventoryNumber = &cr.InventoryNumber
-	if sel, err := strconv.ParseUint(cr.Selecs,10,64); err != nil {
+
+	if sel, err := strconv.ParseUint(cr.Selecs, 10, 64); err != nil {
 		return nil, err
 	} else {
 		res.SelecsNumber = &sel
 	}
+	res.InventoryNumber = cr.InventoryNumber
+	// res.SelecsNumber = &cr.Selecs
 	res.RSHNNumber = cr.RSHNNumber
 	res.Name = cr.Name
 	res.InbrindingCoeffByFamily = cr.InbrindingCoeffByFamily
@@ -264,8 +309,16 @@ func (l *Load) Cow() func(*gin.Context) {
 		}
 		defer file.Close()
 		csvReader := csv.NewReader(file)
-		csvReader.Read()
-
+		header, err := csvReader.Read()
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
+		recordWithHeader, err := NewCowRecord(header)
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
 		db := models.GetDb()
 		if err := db.Transaction(func(tx *gorm.DB) error {
 			// do some database operations in the transaction (use 'tx' from this point, not 'db')
@@ -273,7 +326,7 @@ func (l *Load) Cow() func(*gin.Context) {
 				if err != nil {
 					return err
 				}
-				if err := LoadRecordToDb[models.Cow](&cowRecord{}, record, tx); err != nil {
+				if err := LoadRecordToDb[models.Cow](recordWithHeader, record, tx); err != nil {
 					return err
 				}
 			}
