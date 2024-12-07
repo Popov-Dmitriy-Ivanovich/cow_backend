@@ -9,7 +9,10 @@ import ParticipantPage from '@/pages/ParticipantPage.vue';
 import HozPage from '@/pages/HozPage.vue';
 import TestPage from '@/pages/TestPage.vue';
 import AnaliticPage from '@/pages/AnaliticPage.vue';
-import AnaliticYear from '@/pages/AnaliticYear.vue'
+import AnaliticYear from '@/pages/AnaliticYear.vue';
+import AnaliticRegion from '@/pages/AnaliticRegion.vue';
+import AnaliticDistrict from '@/pages/AnaliticDistrict.vue';
+import AnaliticHolding from '@/pages/AnaliticHolding.vue'
 
 const routes = [
     {
@@ -44,10 +47,7 @@ const routes = [
         path: '/hoz',
         component: HozPage
     },
-    // {
-    //     path: '/test',
-    //     component: TestPage
-    // }
+
     {
         path: '/analytics',
         component: AnaliticPage
@@ -55,6 +55,18 @@ const routes = [
     {
         path: '/analytics/:id',
         component: AnaliticYear
+    },
+    {
+        path: '/analytics/:id/:region',
+        component: AnaliticRegion
+    },
+    {
+        path: '/analytics/:id/:region/:district',
+        component: AnaliticDistrict
+    },
+    {
+        path: '/analytics/:id/:region/:district/:hold',
+        component: AnaliticHolding
     },
 ];
 

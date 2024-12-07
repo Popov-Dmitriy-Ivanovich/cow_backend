@@ -310,8 +310,8 @@ export default {
 
                 let response1 = await fetch(`/api/cows/${this.mother.ID}`);
                 let result1 = await response1.json();
-                this.grandfather_mother = result1.Father;
-                this.grandmother_mother = result1.Mother;
+                if(result1.Father) this.grandfather_mother = result1.Father;
+                if(result1.Mother) this.grandmother_mother = result1.Mother;
             }
         },
         async fetchFather() {
@@ -321,8 +321,8 @@ export default {
 
                 let response2 = await fetch(`/api/cows/${this.father.ID}`);
                 let result2 = await response2.json();
-                this.grandfather_father = result2.Father;
-                this.grandmother_father = result2.Mother;
+                if(result2.Father) this.grandfather_father = result2.Father;
+                if (result2.Mother) this.grandmother_father = result2.Mother;
             }
         },
         clickToParent(id) {

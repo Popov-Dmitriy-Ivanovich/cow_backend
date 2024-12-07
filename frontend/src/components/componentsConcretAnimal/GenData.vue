@@ -4,7 +4,7 @@
         <div>Файл</div>
         <div class="datagen-download">    
             <div class="download-file">{{ cow_info.GtcFilePath }}</div>
-            <div class="download-btn">Скачать файл</div>
+            <div class="download-btn"><a :href="`/api/static/gtc/${cow_info.GtcFilePath}`" :download="cow_info.GtcFilePath" class="download-gtc">Скачать файл</a></div>
         </div>
         <table class="genfile-table">
                 <thead>
@@ -105,5 +105,10 @@ th {
     
 .genfile-tablebody {
     text-align: left;
+}
+
+.download-gtc {
+    color: rgb(37, 0, 132);
+    text-decoration: none;
 }
 </style>
