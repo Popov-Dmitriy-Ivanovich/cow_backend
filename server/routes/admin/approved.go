@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// approveCows обрабатывает запрос на обновление поля approved для коров
 func (s *Admin) ApproveCows() func(*gin.Context) {
 	return func(c *gin.Context) {
 		var request struct {
