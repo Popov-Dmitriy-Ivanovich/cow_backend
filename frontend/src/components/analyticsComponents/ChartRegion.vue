@@ -17,7 +17,7 @@ export default {
         return {
             options: {
                 chart: {
-                    id: 'analytics-years',
+                    id: 'analytics-region',
                     stacked: true,
                     
                 },
@@ -33,7 +33,8 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let year_id = mass_route[2];
-        let response = await fetch(`/api/analitics/genotyped/${year_id}/regions`);
+        let region_id = mass_route[3];
+        let response = await fetch(`/api/analitics/genotyped/${year_id}/byRegion/${region_id}/districts`);
         let result = await response.json();
         this.common_info = result;
         let genyear_serie = {name: 'Генотипированных', data: []};
@@ -49,9 +50,10 @@ export default {
     methods: {
         clickHandler(event, chartContext, config) {
             let nameReg = this.options.xaxis.categories[config.dataPointIndex];
-            let reg_id = this.common_info[nameReg].RegionID;
+            let reg_id = this.$route.params.region;
+            let dist_id = this.common_info[nameReg].DistrictID;
             let year = this.$route.params.id;
-            this.$router.push(`/analytics/${year}/${reg_id}`);
+            this.$router.push(`/analytics/${year}/${reg_id}/${dist_id}`);
         }
     }
 }
