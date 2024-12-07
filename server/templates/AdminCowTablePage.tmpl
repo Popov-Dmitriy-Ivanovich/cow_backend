@@ -22,6 +22,23 @@
             height: 60px
         }
 
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #d1b7e3; /* Темнее фиолетового при наведении */
+        }
+
         h1 {
             color: #6f42c1; /* Светло-фиолетовый цвет */
         }
@@ -65,27 +82,74 @@
             color: white; /* Цвет текста заголовка */
         }
 
+        .pagination-container {
+            display: flex; / Создаем гибкий контейнер /
+            justify-content: space-between; / Пробел между элементами /
+            align-items: center; / Центрирование по вертикали /
+            margin-top: 20px; / Отступ сверху /
+        }
+        
         .pagination {
-            margin: 20px 0;
+            display: flex;
+            justify-content: center; /* Центрирование по горизонтали */
+            margin: 5px 0; /* Отступ сверху и снизу */
         }
 
-        .page-item {
-            display: inline-block;
-            margin: 0 5px;
+        .pagination ul {
+            list-style: none; /* Убираем маркеры списка */
+            padding: 0; /* Убираем внутренние отступы */
         }
 
-        .page-link {
-            text-decoration: none;
-            color: #6f42c1;
-            padding: 8px 12px;
-            border: 1px solid #6f42c1;
+        .pagination .page-item {
+            margin: 0 5px; /* Отступы между кнопками */
+        }
+
+        .pagination .page-item .page-link {
+            display: inline-block; /* Отображение как блочный элемент */
+            padding: 10px 15px; /* Внутренние отступы для кнопки */
+            border: 1px solid #6f42c1; /* Цвет границы */
+            border-radius: 5px; /* Скругление углов */
+            color: #6f42c1; /* Цвет текста */
+            text-decoration: none; /* Убираем подчеркивание текста */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #6f42c1; /* Цвет фона для активной страницы */
+            color: white; /* Цвет текста для активной страницы */
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #5c37a0; /* Цвет фона при наведении */
+            color: white; /* Цвет текста при наведении */
+        }
+
+        .confirm {
+            margin-top: 10px;
+        }
+
+        .confirm .check-button {
+            padding: 10px 15px; /* Padding for button */
+            border: 1px solid #6f42c1; /* Button border */
+            border-radius: 5px; /* Rounded button corners */
+            background-color: #6f42c1; /* Button background */
+            color: white; /* Button text color */
+            cursor: pointer; /* Pointer on hover */
+        }
+
+        .confirm .check-button:hover {
+            background-color: #5c37a0; /* Darker background on hover */
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: lightgreen;
+            color: black;
+            padding: 15px;
             border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .page-link:hover {
-            background-color: #6f42c1;
-            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
     </style>
 </head>
@@ -93,44 +157,44 @@
     <div class="header">
         <h1>Список коров</h1>
     </div>
+    <button class="back-button" onclick="window.history.back();">Назад</button>
     <div class="container-table">
         <table>
         <thead>
             <tr>
-                <th>ID <input type="checkbox" id="check-all" onclick="toggle(this)"></th>
-                <th>created_at</th>
-                <th>farm_id</th>
-                <th>farm_group_id</th>
-                <th>breed_id</th>
-                <th>sex_id</th>
-                <th>father_selecs</th>
-                <th>mother_selecs</th>
-                <th>identification_number</th>
-                <th>inverntory_number</th>
-                <th>selecs_number</th>
-                <th>rshn_number</th>
-                <th>name</th>
-                <th>inbrinding_coeff_family</th>
-                <th>approved</th>
-                <th>birth_date</th>
-                <th>depart_date</th>
-                <th>death_date</th>
-                <th>birking_date</th>
-                <th>previous_hoz_id</th>
-                <th>birth_hoz_id</th>
-                <th>birth_method</th>
-                <th>previous_invetorty_id</th>
+                <th>ID <input class="checkbox-red" type="checkbox" id="check-all" onclick="toggle(this)"></th>
+                <th>Дата создания</th>
+                <th>Ферма</th>
+                <th>Хозяйство</th>
+                <th>Порода</th>
+                <th>Пол</th>
+                <th>Селекс отца</th>
+                <th>Селекс матери</th>
+                <th>Идентификатор</th>
+                <th>Инв номер</th>
+                <th>Селекс</th>
+                <th>РСХН</th>
+                <th>Имя</th>
+                <th>Коэф. инбриндинга</th>
+                <th>Дата рождения</th>
+                <th>День отбытия из коровника</th>
+                <th>Дата смерти</th>
+                <th>Дата перебирковки</th>
+                <th>Предыдущее хоз.</th>
+                <th>Хоз. рождения</th>
+                <th>Способ зачатия</th>
+                <th>Предыдущий инв. номер</th>
             </tr>
         </thead>
         <tbody>
             {{range .cows}} <!-- Итерация по списку коров -->
             <tr>
-                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox"></td>
+                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
                 <td>{{if .CreatedAt}}{{.CreatedAt}}{{end}}</td>
-                <td>{{if .FarmID}}{{.FarmID}}{{end}}</td>
-                <td>{{if .FarmGroupId}}{{.FarmGroupId}}{{end}}</td>
-                <td>{{if .BreedId}}{{.BreedId}}{{end}}</td>
-                <td>{{if .SexId}}{{.SexId}}{{end}}</td>
+                <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
+                <td>{{if .FarmGroupId}}{{.FarmGroup.Name}}{{end}}</td>
+                <td>{{if .BreedId}}{{.Breed.Name}}{{end}}</td>
+                <td>{{if .SexId}}{{.Sex.Name}}{{end}}</td>
                 <td>{{if .FatherSelecs}}{{.FatherSelecs}}{{end}}</td>
                 <td>{{if .MotherSelecs}}{{.MotherSelecs}}{{end}}</td>
                 <td>{{if .IdentificationNumber}}{{.IdentificationNumber}}{{end}}</td>
@@ -139,13 +203,12 @@
                 <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .InbrindingCoeffByFamily}}{{.InbrindingCoeffByFamily}}{{end}}</td>
-                <td>{{if .Approved}}{{.Approved}}{{end}}</td>
                 <td>{{if .BirthDate}}{{.BirthDate}}{{end}}</td>
                 <td>{{if .DepartDate}}{{.DepartDate}}{{end}}</td>
                 <td>{{if .DeathDate}}{{.DeathDate}}{{end}}</td>
                 <td>{{if .BirkingDate}}{{.BirkingDate}}{{end}}</td>
-                <td>{{if .PreviousHozId}}{{.PreviousHozId}}{{end}}</td>
-                <td>{{if .BirthHozId}}{{.BirthHozId}}{{end}}</td>
+                <td>{{if .PreviousHozId}}{{.PreviousHoz.Name}}{{end}}</td>
+                <td>{{if .BirthHozId}}{{.BirthHoz.Name}}{{end}}</td>
                 <td>{{if .BirthMethod}}{{.BirthMethod}}{{end}}</td>
                 <td>{{if .PreviousInventoryNumber}}{{.PreviousInventoryNumber}}{{end}}</td>
             </tr>
@@ -154,19 +217,24 @@
     </table>
     </div>
 
-    <div class="pagination">
-        {{if .HasPrevPage}} <!-- Проверка на наличие предыдущей страницы -->
-        <a class="page-link" href="?page={{.PrevPage}}">« Назад</a>
-        {{end}}
-        {{range .Pages}} <!-- Пагинация -->
-        <div class="page-item">
-            <a class="page-link" href="?page={{.}}">{{.}}</a>
+    <div class="pagination-container">
+        <div class="pagination">
+            {{if gt .totalPages 1}}
+                <ul class="pagination justify-content-center">
+                    {{range $i := seq 1 .totalPages}}
+                        <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                            <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                        </li>
+                    {{end}}
+                </ul>
+            {{end}}
         </div>
-        {{end}}
-        {{if .HasNextPage}} <!-- Проверка на наличие следующей страницы -->
-        <a class="page-link" href="?page={{.NextPage}}">Вперед »</a>
-        {{end}}
+        <div class="confirm">
+            <button class="check-button" onclick="approveCows()">Подтвердить</button>
+        </div>
     </div>
+
+    <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 </body>
 
 <script>
@@ -176,6 +244,74 @@
             checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
         });
     }
+
+    function approveCows() {
+        const checkboxes = document.querySelectorAll('.cow-checkbox');
+        const cowIds = Array.from(checkboxes);
+        const approved = []; // Для подтвержденных коров
+        const notApproved = []; // Для непрошедших коров
+
+        
+        // Разделяем коров на подтвержденные и непрошедшие
+        cowIds.forEach(checkbox => {
+            if (checkbox.checked) {
+                notApproved.push(checkbox.value); // Если галка установлена, то это непрошедшая корова
+            } else {
+                approved.push(checkbox.value); // Если галка не установлена, то это подтвержденная корова
+            }
+        });
+
+
+        // Создаём объект для отправки на сервер
+        const data = {
+            approved: approved, // Здесь находятся ID подтвержденных коров (значение 1)
+            notApproved: notApproved, // Здесь находятся ID непрошедших коров (значение -1)
+        };
+
+        // Отправка на сервер
+        fetch('/api/admin/approveCows', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Ошибка сервера:', response.status);
+                throw new Error('Сетевое соединение не установлено');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Успех:', data);
+        })
+        .catch((error) => {
+            console.error('Ошибка:', error);
+        });
+
+        localStorage.setItem('showNotification', 'true');
+        setTimeout(function() {
+            location.reload();
+        }, 100);
+    }
+
+    window.onload = function() {
+    const notification = document.getElementById('notification');
+    
+    // Проверяем, нужно ли показывать уведомление
+    if (localStorage.getItem('showNotification') === 'true') {
+        notification.style.display = 'block';
+
+        // Удаляем уведомление через 1,5 секунды
+        setTimeout(() => {
+            notification.style.display = 'none';
+            // Сбрасываем состояние уведомления
+            localStorage.removeItem('showNotification');
+        }, 1500);
+    }
+};
+
 </script>
 </html>
 {{ end }}
