@@ -70,7 +70,17 @@ func AddFiltersToQuery(bodyData cows_filter.CowsFilter, query *gorm.DB) (*gorm.D
 		cows_filter.ByDeath{},
 		cows_filter.ByDepartDate{},
 		cows_filter.ByExterior{},
-		cows_filter.ByHoz{}); 
+		cows_filter.ByHoz{},
+		cows_filter.ByIllDate{},
+		cows_filter.ByInbrindingCoeffByFamily{},
+		cows_filter.ByInbrindingCoeffByGenotype{},
+		cows_filter.ByIsGenotyped{},
+		cows_filter.ByInsemenationDate{},
+		cows_filter.BySearchString{},
+		cows_filter.BySex{},
+		cows_filter.ByStillBorn{},
+		cows_filter.ByTwins{},
+		cows_filter.ByMonogeneticIllnesses{}); 
 		err != nil {
 			return nil, err
 		}
