@@ -14,9 +14,7 @@ func (cfm *CowFilteredModel) GetQuery() *gorm.DB {
 	return cfm.BaseFilteredModel.Query
 }
 func (cfm *CowFilteredModel) GetFilterParameters() map[string]any {
-	return map[string]any {
-		"object": cfm.BaseFilteredModel.Params,
-	}
+	return cfm.BaseFilteredModel.Params
 }
 func (cfm *CowFilteredModel) SetQuery(q *gorm.DB) {
 	cfm.BaseFilteredModel.Query = q

@@ -16,8 +16,11 @@ type BaseFilteredModel struct {
 	Params map[string]any
 	Query *gorm.DB
 }
-func ApplyFilters (model FilteredModel, filters ...Filter) {
+func ApplyFilters (model FilteredModel, filters ...Filter) error {
 	for _, filter := range filters {
-		filter.Apply(model)
+		if err := filter.Apply(model); err != nil {
+			return err
+		}
 	}
+	return nil
 }

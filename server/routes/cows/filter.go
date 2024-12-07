@@ -1,6 +1,7 @@
 package cows
 
 import (
+	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"encoding/json"
 	"time"
@@ -45,7 +46,7 @@ type FilterSerializedCow struct {
 	CreatedAt                 *models.DateOnly        `json:",omitempty" validate:"optional"`
 }
 
-func serializeByFilter(c *models.Cow, filter *CowsFilter) FilterSerializedCow {
+func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
 	res := FilterSerializedCow{
 		ID:              c.ID,
 		RSHNNumber:      c.RSHNNumber,
@@ -237,7 +238,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			return
 		}
 
-		bodyData := CowsFilter{}
+		bodyData := cows_filter.CowsFilter{}
 		if len(jsonData) != 0 {
 			err = json.Unmarshal(jsonData, &bodyData)
 			if err != nil {
