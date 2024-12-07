@@ -54,6 +54,10 @@ type cowsFilter struct { // Фильтр коров
 
 	IllDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате начала болезни ОТ
 	IllDateTo   *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате начала болезни ДО
+
+	IsGenotyped   *bool   `validate:"optional"`
+	CreatedAtFrom *string `validate:"optional"`
+	CreatedAtTo   *string `validate:"optional"`
 }
 
 type FilterSerializedCow struct {
@@ -84,6 +88,8 @@ type FilterSerializedCow struct {
 	IsStillBorn               *bool                   `json:",omitempty" validate:"optional"`
 	IsAborted                 *bool                   `json:",omitempty" validate:"optional"`
 	Events                    []models.Event          `json:",omitempty" validate:"optional"`
+	IsGenotyped               *bool                   `json:",omitempty" validate:"optional"`
+	CreatedAt                 *models.DateOnly        `json:",omitempty" validate:"optional"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
@@ -249,6 +255,13 @@ func serializeByFilter(c *models.Cow, filter *cowsFilter) FilterSerializedCow {
 	if filter.ExteriorFrom != nil || filter.ExteriorTo != nil {
 		res.ExteriorRating = &c.Exterior.Rating
 	}
+	if filter.IsGenotyped != nil {
+		res.IsGenotyped = filter.IsGenotyped
+	}
+	if filter.CreatedAtFrom != nil && *filter.CreatedAtFrom != "" ||
+		filter.CreatedAtTo != nil && *filter.CreatedAtTo != "" {
+		res.CreatedAt = &models.DateOnly{Time: c.CreatedAt}
+	}
 	return res
 }
 
@@ -285,6 +298,12 @@ func (c *Cows) Filter() func(*gin.Context) {
 
 		recordsPerPage := uint64(50)
 		pageNumber := uint64(1)
+		if bodyData.IsGenotyped != nil && *bodyData.IsGenotyped {
+			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id)")
+		}
+		if bodyData.IsGenotyped != nil && !*bodyData.IsGenotyped {
+			query = query.Where("NOT EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id)")
+		}
 
 		if bodyData.EntitiesOnPage != nil {
 			recordsPerPage = uint64(*bodyData.EntitiesOnPage)
@@ -331,6 +350,39 @@ func (c *Cows) Filter() func(*gin.Context) {
 		}
 		if bodyData.IsDead != nil && !*bodyData.IsDead {
 			query = query.Where("death_date IS NULL")
+		}
+
+		// ====================================================================================================
+		// =============================== Filter by ill date from ============================================
+		// ====================================================================================================
+
+		if bodyData.CreatedAtFrom != nil && bodyData.CreatedAtTo != nil &&
+			*bodyData.CreatedAtFrom != "" && *bodyData.CreatedAtTo != "" {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.CreatedAtFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.CreatedAtTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("created_at BETWEEN ? AND ?", bdFrom, bdTo)
+		} else if bodyData.CreatedAtFrom != nil && *bodyData.CreatedAtFrom != "" {
+			bdFrom, err := time.Parse(time.DateOnly, *bodyData.CreatedAtFrom)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("created_at >= ?", bdFrom.UTC())
+		} else if bodyData.CreatedAtTo != nil && *bodyData.CreatedAtTo != "" {
+			bdTo, err := time.Parse(time.DateOnly, *bodyData.CreatedAtTo)
+			if err != nil {
+				c.JSON(422, err)
+				return
+			}
+			query = query.Where("created_at <= ?)", bdTo.UTC())
 		}
 
 		// ====================================================================================================

@@ -69,6 +69,8 @@ definitions:
         items:
           $ref: '#/definitions/models.DateOnly'
         type: array
+      createdAt:
+        $ref: '#/definitions/models.DateOnly'
       deathDate:
         $ref: '#/definitions/models.DateOnly'
       departDate:
@@ -108,6 +110,8 @@ definitions:
       isAborted:
         type: boolean
       isDead:
+        type: boolean
+      isGenotyped:
         type: boolean
       isStillBorn:
         type: boolean
@@ -299,6 +303,10 @@ definitions:
           дойка в эту дату или ранее
         example: "2800-01-21"
         type: string
+      createdAtFrom:
+        type: string
+      createdAtTo:
+        type: string
       departDateFrom:
         description: Фильтр по дате открепления коровы ищет всех коров открепленных
           от коровника в эту дату или позднее
@@ -379,6 +387,8 @@ definitions:
       isDead:
         default: false
         description: Фильтр живых/мертвых коров (true - ищет мертвых, false - живых)
+        type: boolean
+      isGenotyped:
         type: boolean
       isIll:
         default: false

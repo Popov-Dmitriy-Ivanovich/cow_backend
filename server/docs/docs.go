@@ -1399,6 +1399,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.DateOnly"
                     }
                 },
+                "createdAt": {
+                    "$ref": "#/definitions/models.DateOnly"
+                },
                 "deathDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
@@ -1454,6 +1457,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "isDead": {
+                    "type": "boolean"
+                },
+                "isGenotyped": {
                     "type": "boolean"
                 },
                 "isStillBorn": {
@@ -1690,6 +1696,12 @@ const docTemplate = `{
                     "type": "string",
                     "example": "2800-01-21"
                 },
+                "createdAtFrom": {
+                    "type": "string"
+                },
+                "createdAtTo": {
+                    "type": "string"
+                },
                 "departDateFrom": {
                     "description": "Фильтр по дате открепления коровы ищет всех коров открепленных от коровника в эту дату или позднее",
                     "type": "string",
@@ -1784,6 +1796,9 @@ const docTemplate = `{
                     "description": "Фильтр живых/мертвых коров (true - ищет мертвых, false - живых)",
                     "type": "boolean",
                     "default": false
+                },
+                "isGenotyped": {
+                    "type": "boolean"
                 },
                 "isIll": {
                     "description": "??? Не реализован",
