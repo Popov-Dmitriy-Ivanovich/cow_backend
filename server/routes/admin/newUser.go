@@ -4,6 +4,7 @@ import (
 	"cow_backend/models"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
@@ -20,31 +21,34 @@ func (s *Admin) NewUser() func(*gin.Context) {
 			FarmId                string `json:"farm"`
 		}
 
-		fmt.Println(request)
 		if err := c.ShouldBindJSON(&request); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
+		fmt.Println(request)
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при хешировании пароля"})
 			return
 		}
 
-		// user := models.User{
-		// 	NameSurnamePatronimic: request.NameSurnamePatronimic,
-		// 	Role:                  request.RoleID,
-		// 	Email:                 request.Email,
-		// 	Phone:                 request.Phone,
-		// 	Password:              hashedPassword,
-		// 	FarmId:                &request.FarmId,
-		// }
-		request.Password = string(hashedPassword)
+		role, err := strconv.Atoi(request.RoleID)
+		farm, err := strconv.ParseUint(request.FarmId, 10, 64)
+		farmID := uint(farm)
+
+		user := models.User{
+			NameSurnamePatronimic: request.NameSurnamePatronimic,
+			Role:                  int(role),
+			Email:                 request.Email,
+			Phone:                 request.Phone,
+			Password:              hashedPassword,
+			FarmId:                &farmID,
+		}
 		db := models.GetDb()
 
 		// Сохраняем нового пользователя в базе данных
-		if err := db.Create(&request).Error; err != nil {
+		if err := db.Create(&user).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя: " + err.Error()})
 			return
 		}
