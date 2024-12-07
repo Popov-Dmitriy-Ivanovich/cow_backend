@@ -61,6 +61,6 @@ export default {
 
 <style scoped>
 .year-chart {
-    margin-top: 120px;
+    margin-top: 10px;
 }
 </style>
