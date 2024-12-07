@@ -31,8 +31,8 @@ export default {
     async created() {
         let mass_route = this.$route.path.split('/');
         let year_id = mass_route[2];
-        let district_id = mass_route[4];
-        let response = await fetch(`/api/analitics/genotyped/${year_id}/byDistrict/${district_id}/hold`);
+        let hold_id = mass_route[5];
+        let response = await fetch(`/api/analitics/genotyped/${year_id}/byHold/${hold_id}/hoz`);
         let result = await response.json();
         let genyear_serie = {name: 'Генотипированных', data: []};
         let allyear_serie = {name: 'Всего', data: []};
@@ -50,6 +50,6 @@ export default {
 
 <style scoped>
 .year-chart {
-    margin-top: 120px;
+    margin-top: 10px;
 }
 </style>

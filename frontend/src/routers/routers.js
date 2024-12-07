@@ -12,7 +12,7 @@ import AnaliticPage from '@/pages/AnaliticPage.vue';
 import AnaliticYear from '@/pages/AnaliticYear.vue';
 import AnaliticRegion from '@/pages/AnaliticRegion.vue';
 import AnaliticDistrict from '@/pages/AnaliticDistrict.vue';
-import AnaliticHolding from '@/pages/AnaliticHolding.vue'
+import AnaliticHolding from '@/pages/AnaliticHolding.vue';
 
 const routes = [
     {

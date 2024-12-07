@@ -6,6 +6,7 @@
         type="bar" 
         :options="options" 
         :series="series"
+        @dataPointSelection="clickHandler"
         ></apexchart>
     </div>
 </template>
@@ -26,6 +27,7 @@ export default {
                 colors: ['#6e5add','#75a2e7']
             },
             series: [],
+            common_info: {},
         }
     },
     async created() {
@@ -34,6 +36,7 @@ export default {
         let district_id = mass_route[4];
         let response = await fetch(`/api/analitics/genotyped/${year_id}/byDistrict/${district_id}/hold`);
         let result = await response.json();
+        this.common_info = result;
         let genyear_serie = {name: 'Генотипированных', data: []};
         let allyear_serie = {name: 'Всего', data: []};
         for (let key in result) {
@@ -43,13 +46,22 @@ export default {
         }
         this.series.push(allyear_serie);
         this.series.push(genyear_serie);
-        
+    },
+    methods: {
+        clickHandler(event, chartContext, config) {
+            let nameReg = this.options.xaxis.categories[config.dataPointIndex];
+            let reg_id = this.$route.params.region;
+            let hold_id = this.common_info[nameReg].HoldID;
+            let year = this.$route.params.id;
+            let dist_id = this.$route.params.district;
+            this.$router.push(`/analytics/${year}/${reg_id}/${dist_id}/${hold_id}`);
+        }
     }
 }
 </script>
 
 <style scoped>
 .year-chart {
-    margin-top: 120px;
+    margin-top: 10px;
 }
 </style>

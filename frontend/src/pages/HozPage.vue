@@ -24,7 +24,7 @@ export default {
         }
     },
     async created() {
-        const response = await fetch ('/api/farms');
+        const response = await fetch ('/api/farms?parrent_id=null');
         const res_farms = await response.json();
         this.farms = res_farms;
     }

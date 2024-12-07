@@ -28,9 +28,17 @@
             <MultiselectBreeds @sendToMain="setIdBreed" v-bind:clearBreed="clearBreed"/>
         </div>
         <div class="filter-category">
-            <div>Генотипирование</div>
-            <label class="range">От: <input type='date' class="filter-input filter-date" v-model="filters.genotypingDateFrom"></label><br>
-            <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.genotypingDateTo"></label>
+            <div>Дата внесения данных о КРС</div>
+            <label class="range">От: <input type='date' class="filter-input filter-date" v-model="filters.createdAtFrom"></label><br>
+            <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.createdAtTo"></label>
+        </div>
+        <div class="filter-category">
+            <div>Статус генотипирования</div>
+            <select class="filter-input" v-model="filters.isGenotyped">
+                <option :value="null">не важно</option>
+                <option :value="true">да</option>
+                <option :value="false">нет</option>
+            </select>
         </div>
         <div class="filter-category">
             <div>Контрольная дойка</div>
@@ -39,7 +47,16 @@
         </div>
         <div class="filter-category">
             <div>Оценка экстерьера</div>
-            <input type='number' class="filter-input filter-num" v-model="filters.exterior">
+            <!-- <input type='number' class="filter-input filter-num" v-model="filters.exterior"> -->
+            <select class="filter-input" v-model="exterior">
+                <option :value="null">Не важно</option>
+                <option :value="'низкая'">Низкая (50-64)</option>
+                <option :value="'средняя'">Средняя (65-74)</option>
+                <option :value="'хорошая'">Хорошая (75-79)</option>
+                <option :value="'хорошая+'">Хорошая+ (80-84)</option>
+                <option :value="'очень хорошая'">Очень хорошая (85-89)</option>
+                <option :value="'отличная'">Отличная (90-100)</option>
+            </select>
         </div>
         <div class="filter-category">
             <div>Осеменение</div>
@@ -82,6 +99,11 @@
             <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.InbrindingCoeffByGenotypeFrom"></label><br>
             <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.InbrindingCoeffByGenotypeTo"></label>
         </div>
+        <div class="filter-category">
+            <div>Заболевание</div>
+            <label class="range">От: <input type='date' class="filter-input filter-date" v-model="filters.illDateFrom"></label><br>
+            <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.illDateTo"></label>
+        </div>
         <div class="filter-category category-last">
             <div>Наличие моногенных заболеваний</div>
             <select class="filter-input" v-model="filters.isIll">
@@ -118,11 +140,12 @@ export default {
                 departDateTo: null,
                 isDead: null,
                 breedId: null,
-                genotypingDateFrom: null,
-                genotypingDateTo: null,
+                createdAtFrom: null,
+                createdAtTo: null,
                 controlMilkingDateFrom: null,
                 controlMilkingDateTo: null,
-                exterior: null,
+                exteriorFrom: null,
+                exteriorTo: null,
                 inseminationDateFrom: null,
                 inseminationDateTo: null,
                 calvingDateFrom: null,
@@ -138,11 +161,16 @@ export default {
                 inbrindingCoeffByGenotypeTo: null,
                 monogeneticIllneses: null,
                 isIll: null,
+                isGenotyped: null,
+                illDateFrom: null,
+                illDateTo: null,
             },
 
             clearBreed: false,
             clearHoz: false,
             clearIllness: false,
+
+            exterior: '',
         }
     },
     methods: {
@@ -176,6 +204,32 @@ export default {
             if (illid) this.filters.monogeneticIllneses = [illid];
             else this.filters.monogeneticIllneses = illid;
         },
+    },
+    watch: {
+        exterior(new_val) {
+            if (new_val === 'низкая') {
+                this.filters.exteriorFrom = 50;
+                this.filters.exteriorTo = 64;
+            } else if(new_val === 'средняя') {
+                this.filters.exteriorFrom = 65;
+                this.filters.exteriorTo = 74;
+            } else if (new_val === 'хорошая') {
+                this.filters.exteriorFrom = 75;
+                this.filters.exteriorTo = 79;
+            } else if (new_val ==='хорошая+') {
+                this.filters.exteriorFrom = 80;
+                this.filters.exteriorTo = 84;
+            } else if (new_val === 'очень хорошая') {
+                this.filters.exteriorFrom = 85;
+                this.filters.exteriorTo = 89;
+            } else if (new_val === 'отличная') {
+                this.filters.exteriorFrom = 90;
+                this.filters.exteriorTo = 100;
+            } else {
+                this.filters.exteriorFrom = null;
+                this.filters.exteriorTo = null;
+            }
+        }
     }
 }
 </script>
