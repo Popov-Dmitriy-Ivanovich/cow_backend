@@ -34,7 +34,13 @@ func (s *Admin) NewUser() func(*gin.Context) {
 		}
 
 		role, err := strconv.Atoi(request.RoleID)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID роли"})
+		}
 		farm, err := strconv.ParseUint(request.FarmId, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID фермы"})
+		}
 		farmID := uint(farm)
 
 		user := models.User{
