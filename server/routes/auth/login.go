@@ -75,7 +75,7 @@ func (s *Auth) Login() func(*gin.Context) {
 
 		claimsAccess := &JwtClaims{
 			UserId: user.ID,
-			Role:   user.Role,
+			Role:   user.RoleId,
 			RegisteredClaims: jwt.RegisteredClaims{
 				ExpiresAt: jwt.NewNumericDate(expTimeAccess),
 			},
