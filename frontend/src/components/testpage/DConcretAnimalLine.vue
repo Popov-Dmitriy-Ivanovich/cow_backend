@@ -7,20 +7,48 @@
             <div class="animal-hoz">{{ animal_item.FarmGroupName }}</div>
             <div class="animal-bdate">{{ dateConverter(bdate(animal_item.BirthDate)) }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.genotyped) }}</div>
+
             <div v-if="animal_item.DepartDate" class="animal-dateout">{{ dateConverter(animal_item.DepartDate) }}</div>
-            <div v-if="animal_item.IsDead===true || animal_item.IsDead===false" class="animal_dead">{{ isGen(animal_item.IsDead) }}</div>
+            <div v-else-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout"> - </div>
+
+            <div v-if="animal_item.IsDead===true || animal_item.IsDead===false" class="animal-dead">{{ isGen(animal_item.IsDead) }}</div>
+            <div v-else-if="filters.isDead===true || filters.isDead===false" class="animal-dead"> - </div>
+
             <div v-if="animal_item.BreedName" class="animal-breed">{{ animal_item.BreedName }}</div>
+            <div v-else-if="filters.breedId" class="animal-breed"> - </div>
+
             <div v-if="animal_item.GenotypingDate" class="animal-dategen">{{ dateConverter(animal_item.GenotypingDate) }}</div>
-            <!-- contol milking -->
+            <div v-else-if="filters.genotypingDateFrom || filters.genotypingDateTo" class="animal-dategen"> - </div>
+
+            <div v-if="animal_item.CheckMilkDate" class="animal-contrmilk">{{ dateConverter(check_milk) }}</div>
+            <div v-else-if="filters.controlMilkingDateFrom || filters.controlMilkingDateTo" class="animal-contrmilk"> - </div>
+
             <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
-            <!-- <div v-if="animal_item.InsemenationDate" class="animal-dateosem">{{ animal_item.InsemenationDate }}</div> -->
-            <!-- <div v-if="animal_item.CalvingDate" class="animal-dateotel">{{ animal_item.calvingDate }}</div> -->
+            <div v-else-if="filters.exterior" class="animal-exterior"> - </div>
+
+            <div v-if="animal_item.InsemenationDate" class="animal-dateosem">{{ dateConverter(insemination) }}</div>
+            <div v-else-if="filters.insemenationDateFrom || filters.inseminationDateTo" class="animal-dateosem"> - </div>
+
+            <div v-if="animal_item.CalvingDate" class="animal-dateotel">{{ dateConverter(calving) }}</div>
+            <div v-else-if="filters.calvingDateFrom || filters.calvingDateTo" class="animal-dateotel"> - </div>
+
             <div v-if="animal_item.IsTwins===true || animal_item.IsTwins===false" class="animal-genfact">{{ isGen(animal_item.IsTwins) }}</div>
-            <div v-if="animal_item.IsTwins===true || animal_item.IsTwins===false" class="animal-genfact">{{ isGen(animal_item.IsStillBorn) }}</div>
+            <div v-else-if="filters.isTwins===true || filters.isTwins===false" class="animal-genfact"> - </div>
+
+            <div v-if="animal_item.IsStillBorn===true || animal_item.IsStillBorn===false" class="animal-genfact">{{ isGen(animal_item.IsStillBorn) }}</div>
+            <div v-else-if="filters.isStillBorn===true || filters.isStillBorn===false" class="animal-genfact"> - </div>
+
             <div v-if="animal_item.IsAborted===true || animal_item.IsAborted===false" class="animal-genfact">{{ isGen(animal_item.IsAborted) }}</div>
-            <div v-if="animal_item.BirkingDate" class="animal-datebirk">{{ dateConverter(animal_item.Birkingdate) }}</div>
+            <div v-else-if="filters.isAborted===true || filters.isAborted===false" class="animal-genfact"> - </div>
+
+            <div v-if="animal_item.BirkingDate" class="animal-datebirk">{{ dateConverter(animal_item.BirkingDate) }}</div>
+            <div v-else-if="filters.birkingDateFrom || filters.birkingDateTo" class="animal-datebirk"> - </div>
+
             <div v-if="animal_item.InbrindingCoeffByFamily" class="animal-krod">{{ animal_item.InbrindingCoeffByFamily }}</div>
-            <!-- <div v-if="animal_item." class="animal-kfen">{{ animal_item.INBRID_FENOTYPE }}</div> -->
+            <div v-else-if="filters.inbrindingCoeffByFamilyFrom || filters.inbrindingCoeffByFamilyTo" class="animal-krod"> - </div>
+
+            <div v-if="animal_item.inbrindingCoeffByGenotype" class="animal-kfen">{{ animal_item.inbrindingCoeffByGenotype }}</div>
+            <div v-else-if="filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeTo" class="animal-kfen"> - </div>
         </div>
     </div>
 </template>
@@ -34,6 +62,13 @@ export default {
         },
         filters: {
             type: Object,
+        }
+    },
+    data() {
+        return {
+            check_milk: '',
+            insemination: '',
+            calving: '',
         }
     },
     methods: {
@@ -52,6 +87,52 @@ export default {
             result += arr[0];
             return result;
         }
+    },
+    mounted() {
+        this.check_milk = '';
+        if (this.animal_item.CheckMilkDate) {
+            if (this.animal_item.CheckMilkDate.length) {
+                this.check_milk = this.animal_item.CheckMilkDate[0];
+            }
+        }
+        this.insemination = '';
+        if (this.animal_item.InsemenationDate) {
+            if (this.animal_item.InsemenationDate.length) {
+                this.insemination = this.animal_item.InsemenationDate[0];
+                console.log('внутри ифа');
+            }
+        }
+        console.log(this.insemination);
+        this.calving = '';
+        if (this.animal_item.CalvingDate) {
+            if(this.animal_item.CalvingDate.length) {
+                this.calving = this.animal_item.CalvingDate[0];
+                
+            }
+        }
+    },
+    watch: {
+        // animal_item(new_val) {
+        //     this.check_milk = '';
+        //     if (new_val.checkMilkDate) {
+        //         if (new_val.checkMilkDate.length) {
+        //             this.check_milk = new_val.checkMilkDate[0];
+        //         }
+        //     }
+        //     this.insemination = '';
+        //     if (new_val.InsemenationDate) {
+        //         if (new_val.InsemenationDate.length) {
+        //             this.insemination = new_val.InsemenationDate[0];
+        //         }
+        //     }
+        //     this.calving = ''
+        //     if (new_val.CalvingDate) {
+        //         if(new_val.CalvingDate.length) {
+        //             this.calving = new_val.CalvingDate[0];
+        //         }
+        //     }
+        //     console.log(this.check_milk, this.insemination, this.calving);
+        // }
     }
 }
 </script>
@@ -119,6 +200,7 @@ export default {
 .animal-breed, .animal-dategen, .animal-datemilking, 
 .animal-dateosem, .animal-dateotel, .animal-datebirk {
     width: 150px;
+    height: 100%;
 }
 
 .animal-exterior {
@@ -127,5 +209,13 @@ export default {
 
 .animal-krod, .animal-kfen {
     width: 100px;
+}
+
+.animal-dead {
+    width: 100px;
+}
+
+.animal-contrmilk  {
+    width: 130px;
 }
 </style>

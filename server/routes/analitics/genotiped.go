@@ -23,6 +23,11 @@ func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/:year/byRegion/:region/districts", g.Districts())
 	apiGroup.GET("/:year/byDistrict/:district/hold", g.Hold())
 	apiGroup.GET("/:year/byHold/:hold/hoz", g.Hoz())
+	apiGroup.POST("/years", g.YearsPost())
+	apiGroup.POST("/:year/regions", g.RegionsPost())
+	apiGroup.POST("/:year/byRegion/:region/districts", g.DistrictsPost())
+	apiGroup.POST("/:year/byDistrict/:district/hold", g.HoldingsPost())
+	apiGroup.POST("/:year/byDistrict/:district/byHold/:hold/hoz", g.HozPost())
 }
 
 // @Summary      Get list of years

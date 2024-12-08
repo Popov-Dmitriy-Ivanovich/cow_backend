@@ -62,7 +62,8 @@ export default {
 
 <style scoped>
 .main-info {
-    width: 800px;
+    width: 56vw;
+    min-width: 800px;
     background-color: white;
     border-radius: 10px;
     padding: 30px 40px;

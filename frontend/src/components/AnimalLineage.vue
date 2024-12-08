@@ -26,9 +26,10 @@ export default {
 
 .lineage-info {
     background-color: white;
-    width: 800px;
+    width: 56vw;
     height: max-content;
     min-height: 500px;
+    min-width: 800px;
     border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     padding: 30px 40px;

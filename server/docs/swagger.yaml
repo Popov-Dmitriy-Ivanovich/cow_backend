@@ -207,6 +207,10 @@ definitions:
         description: оценка по региону
         example: 1
         type: integer
+      holding:
+        $ref: '#/definitions/models.Farm'
+      holdingID:
+        type: integer
       hozHame:
         description: хозяйство на котором живет, null, если нет
         type: string
@@ -255,7 +259,7 @@ definitions:
         description: пол, null если нет
         type: string
     type: object
-  cows.cowsFilter:
+  cows_filter.CowsFilter:
     properties:
       birkingDateFrom:
         description: Фильтр по дате перебирковки коровы, ищет коров у которых быа
@@ -528,6 +532,10 @@ definitions:
       gradeRegionId:
         description: оценка по региону
         example: 1
+        type: integer
+      holding:
+        $ref: '#/definitions/models.Farm'
+      holdingID:
         type: integer
       id:
         description: ID коровы
@@ -898,6 +906,9 @@ definitions:
         items:
           $ref: '#/definitions/models.News'
         type: array
+      regNum:
+        description: номер региона (Архангельская область = 29)
+        type: integer
     type: object
   models.Sex:
     properties:
@@ -964,6 +975,44 @@ paths:
       summary: Get list of years
       tags:
       - Analitics
+    post:
+      description: Возращает словарь регион - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: район за который собирается статистика
+        in: path
+        name: district
+        required: true
+        type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byRegionStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
   /analitics/genotyped/{year}/byHold/{hold}/hoz:
     get:
       description: Возращает словарь хозяйство - количество живых коров, количество
@@ -979,6 +1028,45 @@ paths:
         name: hold
         required: true
         type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byHoldStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+    post:
+      description: Возращает словарь хозяйство - количество живых коров, количество
+        генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: холдинг за который собирается статистика
+        in: path
+        name: hold
+        required: true
+        type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1031,6 +1119,44 @@ paths:
       summary: Get list of years
       tags:
       - Analitics
+    post:
+      description: Возращает словарь район - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: регион за который собирается статистика
+        in: path
+        name: region
+        required: true
+        type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byDistrictStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
   /analitics/genotyped/{year}/regions:
     get:
       description: Возращает словарь регион - количество живых коров, количество генотипированных
@@ -1040,6 +1166,39 @@ paths:
         name: year
         required: true
         type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byRegionStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+    post:
+      description: Возращает словарь регион - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1072,6 +1231,35 @@ paths:
             items:
               additionalProperties:
                 type: integer
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+    post:
+      description: Возращает словарь год - количеств генотипированных коров, по ключу
+        -1 генотипированные за все годы
+      parameters:
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                type: boolean
               type: object
             type: array
         "500":
@@ -1478,7 +1666,7 @@ paths:
         name: filter
         required: true
         schema:
-          $ref: '#/definitions/cows.cowsFilter'
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1729,6 +1917,30 @@ paths:
       summary: Get list of regions
       tags:
       - Regions
+  /regions/{id}/getFarms:
+    get:
+      description: Возращает все фермы в регионе
+      parameters:
+      - description: id of region
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Farm'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get farm by region id
+      tags:
+      - Farms
   /regions/{id}/news:
     get:
       description: Возращает новости региона

@@ -2,13 +2,13 @@
     <div>
         <div class="id-title">Родословная</div>
         <div class="idnum-flex">
-            <div class="item-block animal-parent">
+            <div class="item-block animal-parent"  @click="clickFather" :class="{'par-hover': father.Name}">
                 <div class="id-min-title">Отец</div>
-                <div @click="clickFather" class="link-parent">{{ father.Name || 'Нет информации' }}</div>
+                <div class="link-parent">{{ father.Name || 'Нет информации' }}</div>
             </div>
-            <div class="item-block animal-parent">
+            <div class="item-block animal-parent" @click="clickMother" :class="{'par-hover': mother.Name}">
                 <div class="id-min-title">Мать</div>
-                <div @click="clickMother" class="link-parent">{{ mother.Name || 'Нет информации' }}</div>
+                <div class="link-parent">{{ mother.Name || 'Нет информации' }}</div>
             </div>
                 <div class="item-block">
                 <div class="id-min-title">Коэф. инбридинга по родословной</div>
@@ -81,12 +81,16 @@ export default {
 }
 
 .animal-parent {
-    cursor: pointer;
     transition: 0.3s;
 }
 
-.animal-parent:hover {
+.par-hover {
+    cursor: pointer;
+}
+
+.par-hover:hover {
     background-color: rgb(236, 232, 245);
     border-radius: 10px;
 }
+
 </style>

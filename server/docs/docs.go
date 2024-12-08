@@ -55,6 +55,48 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
             }
         },
         "/analitics/genotyped/{year}/byDistrict/{district}/hold": {
@@ -104,6 +146,62 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "район за который собирается статистика",
+                        "name": "district",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byRegionStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
             }
         },
         "/analitics/genotyped/{year}/byHold/{hold}/hoz": {
@@ -130,6 +228,62 @@ const docTemplate = `{
                         "name": "hold",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "холдинг за который собирается статистика",
+                        "name": "hold",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
                     }
                 ],
                 "responses": {
@@ -202,6 +356,62 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Возращает словарь район - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "регион за который собирается статистика",
+                        "name": "region",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byDistrictStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
             }
         },
         "/analitics/genotyped/{year}/regions": {
@@ -221,6 +431,55 @@ const docTemplate = `{
                         "name": "year",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byRegionStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
                     }
                 ],
                 "responses": {
@@ -542,7 +801,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/cows.cowsFilter"
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
                         }
                     }
                 ],
@@ -1216,6 +1475,42 @@ const docTemplate = `{
                 }
             }
         },
+        "/regions/{id}/getFarms": {
+            "get": {
+                "description": "Возращает все фермы в регионе",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farms"
+                ],
+                "summary": "Get farm by region id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id of region",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Farm"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/regions/{id}/news": {
             "get": {
                 "description": "Возращает новости региона",
@@ -1616,6 +1911,12 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "holding": {
+                    "$ref": "#/definitions/models.Farm"
+                },
+                "holdingID": {
+                    "type": "integer"
+                },
                 "hozHame": {
                     "description": "хозяйство на котором живет, null, если нет",
                     "type": "string"
@@ -1676,7 +1977,7 @@ const docTemplate = `{
                 }
             }
         },
-        "cows.cowsFilter": {
+        "cows_filter.CowsFilter": {
             "type": "object",
             "properties": {
                 "birkingDateFrom": {
@@ -2023,6 +2324,12 @@ const docTemplate = `{
                     "description": "оценка по региону",
                     "type": "integer",
                     "example": 1
+                },
+                "holding": {
+                    "$ref": "#/definitions/models.Farm"
+                },
+                "holdingID": {
+                    "type": "integer"
                 },
                 "id": {
                     "description": "ID коровы",
@@ -2557,6 +2864,10 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.News"
                     }
+                },
+                "regNum": {
+                    "description": "номер региона (Архангельская область = 29)",
+                    "type": "integer"
                 }
             }
         },

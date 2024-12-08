@@ -223,7 +223,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 //
 //	@Summary      Get filtered list of cows
 //	@Tags         Cows
-//	@Param        filter    body     cowsFilter  true  "applied filters"
+//	@Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 //	@Accept       json
 //	@Produce      json
 //	@Success      200  {array}   FilterSerializedCow
@@ -276,7 +276,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			return
 		}
 
-		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1))
+		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1)).Order("inventory_number")
 		dbCows := []models.Cow{}
 		if err := query.Debug().Find(&dbCows).Error; err != nil {
 			c.JSON(500, gin.H{"error": err})
