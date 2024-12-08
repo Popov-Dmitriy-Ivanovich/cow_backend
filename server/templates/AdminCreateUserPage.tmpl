@@ -198,7 +198,7 @@
 
         if (regionId) {
             // Отправка запроса на сервер
-            fetch(`/api/farm/${regionId}`)
+            fetch(`/api/regions/${regionId}/getFarms`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Сеть не отвечает');
@@ -206,13 +206,22 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Добавление новых опций в селект
-                    data.forEach(farm => {
-                        const option = document.createElement('option');
-                        option.value = farm.ID;
-                        option.textContent = farm.Name;
-                        farmSelect.appendChild(option);
-                    });
+                    // Проверяем, что data.farms является массивом
+                    if (data && Array.isArray(data.farms)) {
+                        console.log(data.farms); // Отладочный вывод
+                        
+                        // Добавление новых опций в селект
+                        data.farms.forEach(farm => {
+                            if (farm.Type === 2) { // Пример условия фильтрации
+                                const option = document.createElement('option');
+                                option.value = farm.ID; // Используем ID фермы в качестве значения
+                                option.textContent = farm.Name; // Название фермы
+                                farmSelect.appendChild(option);
+                            }
+                        });
+                    } else {
+                        console.error('Ошибка: ожидаем массив, но получили:', data);
+                    }
                 })
                 .catch(error => {
                     console.error('Ошибка:', error);

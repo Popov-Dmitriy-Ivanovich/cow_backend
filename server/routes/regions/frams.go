@@ -23,7 +23,7 @@ func (f *Regions) GetFarms() func(*gin.Context) {
 		db := models.GetDb()
 		farms := []models.Farm{}
 		dist := models.District{}
-		if err := db.First(&dist, id).Error; err != nil {
+		if err := db.Where("region_id = ?", id).First(&dist).Error; err != nil {
 			c.JSON(500, err.Error)
 			return
 		}
