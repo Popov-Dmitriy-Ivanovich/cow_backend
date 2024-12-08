@@ -10,19 +10,19 @@
                 <div class="animal-genfact">Факт генотипирования</div>
                 
                 <div v-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout">Дата выбытия</div>
-                <div v-if="filters.isDead===true || filters.isDead===false" class="animal_dead">Животное мертво</div>
+                <div v-if="filters.isDead===true || filters.isDead===false" class="animal-dead">Животное мертво</div>
                 <div v-if="filters.breedId" class="animal-breed">Порода</div>
                 <div v-if="filters.genotypingDateFrom || filters.genotypingDateTo" class="animal-dategen">Дата генотипирования</div>
-                <!-- contol milking -->
+                <div v-if="filters.controlMilkingDateFrom || filters.controlMilkingDateTo" class="animal-contrmilk">Дата контрольной дойки</div>
                 <div v-if="filters.exterior" class="animal-exterior">Оценка экстерьера</div>
-                <!-- <div v-if="animals[0].InsemenationDate" class="animal-dateosem">{{ animals[0].InsemenationDate }}</div> -->
-                <!-- <div v-if="animals[0].CalvingDate" class="animal-dateotel">{{ animals[0].calvingDate }}</div> -->
+                <div v-if="filters.insemenationDateFrom || filters.inseminationDateTo" class="animal-dateosem">Дата осеменения</div>
+                <div v-if="filters.calvingDateFrom || filters.calvingDateTo" class="animal-dateotel">Дата отела</div>
                 <div v-if="filters.isTwins===true || filters.isTwins===false" class="animal-genfact">Двойня</div>
                 <div v-if="filters.isStillBorn===true || filters.isStillBorn===false" class="animal-genfact">Мертворождённый</div>
                 <div v-if="filters.isAborted===true || filters.isAborted===false" class="animal-genfact">Аборт</div>
                 <div v-if="filters.birkingDateFrom || filters.birkingDateTo" class="animal-datebirk">Дата перебирковки</div>
                 <div v-if="filters.inbrindingCoeffByFamilyFrom || filters.inbrindingCoeffByFamilyTo" class="animal-krod">Коэффициент инбридинга по родословной</div>
-                <!-- <div v-if="animals[0]." class="animal-kfen">{{ animals[0].INBRID_FENOTYPE }}</div> -->
+                <div v-if="filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeTo" class="animal-kfen">Коэффициент инбридинга по генотипу</div>
             </div>
             <div v-if="!isSearch&!search_error">
                 <div v-for="animal in animals" :key="animal[0]">
@@ -231,6 +231,14 @@ export default {
 
 .animal-krod, .animal-kfen {
     width: 100px;
+}
+
+.animal-dead {
+    width: 100px;
+}
+
+.animal-contrmilk  {
+    width: 130px;
 }
 
 .search-error {

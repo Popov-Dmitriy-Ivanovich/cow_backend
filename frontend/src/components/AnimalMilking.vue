@@ -26,7 +26,8 @@ export default {
 
 .milking-info {
     background-color: white;
-    width: 800px;
+    width: 56vw;
+    min-width: 800px;
     height: max-content;
     min-height: 500px;
     border-radius: 10px;

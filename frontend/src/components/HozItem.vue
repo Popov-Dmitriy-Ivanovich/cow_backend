@@ -29,6 +29,21 @@ export default {
     background-color: rgb(255, 255, 255);
     border-radius: 30px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    overflow: auto;
+}
+
+.hoz-item::-webkit-scrollbar {
+    height: 12px;
+}
+
+.hoz-item::-webkit-scrollbar-track {
+    background: rgb(241, 241, 241);
+}
+
+.hoz-item::-webkit-scrollbar-thumb {
+    background-color: rgb(183, 183, 183);
+    border-radius: 20px;
+    border: 3px solid rgb(241, 241, 241);
 }
 
 .hoz-text {

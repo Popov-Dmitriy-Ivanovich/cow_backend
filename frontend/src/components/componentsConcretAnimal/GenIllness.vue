@@ -11,12 +11,11 @@
                     </tr>
                 </thead>
                 <tbody class="vet-tablebody">
-                    <tr v-for="(value, name) in cow_info" :key="name">
-                        <td>{{ name }}</td>
-                        <td>{{ value }}</td>
-                        <td></td>
+                    <tr v-for="item in cow_info" :key="item.Name">
+                        <td>{{ item.Name }}</td>
+                        <td>{{ item.Status }}</td>
+                        <td>{{ item.Description }}</td>
                     </tr>
-                    
                 </tbody>
             </table>
         </div>
@@ -27,15 +26,33 @@
 export default {
     data() {
         return {
-            cow_info: {},
+            illnesses: {},
+            cow_info: [],
         }
     },
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        let response = await fetch(`https://genmilk.ru:9050/api/cow_health?ID_COW=${cow_id}`);
+        let response = await fetch(`/api/monogenetic_illnesses`);
         let result = await response.json();
-        this.cow_info = result;
+        this.illnesses = result;
+        let response1 = await fetch(`/api/cows/${cow_id}/genetic`)
+        let result1 = await response1.json();
+
+        for( let i = 0; i < this.illnesses.length; i++) {
+            let obj = {
+                Name: this.illnesses[i].Name,
+                Status: 'нет',
+                Description: this.illnesses[i].Description,
+            }
+            for (let j = 0; j < result1.GeneticIllnesses.length; j++) {
+                if (this.illnesses[i].Name === result1.GeneticIllnesses[j].Name) {
+                    obj.Status = 'да';
+                }
+            }
+            this.cow_info.push(obj);
+        }
+        console.log(this.cow_info, 'hgf');
     },
 }    
 </script>
@@ -61,6 +78,10 @@ export default {
     
 th {
     font-weight: normal;
+}
+
+td {
+    padding: 5px 3px;
 }
     
 .vet-header {
@@ -89,4 +110,5 @@ th {
     border-radius: 20px;
     border: 3px solid rgb(241, 241, 241);
 }
+
 </style>
