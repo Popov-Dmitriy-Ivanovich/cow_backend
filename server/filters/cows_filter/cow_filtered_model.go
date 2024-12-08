@@ -20,7 +20,7 @@ func (cfm *CowFilteredModel) SetQuery(q *gorm.DB) {
 	cfm.BaseFilteredModel.Query = q
 }
 
-func NewCowFilteredModel (object CowsFilter, q *gorm.DB) filters.FilteredModel {
+func NewCowFilteredModel (object CowsFilter, q *gorm.DB) *CowFilteredModel {
 	cfm := CowFilteredModel {
 		BaseFilteredModel: filters.BaseFilteredModel{
 			Params : map[string]any {"object": object},

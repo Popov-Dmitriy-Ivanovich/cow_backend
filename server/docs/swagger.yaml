@@ -207,6 +207,10 @@ definitions:
         description: оценка по региону
         example: 1
         type: integer
+      holding:
+        $ref: '#/definitions/models.Farm'
+      holdingID:
+        type: integer
       hozHame:
         description: хозяйство на котором живет, null, если нет
         type: string
@@ -255,7 +259,7 @@ definitions:
         description: пол, null если нет
         type: string
     type: object
-  cows.cowsFilter:
+  cows_filter.CowsFilter:
     properties:
       birkingDateFrom:
         description: Фильтр по дате перебирковки коровы, ищет коров у которых быа
@@ -528,6 +532,10 @@ definitions:
       gradeRegionId:
         description: оценка по региону
         example: 1
+        type: integer
+      holding:
+        $ref: '#/definitions/models.Farm'
+      holdingID:
         type: integer
       id:
         description: ID коровы
@@ -898,6 +906,9 @@ definitions:
         items:
           $ref: '#/definitions/models.News'
         type: array
+      regNum:
+        description: номер региона (Архангельская область = 29)
+        type: integer
     type: object
   models.Sex:
     properties:
@@ -916,7 +927,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: genmilk.ru
+host: localhost
 info:
   contact:
     email: support@swagger.io
@@ -931,7 +942,7 @@ info:
   version: "1.0"
 paths:
   /analitics/genotyped/{year}/byDistrict/{district}/hold:
-    get:
+    post:
       description: Возращает словарь хозяйство - количество живых коров, количество
         генотипированных
       parameters:
@@ -945,6 +956,12 @@ paths:
         name: district
         required: true
         type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1032,7 +1049,7 @@ paths:
       tags:
       - Analitics
   /analitics/genotyped/{year}/regions:
-    get:
+    post:
       description: Возращает словарь регион - количество живых коров, количество генотипированных
       parameters:
       - description: год за который собирается статистика
@@ -1040,6 +1057,12 @@ paths:
         name: year
         required: true
         type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1060,9 +1083,16 @@ paths:
       tags:
       - Analitics
   /analitics/genotyped/years:
-    get:
+    post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
+      parameters:
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1478,7 +1508,7 @@ paths:
         name: filter
         required: true
         schema:
-          $ref: '#/definitions/cows.cowsFilter'
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:

@@ -25,7 +25,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/analitics/genotyped/years": {
-            "get": {
+            "post": {
                 "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
                 "produces": [
                     "application/json"
@@ -34,6 +34,17 @@ const docTemplate = `{
                     "Analitics"
                 ],
                 "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -58,7 +69,7 @@ const docTemplate = `{
             }
         },
         "/analitics/genotyped/{year}/byDistrict/{district}/hold": {
-            "get": {
+            "post": {
                 "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
                 "produces": [
                     "application/json"
@@ -81,6 +92,15 @@ const docTemplate = `{
                         "name": "district",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
                     }
                 ],
                 "responses": {
@@ -205,7 +225,7 @@ const docTemplate = `{
             }
         },
         "/analitics/genotyped/{year}/regions": {
-            "get": {
+            "post": {
                 "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
                 "produces": [
                     "application/json"
@@ -221,6 +241,15 @@ const docTemplate = `{
                         "name": "year",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
                     }
                 ],
                 "responses": {
@@ -542,7 +571,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/cows.cowsFilter"
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
                         }
                     }
                 ],
@@ -1616,6 +1645,12 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
+                "holding": {
+                    "$ref": "#/definitions/models.Farm"
+                },
+                "holdingID": {
+                    "type": "integer"
+                },
                 "hozHame": {
                     "description": "хозяйство на котором живет, null, если нет",
                     "type": "string"
@@ -1676,7 +1711,7 @@ const docTemplate = `{
                 }
             }
         },
-        "cows.cowsFilter": {
+        "cows_filter.CowsFilter": {
             "type": "object",
             "properties": {
                 "birkingDateFrom": {
@@ -2023,6 +2058,12 @@ const docTemplate = `{
                     "description": "оценка по региону",
                     "type": "integer",
                     "example": 1
+                },
+                "holding": {
+                    "$ref": "#/definitions/models.Farm"
+                },
+                "holdingID": {
+                    "type": "integer"
                 },
                 "id": {
                     "description": "ID коровы",
@@ -2557,6 +2598,10 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/models.News"
                     }
+                },
+                "regNum": {
+                    "description": "номер региона (Архангельская область = 29)",
+                    "type": "integer"
                 }
             }
         },
@@ -2597,7 +2642,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "genmilk.ru",
+	Host:             "localhost",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",

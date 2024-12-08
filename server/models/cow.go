@@ -5,11 +5,15 @@ import "time"
 type Cow struct {
 	ID        uint      `gorm:"primaryKey" example:"1"` // ID коровы
 	CreatedAt time.Time `example:"2007-01-01"`          // Время создания коровы в базе данных
+	
 	Farm      *Farm     `json:"-"`
 	FarmID    *uint     `example:"1"` // ID фермы, которой корова принадлежит
 
 	FarmGroup   Farm `json:"-"`
 	FarmGroupId uint `example:"1"` // ID хозяйства, которому корова принадлежит
+
+	Holding *Farm
+	HoldingID *uint
 
 	Breed   Breed `json:"-"`
 	BreedId uint  `example:"1"` // ID породы коровы
