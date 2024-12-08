@@ -139,6 +139,16 @@
         .confirm .check-button:hover {
             background-color: #5c37a0; /* Darker background on hover */
         }
+
+        .current-page {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
         
         .notification {
             position: fixed;
@@ -221,10 +231,26 @@
         <div class="pagination">
             {{if gt .totalPages 1}}
                 <ul class="pagination justify-content-center">
-                    {{range $i := seq 1 .totalPages}}
-                        <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
-                            <a class="page-link" href="?page={{$i}}">{{$i}}</a>
-                        </li>
+                    {{if le .totalPages 5}}
+                        {{range $i := seq 1 .totalPages}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        {{range $i := seq 1 4}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                        {{if ne $.currentPage 5}}
+                            <li class="page-item">
+                                <button class="page-link" onclick="goToPage()">...</button>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{.totalPages}}">{{.totalPages}}</a>
+                            </li>
+                        {{end}}
                     {{end}}
                 </ul>
             {{end}}
@@ -233,7 +259,7 @@
             <button class="check-button" onclick="approveCows()">Подтвердить</button>
         </div>
     </div>
-
+     <div class="current-page">Страница {{.currentPage}}</div>
     <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 </body>
 
@@ -243,6 +269,17 @@
         checkboxes.forEach(checkbox => {
             checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
         });
+    }
+
+    function goToPage() {
+        let page = prompt("Введите номер страницы:");
+        page = parseInt(page);
+        
+        if (!isNaN(page) && page > 0 && page <= {{.totalPages}}) {
+            window.location.href = "?page=" + page;
+        } else {
+            alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
     }
 
     function approveCows() {
