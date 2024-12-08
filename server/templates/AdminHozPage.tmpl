@@ -1,4 +1,4 @@
-{{ define "AdminHoldingsPage.tmpl"}}
+{{ define "AdminHozPage.tmpl"}}
 <!DOCTYPE html>
 <html lang="ru">
 <head> 
@@ -133,7 +133,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Список холдингов</h1>
+        <h1>Список хозяйств</h1>
     </div>
     <button class="back-button" onclick="window.history.back();">Назад</button>
     <div class="container-table">
@@ -142,7 +142,8 @@
             <tr>
                 <th>ID</th>
                 <th>Номер холдинга</th>
-                <th>Округ</th>
+                <th>ID Район</th>
+                <th>Холдинг</th>
                 <th>Полное имя</th>
                 <th>Имя</th>
                 <th>ИНН</th>
@@ -159,6 +160,7 @@
                 <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .HozNumber}}{{.HozNumber}}{{end}}</td>
                 <td>{{if .DistrictId}}{{.DistrictId}}{{end}}</td>
+                <td>{{if .ParrentId}}{{.ParrentId}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .NameShort}}{{.NameShort}}{{end}}</td>
                 <td>{{if .Inn}}{{.Inn}}{{end}}</td>
@@ -167,7 +169,6 @@
                 <td>{{if .Email}}{{.Email}}{{end}}</td>
                 <td>{{if .CowsCount}}{{.CowsCount}}{{end}}</td>
                 <td>{{if .Description}}{{.Description}}{{end}}</td>
-                
             </tr>
             {{end}}
         </tbody>

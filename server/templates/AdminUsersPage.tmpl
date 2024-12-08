@@ -196,6 +196,17 @@
     <div class="current-page">Страница {{.currentPage}}</div>
 
 </body>
-
+<script>
+    function goToPage() {
+        let page = prompt("Введите номер страницы:");
+        page = parseInt(page);
+        
+        if (!isNaN(page) && page > 0 && page <= {{.totalPages}}) {
+            window.location.href = "?page=" + page;
+        } else {
+            alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
+    }
+</script>
 </html>
 {{ end }}
