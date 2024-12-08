@@ -133,10 +133,10 @@
             <label for="phone">Телефон:</label>
             <input type="tel" id="phone" name="phone" required>
 
-            <label for="district">Округ:</label>
-            <select id="district" name="district" required>
-                <option value="" selected disable hidden></option>
-                {{ range .districts }}
+            <label for="region">Регион:</label>
+            <select id="region" name="region" required onchange="fetchFarms(this.value)">
+                <option value="" selected disable hidden ></option>
+                {{ range .regions }}
                     <option value="{{ .ID }}">{{ .Name }}</option>
                 {{ end }}
             </select>
@@ -165,7 +165,7 @@
             role: document.getElementById('role').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            district: document.getElementById('district').value,
+            region: document.getElementById('region').value,
             farm: document.getElementById('farm').value,
         };
         console.log(data)
@@ -189,6 +189,35 @@
         .catch((error) => {
             console.error('Ошибка:', error);
         });
+    }
+
+    function fetchFarms(regionId) {
+        // Очистка списка хозяйств
+        const farmSelect = document.getElementById('farm');
+        farmSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+
+        if (regionId) {
+            // Отправка запроса на сервер
+            fetch(`/api/farm/${regionId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Добавление новых опций в селект
+                    data.forEach(farm => {
+                        const option = document.createElement('option');
+                        option.value = farm.ID;
+                        option.textContent = farm.Name;
+                        farmSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
     }
 </script>
 </html>

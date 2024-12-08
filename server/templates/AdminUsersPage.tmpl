@@ -118,6 +118,16 @@
             background-color: #5c37a0; /* Цвет фона при наведении */
             color: white; /* Цвет текста при наведении */
         }
+
+         .current-page {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 <body>
@@ -136,6 +146,7 @@
                 <th>Телефон</th>
                 <th>Пароль</th>
                 <th>Хозяйство</th>
+                <th>Регион</th>
             </tr>
         </thead>
         <tbody>
@@ -148,6 +159,7 @@
                 <td>{{if .Phone}}{{.Phone}}{{end}}</td>
                 <td>{{if .Password}}{{.Password}}{{end}}</td>
                 <td>{{if .FarmId}}{{.Farm.Name}}{{end}}</td>
+                <td>{{if .RegionId}}{{.Region.Name}}{{end}}</td>
             </tr>
             {{end}}
         </tbody>
@@ -158,15 +170,32 @@
         <div class="pagination">
             {{if gt .totalPages 1}}
                 <ul class="pagination justify-content-center">
-                    {{range $i := seq 1 .totalPages}}
-                        <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
-                            <a class="page-link" href="?page={{$i}}">{{$i}}</a>
-                        </li>
+                    {{if le .totalPages 5}}
+                        {{range $i := seq 1 .totalPages}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        {{range $i := seq 1 4}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                        {{if ne $.currentPage 5}}
+                            <li class="page-item">
+                                <button class="page-link" onclick="goToPage()">...</button>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{.totalPages}}">{{.totalPages}}</a>
+                            </li>
+                        {{end}}
                     {{end}}
                 </ul>
             {{end}}
         </div>
     </div>
+     <div class="current-page">Страница {{.currentPage}}</div>
 
 </body>
 
