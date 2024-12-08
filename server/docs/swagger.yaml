@@ -927,7 +927,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: localhost
+host: genmilk.ru
 info:
   contact:
     email: support@swagger.io
@@ -942,9 +942,41 @@ info:
   version: "1.0"
 paths:
   /analitics/genotyped/{year}/byDistrict/{district}/hold:
-    post:
+    get:
       description: Возращает словарь хозяйство - количество живых коров, количество
         генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: район за который собирается статистика
+        in: path
+        name: district
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byHoldStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+    post:
+      description: Возращает словарь регион - количество живых коров, количество генотипированных
       parameters:
       - description: год за который собирается статистика
         in: path
@@ -970,7 +1002,7 @@ paths:
           schema:
             items:
               additionalProperties:
-                $ref: '#/definitions/analitics.byHoldStatistics'
+                $ref: '#/definitions/analitics.byRegionStatistics'
               type: object
             type: array
         "500":
@@ -996,6 +1028,12 @@ paths:
         name: hold
         required: true
         type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
       - application/json
       responses:
@@ -1048,7 +1086,72 @@ paths:
       summary: Get list of years
       tags:
       - Analitics
+    post:
+      description: Возращает словарь район - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: регион за который собирается статистика
+        in: path
+        name: region
+        required: true
+        type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byDistrictStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
   /analitics/genotyped/{year}/regions:
+    get:
+      description: Возращает словарь регион - количество живых коров, количество генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byRegionStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
     post:
       description: Возращает словарь регион - количество живых коров, количество генотипированных
       parameters:
@@ -1083,6 +1186,28 @@ paths:
       tags:
       - Analitics
   /analitics/genotyped/years:
+    get:
+      description: Возращает словарь год - количеств генотипированных коров, по ключу
+        -1 генотипированные за все годы
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                type: integer
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
     post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
@@ -1759,6 +1884,30 @@ paths:
       summary: Get list of regions
       tags:
       - Regions
+  /regions/{id}/getFarms:
+    get:
+      description: Возращает все фермы в регионе
+      parameters:
+      - description: id of region
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Farm'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get farm by region id
+      tags:
+      - Farms
   /regions/{id}/news:
     get:
       description: Возращает новости региона
