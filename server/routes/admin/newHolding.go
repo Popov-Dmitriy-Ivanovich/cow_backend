@@ -2,6 +2,7 @@ package admin
 
 import (
 	"cow_backend/models"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,7 +20,7 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 			Address     string `json:"address"`
 			Phone       string `json:"phone"`
 			Email       string `json:"email"`
-			Description string `json:"redescriptiongion"`
+			Description string `json:"description"`
 		}
 
 		if err := c.ShouldBindJSON(&request); err != nil {
@@ -45,6 +46,7 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 			Email:       &request.Email,
 			Description: &request.Description,
 		}
+		fmt.Println(hold)
 		db := models.GetDb()
 
 		if err := db.Create(&hold).Error; err != nil {
