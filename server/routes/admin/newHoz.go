@@ -8,11 +8,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Admin) NewHolding() func(*gin.Context) {
+func (s *Admin) NewHoz() func(*gin.Context) {
 	return func(c *gin.Context) {
 		var request struct {
 			HozNuber    string `json:"hoznumber"`
 			DistrictID  string `json:"district"`
+			ParrentId   string `json:"parentid"`
 			Fullname    string `json:"fullname"`
 			Name        string `json:"name"`
 			INN         string `json:"inn"`
@@ -29,14 +30,21 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 
 		dist, err := strconv.ParseUint(request.DistrictID, 10, 64)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID фермы"})
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID района"})
 		}
 		distId := uint(dist)
 
-		hold := models.Farm{
+		parr, err := strconv.ParseUint(request.ParrentId, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID холдинга"})
+		}
+		parrId := uint(parr)
+
+		hozs := models.Farm{
 			HozNumber:   &request.HozNuber,
 			DistrictId:  distId,
-			Type:        1,
+			ParrentId:   &parrId,
+			Type:        2,
 			Name:        request.Fullname,
 			NameShort:   request.Name,
 			Inn:         &request.INN,
@@ -47,11 +55,11 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
-		if err := db.Create(&hold).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при создании холдинга: " + err.Error()})
+		if err := db.Create(&hozs).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при создании хозяйства: " + err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"message": "Новый холдинг создан"})
+		c.JSON(http.StatusOK, gin.H{"message": "Новое хозяйство создано"})
 	}
 }

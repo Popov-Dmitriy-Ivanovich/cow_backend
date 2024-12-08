@@ -117,7 +117,7 @@
         <input type="text" id="holding_number" name="holding_number" required>
 
         <label for="region">Регон</label>
-        <select id="region" name="region" required onchange="fetchDistricts(this.value)">
+        <select id="region" name="region" onchange="fetchDistricts(this.value)">
             <option value="" selected disable hidden ></option>
             {{ range .regions }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
@@ -125,7 +125,7 @@
         </select>
 
 
-        <label for="district">Округ:</label>
+        <label for="district">Район:</label>
         <select id="district" name="district" required>
             <option value="" selected disable hidden></option>
             {{ range .districts }}
@@ -162,7 +162,7 @@
     function sendData() {
         const data = {
             hoznumber: document.getElementById('holding_number').value,
-            district: document.getElementById('region').value,
+            district: document.getElementById('district').value,
             fullname: document.getElementById('fullname').value,
             name: document.getElementById('name').value,
             inn: document.getElementById('inn').value,

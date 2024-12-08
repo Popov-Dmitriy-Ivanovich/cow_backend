@@ -11,7 +11,7 @@ import (
 //	@Summary      Get farm by region id
 //	@Description  Возращает все фермы в регионе
 //
-// @Tags         Farms
+// @Tags         Regions
 // @Param        id    path     int  true  "id of region"
 // @Produce      json
 // @Success      200  {object}   models.Farm
