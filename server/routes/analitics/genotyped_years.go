@@ -13,7 +13,7 @@ import (
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 // @Tags         Analitics
 // @Produce      json
-// @Success      200  {array}   map[int]uint
+// @Success      200  {array}   map[int]bool
 // @Failure      500  {object}  map[string]error
 // @Router       /analitics/genotyped/years [post]
 func (g Genotyped) YearsPost() func(*gin.Context) {

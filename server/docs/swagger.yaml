@@ -1028,6 +1028,39 @@ paths:
         name: hold
         required: true
         type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                $ref: '#/definitions/analitics.byHoldStatistics'
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
+    post:
+      description: Возращает словарь хозяйство - количество живых коров, количество
+        генотипированных
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: холдинг за который собирается статистика
+        in: path
+        name: hold
+        required: true
+        type: integer
       - description: applied filters
         in: body
         name: filter
@@ -1226,7 +1259,7 @@ paths:
           schema:
             items:
               additionalProperties:
-                type: integer
+                type: boolean
               type: object
             type: array
         "500":

@@ -22,7 +22,7 @@ func (f LiveInHolding) Apply(fm filters.FilteredModel) error {
 		return errors.New("region id is not passed as string")
 	}
 	if holdingID, err := strconv.ParseUint(holdingStr,10,64); err == nil {
-		query = query.Where("hoding_id = ?", holdingID)
+		query = query.Where("holding_id = ?", holdingID)
 	} else {
 		return err
 	}

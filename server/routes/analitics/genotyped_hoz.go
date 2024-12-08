@@ -21,15 +21,16 @@ import (
 // }
 
 // @Summary      Get list of years
-// @Description  Возращает словарь регион - количество живых коров, количество генотипированных
+// @Description  Возращает словарь хозяйство - количество живых коров, количество генотипированных
 // @Tags         Analitics
 // @Param        year    path     int  true  "год за который собирается статистика"
+// @Param        hold    path     int  true  "холдинг за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 // @Produce      json
-// @Success      200  {array}   map[string]byRegionStatistics
+// @Success      200  {array}   map[string]byHoldStatistics
 // @Failure      500  {object}  map[string]error
-// @Router       /analitics/genotyped/{year}/regions [post]
-func (g Genotyped) RegionsPost() func(*gin.Context) {
+// @Router       /analitics/genotyped/{year}/byHold/{hold}/hoz [post]
+func (g Genotyped) HozPost() func(*gin.Context) {
 	return func(c *gin.Context) {
 		filterData := cows_filter.CowsFilter{}
 		if err := c.ShouldBindJSON(&filterData); err != nil {
@@ -40,7 +41,7 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 
 		genotypedFilter.IsGenotyped = new(bool)
 		*genotypedFilter.IsGenotyped = true
-		keys := []byRegionKeys{}
+		keys := []byHozKeys{}
 		db := models.GetDb()
 		yearStr := c.Param("year")
 		yearInt, err := strconv.ParseInt(yearStr,10,64)
@@ -48,26 +49,26 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		db.Model(&models.Region{}).Debug().Where(
-			"EXISTS(SELECT 1 FROM districts where districts.region_id = regions.id AND " +
-				"EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND " +
-				" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND " +
-				" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ? AND",
-				" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id))))",
-				time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC),
-				time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC)).Find(&keys)
+		db.Model(&models.Farm{}).Debug().Where(
+			"EXISTS (SELECT 1 FROM cows where cows.id = farms.id AND cows.holding_id = ? AND "+
+			"(cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ?)",
+			c.Param("hold"),
+			time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC),
+			time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC)).Find(&keys)
 
-		result := make(map[string]byRegionStatistics)
+		result := make(map[string]byHozStatistics)
 		for _, key := range keys {
 			aliveCowQuery := db.Model(&models.Cow{})
 			aliveCowFilter := cows_filter.NewCowFilteredModel(aliveFilter, aliveCowQuery)
 			aliveCowFilter.Params["year"] = c.Param("year")
-			aliveCowFilter.Params["region"] = strconv.FormatUint(uint64(key.ID), 10)
+			aliveCowFilter.Params["holding"] = strconv.FormatUint(uint64(key.ID), 10)
+			aliveCowFilter.Params["district"] = c.Param("district")
 
 			genotypedCowQuery := db.Model(&models.Cow{})
 			genotypedCowFilter := cows_filter.NewCowFilteredModel(genotypedFilter, genotypedCowQuery)
 			genotypedCowFilter.Params["year"] = c.Param("year")
-			genotypedCowFilter.Params["region"] = strconv.FormatUint(uint64(key.ID), 10)
+			genotypedCowFilter.Params["holding"] = strconv.FormatUint(uint64(key.ID), 10)
+			genotypedCowFilter.Params["district"] = c.Param("district")
 			if err := filters.ApplyFilters(aliveCowFilter,
 				cows_filter.ByAbort{},
 				cows_filter.ByAnyIllneses{},
@@ -92,7 +93,8 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 				cows_filter.ByTwins{},
 				cows_filter.ByMonogeneticIllnesses{},
 				cows_filter.AliveInYear{},
-				cows_filter.LiveInRegion{}); err != nil {
+				cows_filter.LiveInDistrict{},
+				cows_filter.LiveInHolding{}); err != nil {
 				c.JSON(422, err.Error())
 				return
 			}
@@ -120,7 +122,8 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 				cows_filter.ByTwins{},
 				cows_filter.ByMonogeneticIllnesses{},
 				cows_filter.AliveInYear{},
-				cows_filter.LiveInRegion{}); err != nil {
+				cows_filter.LiveInDistrict{},
+				cows_filter.LiveInHolding{}); err != nil {
 				c.JSON(422, err.Error())
 				return
 			}
@@ -130,12 +133,11 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 
 			aliveCowFilter.GetQuery().Debug().Count(&alive)
 			genotypedCowFilter.GetQuery().Debug().Count(&genotyped)
-			result[key.Name] = byRegionStatistics{
+			result[key.Name] = byHozStatistics{
 				genotypedStatistics: genotypedStatistics{
 					Alive:     alive,
 					Genotyped: genotyped,
 				},
-				RegionID: key.ID,
 			}
 		}
 		c.JSON(200, result)

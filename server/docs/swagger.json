@@ -78,7 +78,7 @@
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "type": "integer"
+                                    "type": "boolean"
                                 }
                             }
                         }
@@ -200,6 +200,53 @@
         },
         "/analitics/genotyped/{year}/byHold/{hold}/hoz": {
             "get": {
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "холдинг за который собирается статистика",
+                        "name": "hold",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            },
+            "post": {
                 "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
                 "produces": [
                     "application/json"

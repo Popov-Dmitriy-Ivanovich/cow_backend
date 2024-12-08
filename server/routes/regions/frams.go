@@ -9,14 +9,13 @@ import (
 // ListAccounts lists all existing accounts
 //
 //	@Summary      Get farm by region id
-//	@Description  Возращает все фермы в регионе
-//
-// @Tags         Farms
-// @Param        id    path     int  true  "id of region"
-// @Produce      json
-// @Success      200  {object}   models.Farm
-// @Failure      500  {object}  map[string]error
-// @Router       regions/{id}/getFarms [get]
+// 	@Description  Возращает все фермы в регионе
+//	@Tags         Farms
+//	@Param        id    path     int  true  "id of region"
+//	@Produce      json
+//	@Success      200  {object}   models.Farm
+//	@Failure      500  {object}  map[string]error
+//	@Router       /regions/{id}/getFarms [get]
 func (f *Regions) GetFarms() func(*gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")
