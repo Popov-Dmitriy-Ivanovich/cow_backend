@@ -16,5 +16,6 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/createHolding", s.CreateHolding())
 	apiGroup.POST("/approveCows", s.ApproveCows())
 	apiGroup.POST("/newUser", s.NewUser())
+	apiGroup.POST("/newHolding", s.NewHolding())
 	apiGroup.GET("", s.Index())
 }

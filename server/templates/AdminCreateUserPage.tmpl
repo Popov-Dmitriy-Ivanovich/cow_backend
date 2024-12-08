@@ -208,8 +208,6 @@
                 .then(data => {
                     // Проверяем, что data.farms является массивом
                     if (data && Array.isArray(data.farms)) {
-                        console.log(data.farms); // Отладочный вывод
-                        
                         // Добавление новых опций в селект
                         data.farms.forEach(farm => {
                             if (farm.Type === 2) { // Пример условия фильтрации

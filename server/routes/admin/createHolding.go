@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"cow_backend/models"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +9,16 @@ import (
 
 func (s *Admin) CreateHolding() func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.HTML(http.StatusOK, "AdminCreateHoldingPage.tmpl", gin.H{"title": "Создание холдинга"})
+
+		db := models.GetDb()
+		regions := []models.Region{}
+		districts := []models.District{}
+		db.Find(&regions)
+		db.Find(&districts)
+
+		c.HTML(http.StatusOK, "AdminCreateHoldingPage.tmpl", gin.H{
+			"title":     "Создание холдинга",
+			"regions":   regions,
+			"districts": districts})
 	}
 }
