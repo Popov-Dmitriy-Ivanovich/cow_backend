@@ -9,4 +9,6 @@ type User struct {
 	Password              []byte `json:"-"`
 	Farm                  *Farm  `json:"-"`
 	FarmId                *uint
-} // + region
+	Region                Region `json:"-"`
+	RegionId              uint   `example:"1"`
+}

@@ -31,6 +31,36 @@ func (f *Cows) Children() func(*gin.Context) {
 		cld := []models.Cow{}
 		db.Where("mother_selecs = ? OR father_selecs = ?", selecs, selecs).Find(&cld)
 
-		c.JSON(200, cld)
+		var result []struct {
+			Child     models.Cow
+			HozmName  string `json:"hoz_name"`
+			BreedName string `json:"breed_name"`
+		}
+
+		for _, child := range cld {
+			var farm models.Farm
+			var breed models.Breed
+			if err := db.First(&farm, child.FarmGroupId).Error; err != nil {
+				c.JSON(500, err)
+				return
+			}
+
+			if err := db.First(&breed, child.BreedId).Error; err != nil {
+				c.JSON(500, err)
+				return
+			}
+
+			result = append(result, struct {
+				Child     models.Cow
+				HozmName  string `json:"hoz_name"`
+				BreedName string `json:"breed_name"`
+			}{
+				Child:     child,
+				HozmName:  farm.Name,
+				BreedName: breed.Name,
+			})
+		}
+
+		c.JSON(200, result)
 	}
 }

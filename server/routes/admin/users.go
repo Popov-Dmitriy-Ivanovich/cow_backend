@@ -23,6 +23,7 @@ func (s *Admin) CheckUsersTable() func(*gin.Context) {
 		users := []models.User{}
 		db.
 			Preload("Farm").
+			Preload("Region").
 			Limit(limit).
 			Offset(offset).
 			Find(&users)

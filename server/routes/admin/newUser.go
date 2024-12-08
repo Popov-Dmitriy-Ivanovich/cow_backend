@@ -19,6 +19,7 @@ func (s *Admin) NewUser() func(*gin.Context) {
 			Phone                 string `json:"phone"`
 			Password              string `json:"password"`
 			FarmId                string `json:"farm"`
+			RegionId              string `json:"region"`
 		}
 
 		if err := c.ShouldBindJSON(&request); err != nil {
@@ -37,6 +38,11 @@ func (s *Admin) NewUser() func(*gin.Context) {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID роли"})
 		}
+		region, err := strconv.ParseUint(request.RegionId, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID региона"})
+		}
+		regionID := uint(region)
 		farm, err := strconv.ParseUint(request.FarmId, 10, 64)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID фермы"})
@@ -50,6 +56,7 @@ func (s *Admin) NewUser() func(*gin.Context) {
 			Phone:                 request.Phone,
 			Password:              hashedPassword,
 			FarmId:                &farmID,
+			RegionId:              regionID,
 		}
 		db := models.GetDb()
 

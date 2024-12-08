@@ -118,36 +118,46 @@
             background-color: #5c37a0; /* Цвет фона при наведении */
             color: white; /* Цвет текста при наведении */
         }
+
+         .current-page {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Список пользователей</h1>
     </div>
-    <button class="back-button" onclick="window.history.back();">Назад</button>
+    <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
     <div class="container-table">
         <table>
         <thead>
             <tr>
-                <th>ID <input type="checkbox" id="check-all" onclick="toggle(this)"></th>
+                <th>ID</th>
                 <th>Имя</th>
                 <th>Роль</th>
                 <th>EMAIL</th>
                 <th>Телефон</th>
-                <th>Пароль</th>
                 <th>Хозяйство</th>
+                <th>Регион</th>
             </tr>
         </thead>
         <tbody>
             {{range .users}} <!-- Итерация по списку коров -->
             <tr>
-                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox"></td>
+                <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .NameSurnamePatronimic}}{{.NameSurnamePatronimic}}{{end}}</td>
                 <td>{{if .Role}}{{.Role}}{{end}}</td>
                 <td>{{if .Email}}{{.Email}}{{end}}</td>
                 <td>{{if .Phone}}{{.Phone}}{{end}}</td>
-                <td>{{if .Password}}{{.Password}}{{end}}</td>
                 <td>{{if .FarmId}}{{.Farm.Name}}{{end}}</td>
+                <td>{{if .RegionId}}{{.Region.Name}}{{end}}</td>
             </tr>
             {{end}}
         </tbody>
@@ -158,24 +168,44 @@
         <div class="pagination">
             {{if gt .totalPages 1}}
                 <ul class="pagination justify-content-center">
-                    {{range $i := seq 1 .totalPages}}
-                        <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
-                            <a class="page-link" href="?page={{$i}}">{{$i}}</a>
-                        </li>
+                    {{if le .totalPages 5}}
+                        {{range $i := seq 1 .totalPages}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        {{range $i := seq 1 4}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                        {{if ne $.currentPage 5}}
+                            <li class="page-item">
+                                <button class="page-link" onclick="goToPage()">...</button>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{.totalPages}}">{{.totalPages}}</a>
+                            </li>
+                        {{end}}
                     {{end}}
                 </ul>
             {{end}}
         </div>
     </div>
+    <div class="current-page">Страница {{.currentPage}}</div>
 
 </body>
-
 <script>
-    function toggle(source) {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"].cow-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
-        });
+    function goToPage() {
+        let page = prompt("Введите номер страницы:");
+        page = parseInt(page);
+        
+        if (!isNaN(page) && page > 0 && page <= {{.totalPages}}) {
+            window.location.href = "?page=" + page;
+        } else {
+            alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
     }
 </script>
 </html>

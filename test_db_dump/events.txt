@@ -1,0 +1,14 @@
+INSERT INTO event_types (parent_id, name, code, type) VALUES
+	 (null, 'первый', 123423, 141434),
+	 (1, 'второй', 54312, 42123),
+	 (1, 'третий', 11323, 42325),
+	 (2, 'четвертый', 54312, 42123),
+	 (null, 'пятый', 11323, 42325),
+	 (null, 'шестой', 43232, 43212);
+
+
+INSERT INTO events (cow_id, event_type_id, data_resourse, days_from_lactation, date, comment1, comment2) VALUES
+	 (1, 1, 'data1', 20, '2024-11-12', 'comment11', 'comment12'),
+	 (1, 2, 'data2', 43, '2024-09-05', 'comment21', 'comment2'),
+	 (2, 2, 'data3', 23, '2024-07-13', 'comment31', 'comment32'),
+	 (4, 3, 'data4', 12, '2024-04-15', 'comment41', 'comment42');

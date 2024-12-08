@@ -139,6 +139,16 @@
         .confirm .check-button:hover {
             background-color: #5c37a0; /* Darker background on hover */
         }
+
+        .current-page {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
         
         .notification {
             position: fixed;
@@ -157,7 +167,7 @@
     <div class="header">
         <h1>Список коров</h1>
     </div>
-    <button class="back-button" onclick="window.history.back();">Назад</button>
+    <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
     <div class="container-table">
         <table>
         <thead>
@@ -190,7 +200,7 @@
             {{range .cows}} <!-- Итерация по списку коров -->
             <tr>
                 <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
-                <td>{{if .CreatedAt}}{{.CreatedAt}}{{end}}</td>
+                <td>{{if .CreatedAt}}{{.CreatedAt.Format "2006-01-02"}}{{end}}</td>
                 <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
                 <td>{{if .FarmGroupId}}{{.FarmGroup.Name}}{{end}}</td>
                 <td>{{if .BreedId}}{{.Breed.Name}}{{end}}</td>
@@ -203,10 +213,10 @@
                 <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .InbrindingCoeffByFamily}}{{.InbrindingCoeffByFamily}}{{end}}</td>
-                <td>{{if .BirthDate}}{{.BirthDate}}{{end}}</td>
-                <td>{{if .DepartDate}}{{.DepartDate}}{{end}}</td>
-                <td>{{if .DeathDate}}{{.DeathDate}}{{end}}</td>
-                <td>{{if .BirkingDate}}{{.BirkingDate}}{{end}}</td>
+                <td>{{if .BirthDate}}{{.BirthDate.Format "2006-01-02"}}{{end}}</td>
+                <td>{{if .DepartDate}}{{.DepartDate.Format "2006-01-02"}}{{end}}</td>
+                <td>{{if .DeathDate}}{{.DeathDate.Format "2006-01-02"}}{{end}}</td>
+                <td>{{if .BirkingDate}}{{.BirkingDate.Format "2006-01-02"}}{{end}}</td>
                 <td>{{if .PreviousHozId}}{{.PreviousHoz.Name}}{{end}}</td>
                 <td>{{if .BirthHozId}}{{.BirthHoz.Name}}{{end}}</td>
                 <td>{{if .BirthMethod}}{{.BirthMethod}}{{end}}</td>
@@ -221,10 +231,26 @@
         <div class="pagination">
             {{if gt .totalPages 1}}
                 <ul class="pagination justify-content-center">
-                    {{range $i := seq 1 .totalPages}}
-                        <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
-                            <a class="page-link" href="?page={{$i}}">{{$i}}</a>
-                        </li>
+                    {{if le .totalPages 5}}
+                        {{range $i := seq 1 .totalPages}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        {{range $i := seq 1 4}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                        {{if ne $.currentPage 5}}
+                            <li class="page-item">
+                                <button class="page-link" onclick="goToPage()">...</button>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{.totalPages}}">{{.totalPages}}</a>
+                            </li>
+                        {{end}}
                     {{end}}
                 </ul>
             {{end}}
@@ -233,7 +259,7 @@
             <button class="check-button" onclick="approveCows()">Подтвердить</button>
         </div>
     </div>
-
+     <div class="current-page">Страница {{.currentPage}}</div>
     <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 </body>
 
@@ -243,6 +269,17 @@
         checkboxes.forEach(checkbox => {
             checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
         });
+    }
+
+    function goToPage() {
+        let page = prompt("Введите номер страницы:");
+        page = parseInt(page);
+        
+        if (!isNaN(page) && page > 0 && page <= {{.totalPages}}) {
+            window.location.href = "?page=" + page;
+        } else {
+            alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
     }
 
     function approveCows() {
