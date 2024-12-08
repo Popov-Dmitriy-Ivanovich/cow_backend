@@ -17,6 +17,19 @@
             overflow: hidden;
         }
 
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
         .header {
             position: rel;
             height: 60px
@@ -65,39 +78,69 @@
             color: white; /* Цвет текста заголовка */
         }
 
+        .pagination-container {
+            display: flex; / Создаем гибкий контейнер /
+            justify-content: space-between; / Пробел между элементами /
+            align-items: center; / Центрирование по вертикали /
+            margin-top: 20px; / Отступ сверху /
+        }
+        
         .pagination {
-            margin: 20px 0;
+            display: flex;
+            justify-content: center; /* Центрирование по горизонтали */
+            margin: 5px 0; /* Отступ сверху и снизу */
         }
 
-        .page-item {
-            display: inline-block;
-            margin: 0 5px;
+        .pagination ul {
+            list-style: none; /* Убираем маркеры списка */
+            padding: 0; /* Убираем внутренние отступы */
         }
 
-        .page-link {
-            text-decoration: none;
-            color: #6f42c1;
-            padding: 8px 12px;
-            border: 1px solid #6f42c1;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
+        .pagination .page-item {
+            margin: 0 5px; /* Отступы между кнопками */
         }
 
-        .page-link:hover {
+        .pagination .page-item .page-link {
+            display: inline-block; /* Отображение как блочный элемент */
+            padding: 10px 15px; /* Внутренние отступы для кнопки */
+            border: 1px solid #6f42c1; /* Цвет границы */
+            border-radius: 5px; /* Скругление углов */
+            color: #6f42c1; /* Цвет текста */
+            text-decoration: none; /* Убираем подчеркивание текста */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #6f42c1; /* Цвет фона для активной страницы */
+            color: white; /* Цвет текста для активной страницы */
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #5c37a0; /* Цвет фона при наведении */
+            color: white; /* Цвет текста при наведении */
+        }
+
+         .current-page {
             background-color: #6f42c1;
             color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
         }
+
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Список холдингов</h1>
     </div>
+    <button class="back-button" onclick="window.history.back();">Назад</button>
     <div class="container-table">
         <table>
         <thead>
             <tr>
-                <th>ID <input type="checkbox" id="check-all" onclick="toggle(this)"></th>
+                <th>ID</th>
                 <th>Номер холдинга</th>
                 <th>ID Район</th>
                 <th>Тип</th>
@@ -114,7 +157,7 @@
         <tbody>
             {{range .holds}} <!-- Итерация по списку коров -->
             <tr>
-                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox"></td>
+                <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .HozNumber}}{{.HozNumber}}{{end}}</td>
                 <td>{{if .DistrictId}}{{.DistrictId}}{{end}}</td>
                 <td>{{if .Type}}{{.Type}}{{end}}</td>
@@ -133,19 +176,36 @@
     </table>
     </div>
     
-    <div class="pagination">
-        {{if .HasPrevPage}} <!-- Проверка на наличие предыдущей страницы -->
-        <a class="page-link" href="?page={{.PrevPage}}">« Назад</a>
-        {{end}}
-        {{range .Pages}} <!-- Пагинация -->
-        <div class="page-item">
-            <a class="page-link" href="?page={{.}}">{{.}}</a>
+    <div class="pagination-container">
+        <div class="pagination">
+            {{if gt .totalPages 1}}
+                <ul class="pagination justify-content-center">
+                    {{if le .totalPages 5}}
+                        {{range $i := seq 1 .totalPages}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        {{range $i := seq 1 4}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                        {{if ne $.currentPage 5}}
+                            <li class="page-item">
+                                <button class="page-link" onclick="goToPage()">...</button>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{.totalPages}}">{{.totalPages}}</a>
+                            </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+            {{end}}
         </div>
-        {{end}}
-        {{if .HasNextPage}} <!-- Проверка на наличие следующей страницы -->
-        <a class="page-link" href="?page={{.NextPage}}">Вперед »</a>
-        {{end}}
     </div>
+    <div class="current-page">Страница {{.currentPage}}</div>
 </body>
 
 <script>
