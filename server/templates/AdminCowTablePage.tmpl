@@ -200,7 +200,7 @@
             {{range .cows}} <!-- Итерация по списку коров -->
             <tr>
                 <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
-                <td>{{if .CreatedAt}}{{.CreatedAt}}{{end}}</td>
+                <td>{{if .CreatedAt}}{{.CreatedAt.Format "2006-01-02"}}{{end}}</td>
                 <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
                 <td>{{if .FarmGroupId}}{{.FarmGroup.Name}}{{end}}</td>
                 <td>{{if .BreedId}}{{.Breed.Name}}{{end}}</td>
@@ -213,10 +213,10 @@
                 <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .InbrindingCoeffByFamily}}{{.InbrindingCoeffByFamily}}{{end}}</td>
-                <td>{{if .BirthDate}}{{.BirthDate}}{{end}}</td>
-                <td>{{if .DepartDate}}{{.DepartDate}}{{end}}</td>
-                <td>{{if .DeathDate}}{{.DeathDate}}{{end}}</td>
-                <td>{{if .BirkingDate}}{{.BirkingDate}}{{end}}</td>
+                <td>{{if .BirthDate}}{{.BirthDate.Format "2006-01-02"}}{{end}}</td>
+                <td>{{if .DepartDate}}{{.DepartDate.Format "2006-01-02"}}{{end}}</td>
+                <td>{{if .DeathDate}}{{.DeathDate.Format "2006-01-02"}}{{end}}</td>
+                <td>{{if .BirkingDate}}{{.BirkingDate.Format "2006-01-02"}}{{end}}</td>
                 <td>{{if .PreviousHozId}}{{.PreviousHoz.Name}}{{end}}</td>
                 <td>{{if .BirthHozId}}{{.BirthHoz.Name}}{{end}}</td>
                 <td>{{if .BirthMethod}}{{.BirthMethod}}{{end}}</td>

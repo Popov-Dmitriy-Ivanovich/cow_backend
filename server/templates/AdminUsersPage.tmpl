@@ -139,7 +139,7 @@
         <table>
         <thead>
             <tr>
-                <th>ID <input type="checkbox" id="check-all" onclick="toggle(this)"></th>
+                <th>ID</th>
                 <th>Имя</th>
                 <th>Роль</th>
                 <th>EMAIL</th>
@@ -152,7 +152,7 @@
         <tbody>
             {{range .users}} <!-- Итерация по списку коров -->
             <tr>
-                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox"></td>
+                <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .NameSurnamePatronimic}}{{.NameSurnamePatronimic}}{{end}}</td>
                 <td>{{if .Role}}{{.Role}}{{end}}</td>
                 <td>{{if .Email}}{{.Email}}{{end}}</td>
@@ -199,13 +199,5 @@
 
 </body>
 
-<script>
-    function toggle(source) {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"].cow-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
-        });
-    }
-</script>
 </html>
 {{ end }}
