@@ -157,7 +157,7 @@ export default {
                 birkingDateTo: null,
                 inbrindingCoeffByFamilyFrom: null,
                 inbrindingCoeffByFamilyTo: null,
-                InbrindingCoeffByGenotypeFrom: null,
+                inbrindingCoeffByGenotypeFrom: null,
                 inbrindingCoeffByGenotypeTo: null,
                 monogeneticIllneses: null,
                 isIll: null,
@@ -170,7 +170,7 @@ export default {
             clearHoz: false,
             clearIllness: false,
 
-            exterior: '',
+            exterior: null,
         }
     },
     methods: {
@@ -185,6 +185,7 @@ export default {
             for(let key in this.filters) {
                 this.filters[key] = null;
             }
+            this.exterior = null;
             this.clearBreed = !this.clearBreed;
             this.clearHoz = !this.clearHoz;
             this.clearIllness = !this.clearIllness;
@@ -237,8 +238,8 @@ export default {
 <style scoped>
 .filters {
     background-color: white;
-    height: 500px;
-    min-height: max-content;
+    height: max-content;
+    min-height: 500px;
     width: 350px;
     margin-left: 20px;
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;

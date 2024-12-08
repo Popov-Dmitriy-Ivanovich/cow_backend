@@ -33,7 +33,7 @@ export default {
     async mounted() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
-        this.fetchInfo(cow_id);
+        await this.fetchInfo(cow_id);
     },
     methods: {
         async fetchInfo(param) {
@@ -61,8 +61,8 @@ export default {
         }
     },
     watch: {
-        $route(new_val) {
-            this.fetchInfo(new_val.params.id);
+        async $route(new_val) {
+            await this.fetchInfo(new_val.params.id);
         }
     }
 }
@@ -76,7 +76,8 @@ export default {
 
 .general-info {
     background-color: white;
-    width: 800px;
+    width: 56vw;
+    min-width: 800px;
     height: max-content;
     min-height: 500px;
     border-radius: 10px;
