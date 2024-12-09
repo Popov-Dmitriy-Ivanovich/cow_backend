@@ -249,7 +249,7 @@ func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow.Genetic.ProbeNumber = cr.ProbeNumber
 	cow.Genetic.GeneticIllnesses = cr.GeneticIllnesses
 	cow.Genetic.CowID = cow.ID
-	return cow.Genetic, nil
+	return *cow.Genetic, nil
 }
 
 const GENETIC_CSV_PATH = "./csv/genetics/"
