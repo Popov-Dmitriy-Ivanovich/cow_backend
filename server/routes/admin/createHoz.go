@@ -14,8 +14,8 @@ func (s *Admin) CreateHoz() func(*gin.Context) {
 		regions := []models.Region{}
 		districts := []models.District{}
 		holds := []models.Farm{}
-		db.Find(&regions)
-		db.Find(&districts)
+		db.Order("name").Find(&regions)
+		db.Order("name").Find(&districts)
 		db.Where("type = 1").Find(&holds)
 		c.HTML(http.StatusOK, "AdminCreateHozPage.tmpl", gin.H{
 			"title":     "Создание хозяйства",
