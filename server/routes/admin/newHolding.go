@@ -30,6 +30,7 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 		dist, err := strconv.ParseUint(request.DistrictID, 10, 64)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID фермы"})
+			return
 		}
 		distId := uint(dist)
 

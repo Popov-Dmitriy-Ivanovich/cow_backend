@@ -104,11 +104,18 @@
             background-color: #5a32a1; /* Темнее при наведении */
         }
 
-        .message {
-            margin-top: 20px;
-            color: #666;
-            font-size: 14px;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: lightgreen;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
+
     </style>
 </head>
 <body>
@@ -125,7 +132,7 @@
         </select>
 
 
-        <select id="district" name="district" onchange="fetchHolds(this.value)" required>
+        <select id="district" name="district"required>
             <option value="" selected disable hidden>Район</option>
             {{ range .districts }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
@@ -154,9 +161,25 @@
         <textarea id="description" name="description" rows="4" placeholder="Описание" required></textarea>
 
         <button class="submit-button" type="submit" onclick="sendData()">Создать хозяйство</button>
+        <div id="notification" class="notification" style="display:none;">Подтверждено</div>
     </div>
 </body>
 <script>
+    let showNotification = false;
+    window.onload = function() {
+        const notification = document.getElementById('notification');
+        
+        // Проверяем, нужно ли показывать уведомление
+        if (localStorage.getItem('showNotification') === 'true') {
+            notification.style.display = 'block';
+
+            // Удаляем уведомление через 1,5 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+                localStorage.removeItem('showNotification');
+            }, 1500);
+        }
+    };
     // Функция для отправки данных на сервер
     function sendData() {
         const data = {
@@ -192,6 +215,11 @@
         .catch((error) => {
             console.error('Ошибка:', error);
         });
+
+        localStorage.setItem('showNotification', 'true');
+        setTimeout(function() {
+            location.reload();
+        }, 100);
     }
 
     function fetchDistricts(regionId) {
@@ -223,39 +251,9 @@
                 .catch(error => {
                     console.error('Ошибка:', error);
                 });
-        }
+            }
     }
 
-    function fetchHolds(districtId) {
-        // Очистка списка хозяйств
-        const distSelect = document.getElementById('hold');
-        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
-
-        if (districtId) {
-            // Отправка запроса на сервер
-            fetch(`/api/farms`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Добавление новых опций в селект
-                    data.forEach(hold => {
-                        if (hold.Type == 1 && hold.DistrictId == districtId) { 
-                            const option = document.createElement('option');
-                            option.value = hold.ID; // Используем ID фермы в качестве значения
-                            option.textContent = hold.Name; // Название фермы
-                            distSelect.appendChild(option);
-                        }
-                    });
-                     
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                });
-        }
     }
 </script>  
 </html>

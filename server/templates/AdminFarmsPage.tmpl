@@ -247,6 +247,7 @@
             <tr onclick="selectRow({{.ID}}, this)">
                 <th>ID</th>
                 <th>Номер фермы</th>
+                <th>Регион</th>
                 <th>Район</th>
                 <th>Хозяйство</th>
                 <th>Полное название</th>
@@ -259,7 +260,8 @@
                 <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .HozNumber}}{{.HozNumber}}{{end}}</td>
                 <td>{{if .DistrictId}}{{.District.Region.Name}}{{end}}</td>
-                <td>{{if .ParrentId}}{{.Parrent.NameShort}}{{end}}</td>
+                <td>{{if .DistrictId}}{{.District.Name}}{{end}}</td>
+                <td>{{if .ParrentId}}{{.Parrent.Name}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .Address}}{{.Address}}{{end}}</td>
             </tr>
