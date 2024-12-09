@@ -27,7 +27,7 @@ import (
 // @Param        district    path     int  true  "район за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 // @Produce      json
-// @Success      200  {array}   map[string]byRegionStatistics
+// @Success      200  {array}   map[string]byHoldStatistics
 // @Failure      500  {object}  map[string]error
 // @Router       /analitics/genotyped/{year}/byDistrict/{district}/hold [post]
 func (g Genotyped) HoldingsPost() func(*gin.Context) {

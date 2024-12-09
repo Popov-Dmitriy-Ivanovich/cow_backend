@@ -27,7 +27,7 @@ import (
 // @Param        hold    path     int  true  "холдинг за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 // @Produce      json
-// @Success      200  {array}   map[string]byHoldStatistics
+// @Success      200  {array}   map[string]byHozStatistics
 // @Failure      500  {object}  map[string]error
 // @Router       /analitics/genotyped/{year}/byHold/{hold}/hoz [post]
 func (g Genotyped) HozPost() func(*gin.Context) {
