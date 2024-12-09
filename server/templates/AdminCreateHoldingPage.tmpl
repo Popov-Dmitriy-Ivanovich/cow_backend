@@ -212,6 +212,7 @@
     }
 
     function fetchDistricts(regionId) {
+        console.log(regionId)
         // Очистка списка хозяйств
         const distSelect = document.getElementById('district');
         distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
@@ -226,9 +227,11 @@
                     return response.json();
                 })
                 .then(data => {
+                console.log(data)
                     // Добавление новых опций в селект
                     data.forEach(district => {
                         if (district.RegionId == regionId) { // Пример условия фильтрации
+                        console.log(district.ID)
                             const option = document.createElement('option');
                             option.value = district.ID; // Используем ID фермы в качестве значения
                             option.textContent = district.Name; // Название фермы

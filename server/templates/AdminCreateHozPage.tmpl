@@ -132,7 +132,7 @@
         </select>
 
 
-        <select id="district" name="district" onchange="fetchHolds(this.value)" required>
+        <select id="district" name="district"required>
             <option value="" selected disable hidden>Район</option>
             {{ range .districts }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
@@ -251,39 +251,9 @@
                 .catch(error => {
                     console.error('Ошибка:', error);
                 });
-        }
+            }
     }
 
-    function fetchHolds(districtId) {
-        // Очистка списка хозяйств
-        const distSelect = document.getElementById('hold');
-        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
-
-        if (districtId) {
-            // Отправка запроса на сервер
-            fetch(`/api/farms`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Добавление новых опций в селект
-                    data.forEach(hold => {
-                        if (hold.Type == 1 && hold.DistrictId == districtId) { 
-                            const option = document.createElement('option');
-                            option.value = hold.ID; // Используем ID фермы в качестве значения
-                            option.textContent = hold.Name; // Название фермы
-                            distSelect.appendChild(option);
-                        }
-                    });
-                     
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                });
-        }
     }
 </script>  
 </html>
