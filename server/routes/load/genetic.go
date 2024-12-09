@@ -217,6 +217,7 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 		}
 	}
 	db := models.GetDb()
+	geneticIllnesses := make([]models.GeneticIllness, 0, 15)
 	for col, val := range MONOGENETIC_ILLNESSES {
 		status := rec[gr.HeaderIndexes[col]]
 		if status == "" {
@@ -228,8 +229,9 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 			}
 			val.Status = &dbStatus
 		}
-		gr.GeneticIllnesses = append(gr.GeneticIllnesses, val)
+		geneticIllnesses = append(geneticIllnesses, val)
 	}
+	gr.GeneticIllnesses = geneticIllnesses
 	return gr, nil
 }
 
