@@ -32,10 +32,10 @@
                     <td>{{ dateConverter(milking.CheckDate) }}</td>
                     <td>{{ milking.ProbeNumber }}</td>
                     <td>{{ milking.MilkingDays }}</td>
-                    <td>{{ milking.Milk }}</td>
-                    <td>{{ milking.DryMatter }}</td>
-                    <td>{{ milking.Fat }}</td>
-                    <td>{{ milking.Protein }}</td>
+                    <td>{{ milking.Milk.toFixed(2) }}</td>
+                    <td>{{ milking.DryMatter.toFixed(2) }}</td>
+                    <td>{{ milking.Fat.toFixed(2) }}</td>
+                    <td>{{ milking.Protein.toFixed(2) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -59,10 +59,10 @@
                 <div class="chart-param">Показатель: </div>
                 <select v-model="param_milking" class="select-param">
                     <option value="Milk">Удой</option>
-                    <option value="Fat">Жир</option>
-                    <option value="Protein">Белок</option>
-                    <option value="FatRegard">Жир, %</option>
-                    <option value="ProteinRegard">Белок, %</option>
+                    <option value="Fat">Жир, %</option>
+                    <option value="Protein">Белок, %</option>
+                    <!-- <option value="FatRegard">Жир, </option>
+                    <option value="ProteinRegard">Белок, </option> -->
                 </select>
             </div>
 
@@ -141,7 +141,7 @@ export default {
             };
             for (let j = 0; j < obj.length; j++) {
                 if (obj[j].LactationNumber === nlact) {
-                    serie.data.push(obj[j][param]);
+                    serie.data.push(obj[j][param].toFixed(2));
                 }
             }
             arr.push(serie);

@@ -20,7 +20,7 @@
             <div v-if="animal_item.CheckMilkDate" class="animal-contrmilk">{{ dateConverter(check_milk) }}</div>
             <div v-else-if="filters.controlMilkingDateFrom || filters.controlMilkingDateTo" class="animal-contrmilk"> - </div>
 
-            <div v-if="animal_item.createdAt" class="animal-contrmilk">{{ animal_item.createdAt }}</div>
+            <div v-if="animal_item.CreatedAt" class="animal-contrmilk">{{ dateConverter(animal_item.CreatedAt) }}</div>
             <div v-else-if="filters.createdAtFrom || filters.createdAtTo" class="animal-krod"> - </div>
 
             <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
