@@ -285,6 +285,11 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	if err := tx.First(&cow, map[string]any{"selecs_number": lr.CowSelecs}).Error; err != nil {
 		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
 	}
+	lactationCount := int64(0)
+	tx.Model(models.Lactation{}).Where(map[string]any{"cow_id": cow.ID, "number": lr.Number}).Count(&lactationCount)
+	if lactationCount != 0 {
+		return nil, errors.New("Лактация с номером" + strconv.FormatUint(uint64(lr.Number), 10) + "коровы с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
+	}
 	cow.Lactation = append(cow.Lactation, models.Lactation{
 		Number:           lr.Number,
 		InsemenationNum:  lr.InsemenationNum,
@@ -351,6 +356,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 					return err
 				}
 				if err := SaveRecordToDB[models.Cow](recordWithHeader, record, tx); err != nil {
+					// return err
 					errors = append(errors, err.Error())
 				}
 			}
