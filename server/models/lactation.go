@@ -16,13 +16,13 @@ type Lactation struct {
 	CalvingCount int
 	CalvingDate  DateOnly
 
-	ServicePeriod uint // сервис период коровы: время от отела до осеменения
+	ServicePeriod *uint // сервис период коровы: время от отела до осеменения
 	Abort         bool
-	MilkAll       *int
-	Milk305       *int
-	FatAll        *int
-	Fat305        *int
-	ProteinAll    *int
-	Protein305    *int
+	MilkAll       *float64
+	Milk305       *float64
+	FatAll        *float64
+	Fat305        *float64
+	ProteinAll    *float64
+	Protein305    *float64
 	Days          *int // количество дней, когда корова дает молоко
 }
