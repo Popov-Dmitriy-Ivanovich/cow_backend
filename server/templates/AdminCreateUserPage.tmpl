@@ -43,7 +43,7 @@
         padding: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         text-align: center; /* Центрирование текста внутри блока */
-        min-width: 300px; /* Минимальная ширина контейнера */
+        max-width: 400px; /* Минимальная ширина контейнера */
         margin: 10px;
     }
 
@@ -61,7 +61,7 @@
     select {
         width: 100%; /* Ширина полей ввода и селекта */
         padding: 10px;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         border: 1px solid #ccc; /* Цвет рамки */
         border-radius: 5px; /* Скругление углов */
         box-sizing: border-box; /* Учет границ и отступов в ширине */
@@ -113,37 +113,30 @@
     <h1>Создать пользователя</h1>
     <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
     <div class="form-container">
-            <label for="fullname">ФИО:</label>
-            <input type="text" id="fullname" name="fullname" required>
+            <input type="text" id="fullname" name="fullname" placeholder="ФИО" required>
 
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Пароль"  required>
 
-            <label for="role">Роль:</label>
             <select id="role" name="role" required>
-                <option value="" selected disable hidden></option>
+                <option value="" selected disable hidden>Роль</option>
                 {{ range .roles }}
                     <option value="{{ .ID }}">{{ .Name }}</option>
                 {{ end }}
             </select>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" placeholder="Email"  required>
 
-            <label for="phone">Телефон:</label>
-            <input type="tel" id="phone" name="phone" required>
+            <input type="tel" id="phone" name="phone" placeholder="Телефон"  required>
 
-            <label for="region">Регион:</label>
             <select id="region" name="region" required onchange="fetchFarms(this.value)">
-                <option value="" selected disable hidden ></option>
+                <option value="" selected disable hidden >Регион</option>
                 {{ range .regions }}
                     <option value="{{ .ID }}">{{ .Name }}</option>
                 {{ end }}
             </select>
 
-            <label for="farm">Хозяйство:</label>
             <select id="farm" name="farm" required>
-                <option value="" selected disable hidden></option>
+                <option value="" selected disable hidden>Хозяйство</option>
                 {{ range .farms }}
                     <option value="{{ .ID }}">{{ .Name }}</option>
                 {{ end }}

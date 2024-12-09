@@ -28,6 +28,7 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/userPage/:id", s.UpdateUserPage())
 	apiGroup.GET("/holdingPage/:id", s.UpdateFarmPage(1))
 	apiGroup.GET("/hozPage/:id", s.UpdateFarmPage(2))
+	apiGroup.GET("/farmPage/:id", s.UpdateFarmPage(3))
 	apiGroup.PUT("/updateUser/:id", s.UpdateUser())
 	apiGroup.PUT("/updateFarm/:id", s.UpdateFarm())
 	apiGroup.GET("", s.Index())

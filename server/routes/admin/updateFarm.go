@@ -34,7 +34,7 @@ func (s *Admin) UpdateFarmPage(typeHoz int) func(*gin.Context) {
 		AdminPages := map[int]string{
 			1: "AdminUpdateHoldingPage.tmpl",
 			2: "AdminUpdateHozPage.tmpl",
-			3: "AdminFarmsPage.tmpl",
+			3: "AdminUpdateFarmPage.tmpl",
 		}
 
 		c.HTML(http.StatusOK, AdminPages[typeHoz], gin.H{

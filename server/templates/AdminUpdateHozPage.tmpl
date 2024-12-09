@@ -62,7 +62,7 @@
     select {
         width: 100%; /* Ширина полей ввода и селекта */
         padding: 10px;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
         border: 1px solid #ccc; /* Цвет рамки */
         border-radius: 5px; /* Скругление углов */
         box-sizing: border-box; /* Учет границ и отступов в ширине */
@@ -129,7 +129,7 @@
             {{ end }}
         </select>
 
-        <select id="district" name="district" required>
+        <select id="district" name="district" onchange="fetchHolds(this.value)" required>
             <option value="{{.farm.DistrictId}}" selected disable hidden>{{.farm.District.Name}}</option>
             {{ range .districts }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
@@ -143,19 +143,19 @@
             {{ end }}
         </select>
 
-        <input type="text" id="fullname" name="fullname" placeholder="{{.farm.Name}}" required>
+        <input type="text" id="fullname" name="fullname" placeholder="{{if .farm.Name}}{{.farm.Name}}{{else}}Полное название{{end}}" required>
 
-        <input type="text" id="name" name="name" placeholder="{{.farm.NameShort}}" required>
+        <input type="text" id="name" name="name" placeholder="{{if .farm.NameShort}}{{.farm.NameShort}}{{else}}Название{{end}}" required>
 
-        <input type="text" id="inn" name="inn" placeholder="{{.farm.Inn}}" required>
+        <input type="text" id="inn" name="inn" placeholder="{{if .farm.Inn}}{{.farm.Inn}}{{else}}ИНН{{end}}" required>
 
-        <textarea id="address" name="address" rows="2" placeholder="{{.farm.Address}}" required></textarea>
+        <textarea id="address" name="address" rows="2" placeholder="{{if .farm.Address}}{{.farm.Address}}{{else}}Адрес{{end}}" required></textarea>
 
-        <input type="tel" id="phone" name="phone" placeholder="{{.farm.Phone}}" required>
+        <input type="tel" id="phone" name="phone" placeholder="{{if .farm.Phone}}{{.farm.Phone}}{{else}}Телефон{{end}}" required>
 
-        <input type="email" id="email" name="email" placeholder="{{.farm.Email}}" required>
+        <input type="email" id="email" name="email" placeholder="{{if .farm.Email}}{{.farm.Email}}{{else}}Email{{end}}" required>
 
-        <textarea id="description" name="description" rows="4" placeholder="{{.farm.Description }}" required></textarea>
+        <textarea id="description" name="description" rows="3" placeholder="{{if .farm.Description}}{{.farm.Description}}{{else}}Описание{{end}}" required></textarea>
 
         <button class="submit-button" type="submit" onclick="sendData()">Подтвердить</button>
     </div>
@@ -241,6 +241,38 @@
                             const option = document.createElement('option');
                             option.value = district.ID; // Используем ID фермы в качестве значения
                             option.textContent = district.Name; // Название фермы
+                            distSelect.appendChild(option);
+                        }
+                    });
+                     
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
+    }
+
+    function fetchHolds(districtId) {
+        // Очистка списка хозяйств
+        const distSelect = document.getElementById('hold');
+        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+
+        if (districtId) {
+            // Отправка запроса на сервер
+            fetch(`/api/farms`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Добавление новых опций в селект
+                    data.forEach(hold => {
+                        if (hold.Type == 1 && hold.DistrictId == districtId) { 
+                            const option = document.createElement('option');
+                            option.value = hold.ID; // Используем ID фермы в качестве значения
+                            option.textContent = hold.Name; // Название фермы
                             distSelect.appendChild(option);
                         }
                     });

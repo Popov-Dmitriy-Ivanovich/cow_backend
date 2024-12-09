@@ -43,7 +43,7 @@
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center; /* Центрирование текста внутри блока */
-            min-width: 300px; /* Минимальная ширина контейнера */
+            max-width: 400px; /* Минимальная ширина контейнера */
             margin: 10px;
         }
 
@@ -62,7 +62,7 @@
         select {
             width: 100%; /* Ширина полей ввода и селекта */
             padding: 10px;
-            margin-bottom: 0px;
+            margin-bottom: 5px;
             border: 1px solid #ccc; /* Цвет рамки */
             border-radius: 5px; /* Скругление углов */
             box-sizing: border-box; /* Учет границ и отступов в ширине */
@@ -113,46 +113,35 @@
     <h1>Создать холдинг</h1>
     <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
     <div class="form-container">
-        <label for="holding_number">Номер холдинга:</label>
-        <input type="text" id="holding_number" name="holding_number" required>
+        <input type="text" id="holding_number" name="holding_number" placeholder="Номер холдинга:" required>
 
-        <label for="region">Регон</label>
         <select id="region" name="region" onchange="fetchDistricts(this.value)">
-            <option value="" selected disable hidden ></option>
+            <option value="" selected disable hidden >Регион</option>
             {{ range .regions }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
             {{ end }}
         </select>
 
-
-        <label for="district">Район:</label>
         <select id="district" name="district" required>
-            <option value="" selected disable hidden></option>
+            <option value="" selected disable hidden>Район</option>
             {{ range .districts }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
             {{ end }}
         </select>
-        
-        <label for="fullname">Полное название:</label>
-        <input type="text" id="fullname" name="fullname" required>
 
-        <label for="name">Название:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="fullname" name="fullname" placeholder="Полное название" required>
 
-        <label for="inn">ИНН:</label>
-        <input type="text" id="inn" name="inn" required>
+        <input type="text" id="name" name="name" placeholder="Название" required>
 
-        <label for="address">Адрес:</label>
-        <textarea id="address" name="address" rows="2" required></textarea>
+        <input type="text" id="inn" name="inn" placeholder="ИНН" required>
 
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" name="phone" required>
+        <textarea id="address" name="address" rows="2" placeholder="Адрес" required></textarea>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <input type="tel" id="phone" name="phone" placeholder="Телефон" required>
 
-        <label for="description">Описание:</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+
+        <textarea id="description" name="description" rows="4" placeholder="Описание" required></textarea>
 
         <button class="submit-button" type="submit" onclick="sendData()">Создать холдинг</button>
     </div>

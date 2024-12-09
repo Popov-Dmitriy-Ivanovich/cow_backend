@@ -180,6 +180,7 @@
     }
 
     function fetchDistricts(regionId) {
+    console.log(regionId)
         // Очистка списка хозяйств
         const distSelect = document.getElementById('district');
         distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
@@ -212,6 +213,7 @@
     }
 
     function fetchHozs(districtId) {
+    console.log(districtId)
         // Очистка списка хозяйств
         const distSelect = document.getElementById('hoz');
         distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс

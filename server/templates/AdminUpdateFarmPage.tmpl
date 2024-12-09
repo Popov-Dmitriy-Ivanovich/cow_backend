@@ -1,4 +1,4 @@
-{{ define "AdminUpdateUserPage.tmpl" }}
+{{ define "AdminUpdateFarmPage.tmpl" }}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -58,10 +58,11 @@
     input[type="tel"],
     input[type="password"],
     input[type="number"],
+    textarea,
     select {
         width: 100%; /* Ширина полей ввода и селекта */
         padding: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         border: 1px solid #ccc; /* Цвет рамки */
         border-radius: 5px; /* Скругление углов */
         box-sizing: border-box; /* Учет границ и отступов в ширине */
@@ -116,43 +117,38 @@
         
 </head>
 <body>
-    <h1>Редактировать пользователя</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin/checkUsers'">Назад</button>
+    <h1>Редактировать хозяйство</h1>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkFarms'">Назад</button>
     <div class="form-container">
-            <input type="text" id="fullname" name="fullname" placeholder="{{.user.NameSurnamePatronimic}}" required>
+        <input type="text" id="holding_number" name="holding_number" placeholder="{{if .farm.HozNumber}}{{.farm.HozNumber}}{{else}}Номер хозяйства{{end}}" required>
 
-            <input type="password" id="password" name="password" placeholder="Пароль" required>
+        <select id="region" name="region" onchange="fetchDistricts(this.value)">
+            <option value="{{.farm.District.RegionId}}" selected disable hidden >{{if .farm.District.Region.Name}}{{.farm.District.Region.Name}}{{else}}Регион{{end}}</option>
+            {{ range .regions }}
+                <option value="{{ .ID }}">{{ .Name }}</option>
+            {{ end }}
+        </select>
 
-            <select id="role" name="role" required>
-                <option value="{{.user.Role.ID}}" selected disable hidden>{{.user.Role.Name}}</option>
-                {{ range .roles }}
-                    <option value="{{ .ID }}">{{ .Name }}</option>
-                {{ end }}
-            </select>
+        <select id="district" name="district" onchange="fetchHozs(this.value)" required>
+            <option value="{{.farm.DistrictId}}" selected disable hidden>{{.farm.District.Name}}</option>
+            {{ range .districts }}
+                <option value="{{ .ID }}">{{ .Name }}</option>
+            {{ end }}
+        </select>
 
-            <input type="email" id="email" name="email" placeholder="{{.user.Email}}" required>
+        <select id="hoz" name="hoz" required>
+            <option value="{{if .farm.ParrentId}}{{.farm.ParrentId}}{{end}}" selected disable hidden>{{if .farm.ParrentId}}{{.farm.Parrent.Name}}{{else}}Холдинг{{end}}</option>
+            {{ range .holds }}
+                <option value="{{ .ID }}">{{ .Name }}</option>
+            {{ end }}
+        </select>
 
-            <input type="tel" id="phone" name="phone" placeholder="{{.user.Phone}}" required>
+        <input type="text" id="fullname" name="fullname" placeholder="{{.farm.Name}}" required>
 
-            <select id="region" name="region" required onchange="fetchFarms(this.value)">
-                <option value="{{.user.Region.ID}}" selected disable hidden >{{.user.Region.Name}}</option>
-                {{ range .regions }}
-                    <option value="{{ .ID }}">{{ .Name }}</option>
-                {{ end }}
-            </select>
+        <textarea id="address" name="address" rows="2" placeholder="{{.farm.Address}}" required></textarea>
 
-            <select id="farm" name="farm" required>
-                <option value="{{.user.Farm.ID}}" selected disable hidden>{{.user.Farm.Name}}</option>
-                {{ range .farms }}
-                    <option value="{{ .ID }}">{{ .Name }}</option>
-                {{ end }}
-            </select>
-            
-            <button class="submit-button" type="submit" onclick="sendData()">Подтвердить</button>
-            <div id="notification" class="notification" style="display:none;">Подтверждено</div>
+        <button class="submit-button" type="submit" onclick="sendData()">Подтвердить</button>
     </div>
-    
-
     
 </body>
 
@@ -164,7 +160,6 @@
         if (localStorage.getItem('showNotification') === 'true') {
             notification.style.display = 'block';
 
-            // Удаляем уведомление через 1,5 секунды
             setTimeout(() => {
                 notification.style.display = 'none';
                 localStorage.removeItem('showNotification');
@@ -175,16 +170,15 @@
     // Функция для отправки данных на сервер
     function sendData() {
         const data = {
+            holding_number: document.getElementById('holding_number').value,
+            perrntid: document.getElementById('hoz').value,
+            district: document.getElementById('district').value,
             fullname: document.getElementById('fullname').value,
-            password: document.getElementById('password').value,
-            role: document.getElementById('role').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            region: document.getElementById('region').value,
-            farm: document.getElementById('farm').value,
-        };
+            name: document.getElementById('fullname').value,
+            address: document.getElementById('address').value,
+        }
         console.log(data)
-        fetch('/api/admin/updateUser/{{.user.ID}}', {
+        fetch('/api/admin/updateFarm/{{.farm.ID}}', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -212,17 +206,15 @@
         }, 100);
     }
 
-    
-
-
-    function fetchFarms(regionId) {
+    function fetchDistricts(regionId) {
+    console.log(regionId)
         // Очистка списка хозяйств
-        const farmSelect = document.getElementById('farm');
-        farmSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+        const distSelect = document.getElementById('district');
+        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
 
         if (regionId) {
             // Отправка запроса на сервер
-            fetch(`/api/regions/${regionId}/getFarms`)
+            fetch(`/api/districts`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Сеть не отвечает');
@@ -230,20 +222,49 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Проверяем, что data.farms является массивом
-                    if (data && Array.isArray(data.farms)) {
-                        // Добавление новых опций в селект
-                        data.farms.forEach(farm => {
-                            if (farm.Type === 2) { // Пример условия фильтрации
-                                const option = document.createElement('option');
-                                option.value = farm.ID; // Используем ID фермы в качестве значения
-                                option.textContent = farm.Name; // Название фермы
-                                farmSelect.appendChild(option);
-                            }
-                        });
-                    } else {
-                        console.error('Ошибка: ожидаем массив, но получили:', data);
+                    // Добавление новых опций в селект
+                    data.forEach(district => {
+                        if (district.RegionId == regionId) { // Пример условия фильтрации
+                            const option = document.createElement('option');
+                            option.value = district.ID; // Используем ID фермы в качестве значения
+                            option.textContent = district.Name; // Название фермы
+                            distSelect.appendChild(option);
+                        }
+                    });
+                     
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
+    }
+
+    function fetchHozs(districtId) {
+    console.log(districtId)
+        // Очистка списка хозяйств
+        const distSelect = document.getElementById('hoz');
+        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+
+        if (districtId) {
+            // Отправка запроса на сервер
+            fetch(`/api/farms`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Сеть не отвечает');
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    // Добавление новых опций в селект
+                    data.forEach(hoz => {
+                        if (hoz.Type == 2 && hoz.DistrictId == districtId) { 
+                            const option = document.createElement('option');
+                            option.value = hoz.ID;
+                            option.textContent = hoz.Name;
+                            distSelect.appendChild(option);
+                        }
+                    });
+                     
                 })
                 .catch(error => {
                     console.error('Ошибка:', error);
