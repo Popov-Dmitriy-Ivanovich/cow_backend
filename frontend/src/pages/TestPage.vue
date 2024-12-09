@@ -25,7 +25,6 @@
         </div>
         <div class="filters-and-table">
             <DAnimalFilters @applyFilters="findAnimals"/>
-             <!-- <AnimalFilters2 @applyFilters="findAnimals"/> -->
             <DCowsTable 
             v-if="isCows" 
             v-bind:isSearch="search" 
@@ -161,7 +160,8 @@ export default {
 
 
                 this.current_filters = search_params;
-                this.animal_filters = filters;
+                
+                console.log('отправляю фильтры в таблицу');
 
                 let response = await fetch('/api/cows/filter', {
                     method: 'POST',
@@ -193,6 +193,7 @@ export default {
                 if(this.isChild) this.search_error_child = true;
             }
             this.isLoading = false;
+            this.animal_filters = filters;
         },
         async changePage(newVal) {
             this.isLoading = true;

@@ -14,15 +14,17 @@
             <div v-if="filters.breedId" class="animal-breed">Порода</div>
             <div v-if="filters.genotypingDateFrom || filters.genotypingDateTo" class="animal-dategen">Дата генотипирования</div>
             <div v-if="filters.controlMilkingDateFrom || filters.controlMilkingDateTo" class="animal-contrmilk">Дата контрольной дойки</div>
-            <div v-if="filters.exterior" class="animal-exterior">Оценка экстерьера</div>
-            <div v-if="filters.insemenationDateFrom || filters.inseminationDateTo" class="animal-dateosem">Дата осеменения</div>
+            <div v-if="filters.createdAtFrom || filters.createdAtTo" class="animal-krod">Дата внесения данных о КРС</div>
+            <div v-if="filters.exteriorFrom || filters.exteriorTo" class="animal-exterior">Оценка экстерьера</div>            
+            <div v-if="filters.inseminationDateFrom || filters.inseminationDateTo" class="animal-dateosem">Дата осеменения</div>
             <div v-if="filters.calvingDateFrom || filters.calvingDateTo" class="animal-dateotel">Дата отела</div>
             <div v-if="filters.isTwins===true || filters.isTwins===false" class="animal-genfact">Двойня</div>
             <div v-if="filters.isStillBorn===true || filters.isStillBorn===false" class="animal-genfact">Мертворождённый</div>
             <div v-if="filters.isAborted===true || filters.isAborted===false" class="animal-genfact">Аборт</div>
             <div v-if="filters.birkingDateFrom || filters.birkingDateTo" class="animal-datebirk">Дата перебирковки</div>
-            <div v-if="filters.inbrindingCoeffByFamilyFrom || filters.inbrindingCoeffByFamilyTo" class="animal-krod">Коэффициент инбридинга по родословной</div>
-            <div v-if="filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeTo" class="animal-kfen">Коэффициент инбридинга по генотипу</div>
+            <div v-if="(filters.inbrindingCoeffByFamilyFrom || filters.inbrindingCoeffByFamilyFrom===0) || (filters.inbrindingCoeffByFamilyTo || filters.inbrindingCoeffByFamilyTo===0)" class="animal-krod">Коэффициент инбридинга по родословной</div>
+            <div v-if="(filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeFrom===0) || (filters.inbrindingCoeffByGenotypeTo || filters.inbrindingCoeffByGenotypeTo===0)" class="animal-kfen">Коэффициент инбридинга по генотипу</div>
+            <div v-if="filters.illDateFrom || filters.illDateTo" class="animal-krod">Дата заболевания</div>
         </div>
         <div v-if="!isSearch&!search_error">
             <div v-for="animal in animals" :key="animal[0]">
@@ -37,7 +39,7 @@
         <div v-if="search_error || errorr" class="search-error">
             Ничего не найдено
         </div>
-        <div v-if="isLoading || isLoadingChild" class="search-error">Идёт загрузка...</div>
+        <div v-else-if="isLoading || isLoadingChild" class="search-error">Идёт загрузка...</div>
     </div>
     <NumberPages v-bind:current-page="cp" v-bind:total-pages="tp" @changePage="changePage"/>
 </div>
