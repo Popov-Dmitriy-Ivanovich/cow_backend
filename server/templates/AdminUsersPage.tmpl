@@ -68,7 +68,16 @@
         tr:hover {
             background: #e8e8e8;
             cursor: pointer;
+        }
+
+        .selected-row {
+            background-color: blue; /* Цвет фона для выделенной строки */
+            color: white; /* Цвет текста для читаемости */
         } 
+
+        .selected-row:hover {
+            background-color: #002a8c;
+        }
 
 
         .back-button {
@@ -125,6 +134,23 @@
             color: white; /* Цвет текста при наведении */
         }
 
+        .delete-button {
+            position: absolute;
+            bottom: 20px;
+            right: 160px;
+            background-color: #b30000; /* Красный цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-right: 15px; /* Отступ справа */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .delete-button:hover {
+            background-color: darkred; /* Темно-красный при наведении */
+        }
+
          .current-page {
             background-color: #6f42c1;
             color: white;
@@ -156,7 +182,7 @@
         </thead>
         <tbody>
             {{range .users}} <!-- Итерация по списку коров -->
-            <tr onclick="selectRow()">
+            <tr onclick="selectRow({{.ID}}, this)">
                 <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .NameSurnamePatronimic}}{{.NameSurnamePatronimic}}{{end}}</td>
                 <td>{{if .RoleId}}{{.Role.Name}}{{end}}</td>
@@ -199,6 +225,7 @@
             {{end}}
         </div>
     </div>
+    <button class="delete-button" onclick="deleteUser()">Удалить</button>
     <div class="current-page">Страница {{.currentPage}}</div>
 
 </body>
@@ -211,6 +238,49 @@
             window.location.href = "?page=" + page;
         } else {
             alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
+    }
+
+    let selectedUserId = null; // Переменная для хранения ID выбранного пользователя
+    let selectedRow = null; // Переменная для хранения выбранной строки
+
+    function selectRow(userId, row) {
+        if (selectedRow) {
+        selectedRow.classList.remove('selected-row'); // Убираем выделение с предыдущей строки
+        }
+        
+        selectedUserId = userId; // Запоминаем ID пользователя
+        selectedRow = row; // Сохраняем ссылку на текущую строку
+        selectedRow.classList.add('selected-row');
+    }
+
+    function deleteUser() {
+        if (selectedUserId === null) {
+            alert("Пожалуйста, выберите пользователя для удаления.");
+            return;
+        }
+        
+        if (confirm("Вы уверены, что хотите удалить этого пользователя?")) {
+            // Отправка запроса на сервер для удаления пользователя
+            fetch(`/api/admin/deleteUser/${selectedUserId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                console.log(selectedUserId, response)
+                if (response.ok) {
+                    alert("Пользователь успешно удален.");
+                    location.reload();
+                } else {
+                    alert("Ошибка при удалении пользователя.");
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert("Произошла ошибка при удалении пользователя.");
+            });
         }
     }
 
