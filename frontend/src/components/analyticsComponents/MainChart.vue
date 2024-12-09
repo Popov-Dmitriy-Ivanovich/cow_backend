@@ -2,7 +2,7 @@
     <div class="analytics-chart">
         <apexchart 
         id="analytics" 
-        width="700" 
+        width="850px" 
         type="bar" 
         :options="options" 
         :series="series"
@@ -69,6 +69,6 @@ export default {
 
 <style scope>
 .analytics-chart {
-    margin-top: 120px;
+    margin-top: 30px;
 }
 </style>

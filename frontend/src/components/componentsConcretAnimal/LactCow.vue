@@ -35,12 +35,12 @@
                     <td>{{ dateConverter(lact.InsemenationDate) }}</td>
                     <td>{{ lact.CalvingCount }}</td>
                     <td>{{ dateConverter(lact.CalvingDate) }}</td>
-                    <td>{{ lact.MilkAll }}</td>
-                    <td>{{ lact.Milk305 }}</td>
-                    <td>{{ lact.FatAll }}</td>
-                    <td>{{ lact.Fat305 }}</td>
-                    <td>{{ lact.ProteinAll }}</td>
-                    <td>{{ lact.Protein305 }}</td>
+                    <td>{{ Math.floor(lact.MilkAll) }}</td>
+                    <td>{{ Math.floor(lact.Milk305) }}</td>
+                    <td>{{ Math.floor(lact.FatAll) }}</td>
+                    <td>{{ Math.floor(lact.Fat305) }}</td>
+                    <td>{{ Math.floor(lact.ProteinAll) }}</td>
+                    <td>{{ Math.floor(lact.Protein305) }}</td>
                     <td>{{ lact.Days }}</td>
                 </tr>
             </tbody>
@@ -113,7 +113,7 @@ export default {
                 data: []
             };
             for (let i = 0; i < obj.length; i++) {
-                serie.data.push(obj[i][param]);
+                serie.data.push(Math.floor(obj[i][param]));
             }
             arr.push(serie);
         },
