@@ -293,6 +293,7 @@ func (l *Load) Genetic() func(*gin.Context) {
 			return
 		}
 		db := models.GetDb()
+		errors := []string{}
 		if err := db.Transaction(func(tx *gorm.DB) error {
 			// do some database operations in the transaction (use 'tx' from this point, not 'db')
 			for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
@@ -300,7 +301,8 @@ func (l *Load) Genetic() func(*gin.Context) {
 					return err
 				}
 				if err := SaveRecordToDB[models.Cow](recordWithHeader, record, tx); err != nil {
-					return err
+					// return err
+					errors = append(errors, err.Error())
 				}
 			}
 			return nil
@@ -309,6 +311,6 @@ func (l *Load) Genetic() func(*gin.Context) {
 			return
 		}
 
-		c.JSON(200, "OK")
+		c.JSON(200, errors)
 	}
 }
