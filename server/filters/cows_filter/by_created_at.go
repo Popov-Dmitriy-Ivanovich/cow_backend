@@ -7,13 +7,14 @@ import (
 )
 
 type ByCreatedAt struct {
-
 }
 
 func (f ByCreatedAt) Apply(fm filters.FilteredModel) error {
 	query := fm.GetQuery()
 	bodyData, ok := fm.GetFilterParameters()["object"].(CowsFilter)
-	if !ok { return errors.New("wrong object provided in filter filed object")}
+	if !ok {
+		return errors.New("wrong object provided in filter filed object")
+	}
 	if bodyData.CreatedAtFrom != nil && bodyData.CreatedAtTo != nil &&
 		*bodyData.CreatedAtFrom != "" && *bodyData.CreatedAtTo != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.CreatedAtFrom)
@@ -36,7 +37,7 @@ func (f ByCreatedAt) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("created_at <= ?)", bdTo.UTC())
+		query = query.Where("created_at <= ?", bdTo.UTC())
 	}
 	fm.SetQuery(query)
 	return nil

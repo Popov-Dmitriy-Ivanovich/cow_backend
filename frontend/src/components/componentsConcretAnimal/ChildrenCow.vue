@@ -11,17 +11,17 @@
                         <th>Кличка</th>
                         <th>Дата рождения</th>
                         <th>Порода</th>
-                        <th>Хозяйство</th>
+                        <th class="hoz">Хозяйство</th>
                     </tr>
                 </thead>
                 <tbody class="child-tablebody">
-                    <tr v-for="child in children" :key="child.ID" class="child-line" @click="clickChild(child.ID)">
-                        <td>{{child.IdentificationNumber || 'Нет информации'}}</td>
-                        <td>{{child.RSHNNumber || 'Нет информации'}}</td>
-                        <td>{{child.Name || 'Нет информации'}}</td>
-                        <td>{{dateConverter(child.BirthDate) || 'Нет информации'}}</td>
-                        <td>{{ }}</td>
-                        <td>{{ }}</td>
+                    <tr v-for="child in children" :key="child.ID" class="child-line" @click="clickChild(child.Child.ID)">
+                        <td>{{child.Child.IdentificationNumber || 'Нет информации'}}</td>
+                        <td>{{child.Child.RSHNNumber || 'Нет информации'}}</td>
+                        <td>{{child.Child.Name || 'Нет информации'}}</td>
+                        <td>{{dateConverter(child.Child.BirthDate) || 'Нет информации'}}</td>
+                        <td> {{ child.breed_name || 'Нет информации'}}</td>
+                        <td class="hoz">{{ child.hoz_name || 'Нет информации'}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -141,5 +141,9 @@ th, td {
 
 .child-line:hover {
     color: rgb(74, 58, 107);
+}
+
+.hoz {
+    width: 130px;
 }
 </style>

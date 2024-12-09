@@ -14,13 +14,13 @@ import (
 )
 
 type geneticRecord struct {
-	CowSelecs uint
-	ProbeNumber string
-	BloodDate *models.DateOnly
-	ResultDate *models.DateOnly
+	CowSelecs                 uint
+	ProbeNumber               string
+	BloodDate                 *models.DateOnly
+	ResultDate                *models.DateOnly
 	InbrindingCoeffByGenotype *float64
-	GeneticIllnesses []models.GeneticIllness
-	HeaderIndexes map[string]int
+	GeneticIllnesses          []models.GeneticIllness
+	HeaderIndexes             map[string]int
 }
 
 const COW_SELECS_COLUMN = "CowSelecs"
@@ -58,7 +58,6 @@ const MF_DESC = "MF DESCRIPTION"
 const FGFR2_DESC = "FGFR2 DESCRIPTION"
 const IH_DESC = "IH DESCRIPTION"
 
-
 var HSD_OMIA = "HCD OMIA"
 var HH1_OMIA = "HH1 OMIA"
 var HH3_OMIA = "HH3 OMIA"
@@ -74,82 +73,81 @@ var MF_OMIA = "MF OMIA"
 var FGFR2_OMIA = "FGFR2 OMIA"
 var IH_OMIA = "IH OMIA"
 
-
 var MONOGENETIC_ILLNESSES = map[string]models.GeneticIllness{
 	HSD_COLUMN: {
-		Name: "HSD",
+		Name:        "HSD",
 		Description: HSD_DESC,
-		OMIA: &HSD_OMIA,
+		OMIA:        &HSD_OMIA,
 	},
 	HH1_COLUMN: {
-		Name: "HH1",
+		Name:        "HH1",
 		Description: HH1_DESC,
-		OMIA: &HH1_OMIA,
+		OMIA:        &HH1_OMIA,
 	},
 	HH3_COLUMN: {
-		Name: "HH3",
+		Name:        "HH3",
 		Description: HH3_DESC,
-		OMIA: &HH3_OMIA,
+		OMIA:        &HH3_OMIA,
 	},
 	HH4_COLUMN: {
-		Name: "HH4",
+		Name:        "HH4",
 		Description: HH4_DESC,
-		OMIA: &HH4_OMIA,
+		OMIA:        &HH4_OMIA,
 	},
 	HH5_COLUMN: {
-		Name: "HH5",
+		Name:        "HH5",
 		Description: HH5_DESC,
-		OMIA: &HH5_OMIA,
+		OMIA:        &HH5_OMIA,
 	},
 	HH6_COLUMN: {
-		Name: "HH6",
+		Name:        "HH6",
 		Description: HH6_DESC,
-		OMIA: &HH6_OMIA,
+		OMIA:        &HH6_OMIA,
 	},
 	BLAD_COLUMN: {
-		Name: "BLAD",
+		Name:        "BLAD",
 		Description: BLAD_DESC,
-		OMIA: &BLAD_OMIA,
+		OMIA:        &BLAD_OMIA,
 	},
 	CVM_COLUMN: {
-		Name: "CVM",
+		Name:        "CVM",
 		Description: CVM_DESC,
-		OMIA: &CVM_OMIA,
+		OMIA:        &CVM_OMIA,
 	},
 	DUMPS_COLUMN: {
-		Name: "DUMPS",
+		Name:        "DUMPS",
 		Description: DUMPS_DESC,
-		OMIA: &DUMPS_OMIA,
+		OMIA:        &DUMPS_OMIA,
 	},
 	BC_COLUMN: {
-		Name: "BC",
+		Name:        "BC",
 		Description: BC_DESC,
-		OMIA: &BC_OMIA,
+		OMIA:        &BC_OMIA,
 	},
 	FXID_COLUMN: {
-		Name: "FXID",
+		Name:        "FXID",
 		Description: FXID_DESC,
-		OMIA: &FXID_OMIA,
+		OMIA:        &FXID_OMIA,
 	},
 	MF_COLUMN: {
-		Name: "MF",
+		Name:        "MF",
 		Description: MF_DESC,
-		OMIA: &MF_OMIA,
+		OMIA:        &MF_OMIA,
 	},
 	FGFR2_COLUMN: {
-		Name: "FGFR2",
+		Name:        "FGFR2",
 		Description: FGFR2_DESC,
-		OMIA: &FGFR2_OMIA,
+		OMIA:        &FGFR2_OMIA,
 	},
 	IH_COLUMN: {
-		Name: "IH",
+		Name:        "IH",
 		Description: IH_DESC,
-		OMIA: &IH_OMIA,
+		OMIA:        &IH_OMIA,
 	},
 }
 
 func NewGeneticRecord(header []string) (*geneticRecord, error) {
-	columns := []string {
+	columns := []string{
 		COW_SELECS_COLUMN,
 		PROBE_NUMBER_COLUMN,
 		BLOOD_DATE_COLUMN,
@@ -173,7 +171,7 @@ func NewGeneticRecord(header []string) (*geneticRecord, error) {
 	gr := geneticRecord{}
 	hi := make(map[string]int)
 	for idx, col := range header {
-		hi[col]=idx
+		hi[col] = idx
 	}
 	for _, col := range columns {
 		if _, ok := hi[col]; !ok {
@@ -184,17 +182,17 @@ func NewGeneticRecord(header []string) (*geneticRecord, error) {
 	return &gr, nil
 }
 
-func (gr *geneticRecord) FromCsvRecord (rec []string) (CsvToDbLoader, error) {
-	
+func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
+
 	if sel, err := strconv.ParseUint(rec[gr.HeaderIndexes[COW_SELECS_COLUMN]],
-	10,64); err == nil {
+		10, 64); err == nil {
 		gr.CowSelecs = uint(sel)
 	} else {
 		return nil, errors.New("Не удалось распарсить селекс " + rec[gr.HeaderIndexes[COW_SELECS_COLUMN]])
 	}
-	
+
 	gr.ProbeNumber = rec[gr.HeaderIndexes[PROBE_NUMBER_COLUMN]]
-	
+
 	if dateStr := rec[gr.HeaderIndexes[BLOOD_DATE_COLUMN]]; dateStr != "" {
 		if date, err := time.Parse(time.DateOnly, dateStr); err == nil {
 			gr.BloodDate = &models.DateOnly{Time: date}
@@ -202,9 +200,9 @@ func (gr *geneticRecord) FromCsvRecord (rec []string) (CsvToDbLoader, error) {
 			return nil, errors.New("Не удалось распарсить дату " + dateStr)
 		}
 	}
-	
+
 	if dateStr := rec[gr.HeaderIndexes[RESULT_DATE_COLUMN]]; dateStr != "" {
-		if date, err := time.Parse(time.DateOnly,dateStr); err == nil {
+		if date, err := time.Parse(time.DateOnly, dateStr); err == nil {
 			gr.ResultDate = &models.DateOnly{Time: date}
 		} else {
 			return nil, errors.New("Не удалось распарсить дату " + dateStr)
@@ -212,36 +210,39 @@ func (gr *geneticRecord) FromCsvRecord (rec []string) (CsvToDbLoader, error) {
 	}
 
 	if inbrStr := rec[gr.HeaderIndexes[INBRINDING_COEFF_BY_GENOTYPE_COLUMN]]; inbrStr != "" {
-		if inbr, err := strconv.ParseFloat(inbrStr,64); err == nil {
+		if inbr, err := strconv.ParseFloat(inbrStr, 64); err == nil {
 			gr.InbrindingCoeffByGenotype = &inbr
 		} else {
 			return nil, errors.New("Не удалось распарсить коеф. инбриндинга " + inbrStr)
 		}
 	}
 	db := models.GetDb()
+	geneticIllnesses := make([]models.GeneticIllness, 0, 15)
 	for col, val := range MONOGENETIC_ILLNESSES {
 		status := rec[gr.HeaderIndexes[col]]
 		if status == "" {
 			val.Status = nil
 		} else {
 			dbStatus := models.GeneticIllnessStatus{}
-			if err := db.First(&dbStatus, map[string]any{"name":status}).Error; err != nil {
+			if err := db.First(&dbStatus, map[string]any{"status": status}).Error; err != nil {
 				return nil, errors.New("Не удалось найти статус заболевания " + status)
 			}
 			val.Status = &dbStatus
 		}
-		gr.GeneticIllnesses = append(gr.GeneticIllnesses, val)
+		geneticIllnesses = append(geneticIllnesses, val)
 	}
+	gr.GeneticIllnesses = geneticIllnesses
 	return gr, nil
 }
 
-func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) { 
+func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow := models.Cow{}
-	if err := tx.First(&cow, map[string]any{"selecs_number":cr.CowSelecs}); err != nil {
-		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(cr.CowSelecs),10))
+	db := models.GetDb()
+	if err := db.Preload("Genetic").First(&cow, map[string]any{"selecs_number": cr.CowSelecs}).Error; err != nil {
+		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(cr.CowSelecs), 10))
 	}
 	if cow.Genetic != nil {
-		return nil, errors.New("Уже загружена генетическая информация для коровы с селексом " + strconv.FormatUint(uint64(cr.CowSelecs),10))
+		return nil, errors.New("Уже загружена генетическая информация для коровы с селексом " + strconv.FormatUint(uint64(cr.CowSelecs), 10))
 	}
 	cow.Genetic = new(models.Genetic)
 	cow.Genetic.BloodDate = cr.BloodDate
@@ -249,9 +250,10 @@ func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow.Genetic.InbrindingCoeffByGenotype = cr.InbrindingCoeffByGenotype
 	cow.Genetic.ProbeNumber = cr.ProbeNumber
 	cow.Genetic.GeneticIllnesses = cr.GeneticIllnesses
-	// cow.Genetic.CowID = cow.ID
-	return cow, nil
+	cow.Genetic.CowID = cow.ID
+	return *cow.Genetic, nil
 }
+
 const GENETIC_CSV_PATH = "./csv/genetics/"
 
 var geneticUniqueIndex uint64 = 0
@@ -293,23 +295,20 @@ func (l *Load) Genetic() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
+
 		db := models.GetDb()
-		if err := db.Transaction(func(tx *gorm.DB) error {
-			// do some database operations in the transaction (use 'tx' from this point, not 'db')
-			for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-				if err != nil {
-					return err
-				}
-				if err := SaveRecordToDB[models.Cow](recordWithHeader, record, tx); err != nil {
-					return err
-				}
+		errors := []string{}
+
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+			if err != nil {
+				errors = append(errors, err.Error())
 			}
-			return nil
-		}); err != nil {
-			c.JSON(500, err.Error())
-			return
+			if err := LoadRecordToDb[models.Genetic](recordWithHeader, record, db); err != nil {
+				errors = append(errors, err.Error())
+			}
 		}
 
-		c.JSON(200, "OK")
+		c.JSON(200, errors)
 	}
 }

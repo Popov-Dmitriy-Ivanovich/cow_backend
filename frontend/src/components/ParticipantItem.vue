@@ -42,6 +42,21 @@ export default {
         flex-direction: column;
         align-items: center;
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        overflow: auto;
+    }
+
+    .participant::-webkit-scrollbar {
+        height: 12px;
+    }
+
+    .participant::-webkit-scrollbar-track {
+        background: rgb(241, 241, 241);
+    }
+
+    .participant::-webkit-scrollbar-thumb {
+        background-color: rgb(183, 183, 183);
+        border-radius: 20px;
+        border: 3px solid rgb(241, 241, 241);
     }
 
     .partic-logo, .partic-description {

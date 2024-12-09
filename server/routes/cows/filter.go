@@ -12,8 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 type FilterSerializedCow struct {
 	ID                        uint                    `validate:"required" example:"123"`
 	RSHNNumber                *string                 `validate:"required" example:"123"`
@@ -54,7 +52,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 		Name:            c.Name,
 		FarmGroupName:   c.FarmGroup.Name,
 		BirthDate:       c.BirthDate,
-		Genotyped:       true,
+		Genotyped:       c.Genetic != nil,
 		Approved:        c.Approved != 0,
 	}
 	if filter.DepartDateTo != nil && *filter.DepartDateTo != "" ||
@@ -248,7 +246,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 		}
 
 		db := models.GetDb()
-		query := db.Model(&models.Cow{}).Preload("FarmGroup")
+		query := db.Model(&models.Cow{}).Preload("FarmGroup").Preload("Genetic")
 		if nQuery, err := AddFiltersToQuery(bodyData, query); err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -263,7 +261,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 		if bodyData.EntitiesOnPage != nil {
 			recordsPerPage = uint64(*bodyData.EntitiesOnPage)
 		}
-	
+
 		if bodyData.PageNumber != nil {
 			pageNumber = uint64(*bodyData.PageNumber)
 		}
