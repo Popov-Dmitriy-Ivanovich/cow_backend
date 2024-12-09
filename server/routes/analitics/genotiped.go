@@ -238,27 +238,16 @@ func (g Genotyped) Hold() func(*gin.Context) {
 			time.Date(int(yearInt+1), 1, 1, 0, 0, 0, 0, time.UTC), time.Date(int(yearInt+1), 1, 1, 0, 0, 0, 0, time.UTC), district).Find(&cows)
 		res := make(map[string]byHoldStatistics)
 		for _, cow := range cows {
-			if cow.FarmGroup.Parrent == nil {
-				val := byHoldStatistics{HoldID: nil}
-				if _, ok := res[cow.FarmGroup.Name]; ok {
-					val = res[cow.FarmGroup.Name]
-				}
-				val.Alive += 1
-				if cow.Genetic != nil {
-					val.Genotyped += 1
-				}
-				res[cow.FarmGroup.Name] = val
-			} else {
-				val := byHoldStatistics{HoldID: cow.FarmGroup.ParrentId}
-				if _, ok := res[cow.FarmGroup.Parrent.Name]; ok {
-					val = res[cow.FarmGroup.Parrent.Name]
-				}
-				val.Alive += 1
-				if cow.Genetic != nil {
-					val.Genotyped += 1
-				}
-				res[cow.FarmGroup.Parrent.Name] = val
+
+			val := byHoldStatistics{HoldID: &cow.FarmGroup.ID}
+			if _, ok := res[cow.FarmGroup.Name]; ok {
+				val = res[cow.FarmGroup.Name]
 			}
+			val.Alive += 1
+			if cow.Genetic != nil {
+				val.Genotyped += 1
+			}
+			res[cow.FarmGroup.Name] = val
 		}
 
 		c.JSON(200, res)
