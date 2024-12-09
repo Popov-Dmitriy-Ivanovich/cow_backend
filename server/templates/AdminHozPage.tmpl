@@ -47,7 +47,7 @@
         .container-table {
             margin-top: 30px;
             width: 100%;
-            height: 85vh;
+            height: 75vh;
             overflow: scroll;
         }
         
@@ -81,6 +81,15 @@
         tr:hover {
             background: #e8e8e8;
             cursor: pointer;
+        }
+
+        .selected-row {
+            background-color: blue; /* Цвет фона для выделенной строки */
+            color: white; /* Цвет текста для читаемости */
+        } 
+
+        .selected-row:hover {
+            background-color: #002a8c;
         } 
 
         .pagination-container {
@@ -124,6 +133,23 @@
             color: white; /* Цвет текста при наведении */
         }
 
+        .delete-button {
+            position: absolute;
+            bottom: 20px;
+            right: 160px;
+            background-color: #b30000; /* Красный цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-right: 15px; /* Отступ справа */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .delete-button:hover {
+            background-color: darkred; /* Темно-красный при наведении */
+        }
+
          .current-page {
             background-color: #6f42c1;
             color: white;
@@ -160,7 +186,7 @@
         </thead>
         <tbody>
             {{range .hoz}}
-            <tr>
+            <tr onclick="selectRow({{.ID}}, this)">
                 <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .HozNumber}}{{.HozNumber}}{{end}}</td>
                 <td>{{if .DistrictId}}{{.District.Region.Name}}{{end}}</td>
@@ -207,6 +233,7 @@
             {{end}}
         </div>
     </div>
+    <button class="delete-button" onclick="deleteHoz()">Удалить</button>
     <div class="current-page">Страница {{.currentPage}}</div>
 </body>
 <script>
@@ -218,6 +245,49 @@
             window.location.href = "?page=" + page;
         } else {
             alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
+    }
+
+    let selectedId = null; // Переменная для хранения ID
+    let selectedRow = null; // Переменная для хранения выбранной строки
+
+    function selectRow(Id, row) {
+        if (selectedRow) {
+        selectedRow.classList.remove('selected-row'); // Убираем выделение с предыдущей строки
+        }
+        
+        selectedId = Id; // Запоминаем ID
+        selectedRow = row; // Сохраняем ссылку на текущую строку
+        selectedRow.classList.add('selected-row');
+    }
+
+    function deleteHoz() {
+        if (selectedId === null) {
+            alert("Пожалуйста, выберите хозяйство для удаления.");
+            return;
+        }
+        
+        if (confirm("Вы уверены, что хотите удалить это хозяйство?")) {
+
+            fetch(`/api/admin/deleteHoz/${selectedId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                console.log(selectedId, response)
+                if (response.ok) {
+                    alert("Хозяйство успешно удалено.");
+                    location.reload();
+                } else {
+                    alert("Ошибка при удалении хозяйства.");
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert("Произошла ошибка при удалении хозяйства.");
+            });
         }
     }
 </script>

@@ -24,5 +24,6 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.POST("/newHoz", s.NewHoz())
 	apiGroup.POST("/newFarm", s.NewFarm())
 	apiGroup.DELETE("/deleteUser/:id", s.DeleteUser())
+	apiGroup.DELETE("/deleteHoz/:id", s.DeleteHoz())
 	apiGroup.GET("", s.Index())
 }
