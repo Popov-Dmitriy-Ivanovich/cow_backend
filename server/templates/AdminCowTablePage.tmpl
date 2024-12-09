@@ -51,7 +51,7 @@
         .container-table {
             margin-top: 30px;
             width: 100%;
-            height: 85vh;
+            height: 75vh;
             overflow: scroll;
         }
         
@@ -81,6 +81,11 @@
             background-color: #6f42c1; /* Фон заголовка таблицы */
             color: white; /* Цвет текста заголовка */
         }
+
+        tr:hover {
+            background: #e8e8e8;
+            cursor: pointer;
+        } 
 
         .pagination-container {
             display: flex; / Создаем гибкий контейнер /
@@ -198,7 +203,7 @@
         </thead>
         <tbody>
             {{range .cows}} <!-- Итерация по списку коров -->
-            <tr>
+            <tr onclick="toggleCheckbox(this)">
                 <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
                 <td>{{if .CreatedAt}}{{.CreatedAt.Format "2006-01-02"}}{{end}}</td>
                 <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
@@ -267,8 +272,15 @@
     function toggle(source) {
         const checkboxes = document.querySelectorAll('input[type="checkbox"].cow-checkbox');
         checkboxes.forEach(checkbox => {
-            checkbox.checked = source.checked; // Ставим состояние чекбоксов в зависимости от состояния заголовка
+            checkbox.checked = source.checked; 
         });
+    }
+
+    function toggleCheckbox(row) {
+        const checkbox = row.querySelector("input[type='checkbox']");
+        if (checkbox) {
+            checkbox.checked = !checkbox.checked;
+        }
     }
 
     function goToPage() {

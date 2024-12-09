@@ -54,7 +54,7 @@ func (a *Auth) Register() func(*gin.Context) {
 		pasHash := hasher.Sum(nil)
 		newUser := models.User{
 			NameSurnamePatronimic: bodyData.NameSurnamePatronimic,
-			Role:                  bodyData.Role,
+			RoleId:                bodyData.Role,
 			Email:                 bodyData.Email,
 			Phone:                 bodyData.Phone,
 			FarmId:                &bodyData.FarmId,

@@ -51,7 +51,7 @@ func (s *Admin) NewUser() func(*gin.Context) {
 
 		user := models.User{
 			NameSurnamePatronimic: request.NameSurnamePatronimic,
-			Role:                  int(role),
+			RoleId:                int(role),
 			Email:                 request.Email,
 			Phone:                 request.Phone,
 			Password:              hashedPassword,

@@ -78,6 +78,11 @@
             color: white; /* Цвет текста заголовка */
         }
 
+        tr:hover {
+            background: #e8e8e8;
+            cursor: pointer;
+        } 
+
         .pagination-container {
             display: flex; / Создаем гибкий контейнер /
             justify-content: space-between; / Пробел между элементами /
@@ -142,15 +147,14 @@
             <tr>
                 <th>ID</th>
                 <th>Номер холдинга</th>
-                <th>ID Район</th>
+                <th>Район</th>
                 <th>Холдинг</th>
-                <th>Полное имя</th>
-                <th>Имя</th>
+                <th>Полное название</th>
+                <th>Название</th>
                 <th>ИНН</th>
                 <th>Адрес</th>
                 <th>Телефон</th>
                 <th>EMAIL</th>
-                <th>Кол-во коров</th>
                 <th>Описание</th>
             </tr>
         </thead>
@@ -159,15 +163,14 @@
             <tr>
                 <td>{{if .ID}}{{.ID}}{{end}}</td>
                 <td>{{if .HozNumber}}{{.HozNumber}}{{end}}</td>
-                <td>{{if .DistrictId}}{{.DistrictId}}{{end}}</td>
-                <td>{{if .ParrentId}}{{.ParrentId}}{{end}}</td>
+                <td>{{if .DistrictId}}{{.District.Region.Name}}{{end}}</td>
+                <td>{{if .ParrentId}}{{.Parrent.NameShort}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .NameShort}}{{.NameShort}}{{end}}</td>
                 <td>{{if .Inn}}{{.Inn}}{{end}}</td>
                 <td>{{if .Address}}{{.Address}}{{end}}</td>
                 <td>{{if .Phone}}{{.Phone}}{{end}}</td>
                 <td>{{if .Email}}{{.Email}}{{end}}</td>
-                <td>{{if .CowsCount}}{{.CowsCount}}{{end}}</td>
                 <td>{{if .Description}}{{.Description}}{{end}}</td>
             </tr>
             {{end}}

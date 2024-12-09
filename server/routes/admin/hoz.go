@@ -25,16 +25,21 @@ func (s *Admin) CheckHozTable(typeHoz int) func(*gin.Context) {
 		hoz := []models.Farm{}
 		db.
 			Where("type= ?", typeHoz).
+			Preload("Parrent").
+			Preload("District.Region").
 			Limit(limit).
 			Offset(offset).
 			Find(&hoz)
 		db.Model(&models.Farm{}).Where("type = ?", typeHoz).Count(&count)
+
+		totalPages := int(math.Ceil(float64(count) / float64(limit)))
+
 		AdminPages := map[int]string{
 			1: "AdminHoldingsPage.tmpl",
 			2: "AdminHozPage.tmpl",
 			3: "AdminFarmsPage.tmpl",
 		}
-		totalPages := int(math.Ceil(float64(count) / float64(limit)))
+
 		fmt.Println(AdminPages[typeHoz])
 		c.HTML(http.StatusOK, AdminPages[typeHoz], gin.H{
 			"title":       "Таблица холдингов",

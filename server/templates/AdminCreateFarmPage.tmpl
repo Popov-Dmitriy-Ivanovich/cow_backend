@@ -1,4 +1,4 @@
-{{ define "AdminCreateHozPage.tmpl" }}
+{{ define "AdminCreateFarmPage.tmpl" }}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -112,10 +112,10 @@
     </style>
 </head>
 <body>
-    <h1>Создать хозяйство</h1>
+    <h1>Создать ферму</h1>
     <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
     <div class="form-container">
-        <input type="text" id="hoz_number" name="hoz_number" placeholder="Номер хозяйства" required>
+        <input type="text" id="hoz_number" name="hoz_number" placeholder="Номер фермы" required>
 
         <select id="region" name="region" onchange="fetchDistricts(this.value)">
             <option value="" selected disable hidden >Регион</option>
@@ -125,35 +125,25 @@
         </select>
 
 
-        <select id="district" name="district" onchange="fetchHolds(this.value)" required>
+        <select id="district" name="district" onchange="fetchHozs(this.value)" required>
             <option value="" selected disable hidden>Район</option>
             {{ range .districts }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
             {{ end }}
         </select>
 
-        <select id="hold" name="hold" required>
-            <option value="" selected disable hidden>Холдинг</option>
-            {{ range .holds }}
+        <select id="hoz" name="hoz">
+            <option value="" selected disable hidden>Хозяйство</option>
+            {{ range .hozs }}
                 <option value="{{ .ID }}">{{ .Name }}</option>
             {{ end }}
         </select>
 
-        <input type="text" id="fullname" name="fullname" placeholder="Полное название"  required>
+        <input type="text" id="fullname" name="fullname" placeholder="Название" required>
 
-        <input type="text" id="name" name="name" placeholder="Сокращенное название"  required>
+        <textarea id="address" name="address" rows="2" placeholder="Адрес" required></textarea>
 
-        <input type="text" id="inn" name="inn" placeholder="ИНН"  required>
-
-        <textarea id="address" name="address" rows="2" placeholder="Адрес"  required></textarea>
-
-        <input type="tel" id="phone" name="phone" placeholder="Телефон"  required>
-
-        <input type="email" id="email" name="email" placeholder="Email"  required>
-
-        <textarea id="description" name="description" rows="4" placeholder="Описание" required></textarea>
-
-        <button class="submit-button" type="submit" onclick="sendData()">Создать хозяйство</button>
+        <button class="submit-button" type="submit" onclick="sendData()">Создать ферму</button>
     </div>
 </body>
 <script>
@@ -162,17 +152,12 @@
         const data = {
             hoznumber: document.getElementById('hoz_number').value,
             district: document.getElementById('district').value,
-            parentid: document.getElementById('hold').value,
+            parentid: document.getElementById('hoz').value,
             fullname: document.getElementById('fullname').value,
-            name: document.getElementById('name').value,
-            inn: document.getElementById('inn').value,
             address: document.getElementById('address').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            description: document.getElementById('description').value,
         };
         console.log(data)
-        fetch('/api/admin/newHoz', {
+        fetch('/api/admin/newFarm', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -226,9 +211,9 @@
         }
     }
 
-    function fetchHolds(districtId) {
+    function fetchHozs(districtId) {
         // Очистка списка хозяйств
-        const distSelect = document.getElementById('hold');
+        const distSelect = document.getElementById('hoz');
         distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
 
         if (districtId) {
@@ -242,11 +227,11 @@
                 })
                 .then(data => {
                     // Добавление новых опций в селект
-                    data.forEach(hold => {
-                        if (hold.Type == 1 && hold.DistrictId == districtId) { 
+                    data.forEach(hoz => {
+                        if (hoz.Type == 2 && hoz.DistrictId == districtId) { 
                             const option = document.createElement('option');
-                            option.value = hold.ID; // Используем ID фермы в качестве значения
-                            option.textContent = hold.Name; // Название фермы
+                            option.value = hoz.ID;
+                            option.textContent = hoz.Name;
                             distSelect.appendChild(option);
                         }
                     });

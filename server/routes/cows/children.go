@@ -6,6 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Children struct {
+	Child     models.Cow
+	HozmName  string `json:"hoz_name"`
+	BreedName string `json:"breed_name"`
+}
+
 // ListAccounts lists all existing accounts
 //
 //	@Summary      Get list of children
@@ -30,13 +36,7 @@ func (f *Cows) Children() func(*gin.Context) {
 		selecs := cow.SelecsNumber
 		cld := []models.Cow{}
 		db.Where("mother_selecs = ? OR father_selecs = ?", selecs, selecs).Find(&cld)
-
-		var result []struct {
-			Child     models.Cow
-			HozmName  string `json:"hoz_name"`
-			BreedName string `json:"breed_name"`
-		}
-
+		result := []Children{}
 		for _, child := range cld {
 			var farm models.Farm
 			var breed models.Breed

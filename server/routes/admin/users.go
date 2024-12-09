@@ -24,10 +24,10 @@ func (s *Admin) CheckUsersTable() func(*gin.Context) {
 		db.
 			Preload("Farm").
 			Preload("Region").
+			Preload("Role").
 			Limit(limit).
 			Offset(offset).
 			Find(&users)
-
 		var count int64
 		db.Model(&models.User{}).Count(&count)
 		totalPages := int(math.Ceil(float64(count) / float64(limit)))
