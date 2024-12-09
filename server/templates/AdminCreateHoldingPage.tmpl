@@ -102,11 +102,18 @@
             background-color: #5a32a1; /* Темнее при наведении */
         }
 
-        .message {
-            margin-top: 20px;
-            color: #666;
-            font-size: 14px;
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: lightgreen;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
+
     </style>
 </head>
 <body>
@@ -144,9 +151,25 @@
         <textarea id="description" name="description" rows="4" placeholder="Описание" required></textarea>
 
         <button class="submit-button" type="submit" onclick="sendData()">Создать холдинг</button>
+        <div id="notification" class="notification" style="display:none;">Подтверждено</div>
     </div>
 </body>
 <script>
+    let showNotification = false;
+    window.onload = function() {
+        const notification = document.getElementById('notification');
+        
+        // Проверяем, нужно ли показывать уведомление
+        if (localStorage.getItem('showNotification') === 'true') {
+            notification.style.display = 'block';
+
+            // Удаляем уведомление через 1,5 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+                localStorage.removeItem('showNotification');
+            }, 1500);
+        }
+    };
     // Функция для отправки данных на сервер
     function sendData() {
         const data = {
@@ -181,6 +204,11 @@
         .catch((error) => {
             console.error('Ошибка:', error);
         });
+
+        localStorage.setItem('showNotification', 'true');
+        setTimeout(function() {
+            location.reload();
+        }, 100);
     }
 
     function fetchDistricts(regionId) {
