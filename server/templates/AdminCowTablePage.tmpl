@@ -264,7 +264,7 @@
             <button class="check-button" onclick="approveCows()">Подтвердить</button>
         </div>
     </div>
-     <div class="current-page">Страница {{.currentPage}}</div>
+    <div class="current-page">Страница {{.currentPage}}</div>
     <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 </body>
 
@@ -346,20 +346,19 @@
     }
 
     window.onload = function() {
-    const notification = document.getElementById('notification');
-    
-    // Проверяем, нужно ли показывать уведомление
-    if (localStorage.getItem('showNotification') === 'true') {
-        notification.style.display = 'block';
+        const notification = document.getElementById('notification');
+        
+        // Проверяем, нужно ли показывать уведомление
+        if (localStorage.getItem('showNotification') === 'true') {
+            notification.style.display = 'block';
 
-        // Удаляем уведомление через 1,5 секунды
-        setTimeout(() => {
-            notification.style.display = 'none';
-            // Сбрасываем состояние уведомления
-            localStorage.removeItem('showNotification');
-        }, 1500);
-    }
-};
+            // Удаляем уведомление через 1,5 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+                localStorage.removeItem('showNotification');
+            }, 1500);
+        }
+    };
 
 </script>
 </html>

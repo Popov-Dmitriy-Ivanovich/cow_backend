@@ -134,6 +134,23 @@
             color: white; /* Цвет текста при наведении */
         }
 
+        .edit-button {
+            position: absolute;
+            bottom: 20px;
+            right: 270px; /* Меняем правую позицию на левую */
+            background-color: #007bff; /* Синий цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-left: 15px; /* Отступ слева, если необходимо */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .edit-button:hover {
+            background-color: #0056b3; /* Темно-синий при наведении */
+        }
+
         .delete-button {
             position: absolute;
             bottom: 20px;
@@ -225,6 +242,7 @@
             {{end}}
         </div>
     </div>
+    <button class="edit-button" onclick="edit()">Редактировать</button>
     <button class="delete-button" onclick="deleteUser()">Удалить</button>
     <div class="current-page">Страница {{.currentPage}}</div>
 
@@ -252,6 +270,15 @@
         selectedUserId = userId; // Запоминаем ID пользователя
         selectedRow = row; // Сохраняем ссылку на текущую строку
         selectedRow.classList.add('selected-row');
+    }
+
+    function edit() {
+        if (selectedUserId !== null) {
+            const url = `/api/admin/userPage/${selectedUserId}`; 
+            window.location.href = url; 
+        } else {
+            alert("Пожалуйста, выберите пользователя для редактирования.");
+        }
     }
 
     function deleteUser() {
