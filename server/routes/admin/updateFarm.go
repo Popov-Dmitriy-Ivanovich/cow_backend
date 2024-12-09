@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Admin) UpdateFarmPage() func(*gin.Context) {
+func (s *Admin) UpdateFarmPage(typeHoz int) func(*gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")
 		db := models.GetDb()
@@ -26,9 +26,22 @@ func (s *Admin) UpdateFarmPage() func(*gin.Context) {
 			return
 		}
 
-		c.HTML(http.StatusOK, "AdminUpdateHoldingPage.tmpl", gin.H{
+		holds := []models.Farm{}
+		hoz := []models.Farm{}
+		db.Where("type = 1").Find(&holds)
+		db.Where("type = 2").Find(&hoz)
+
+		AdminPages := map[int]string{
+			1: "AdminUpdateHoldingPage.tmpl",
+			2: "AdminUpdateHozPage.tmpl",
+			3: "AdminFarmsPage.tmpl",
+		}
+
+		c.HTML(http.StatusOK, AdminPages[typeHoz], gin.H{
 			"title":     "Редактирование холдинга",
 			"farm":      farm,
+			"holds":     holds,
+			"hoz":       hoz,
 			"regions":   regions,
 			"districts": districts})
 	}
@@ -47,6 +60,7 @@ func (s *Admin) UpdateFarm() func(*gin.Context) {
 		var request struct {
 			HozNumber   string `json:"holding_number"`
 			DistrictId  string `json:"district"`
+			ParrentId   string `json:"parrent"`
 			Fullname    string `json:"fullname"`
 			Name        string `json:"name"`
 			Inn         string `json:"inn"`
@@ -70,6 +84,16 @@ func (s *Admin) UpdateFarm() func(*gin.Context) {
 			}
 			farm.DistrictId = uint(distr)
 		}
+
+		if request.ParrentId != "" {
+			parrent, err := strconv.ParseUint(request.ParrentId, 10, 64)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Неверный ID холдинга"})
+			}
+			parrId := uint(parrent)
+			farm.ParrentId = &parrId
+		}
+
 		if request.Fullname != "" {
 			farm.Name = request.Fullname
 		}

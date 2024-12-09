@@ -1,4 +1,4 @@
-{{ define "AdminUpdateHoldingPage.tmpl" }}
+{{ define "AdminUpdateHozPage.tmpl" }}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -117,10 +117,10 @@
         
 </head>
 <body>
-    <h1>Редактировать холдинг</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin/checkHoldings'">Назад</button>
+    <h1>Редактировать хозяйство</h1>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkHozs'">Назад</button>
     <div class="form-container">
-        <input type="text" id="holding_number" name="holding_number" placeholder="{{.farm.HozNumber}}" required>
+        <input type="text" id="holding_number" name="holding_number" placeholder="{{if .farm.HozNumber}}{{.farm.HozNumber}}{{else}}Номер хозяйства{{end}}" required>
 
         <select id="region" name="region" onchange="fetchDistricts(this.value)">
             <option value="{{.farm.District.RegionId}}" selected disable hidden >{{.farm.District.Region.Name}}</option>
@@ -135,7 +135,14 @@
                 <option value="{{ .ID }}">{{ .Name }}</option>
             {{ end }}
         </select>
-        
+
+        <select id="hold" name="hold" required>
+            <option value="{{if .farm.ParrentId}}{{.farm.ParrentId}}{{end}}" selected disable hidden>{{if .farm.ParrentId}}{{.farm.Parrent.Name}}{{else}}Холдинг{{end}}</option>
+            {{ range .holds }}
+                <option value="{{ .ID }}">{{ .Name }}</option>
+            {{ end }}
+        </select>
+
         <input type="text" id="fullname" name="fullname" placeholder="{{.farm.Name}}" required>
 
         <input type="text" id="name" name="name" placeholder="{{.farm.NameShort}}" required>
@@ -174,6 +181,7 @@
     function sendData() {
         const data = {
             holding_number: document.getElementById('holding_number').value,
+            perrntid: document.getElementById('hold').value,
             district: document.getElementById('district').value,
             fullname: document.getElementById('fullname').value,
             name: document.getElementById('name').value,
