@@ -18,6 +18,13 @@ definitions:
       holdID:
         type: integer
     type: object
+  analitics.byHozStatistics:
+    properties:
+      alive:
+        type: integer
+      genotyped:
+        type: integer
+    type: object
   analitics.byRegionStatistics:
     properties:
       alive:
@@ -1002,7 +1009,7 @@ paths:
           schema:
             items:
               additionalProperties:
-                $ref: '#/definitions/analitics.byRegionStatistics'
+                $ref: '#/definitions/analitics.byHoldStatistics'
               type: object
             type: array
         "500":
@@ -1075,7 +1082,7 @@ paths:
           schema:
             items:
               additionalProperties:
-                $ref: '#/definitions/analitics.byHoldStatistics'
+                $ref: '#/definitions/analitics.byHozStatistics'
               type: object
             type: array
         "500":

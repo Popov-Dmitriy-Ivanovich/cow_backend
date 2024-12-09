@@ -189,7 +189,7 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byRegionStatistics"
+                                    "$ref": "#/definitions/analitics.byHoldStatistics"
                                 }
                             }
                         }
@@ -294,7 +294,7 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                    "$ref": "#/definitions/analitics.byHozStatistics"
                                 }
                             }
                         }
@@ -1633,6 +1633,17 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "holdID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "analitics.byHozStatistics": {
+            "type": "object",
+            "properties": {
+                "alive": {
+                    "type": "integer"
+                },
+                "genotyped": {
                     "type": "integer"
                 }
             }

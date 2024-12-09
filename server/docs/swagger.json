@@ -183,7 +183,7 @@
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byRegionStatistics"
+                                    "$ref": "#/definitions/analitics.byHoldStatistics"
                                 }
                             }
                         }
@@ -288,7 +288,7 @@
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                    "$ref": "#/definitions/analitics.byHozStatistics"
                                 }
                             }
                         }
@@ -1627,6 +1627,17 @@
                     "type": "integer"
                 },
                 "holdID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "analitics.byHozStatistics": {
+            "type": "object",
+            "properties": {
+                "alive": {
+                    "type": "integer"
+                },
+                "genotyped": {
                     "type": "integer"
                 }
             }
