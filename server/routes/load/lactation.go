@@ -308,6 +308,7 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 		Protein305:       lr.Protein305,
 		Days:             lr.Days, // количество дней, когда корова дает молоко
 	}
+
 	return lac, nil
 }
 
@@ -350,21 +351,15 @@ func (l *Load) Lactation() func(*gin.Context) {
 		}
 		db := models.GetDb()
 		errors := []string{}
-		if err := db.Transaction(func(tx *gorm.DB) error {
-			// do some database operations in the transaction (use 'tx' from this point, not 'db')
-			for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-				if err != nil {
-					return err
-				}
-				if err := SaveRecordToDB[models.Cow](recordWithHeader, record, tx); err != nil {
-					// return err
-					errors = append(errors, err.Error())
-				}
+
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+			if err != nil {
+				errors = append(errors, err.Error())
 			}
-			return nil
-		}); err != nil {
-			c.JSON(500, err.Error())
-			return
+			if err := LoadRecordToDb[models.Lactation](recordWithHeader, record, db); err != nil {
+				errors = append(errors, err.Error())
+			}
 		}
 
 		c.JSON(200, errors)
