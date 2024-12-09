@@ -290,7 +290,9 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	if lactationCount != 0 {
 		return nil, errors.New("Лактация с номером" + strconv.FormatUint(uint64(lr.Number), 10) + "коровы с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
 	}
-	cow.Lactation = append(cow.Lactation, models.Lactation{
+
+	lac := models.Lactation{
+		CowId:            cow.ID,
 		Number:           lr.Number,
 		InsemenationNum:  lr.InsemenationNum,
 		InsemenationDate: lr.InsemenationDate,
@@ -305,9 +307,8 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 		ProteinAll:       lr.ProteinAll,
 		Protein305:       lr.Protein305,
 		Days:             lr.Days, // количество дней, когда корова дает молоко
-	})
-
-	return cow, nil
+	}
+	return lac, nil
 }
 
 func (l *Load) Lactation() func(*gin.Context) {

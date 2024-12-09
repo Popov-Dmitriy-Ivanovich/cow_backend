@@ -235,7 +235,8 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 
 func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow := models.Cow{}
-	if err := tx.First(&cow, map[string]any{"selecs_number": cr.CowSelecs}).Error; err != nil {
+	db := models.GetDb()
+	if err := db.Preload("Genetic").First(&cow, map[string]any{"selecs_number": cr.CowSelecs}).Error; err != nil {
 		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(cr.CowSelecs), 10))
 	}
 	if cow.Genetic != nil {
@@ -247,8 +248,8 @@ func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow.Genetic.InbrindingCoeffByGenotype = cr.InbrindingCoeffByGenotype
 	cow.Genetic.ProbeNumber = cr.ProbeNumber
 	cow.Genetic.GeneticIllnesses = cr.GeneticIllnesses
-	// cow.Genetic.CowID = cow.ID
-	return cow, nil
+	cow.Genetic.CowID = cow.ID
+	return cow.Genetic, nil
 }
 
 const GENETIC_CSV_PATH = "./csv/genetics/"
@@ -292,23 +293,18 @@ func (l *Load) Genetic() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
+
 		db := models.GetDb()
 		errors := []string{}
-		if err := db.Transaction(func(tx *gorm.DB) error {
-			// do some database operations in the transaction (use 'tx' from this point, not 'db')
-			for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-				if err != nil {
-					return err
-				}
-				if err := SaveRecordToDB[models.Cow](recordWithHeader, record, tx); err != nil {
-					// return err
-					errors = append(errors, err.Error())
-				}
+
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+			if err != nil {
+				errors = append(errors, err.Error())
 			}
-			return nil
-		}); err != nil {
-			c.JSON(500, append(errors, err.Error()))
-			return
+			if err := LoadRecordToDb[models.Genetic](recordWithHeader, record, db); err != nil {
+				errors = append(errors, err.Error())
+			}
 		}
 
 		c.JSON(200, errors)
