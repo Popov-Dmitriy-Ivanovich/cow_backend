@@ -223,7 +223,7 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 			val.Status = nil
 		} else {
 			dbStatus := models.GeneticIllnessStatus{}
-			if err := db.First(&dbStatus, map[string]any{"name": status}).Error; err != nil {
+			if err := db.First(&dbStatus, map[string]any{"status": status}).Error; err != nil {
 				return nil, errors.New("Не удалось найти статус заболевания " + status)
 			}
 			val.Status = &dbStatus
