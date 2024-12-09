@@ -68,11 +68,11 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 		res.InbrindingCoeffByFamily = c.InbrindingCoeffByFamily
 	}
 	if filter.InbrindingCoeffByGenotypeFrom != nil || filter.InbrindingCoeffByGenotypeTo != nil {
-		res.InbrindingCoeffByGenotype = &c.Genetic.InbrindingCoeffByGenotype
+		res.InbrindingCoeffByGenotype = c.Genetic.InbrindingCoeffByGenotype
 	}
 	if filter.GenotypingDateFrom != nil && *filter.GenotypingDateFrom != "" ||
 		filter.GenotypingDateTo != nil && *filter.GenotypingDateTo != "" {
-		res.GenotypingDate = &c.Genetic.ResultDate
+		res.GenotypingDate = c.Genetic.ResultDate
 	}
 	if len(filter.MonogeneticIllneses) != 0 || filter.HasAnyIllnes != nil {
 		res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
