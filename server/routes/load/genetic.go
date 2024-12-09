@@ -307,7 +307,7 @@ func (l *Load) Genetic() func(*gin.Context) {
 			}
 			return nil
 		}); err != nil {
-			c.JSON(500, err.Error())
+			c.JSON(500, append(errors, err.Error()))
 			return
 		}
 
