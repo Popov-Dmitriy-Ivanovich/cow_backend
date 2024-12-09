@@ -2,7 +2,6 @@ package admin
 
 import (
 	"cow_backend/models"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -27,7 +26,6 @@ func (s *Admin) NewUser() func(*gin.Context) {
 			return
 		}
 
-		fmt.Println(request)
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при хешировании пароля"})

@@ -27,3 +27,24 @@ func (s *Admin) DeleteUser() func(*gin.Context) {
 	}
 
 }
+
+func (s *Admin) DeleteHoz() func(*gin.Context) {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+		farm := models.Farm{}
+		db := models.GetDb()
+		if err := db.First(&farm, id).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Хозяйство с таким ID не найдено"})
+			return
+		}
+
+		if err := db.Delete(&farm).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Хозяйство успешно удалено"})
+
+	}
+
+}

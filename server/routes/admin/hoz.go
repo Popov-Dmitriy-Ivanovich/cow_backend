@@ -2,7 +2,6 @@ package admin
 
 import (
 	"cow_backend/models"
-	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -40,7 +39,6 @@ func (s *Admin) CheckHozTable(typeHoz int) func(*gin.Context) {
 			3: "AdminFarmsPage.tmpl",
 		}
 
-		fmt.Println(AdminPages[typeHoz])
 		c.HTML(http.StatusOK, AdminPages[typeHoz], gin.H{
 			"title":       "Таблица холдингов",
 			"hoz":         hoz,
