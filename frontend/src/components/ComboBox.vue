@@ -112,6 +112,7 @@ export default {
     z-index: 40;
     border: 1px solid rgb(205, 205, 205);
     border-radius: 0 0 10px 10px;
+    width: 240px;
 }
 
 .combobox__flex {

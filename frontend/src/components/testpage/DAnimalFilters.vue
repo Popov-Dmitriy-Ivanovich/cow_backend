@@ -96,8 +96,8 @@
             <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFamilyFrom"></label><br>
             <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFamilyTo"></label>
             <div>Значения коэффициента инбридинга по генотипу</div>
-            <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.InbrindingCoeffByGenotypeFrom"></label><br>
-            <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.InbrindingCoeffByGenotypeTo"></label>
+            <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByGenotypeFrom"></label><br>
+            <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByGenotypeTo"></label>
         </div>
         <div class="filter-category">
             <div>Заболевание</div>
@@ -115,9 +115,9 @@
             <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/>
         </div>
         <div class="filters-buttons">
-            <button class="filters-apply" @click="fetchFilters">Применить</button>
-            <button class="clear-filters" @click="clearFilters">Сбросить фильтры</button>
-        </div>  
+            <button class="filters-apply" @click.stop="fetchFilters">Применить</button>
+            <button class="clear-filters" @click.stop="clearFilters">Сбросить фильтры</button>
+        </div> 
     </div>
 </template>
 
@@ -175,13 +175,21 @@ export default {
     },
     methods: {
         fetchFilters(){
-            let send_filters = this.filters;
+            if (this.filters.inbrindingCoeffByFamilyFrom==='') this.filters.inbrindingCoeffByFamilyFrom = null;
+            if (this.filters.inbrindingCoeffByFamilyTo==='') this.filters.inbrindingCoeffByFamilyTo = null;
+            if (this.filters.inbrindingCoeffByGenotypeFrom==='') this.filters.inbrindingCoeffByGenotypeFrom = null;
+            if (this.filters.inbrindingCoeffByGenotypeTo==='') this.filters.inbrindingCoeffByGenotypeTo = null;
+            // let send_filters = this.filters;
+            let send_filters = {};
+            Object.assign(send_filters, this.filters);
             console.log(send_filters, 'filers');
             console.log(JSON.stringify(send_filters))
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
+            console.log('отправляю фильтры на главную страницу');
         },
         clearFilters() {
+            let send_filters = this.filters;
             for(let key in this.filters) {
                 this.filters[key] = null;
             }
@@ -190,7 +198,7 @@ export default {
             this.clearHoz = !this.clearHoz;
             this.clearIllness = !this.clearIllness;
             console.log(this.filters, 'сбросить');
-            this.$emit('applyFilters', this.filters);
+            this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },
         setIdHoz(hozid) {
