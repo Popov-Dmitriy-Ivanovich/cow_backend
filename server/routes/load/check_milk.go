@@ -255,7 +255,9 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 
 		errors := []string{}
 		errorsMtx := sync.Mutex{}
-		wg := sync.WaitGroup{}
+		loaderWg := sync.WaitGroup{}
+		loadChannel := make(chan loaderData)
+		MakeLoadingPool(loadChannel)
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
@@ -264,17 +266,16 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 				errorsMtx.Unlock()
 				continue
 			}
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				if err := LoadRecordToDb[models.CheckMilk](recordWithHeader, record); err != nil {
-					errorsMtx.Lock()
-					errors = append(errors, err.Error())
-					errorsMtx.Unlock()
-				}
-			}()
+			loaderWg.Add(1)
+			loadChannel <- loaderData{
+				Loader:    recordWithHeader,
+				Record:    record,
+				Errors:    errors,
+				ErrorsMtx: &errorsMtx,
+				WaitGroup: &loaderWg,
+			}
 		}
-		wg.Wait()
+		loaderWg.Wait()
 
 		c.JSON(200, errors)
 	}

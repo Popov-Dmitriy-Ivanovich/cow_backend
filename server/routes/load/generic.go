@@ -2,16 +2,19 @@ package load
 
 import (
 	"cow_backend/models"
+	"sync"
 
 	"gorm.io/gorm"
 )
+
+const MAX_CONCURENT_LOADERS = 64
 
 type CsvToDbLoader interface {
 	FromCsvRecord(rec []string) (CsvToDbLoader, error)
 	ToDbModel(tx *gorm.DB) (any, error)
 }
 
-func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error {
+func LoadRecordToDb(loader CsvToDbLoader, record []string) error {
 	parsed, errLoad := loader.FromCsvRecord(record)
 	if errLoad != nil {
 		return errLoad
@@ -26,4 +29,27 @@ func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error 
 	}
 
 	return nil
+}
+
+type loaderData struct {
+	Loader    CsvToDbLoader
+	Record    []string
+	Errors    []string
+	ErrorsMtx *sync.Mutex
+	WaitGroup *sync.WaitGroup
+}
+
+func MakeLoadingPool(ch chan loaderData) {
+	for i := 0; i < MAX_CONCURENT_LOADERS; i++ {
+		go func() {
+			for lr, ok := <-ch; ok; lr, ok = <-ch {
+				if err := LoadRecordToDb(lr.Loader, lr.Record); err != nil {
+					lr.ErrorsMtx.Lock()
+					lr.Errors = append(lr.Errors, err.Error())
+					lr.ErrorsMtx.Unlock()
+					lr.WaitGroup.Done()
+				}
+			}
+		}()
+	}
 }
