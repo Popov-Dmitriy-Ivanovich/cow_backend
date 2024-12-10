@@ -34,7 +34,7 @@ func LoadRecordToDb(loader CsvToDbLoader, record []string) error {
 type loaderData struct {
 	Loader    CsvToDbLoader
 	Record    []string
-	Errors    []string
+	Errors    *[]string
 	ErrorsMtx *sync.Mutex
 	WaitGroup *sync.WaitGroup
 }
@@ -45,7 +45,7 @@ func MakeLoadingPool(ch chan loaderData) {
 			for lr := range ch {
 				if err := LoadRecordToDb(lr.Loader, lr.Record); err != nil {
 					lr.ErrorsMtx.Lock()
-					lr.Errors = append(lr.Errors, err.Error())
+					*lr.Errors = append(*lr.Errors, err.Error())
 					lr.ErrorsMtx.Unlock()
 					lr.WaitGroup.Done()
 				}

@@ -368,7 +368,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 			loadChannel <- loaderData{
 				Loader:    recordWithHeader,
 				Record:    record,
-				Errors:    errors,
+				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,
 				WaitGroup: &loaderWg,
 			}
