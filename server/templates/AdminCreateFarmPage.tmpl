@@ -30,12 +30,22 @@
             top: 20px;
             left: 20px;
             background-color: #e0c6f2; /* Светлый оттенок фиолетового */
-            color: #333;
+            color: #FFF;
             border: none;
             padding: 8px 12px;
-            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
+            background-color: #6f42c1;
+
+            position: absolute;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+
+        .back-button:hover {
+            background-color: #5a32a3; /* Темнее фиолетового при наведении */
         }
 
         .form-container {
@@ -120,8 +130,11 @@
 </head>
 <body>
     <h1>Создать ферму</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkFarms'">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
+    </button>
     <div class="form-container">
+    <form id="userForm" onsubmit="sendData(); return false;">
         <input type="text" id="hoz_number" name="hoz_number" placeholder="Номер фермы" required>
 
         <select id="region" name="region" onchange="fetchDistricts(this.value)">
@@ -150,7 +163,8 @@
 
         <textarea id="address" name="address" rows="2" placeholder="Адрес" required></textarea>
 
-        <button class="submit-button" type="submit" onclick="sendData()">Создать ферму</button>
+        <button class="submit-button" type="submit">Создать пользователя</button>
+    </form>
         <div id="notification" class="notification" style="display:none;">Подтверждено</div>
     </div>
 </body>
@@ -211,7 +225,7 @@
     console.log(regionId)
         // Очистка списка хозяйств
         const distSelect = document.getElementById('district');
-        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+        distSelect.innerHTML = '<option value="" selected disable hidden>Хозяйства</option>'; // сброс
 
         if (regionId) {
             // Отправка запроса на сервер
@@ -224,14 +238,24 @@
                 })
                 .then(data => {
                     // Добавление новых опций в селект
+                    let hasDist = false;
                     data.forEach(district => {
                         if (district.RegionId == regionId) { // Пример условия фильтрации
                             const option = document.createElement('option');
                             option.value = district.ID; // Используем ID фермы в качестве значения
                             option.textContent = district.Name; // Название фермы
                             distSelect.appendChild(option);
+                            hasDist = true;
                         }
                     });
+                    if (!hasDist) {
+                        const option = document.createElement('option');
+                        option.value = "";  
+                        option.textContent = "Нет районов в регионе";
+                        option.disabled = true;
+                        option.selected = true;
+                        distSelect.appendChild(option);
+                    }
                      
                 })
                 .catch(error => {
@@ -243,8 +267,8 @@
     function fetchHozs(districtId) {
     console.log(districtId)
         // Очистка списка хозяйств
-        const distSelect = document.getElementById('hoz');
-        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+        const hozSelect = document.getElementById('hoz');
+        hozSelect.innerHTML = '<option value="" selected disable hidden>Хозяйство</option>'; // сброс
 
         if (districtId) {
             // Отправка запроса на сервер
@@ -257,14 +281,24 @@
                 })
                 .then(data => {
                     // Добавление новых опций в селект
+                    let hasHoz = false;
                     data.forEach(hoz => {
                         if (hoz.Type == 2 && hoz.DistrictId == districtId) { 
                             const option = document.createElement('option');
                             option.value = hoz.ID;
                             option.textContent = hoz.Name;
-                            distSelect.appendChild(option);
+                            hozSelect.appendChild(option);
+                            hasHoz = true;
                         }
                     });
+                    if(!hasHoz){
+                        const option = document.createElement('option');
+                        option.value = "";  
+                        option.textContent = "Нет районов в регионе";
+                        option.disabled = true;
+                        option.selected = true;
+                        hozSelect.appendChild(option);
+                    }
                      
                 })
                 .catch(error => {

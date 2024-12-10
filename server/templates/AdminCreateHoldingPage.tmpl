@@ -29,12 +29,22 @@
             top: 20px;
             left: 20px;
             background-color: #e0c6f2; /* Светлый оттенок фиолетового */
-            color: #333;
+            color: #FFF;
             border: none;
             padding: 8px 12px;
-            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: background-color 0.3s ease;
+            background-color: #6f42c1;
+
+            position: absolute;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+
+        .back-button:hover {
+            background-color: #5a32a3; /* Темнее фиолетового при наведении */
         }
 
         .form-container {
@@ -118,8 +128,11 @@
 </head>
 <body>
     <h1>Создать холдинг</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkHoldings'">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
+    </button>
     <div class="form-container">
+    <form id="userForm" onsubmit="sendData(); return false;">
         <input type="text" id="holding_number" name="holding_number" placeholder="Номер холдинга:" required>
 
         <select id="region" name="region" onchange="fetchDistricts(this.value)">
@@ -148,9 +161,10 @@
 
         <input type="email" id="email" name="email" placeholder="Email" required>
 
-        <textarea id="description" name="description" rows="4" placeholder="Описание" required></textarea>
+        <textarea id="description" name="description" rows="4" placeholder="Описание"></textarea>
 
-        <button class="submit-button" type="submit" onclick="sendData()">Создать холдинг</button>
+        <button class="submit-button" type="submit">Создать пользователя</button>
+    </form>
         <div id="notification" class="notification" style="display:none;">Подтверждено</div>
     </div>
 </body>
@@ -215,7 +229,7 @@
         console.log(regionId)
         // Очистка списка хозяйств
         const distSelect = document.getElementById('district');
-        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+        distSelect.innerHTML = '<option value="" selected disable hidden>Регион</option>'; // сброс
 
         if (regionId) {
             // Отправка запроса на сервер
@@ -227,7 +241,7 @@
                     return response.json();
                 })
                 .then(data => {
-                console.log(data)
+                    let hasDist = false;
                     // Добавление новых опций в селект
                     data.forEach(district => {
                         if (district.RegionId == regionId) { // Пример условия фильтрации
@@ -236,11 +250,21 @@
                             option.value = district.ID; // Используем ID фермы в качестве значения
                             option.textContent = district.Name; // Название фермы
                             distSelect.appendChild(option);
+                            hasDist = true;
                         }
                     });
-                     
+                    if (!hasDist) {
+                        const option = document.createElement('option');
+                        option.value = "";  
+                        option.textContent = "Нет районов в регионе";
+                        option.disabled = true;
+                        option.selected = true;
+                        distSelect.appendChild(option);
+                    }
                 })
                 .catch(error => {
+                    const farmSelect = document.getElementById('district');
+                    farmSelect.innerHTML = '<option value="" selected disable hidden>Нет районов в регионе</option>'; // сброс
                     console.error('Ошибка:', error);
                 });
         }

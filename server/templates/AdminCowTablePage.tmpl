@@ -188,9 +188,6 @@
             z-index: 1000;
         }
 
-        .checkbox_custom {
-            accent-color: #5a32a3;
-        }
     </style>
 </head>
 <body>
@@ -230,7 +227,7 @@
         </thead>
         <tbody>
             {{range .cows}} <!-- Итерация по списку коров -->
-            <tr onclick="toggleCheckbox(this)">
+            <tr onclick="toggleCheckbox(this, event)">
                 <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
                 <td>{{if .CreatedAt}}{{.CreatedAt.Format "02-01-2006"}}{{end}}</td>
                 <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
@@ -318,9 +315,9 @@
         });
     }
 
-    function toggleCheckbox(row) {
+    function toggleCheckbox(row, event) {
         const checkbox = row.querySelector("input[type='checkbox']");
-        if (checkbox) {
+        if (event.target !== checkbox) {
             checkbox.checked = !checkbox.checked;
         }
     }

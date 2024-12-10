@@ -25,17 +25,27 @@
     }
 
     .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
-            color: #333;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+        color: #FFF;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        background-color: #6f42c1;
+
+        position: absolute;
+        height: 100vh;
+        top: 0;
+        left: 0;
+    }
+
+    .back-button:hover {
+        background-color: #5a32a3; /* Темнее фиолетового при наведении */
+    }
 
     .form-container {
         background-color: #ffffff; /* Белый фон для формы */
@@ -117,11 +127,14 @@
 </head>
 <body>
     <h1>Создать пользователя</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin'">Назад</button>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkUsers'">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
+    </button>
     <div class="form-container">
-            <input type="text" id="fullname" name="fullname" placeholder="ФИО" required>
+        <form id="userForm" onsubmit="sendData(); return false;">
+            <input type="text" id="fullname" name="fullname" placeholder="ФИО" required autocomplete="off">
 
-            <input type="password" id="password" name="password" placeholder="Пароль"  required>
+            <input type="password" id="password" name="password" placeholder="Пароль" autocomplete="off" required>
 
             <select id="role" name="role" required>
                 <option value="" selected disable hidden>Роль</option>
@@ -130,12 +143,12 @@
                 {{ end }}
             </select>
 
-            <input type="email" id="email" name="email" placeholder="Email"  required>
+            <input type="email" id="email" name="email" placeholder="Email" autocomplete="off" required>
 
-            <input type="tel" id="phone" name="phone" placeholder="Телефон"  required>
+            <input type="tel" id="phone" name="phone" placeholder="Телефон" autocomplete="off" required>
 
             <select id="region" name="region" required onchange="fetchFarms(this.value)">
-                <option value="" selected disable hidden >Регион</option>
+                <option value="" selected disable hidden>Регион</option>
                 {{ range .regions }}
                     <option value="{{ .ID }}">{{ .Name }}</option>
                 {{ end }}
@@ -148,11 +161,11 @@
                 {{ end }}
             </select>
 
-            <button class="submit-button" type="submit" onclick="sendData()">Создать пользователя</button>
+            <button class="submit-button" type="submit">Создать пользователя</button>
+        </form>
     </div>
-    
-    <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 
+    <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 </body>
 
 <script>
@@ -212,9 +225,10 @@
     function fetchFarms(regionId) {
         // Очистка списка хозяйств
         const farmSelect = document.getElementById('farm');
-        farmSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
+        farmSelect.innerHTML = '<option value="" selected disable hidden>Хозяйство</option>'; // сброс
 
         if (regionId) {
+        console.log(regionId)
             // Отправка запроса на сервер
             fetch(`/api/regions/${regionId}/getFarms`)
                 .then(response => {
@@ -225,6 +239,7 @@
                 })
                 .then(data => {
                     // Проверяем, что data.farms является массивом
+                    let hasFarms = false;
                     if (data && Array.isArray(data.farms)) {
                         // Добавление новых опций в селект
                         data.farms.forEach(farm => {
@@ -233,13 +248,24 @@
                                 option.value = farm.ID; // Используем ID фермы в качестве значения
                                 option.textContent = farm.Name; // Название фермы
                                 farmSelect.appendChild(option);
+                                hasFarms = true;
                             }
                         });
+                        if(!hasFarms) {
+                            const option = document.createElement('option');
+                            option.value = "";
+                            option.textContent = "Нет хозяйств в регионе";
+                            option.disabled = true;
+                            option.selected = true;
+                            farmSelect.appendChild(option);
+                        }
                     } else {
                         console.error('Ошибка: ожидаем массив, но получили:', data);
                     }
                 })
                 .catch(error => {
+                    const farmSelect = document.getElementById('farm');
+                    farmSelect.innerHTML = '<option value="" selected disable hidden>Нет хозяйств в регионе</option>'; // сброс
                     console.error('Ошибка:', error);
                 });
 
