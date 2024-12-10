@@ -359,6 +359,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 				errorsMtx.Lock()
 				errors = append(errors, err.Error())
 				errorsMtx.Unlock()
+				continue
 			}
 			go func() {
 				if err := LoadRecordToDb[models.Lactation](recordWithHeader, record, db); err != nil {

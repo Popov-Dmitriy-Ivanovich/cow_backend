@@ -330,6 +330,7 @@ func (l *Load) Cow() func(*gin.Context) {
 				errorsMtx.Lock()
 				errors = append(errors, err.Error())
 				errorsMtx.Unlock()
+				continue
 			}
 			go func() {
 				if err := LoadRecordToDb[models.Cow](recordWithHeader, record, db); err != nil {
