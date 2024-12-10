@@ -42,7 +42,7 @@ type loaderData struct {
 func MakeLoadingPool(ch chan loaderData) {
 	for i := 0; i < MAX_CONCURENT_LOADERS; i++ {
 		go func() {
-			for lr, ok := <-ch; ok; lr, ok = <-ch {
+			for lr := range ch {
 				if err := LoadRecordToDb(lr.Loader, lr.Record); err != nil {
 					lr.ErrorsMtx.Lock()
 					lr.Errors = append(lr.Errors, err.Error())

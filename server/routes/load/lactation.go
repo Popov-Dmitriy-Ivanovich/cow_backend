@@ -374,6 +374,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 			}
 		}
 		loaderWg.Wait()
+		close(loadChannel)
 		c.JSON(200, errors)
 	}
 }

@@ -276,7 +276,7 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 			}
 		}
 		loaderWg.Wait()
-
+		close(loadChannel)
 		c.JSON(200, errors)
 	}
 }

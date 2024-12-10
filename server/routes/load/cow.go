@@ -345,7 +345,7 @@ func (l *Load) Cow() func(*gin.Context) {
 			}
 		}
 		loaderWg.Wait()
-
+		close(loadChannel)
 		c.JSON(200, errors)
 	}
 }
