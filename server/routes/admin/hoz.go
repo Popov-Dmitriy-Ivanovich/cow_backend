@@ -23,6 +23,7 @@ func (s *Admin) CheckHozTable(typeHoz int) func(*gin.Context) {
 
 		hoz := []models.Farm{}
 		db.
+			Order("id").
 			Where("type= ?", typeHoz).
 			Preload("Parrent").
 			Preload("District.Region").

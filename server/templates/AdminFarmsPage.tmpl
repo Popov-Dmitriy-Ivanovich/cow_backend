@@ -188,6 +188,23 @@
             z-index: 1000;
         }
 
+        .create-button {
+            position: absolute;
+            bottom: 20px;
+            right: 405px; /* Меняем правую позицию на левую */
+            background-color: #00ad0c; /* Синий цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-left: 15px; /* Отступ слева, если необходимо */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .create-button:hover {
+            background-color: #029c0c; /* Темно-синий при наведении */
+        }
+
         .edit-button {
             position: absolute;
             bottom: 20px;
@@ -299,6 +316,7 @@
             {{end}}
         </div>
     </div>
+    <button class="create-button" onclick="create()">Создать</button>
     <button class="edit-button" onclick="edit()">Редактировать</button>
     <button class="delete-button" onclick="deleteHoz()">Удалить</button>
     <div class="current-page">Страница {{.currentPage}}</div>
@@ -328,12 +346,18 @@
         selectedRow.classList.add('selected-row');
     }
 
+    function create() {
+        const url = `/api/admin/createFarm`; 
+        window.location.href = url; 
+    }
+
+
     function edit() {
         if (selectedId !== null) {
-            const url = `/api/admin/farmPage/${selectedId}`; 
+            const url = `/api/admin/createFarm`; 
             window.location.href = url; 
         } else {
-            alert("Пожалуйста, выберите холдинг для редактирования.");
+            alert("Пожалуйста, выберите ферму для редактирования.");
         }
     }
 

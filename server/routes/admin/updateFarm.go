@@ -19,6 +19,7 @@ func (s *Admin) UpdateFarmPage(typeHoz int) func(*gin.Context) {
 
 		farm := models.Farm{}
 		if err := db.
+			Order("name").
 			Preload("Parrent").
 			Preload("District.Region").
 			First(&farm, id).Error; err != nil {
@@ -28,8 +29,8 @@ func (s *Admin) UpdateFarmPage(typeHoz int) func(*gin.Context) {
 
 		holds := []models.Farm{}
 		hoz := []models.Farm{}
-		db.Where("type = 1").Find(&holds)
-		db.Where("type = 2").Find(&hoz)
+		db.Order("name").Where("type = 1").Find(&holds)
+		db.Order("name").Where("type = 2").Find(&hoz)
 
 		AdminPages := map[int]string{
 			1: "AdminUpdateHoldingPage.tmpl",

@@ -23,6 +23,7 @@ func (s *Admin) CheckCowTable() func(*gin.Context) {
 
 		cows := []models.Cow{}
 		db.Where("approved = 0").
+			Order("id").
 			Preload("Farm").
 			Preload("FarmGroup").
 			Preload("PreviousHoz").

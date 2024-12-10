@@ -25,17 +25,27 @@
     }
 
     .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
-            color: #333;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+        color: #FFF;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        background-color: #6f42c1;
+
+        position: absolute;
+        height: 100vh;
+        top: 0;
+        left: 0;
+    }
+
+    .back-button:hover {
+        background-color: #5a32a3; /* Темнее фиолетового при наведении */
+    }
 
     .form-container {
         background-color: #ffffff; /* Белый фон для формы */
@@ -118,7 +128,9 @@
 </head>
 <body>
     <h1>Редактировать хозяйство</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin/checkHozs'">Назад</button>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkHozs'">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
+    </button>
     <div class="form-container">
         <input type="text" id="holding_number" name="holding_number" placeholder="{{if .farm.HozNumber}}{{.farm.HozNumber}}{{else}}Номер хозяйства{{end}}" required>
 
