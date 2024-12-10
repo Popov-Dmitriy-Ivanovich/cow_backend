@@ -116,7 +116,7 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	res.HozName = rec[cr.HeaderIndexes["HozName"]]
 
 	if breedId, err := strconv.ParseUint(rec[cr.HeaderIndexes["BreedID"]], 10, 64); err != nil {
-		return nil, err
+		return nil, errors.New("Не удалось распарсить ID породы " + rec[cr.HeaderIndexes["BreedID"]] + err.Error())
 	} else {
 		res.BreedId = uint(breedId)
 	}
@@ -124,7 +124,7 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	res.BreedName = rec[cr.HeaderIndexes["BreedName"]]
 
 	if sexId, err := strconv.ParseUint(rec[cr.HeaderIndexes["SexID"]], 10, 64); err != nil {
-		return nil, err
+		return nil, errors.New("Не удалось распарсить ID пола " + rec[cr.HeaderIndexes["SexID"]] + err.Error())
 	} else {
 		res.SexId = uint(sexId)
 	}
