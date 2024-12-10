@@ -266,7 +266,7 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 			}
 			wg.Add(1)
 			go func() {
-				wg.Done()
+				defer wg.Done()
 				if err := LoadRecordToDb[models.CheckMilk](recordWithHeader, record); err != nil {
 					errorsMtx.Lock()
 					errors = append(errors, err.Error())
