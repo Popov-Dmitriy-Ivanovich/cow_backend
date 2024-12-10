@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -351,15 +352,21 @@ func (l *Load) Lactation() func(*gin.Context) {
 		}
 		db := models.GetDb()
 		errors := []string{}
-
+		errorsMtx := sync.Mutex{}
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
+				errorsMtx.Lock()
 				errors = append(errors, err.Error())
+				errorsMtx.Unlock()
 			}
-			if err := LoadRecordToDb[models.Lactation](recordWithHeader, record, db); err != nil {
-				errors = append(errors, err.Error())
-			}
+			go func() {
+				if err := LoadRecordToDb[models.Lactation](recordWithHeader, record, db); err != nil {
+					errorsMtx.Lock()
+					errors = append(errors, err.Error())
+					errorsMtx.Unlock()
+				}
+			}()
 		}
 
 		c.JSON(200, errors)

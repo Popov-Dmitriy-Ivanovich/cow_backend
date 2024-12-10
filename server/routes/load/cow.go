@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -320,22 +321,25 @@ func (l *Load) Cow() func(*gin.Context) {
 			return
 		}
 		db := models.GetDb()
-		if err := db.Transaction(func(tx *gorm.DB) error {
-			// do some database operations in the transaction (use 'tx' from this point, not 'db')
-			for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-				if err != nil {
-					return err
-				}
-				if err := LoadRecordToDb[models.Cow](recordWithHeader, record, tx); err != nil {
-					return err
-				}
+		errors := []string{}
+		errorsMtx := sync.Mutex{}
+
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+			if err != nil {
+				errorsMtx.Lock()
+				errors = append(errors, err.Error())
+				errorsMtx.Unlock()
 			}
-			return nil
-		}); err != nil {
-			c.JSON(500, err.Error())
-			return
+			go func() {
+				if err := LoadRecordToDb[models.Cow](recordWithHeader, record, db); err != nil {
+					errorsMtx.Lock()
+					errors = append(errors, err.Error())
+					errorsMtx.Unlock()
+				}
+			}()
 		}
 
-		c.JSON(200, "OK")
+		c.JSON(200, errors)
 	}
 }
