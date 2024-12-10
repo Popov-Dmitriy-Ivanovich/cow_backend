@@ -320,7 +320,7 @@ func (l *Load) Cow() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		db := models.GetDb()
+
 		errors := []string{}
 		errorsMtx := sync.Mutex{}
 
@@ -333,7 +333,7 @@ func (l *Load) Cow() func(*gin.Context) {
 				continue
 			}
 			go func() {
-				if err := LoadRecordToDb[models.Cow](recordWithHeader, record, db); err != nil {
+				if err := LoadRecordToDb[models.Cow](recordWithHeader, record); err != nil {
 					errorsMtx.Lock()
 					errors = append(errors, err.Error())
 					errorsMtx.Unlock()

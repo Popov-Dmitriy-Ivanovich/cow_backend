@@ -2,10 +2,7 @@ package load
 
 import (
 	"cow_backend/models"
-	"encoding/csv"
 	"errors"
-	"io"
-	"os"
 	"strconv"
 	"time"
 
@@ -260,55 +257,55 @@ var geneticUniqueIndex uint64 = 0
 
 func (l *Load) Genetic() func(*gin.Context) {
 	return func(c *gin.Context) {
-		form, err := c.MultipartForm()
-		if err != nil {
-			c.JSON(500, err)
-			return
-		}
-		csvField, ok := form.File["csv"]
-		if !ok {
-			c.JSON(500, "not found field csv")
-			return
-		}
+		// form, err := c.MultipartForm()
+		// if err != nil {
+		// 	c.JSON(500, err)
+		// 	return
+		// }
+		// csvField, ok := form.File["csv"]
+		// if !ok {
+		// 	c.JSON(500, "not found field csv")
+		// 	return
+		// }
 
-		now := time.Now()
-		uploadedName := GENETIC_CSV_PATH + "genetic_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(geneticUniqueIndex, 16) + ".csv"
-		if err := c.SaveUploadedFile(csvField[0], uploadedName); err != nil {
-			c.JSON(500, err)
-			return
-		}
-		geneticUniqueIndex++
-		file, err := os.Open(uploadedName)
-		if err != nil {
-			c.JSON(500, "error opening file")
-			return
-		}
-		defer file.Close()
-		csvReader := csv.NewReader(file)
-		header, err := csvReader.Read()
-		if err != nil {
-			c.JSON(422, err.Error())
-			return
-		}
-		recordWithHeader, err := NewGeneticRecord(header)
-		if err != nil {
-			c.JSON(422, err.Error())
-			return
-		}
+		// now := time.Now()
+		// uploadedName := GENETIC_CSV_PATH + "genetic_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(geneticUniqueIndex, 16) + ".csv"
+		// if err := c.SaveUploadedFile(csvField[0], uploadedName); err != nil {
+		// 	c.JSON(500, err)
+		// 	return
+		// }
+		// geneticUniqueIndex++
+		// file, err := os.Open(uploadedName)
+		// if err != nil {
+		// 	c.JSON(500, "error opening file")
+		// 	return
+		// }
+		// defer file.Close()
+		// csvReader := csv.NewReader(file)
+		// header, err := csvReader.Read()
+		// if err != nil {
+		// 	c.JSON(422, err.Error())
+		// 	return
+		// }
+		// recordWithHeader, err := NewGeneticRecord(header)
+		// if err != nil {
+		// 	c.JSON(422, err.Error())
+		// 	return
+		// }
 
-		db := models.GetDb()
-		errors := []string{}
+		// db := models.GetDb()
+		// errors := []string{}
 
-		// do some database operations in the transaction (use 'tx' from this point, not 'db')
-		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-			if err != nil {
-				errors = append(errors, err.Error())
-			}
-			if err := LoadRecordToDb[models.Genetic](recordWithHeader, record, db); err != nil {
-				errors = append(errors, err.Error())
-			}
-		}
+		// // do some database operations in the transaction (use 'tx' from this point, not 'db')
+		// // for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+		// // 	if err != nil {
+		// // 		errors = append(errors, err.Error())
+		// // 	}
+		// // 	if err := LoadRecordToDb[models.Genetic](recordWithHeader, record, db); err != nil {
+		// // 		errors = append(errors, err.Error())
+		// // 	}
+		// // }
 
-		c.JSON(200, errors)
+		c.JSON(200, "errors")
 	}
 }

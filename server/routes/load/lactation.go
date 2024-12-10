@@ -350,7 +350,6 @@ func (l *Load) Lactation() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		db := models.GetDb()
 		errors := []string{}
 		errorsMtx := sync.Mutex{}
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
@@ -362,7 +361,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 				continue
 			}
 			go func() {
-				if err := LoadRecordToDb[models.Lactation](recordWithHeader, record, db); err != nil {
+				if err := LoadRecordToDb[models.Lactation](recordWithHeader, record); err != nil {
 					errorsMtx.Lock()
 					errors = append(errors, err.Error())
 					errorsMtx.Unlock()

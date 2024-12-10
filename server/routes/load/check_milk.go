@@ -252,9 +252,10 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		db := models.GetDb()
+
 		errors := []string{}
 		errorsMtx := sync.Mutex{}
+
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
@@ -265,7 +266,7 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 			}
 
 			go func() {
-				if err := LoadRecordToDb[models.CheckMilk](recordWithHeader, record, db); err != nil {
+				if err := LoadRecordToDb[models.CheckMilk](recordWithHeader, record); err != nil {
 					errorsMtx.Lock()
 					errors = append(errors, err.Error())
 					errorsMtx.Unlock()

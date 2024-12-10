@@ -42,6 +42,15 @@ func GetDb() *gorm.DB {
 		if err := initDb(); err != nil {
 			panic(err)
 		}
+		// Get generic database object sql.DB to use its functions
+		sqlDB, err := dbConnection.DB()
+		if err != nil {
+			panic(err)
+		}
+
+		// SetMaxOpenConns sets the maximum number of open connections to the database.
+		sqlDB.SetMaxOpenConns(75)
+
 	}
 	return dbConnection
 }
