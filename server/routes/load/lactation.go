@@ -352,6 +352,8 @@ func (l *Load) Lactation() func(*gin.Context) {
 		}
 		errors := []string{}
 		errorsMtx := sync.Mutex{}
+		wg := sync.WaitGroup{}
+
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
@@ -360,7 +362,9 @@ func (l *Load) Lactation() func(*gin.Context) {
 				errorsMtx.Unlock()
 				continue
 			}
+			wg.Add(1)
 			go func() {
+				defer wg.Done()
 				if err := LoadRecordToDb[models.Lactation](recordWithHeader, record); err != nil {
 					errorsMtx.Lock()
 					errors = append(errors, err.Error())
@@ -368,7 +372,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 				}
 			}()
 		}
-
+		wg.Wait()
 		c.JSON(200, errors)
 	}
 }
