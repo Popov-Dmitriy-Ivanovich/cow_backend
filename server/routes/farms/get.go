@@ -32,5 +32,15 @@ func (f *Farms) GetByID() func(*gin.Context) {
 // @Failure      500  {object}  map[string]error
 // @Router       /farms [get]
 func (f *Farms) GetByFilter() func(*gin.Context) {
-	return routes.GenerateGetFunctionByFilters[models.Farm](true, "parrent_id")
+	return func(c *gin.Context) {
+		db := models.GetDb()
+		farms := []models.Farm{}
+		qres := db.Where("EXISTS (SELECT 1 FROM COWS WHERE cows.farm_group_id = farms.id)").Find(&farms)
+		if qres.Error != nil {
+			c.JSON(500, qres.Error)
+		}
+		c.JSON(200, farms)
+	}
+
+	// return routes.GenerateGetFunctionByFilters[models.Farm](true, "parrent_id")
 }
