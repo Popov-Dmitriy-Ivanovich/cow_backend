@@ -7,12 +7,14 @@ type Genetic struct {
 	BloodDate                 *DateOnly            // Дата взятия пробы крови
 	ResultDate                *DateOnly            // Дата получения  результата
 	InbrindingCoeffByGenotype *float64             // Коэф. инбриндинга по генотипу
-	GeneticIllnesses          []GeneticIllnessData `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;many2many:genetic_genetic_illnesses;"` // Список генетических заболеваний, пустой если нет
+	GeneticIllnessesData      []GeneticIllnessData `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Список генетических заболеваний, пустой если нет
 
 	GtcFilePath *string
 }
 
 type GeneticIllnessData struct {
+	ID        uint `gorm:"primaryKey"`
+	GeneticID uint
 	Status    *GeneticIllnessStatus
 	StatusID  *uint // статус заболевания
 	Illness   GeneticIllness

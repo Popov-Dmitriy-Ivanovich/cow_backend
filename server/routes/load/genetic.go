@@ -231,7 +231,7 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 				return nil, errors.New("Не удалось найти статус заболевания " + status)
 			}
 			if err := db.First(&dbIllness, map[string]any{"name": val.Name}).Error; err != nil {
-				return nil, errors.New("Не удалось найти статус заболевания " + status)
+				return nil, errors.New("Не удалось найти заболевание " + val.Name)
 			}
 			data.Illness = dbIllness
 		}
@@ -255,7 +255,7 @@ func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow.Genetic.ResultDate = cr.ResultDate
 	cow.Genetic.InbrindingCoeffByGenotype = cr.InbrindingCoeffByGenotype
 	cow.Genetic.ProbeNumber = cr.ProbeNumber
-	cow.Genetic.GeneticIllnesses = cr.GeneticIllnesses
+	cow.Genetic.GeneticIllnessesData = cr.GeneticIllnesses
 	cow.Genetic.CowID = cow.ID
 	return *cow.Genetic, nil
 }
