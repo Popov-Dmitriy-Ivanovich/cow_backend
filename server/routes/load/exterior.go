@@ -56,231 +56,231 @@ func (l *Load) Exterior() func(*gin.Context) {
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ChestWidth"][0], 64); err == nil {
-			cow.Exterior.ChestWidth = v
+			cow.Exterior.ChestWidth = &v
 		} else {
 			c.JSON(422, "ChestWidth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["PelvicWidth"][0], 64); err == nil {
-			cow.Exterior.PelvicWidth = v
+			cow.Exterior.PelvicWidth = &v
 		} else {
 			c.JSON(422, "PelvicWidth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["SacrumHeight"][0], 64); err == nil {
-			cow.Exterior.SacrumHeight = v
+			cow.Exterior.SacrumHeight = &v
 		} else {
 			c.JSON(422, "SacrumHeight not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["BodyDepth"][0], 64); err == nil {
-			cow.Exterior.BodyDepth = v
+			cow.Exterior.BodyDepth = &v
 		} else {
 			c.JSON(422, "BodyDepth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ExteriorType"][0], 64); err == nil {
-			cow.Exterior.ExteriorType = v
+			cow.Exterior.ExteriorType = &v
 		} else {
 			c.JSON(422, "ExteriorType not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["BoneQHockJointRear"][0], 64); err == nil {
-			cow.Exterior.BoneQHockJointRear = v
+			cow.Exterior.BoneQHockJointRear = &v
 		} else {
 			c.JSON(422, "BoneQHockJointRear not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["SacrumAngle"][0], 64); err == nil {
-			cow.Exterior.SacrumAngle = v
+			cow.Exterior.SacrumAngle = &v
 		} else {
 			c.JSON(422, "SacrumAngle not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["TopLine"][0], 64); err == nil {
-			cow.Exterior.TopLine = v
+			cow.Exterior.TopLine = &v
 		} else {
 			c.JSON(422, "TopLine not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HoofAngle"][0], 64); err == nil {
-			cow.Exterior.HoofAngle = v
+			cow.Exterior.HoofAngle = &v
 		} else {
 			c.JSON(422, "HoofAngle not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HindLegPosSide"][0], 64); err == nil {
-			cow.Exterior.HindLegPosSide = v
+			cow.Exterior.HindLegPosSide = &v
 		} else {
 			c.JSON(422, "HindLegPosSide not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HindLegPosRead"][0], 64); err == nil {
-			cow.Exterior.HindLegPosRead = v
+			cow.Exterior.HindLegPosRead = &v
 		} else {
 			c.JSON(422, "HindLegPosRead not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ForeLegPosFront"][0], 64); err == nil {
-			cow.Exterior.ForeLegPosFront = v
+			cow.Exterior.ForeLegPosFront = &v
 		} else {
 			c.JSON(422, "ForeLegPosFront not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["UdderDepth"][0], 64); err == nil {
-			cow.Exterior.UdderDepth = v
+			cow.Exterior.UdderDepth = &v
 		} else {
 			c.JSON(422, "UdderDepth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["UdderBalance"][0], 64); err == nil {
-			cow.Exterior.UdderBalance = v
+			cow.Exterior.UdderBalance = &v
 		} else {
 			c.JSON(422, "UdderBalance not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HeightOfUdderAttach"][0], 64); err == nil {
-			cow.Exterior.HeightOfUdderAttach = v
+			cow.Exterior.HeightOfUdderAttach = &v
 		} else {
 			c.JSON(422, "HeightOfUdderAttach not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ForeUdderAttach"][0], 64); err == nil {
-			cow.Exterior.ForeUdderAttach = v
+			cow.Exterior.ForeUdderAttach = &v
 		} else {
 			c.JSON(422, "ForeUdderAttach not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ForeUdderPlcRear"][0], 64); err == nil {
-			cow.Exterior.ForeUdderPlcRear = v
+			cow.Exterior.ForeUdderPlcRear = &v
 		} else {
 			c.JSON(422, "ForeUdderPlcRear not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HindTeatPlc"][0], 64); err == nil {
-			cow.Exterior.HindTeatPlc = v
+			cow.Exterior.HindTeatPlc = &v
 		} else {
 			c.JSON(422, "HindTeatPlc not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ForeTeatLendth"][0], 64); err == nil {
-			cow.Exterior.ForeTeatLendth = v
+			cow.Exterior.ForeTeatLendth = &v
 		} else {
 			c.JSON(422, "ForeTeatLendth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["RearTeatLength"][0], 64); err == nil {
-			cow.Exterior.RearTeatLength = v
+			cow.Exterior.RearTeatLength = &v
 		} else {
 			c.JSON(422, "RearTeatLength not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ForeTeatDiameter"][0], 64); err == nil {
-			cow.Exterior.ForeTeatDiameter = v
+			cow.Exterior.ForeTeatDiameter = &v
 		} else {
 			c.JSON(422, "ForeTeatDiameter not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["RearTeatDiameter"][0], 64); err == nil {
-			cow.Exterior.RearTeatDiameter = v
+			cow.Exterior.RearTeatDiameter = &v
 		} else {
 			c.JSON(422, "RearTeatDiameter not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["CenterLigamentDepth"][0], 64); err == nil {
-			cow.Exterior.CenterLigamentDepth = v
+			cow.Exterior.CenterLigamentDepth = &v
 		} else {
 			c.JSON(422, "CenterLigamentDepth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HarmonyOfMovement"][0], 64); err == nil {
-			cow.Exterior.HarmonyOfMovement = v
+			cow.Exterior.HarmonyOfMovement = &v
 		} else {
 			c.JSON(422, "HarmonyOfMovement not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["Conditioning"][0], 64); err == nil {
-			cow.Exterior.Conditioning = v
+			cow.Exterior.Conditioning = &v
 		} else {
 			c.JSON(422, "Conditioning not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ProminenceOfMilkVeins"][0], 64); err == nil {
-			cow.Exterior.ProminenceOfMilkVeins = v
+			cow.Exterior.ProminenceOfMilkVeins = &v
 		} else {
 			c.JSON(422, "ProminenceOfMilkVeins not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["MilkStrength"][0], 64); err == nil {
-			cow.Exterior.MilkStrength = v
+			cow.Exterior.MilkStrength = &v
 		} else {
 			c.JSON(422, "MilkStrength not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["BodyStructure"][0], 64); err == nil {
-			cow.Exterior.BodyStructure = v
+			cow.Exterior.BodyStructure = &v
 		} else {
 			c.JSON(422, "BodyStructure not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["Limbs"][0], 64); err == nil {
-			cow.Exterior.Limbs = v
+			cow.Exterior.Limbs = &v
 		} else {
 			c.JSON(422, "Limbs not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["Udder"][0], 64); err == nil {
-			cow.Exterior.Udder = v
+			cow.Exterior.Udder = &v
 		} else {
 			c.JSON(422, "Udder not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["ForeUdderWidth"][0], 64); err == nil {
-			cow.Exterior.ForeUdderWidth = v
+			cow.Exterior.ForeUdderWidth = &v
 		} else {
 			c.JSON(422, "ForeUdderWidth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["HindUdderWidth"][0], 64); err == nil {
-			cow.Exterior.HindUdderWidth = v
+			cow.Exterior.HindUdderWidth = &v
 		} else {
 			c.JSON(422, "HindUdderWidth not float")
 			return
 		}
 
 		if v, err := strconv.ParseFloat(form.Value["AcrumLength"][0], 64); err == nil {
-			cow.Exterior.AcrumLength = v
+			cow.Exterior.AcrumLength = &v
 		} else {
 			c.JSON(422, "AcrumLength not float")
 			return

@@ -313,6 +313,12 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	return lac, nil
 }
 
+func (cr *lactationRecord) Copy() *lactationRecord {
+	copy := lactationRecord{}
+	copy.HeaderIndexes = cr.HeaderIndexes
+	return &copy
+}
+
 func (l *Load) Lactation() func(*gin.Context) {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
@@ -366,7 +372,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 			}
 			loaderWg.Add(1)
 			loadChannel <- loaderData{
-				Loader:    recordWithHeader,
+				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,

@@ -282,6 +282,11 @@ func (cr *cowRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	return res, nil
 }
 
+func (cr *cowRecord) Copy() *cowRecord {
+	copy := cowRecord{}
+	copy.HeaderIndexes = cr.HeaderIndexes
+	return &copy
+}
 func (l *Load) Cow() func(*gin.Context) {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
@@ -337,7 +342,7 @@ func (l *Load) Cow() func(*gin.Context) {
 			}
 			loaderWg.Add(1)
 			loadChannel <- loaderData{
-				Loader:    recordWithHeader,
+				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,

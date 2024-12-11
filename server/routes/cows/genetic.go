@@ -22,7 +22,12 @@ func (f *Cows) Genetic() func(*gin.Context) {
 		id := c.Param("id")
 		cow := models.Cow{}
 		db := models.GetDb()
-		if err := db.Debug().Preload("Genetic").Preload("Genetic.GeneticIllnesses").First(&cow, id).Error; err != nil {
+		if err := db.
+			Preload("Genetic").
+			Preload("Genetic.GeneticIllnessesData").
+			Preload("Genetic.GeneticIllnessesData.Status").
+			Preload("Genetic.GeneticIllnessesData.Illness").
+			First(&cow, id).Error; err != nil {
 			c.JSON(500, err)
 			return
 		}

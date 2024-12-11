@@ -210,6 +210,12 @@ func (cmr *cmRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	return newCm, nil
 }
 
+func (cr *cmRecord) Copy() *cmRecord {
+	copy := cmRecord{}
+	copy.HeaderIndexes = cr.HeaderIndexes
+	return &copy
+}
+
 const CM_CSV_PATH = "./csv/check_milks/"
 
 var cmUniqueIndex uint64 = 0
@@ -268,7 +274,7 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 			}
 			loaderWg.Add(1)
 			loadChannel <- loaderData{
-				Loader:    recordWithHeader,
+				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,
