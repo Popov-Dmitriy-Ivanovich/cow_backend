@@ -1,7 +1,7 @@
 <template>
     <div class="analytics-flex">
-        <DAnimalFilters class="analytics-filters"/>
-        <div>
+        <DAnimalFilters class="analytics-filters" @applyFilters="fetchAnalyticsFilters"/>
+        <div class="chart-block">
             <div class="analytics-title">Статистика для сравнительного анализа хозяйств и регионов</div>
             <MainChart/>
         </div>
@@ -16,6 +16,20 @@ import DAnimalFilters from '@/components/testpage/DAnimalFilters.vue';
 export default {
     components: {
         MainChart, DAnimalFilters
+    },
+    methods: {
+        async fetchAnalyticsFilters(filters){
+            console.log(filters);
+            let response = await fetch('/api/analitics/genotyped/years', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(filters),
+            });
+            let result = await response.json();
+            console.log(result);
+        }
     }
 }
 </script>

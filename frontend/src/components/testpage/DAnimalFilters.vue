@@ -108,11 +108,17 @@
             <div>Наличие моногенных заболеваний</div>
             <select class="filter-input" v-model="filters.isIll">
                 <option :value="null">не важно</option>
-                <option :value="true">есть</option>
-                <option :value="false">отсутствует</option>
+                <option :value="true">есть все</option>
+                <option :value="false">отсутствуют все</option>
+                <option>есть из списка</option>
+                <option>отсутствует(ют) из списка</option>
             </select><br>
-            <div>Заболевание</div>
-            <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/>
+            <div>> Список заболеваний</div>
+            <!-- <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/> -->
+            <div v-for="ill in options" :key="ill.id" class="ill-item">
+                <label><input type="checkbox" :value="ill.id" v-model="checked_ill"> {{ ill.name }}</label>
+            </div>
+            
         </div>
         <div class="filters-buttons">
             <button class="filters-apply" @click.stop="fetchFilters">Применить</button>
@@ -124,11 +130,11 @@
 <script>
 import MultiselectBreeds from '@/components/testpage/DMultiselectBreeds.vue';
 import MultiselectHoz from '@/components/testpage/DMultiselectHoz.vue';
-import MultiselectIllness from '@/components/testpage/DMultiselectIllness.vue';
+//import MultiselectIllness from '@/components/testpage/DMultiselectIllness.vue';
 
 export default {
     components: {
-        MultiselectHoz, MultiselectBreeds, MultiselectIllness
+        MultiselectHoz, MultiselectBreeds, //MultiselectIllness
     },
     data() {
         return {
@@ -171,6 +177,8 @@ export default {
             clearIllness: false,
 
             exterior: null,
+            options: [],
+            checked_ill: [],
         }
     },
     methods: {
@@ -238,6 +246,15 @@ export default {
                 this.filters.exteriorFrom = null;
                 this.filters.exteriorTo = null;
             }
+        }
+    },
+    async created() {
+        this.options = [];
+        const response = await fetch('/api/monogenetic_illnesses');
+        const illness = await response.json();
+        for (let i = 0; i < illness.length; i++) {
+            let ill = {name: illness[i].Name, id: illness[i].ID};
+            this.options.push(ill);
         }
     }
 }
@@ -352,8 +369,7 @@ export default {
     border-top: 1px solid rgb(218, 217, 230);
 }
 
-/* .illness {
-    position: relative;
-    z-index: 300;
-} */
+.ill-item {
+    padding-top: 7px;
+}
 </style>
