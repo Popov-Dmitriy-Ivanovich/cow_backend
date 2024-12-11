@@ -48,11 +48,37 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
-		if err := db.Create(&hold).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при создании холдинга: " + err.Error()})
+		// обновление последовательности
+		if err := updateSequenceFarms(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
 			return
+		}
+
+		if err := db.Create(&hold).Error; err != nil {
+			if err := updateSequenceFarms(); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
+				return
+			}
+
+			if err := db.Create(&hold).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя после обновления последовательности: " + err.Error()})
+				return
+			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "Новый холдинг создан"})
 	}
+}
+
+func updateSequenceFarms() error {
+	var maxID uint
+	db := models.GetDb()
+	if err := db.Model(&models.Farm{}).Select("max(id)").Scan(&maxID).Error; err != nil {
+		return err
+	}
+
+	if err := db.Exec("SELECT setval(pg_get_serial_sequence('farms', 'id'), ?)", maxID).Error; err != nil {
+		return err
+	}
+	return nil
 }

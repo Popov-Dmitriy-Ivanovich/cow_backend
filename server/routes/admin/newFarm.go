@@ -53,9 +53,22 @@ func (s *Admin) NewFarm() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
-		if err := db.Create(&farms).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при создании фермы: " + err.Error()})
+		// обновление последовательности
+		if err := updateSequenceFarms(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
 			return
+		}
+
+		if err := db.Create(&farms).Error; err != nil {
+			if err := updateSequenceFarms(); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
+				return
+			}
+
+			if err := db.Create(&farms).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя после обновления последовательности: " + err.Error()})
+				return
+			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "Новая ферма создана"})

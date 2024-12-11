@@ -55,9 +55,22 @@ func (s *Admin) NewHoz() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
-		if err := db.Create(&hozs).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при создании хозяйства: " + err.Error()})
+		// обновление последовательности
+		if err := updateSequenceFarms(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
 			return
+		}
+
+		if err := db.Create(&hozs).Error; err != nil {
+			if err := updateSequenceFarms(); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
+				return
+			}
+
+			if err := db.Create(&hozs).Error; err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя после обновления последовательности: " + err.Error()})
+				return
+			}
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "Новое хозяйство создано"})
