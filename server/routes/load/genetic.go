@@ -2,8 +2,12 @@ package load
 
 import (
 	"cow_backend/models"
+	"encoding/csv"
 	"errors"
+	"io"
+	"os"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +20,7 @@ type geneticRecord struct {
 	BloodDate                 *models.DateOnly
 	ResultDate                *models.DateOnly
 	InbrindingCoeffByGenotype *float64
-	GeneticIllnesses          []models.GeneticIllness
+	GeneticIllnesses          []models.GeneticIllnessData
 	HeaderIndexes             map[string]int
 }
 
@@ -214,19 +218,24 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 		}
 	}
 	db := models.GetDb()
-	geneticIllnesses := make([]models.GeneticIllness, 0, 15)
+	geneticIllnesses := make([]models.GeneticIllnessData, 0, 15)
 	for col, val := range MONOGENETIC_ILLNESSES {
 		status := rec[gr.HeaderIndexes[col]]
+		data := models.GeneticIllnessData{}
 		if status == "" {
-			val.Status = nil
+			data.Status = nil
 		} else {
 			dbStatus := models.GeneticIllnessStatus{}
+			dbIllness := models.GeneticIllness{}
 			if err := db.First(&dbStatus, map[string]any{"status": status}).Error; err != nil {
 				return nil, errors.New("Не удалось найти статус заболевания " + status)
 			}
-			val.Status = &dbStatus
+			if err := db.First(&dbIllness, map[string]any{"name": val.Name}).Error; err != nil {
+				return nil, errors.New("Не удалось найти заболевание " + val.Name)
+			}
+			data.Illness = dbIllness
 		}
-		geneticIllnesses = append(geneticIllnesses, val)
+		geneticIllnesses = append(geneticIllnesses, data)
 	}
 	gr.GeneticIllnesses = geneticIllnesses
 	return gr, nil
@@ -246,7 +255,7 @@ func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow.Genetic.ResultDate = cr.ResultDate
 	cow.Genetic.InbrindingCoeffByGenotype = cr.InbrindingCoeffByGenotype
 	cow.Genetic.ProbeNumber = cr.ProbeNumber
-	cow.Genetic.GeneticIllnesses = cr.GeneticIllnesses
+	cow.Genetic.GeneticIllnessesData = cr.GeneticIllnesses
 	cow.Genetic.CowID = cow.ID
 	return *cow.Genetic, nil
 }
@@ -257,55 +266,66 @@ var geneticUniqueIndex uint64 = 0
 
 func (l *Load) Genetic() func(*gin.Context) {
 	return func(c *gin.Context) {
-		// form, err := c.MultipartForm()
-		// if err != nil {
-		// 	c.JSON(500, err)
-		// 	return
-		// }
-		// csvField, ok := form.File["csv"]
-		// if !ok {
-		// 	c.JSON(500, "not found field csv")
-		// 	return
-		// }
+		form, err := c.MultipartForm()
+		if err != nil {
+			c.JSON(500, err)
+			return
+		}
+		csvField, ok := form.File["csv"]
+		if !ok {
+			c.JSON(500, "not found field csv")
+			return
+		}
 
-		// now := time.Now()
-		// uploadedName := GENETIC_CSV_PATH + "genetic_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(geneticUniqueIndex, 16) + ".csv"
-		// if err := c.SaveUploadedFile(csvField[0], uploadedName); err != nil {
-		// 	c.JSON(500, err)
-		// 	return
-		// }
-		// geneticUniqueIndex++
-		// file, err := os.Open(uploadedName)
-		// if err != nil {
-		// 	c.JSON(500, "error opening file")
-		// 	return
-		// }
-		// defer file.Close()
-		// csvReader := csv.NewReader(file)
-		// header, err := csvReader.Read()
-		// if err != nil {
-		// 	c.JSON(422, err.Error())
-		// 	return
-		// }
-		// recordWithHeader, err := NewGeneticRecord(header)
-		// if err != nil {
-		// 	c.JSON(422, err.Error())
-		// 	return
-		// }
+		now := time.Now()
+		uploadedName := GENETIC_CSV_PATH + "genetic_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(geneticUniqueIndex, 16) + ".csv"
+		if err := c.SaveUploadedFile(csvField[0], uploadedName); err != nil {
+			c.JSON(500, err)
+			return
+		}
+		geneticUniqueIndex++
+		file, err := os.Open(uploadedName)
+		if err != nil {
+			c.JSON(500, "error opening file")
+			return
+		}
+		defer file.Close()
+		csvReader := csv.NewReader(file)
+		header, err := csvReader.Read()
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
+		recordWithHeader, err := NewGeneticRecord(header)
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
 
-		// db := models.GetDb()
-		// errors := []string{}
-
-		// // do some database operations in the transaction (use 'tx' from this point, not 'db')
-		// // for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-		// // 	if err != nil {
-		// // 		errors = append(errors, err.Error())
-		// // 	}
-		// // 	if err := LoadRecordToDb[models.Genetic](recordWithHeader, record, db); err != nil {
-		// // 		errors = append(errors, err.Error())
-		// // 	}
-		// // }
-
-		c.JSON(200, "errors")
+		errors := []string{}
+		errorsMtx := sync.Mutex{}
+		loaderWg := sync.WaitGroup{}
+		loadChannel := make(chan loaderData)
+		MakeLoadingPool(loadChannel, LoadRecordToDb[models.Genetic])
+		// do some database operations in the transaction (use 'tx' from this point, not 'db')
+		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+			if err != nil {
+				errorsMtx.Lock()
+				errors = append(errors, err.Error())
+				errorsMtx.Unlock()
+				continue
+			}
+			loaderWg.Add(1)
+			loadChannel <- loaderData{
+				Loader:    recordWithHeader,
+				Record:    record,
+				Errors:    &errors,
+				ErrorsMtx: &errorsMtx,
+				WaitGroup: &loaderWg,
+			}
+		}
+		loaderWg.Wait()
+		close(loadChannel)
+		c.JSON(200, errors)
 	}
 }

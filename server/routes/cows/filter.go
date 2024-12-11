@@ -73,7 +73,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 		res.GenotypingDate = c.Genetic.ResultDate
 	}
 	if len(filter.MonogeneticIllneses) != 0 || filter.HasAnyIllnes != nil {
-		res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
+		// res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
 	}
 	if filter.ControlMilkingDateFrom != nil && *filter.ControlMilkingDateFrom != "" ||
 		filter.ControlMilkingDateTo != nil && *filter.ControlMilkingDateTo != "" {
