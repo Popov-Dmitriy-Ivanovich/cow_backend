@@ -76,7 +76,7 @@ var IH_OMIA = "IH OMIA"
 
 var MONOGENETIC_ILLNESSES = map[string]models.GeneticIllness{
 	HSD_COLUMN: {
-		Name:        "HSD",
+		Name:        "HCD",
 		Description: HSD_DESC,
 		OMIA:        &HSD_OMIA,
 	},
