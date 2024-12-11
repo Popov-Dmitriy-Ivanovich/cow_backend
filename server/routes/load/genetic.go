@@ -238,7 +238,7 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 			if err := db.First(&dbStatus, map[string]any{"status": status}).Error; err != nil {
 				return nil, errors.New("Не удалось найти статус заболевания " + status)
 			}
-
+			data.Status = &dbStatus
 		}
 		geneticIllnesses = append(geneticIllnesses, data)
 	}
