@@ -306,7 +306,7 @@ func (l *Load) Genetic() func(*gin.Context) {
 		errorsMtx := sync.Mutex{}
 		loaderWg := sync.WaitGroup{}
 		loadChannel := make(chan loaderData)
-		MakeLoadingPool(loadChannel, LoadRecordToDb)
+		MakeLoadingPool(loadChannel, LoadRecordToDb[models.Genetic])
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
