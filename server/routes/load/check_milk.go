@@ -72,7 +72,7 @@ var cmRecordParsers = map[string]func(*cmRecord, []string) error{
 	},
 
 	FAT_COL: func(cmr *cmRecord, record []string) error {
-		fatStr := record[cmr.HeaderIndexes[FAT_ALL_COL]]
+		fatStr := record[cmr.HeaderIndexes[FAT_COL]]
 		if fatStr == "" {
 			return errors.New("значение Fat не может отсутсвовать")
 		}
@@ -85,7 +85,7 @@ var cmRecordParsers = map[string]func(*cmRecord, []string) error{
 	},
 
 	PROTEIN_COL: func(cmr *cmRecord, record []string) error {
-		proteinStr := record[cmr.HeaderIndexes[PROTEIN_ALL_COL]]
+		proteinStr := record[cmr.HeaderIndexes[PROTEIN_COL]]
 		if proteinStr == "" {
 			return errors.New("значение Protein не может отсутсвовать")
 		}
@@ -257,7 +257,7 @@ func (l *Load) CheckMilk() func(*gin.Context) {
 		errorsMtx := sync.Mutex{}
 		loaderWg := sync.WaitGroup{}
 		loadChannel := make(chan loaderData)
-		MakeLoadingPool(loadChannel)
+		MakeLoadingPool(loadChannel, LoadRecordToDb)
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
