@@ -17,7 +17,7 @@ func (f ByMonogeneticIllnesses) Apply(fm filters.FilteredModel) error {
 	if bodyData.IsIll != nil && *bodyData.IsIll {
 		if len(bodyData.MonogeneticIllneses) != 0 {
 			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND "+
-				"EXISTS( SELECT 1 FROM genetic_illness_data WHERE genetic_illness_data.genetid_id = genetics.id AND genetic_illness_data.illness_id IN ? "+
+				"EXISTS( SELECT 1 FROM genetic_illness_data WHERE genetic_illness_data.genetic_id = genetics.id AND genetic_illness_data.illness_id IN ? "+
 				"AND NOT EXISTS(SELECT 1 FROM genetic_illness_statuses WHERE genetic_illness_statuses.id = genetic_illness_data.status_id AND "+
 				"genetic_illness_statuses.status <> 'FREE')))",
 				bodyData.MonogeneticIllneses).
@@ -30,7 +30,7 @@ func (f ByMonogeneticIllnesses) Apply(fm filters.FilteredModel) error {
 	if bodyData.IsIll != nil && !*bodyData.IsIll {
 		if len(bodyData.MonogeneticIllneses) != 0 {
 			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND "+
-				"NOT EXISTS( SELECT 1 FROM genetic_illness_data WHERE genetic_illness_data.genetid_id = genetics.id AND genetic_illness_data.illness_id IN ? "+
+				"NOT EXISTS( SELECT 1 FROM genetic_illness_data WHERE genetic_illness_data.genetic_id = genetics.id AND genetic_illness_data.illness_id IN ? "+
 				"AND NOT EXISTS(SELECT 1 FROM genetic_illness_statuses WHERE genetic_illness_statuses.id = genetic_illness_data.status_id AND "+
 				"genetic_illness_statuses.status <> 'FREE')))",
 				bodyData.MonogeneticIllneses).
