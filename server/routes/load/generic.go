@@ -2,6 +2,7 @@ package load
 
 import (
 	"cow_backend/models"
+	"errors"
 	"sync"
 
 	"gorm.io/gorm"
@@ -14,7 +15,7 @@ type CsvToDbLoader interface {
 	ToDbModel(tx *gorm.DB) (any, error)
 }
 
-func LoadRecordToDb(loader CsvToDbLoader, record []string) error {
+func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error {
 	parsed, errLoad := loader.FromCsvRecord(record)
 	if errLoad != nil {
 		return errLoad
@@ -24,14 +25,18 @@ func LoadRecordToDb(loader CsvToDbLoader, record []string) error {
 	if errParse != nil {
 		return errParse
 	}
-	if err := db.Create(&untypedModel).Error; err != nil {
+	typedModel, ok := untypedModel.(modelType)
+	if !ok {
+		return errors.New("wrong type provided to load record to db")
+	}
+	if err := db.Create(&typedModel).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func SaveRecordToDb(loader CsvToDbLoader, record []string) error {
+func SaveRecordToDb[modelType any](loader CsvToDbLoader, record []string) error {
 	parsed, errLoad := loader.FromCsvRecord(record)
 	if errLoad != nil {
 		return errLoad
@@ -41,7 +46,11 @@ func SaveRecordToDb(loader CsvToDbLoader, record []string) error {
 	if errParse != nil {
 		return errParse
 	}
-	if err := db.Save(&untypedModel).Error; err != nil {
+	typedModel, ok := untypedModel.(modelType)
+	if !ok {
+		return errors.New("wrong type provided to load record to db")
+	}
+	if err := db.Save(&typedModel).Error; err != nil {
 		return err
 	}
 
@@ -64,8 +73,8 @@ func MakeLoadingPool(ch chan loaderData, loaderFunc func(CsvToDbLoader, []string
 					lr.ErrorsMtx.Lock()
 					*lr.Errors = append(*lr.Errors, err.Error())
 					lr.ErrorsMtx.Unlock()
-					lr.WaitGroup.Done()
 				}
+				lr.WaitGroup.Done()
 			}
 		}()
 	}

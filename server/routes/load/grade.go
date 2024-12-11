@@ -353,7 +353,7 @@ func (l *Load) Grade() func(*gin.Context) {
 		errorsMtx := sync.Mutex{}
 		loaderWg := sync.WaitGroup{}
 		loadChannel := make(chan loaderData)
-		MakeLoadingPool(loadChannel, SaveRecordToDb)
+		MakeLoadingPool(loadChannel, SaveRecordToDb[models.Cow])
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
