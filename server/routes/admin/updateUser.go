@@ -18,7 +18,7 @@ func (s *Admin) UpdateUserPage() func(*gin.Context) {
 		roles := []models.Role{}
 		db.Where("type = 2").Find(&farms)
 		db.Find(&regions)
-		db.Where("id != 4").Find(&roles)
+		db.Find(&roles)
 
 		user := models.User{}
 		if err := db.
