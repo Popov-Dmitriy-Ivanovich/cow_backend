@@ -53,8 +53,14 @@ func (s *Admin) NewFarm() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
+		// обновление последовательности
+		if err := updateSequenceFarms(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
+			return
+		}
+
 		if err := db.Create(&farms).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при создании фермы: " + err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении фермы: " + err.Error()})
 			return
 		}
 

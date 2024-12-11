@@ -58,6 +58,12 @@ func (s *Admin) NewUser() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
+		// обновление последовательности
+		if err := updateSequenceUser(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
+			return
+		}
+
 		// Сохраняем нового пользователя в базе данных
 		if err := db.Create(&user).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя: " + err.Error()})
@@ -66,4 +72,17 @@ func (s *Admin) NewUser() func(*gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{"message": "Новый пользователь добавлен"})
 	}
+}
+
+func updateSequenceUser() error {
+	var maxID uint
+	db := models.GetDb()
+	if err := db.Model(&models.User{}).Select("max(id)").Scan(&maxID).Error; err != nil {
+		return err
+	}
+
+	if err := db.Exec("SELECT setval(pg_get_serial_sequence('users', 'id'), ?)", maxID).Error; err != nil {
+		return err
+	}
+	return nil
 }
