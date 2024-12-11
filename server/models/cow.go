@@ -1,18 +1,24 @@
 package models
 
-import "time"
+import (
+	"errors"
+	"strconv"
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Cow struct {
 	ID        uint      `gorm:"primaryKey" example:"1"` // ID коровы
 	CreatedAt time.Time `example:"2007-01-01"`          // Время создания коровы в базе данных
-	
-	Farm      *Farm     `json:"-"`
-	FarmID    *uint     `example:"1"` // ID фермы, которой корова принадлежит
+
+	Farm   *Farm `json:"-"`
+	FarmID *uint `example:"1"` // ID фермы, которой корова принадлежит
 
 	FarmGroup   Farm `json:"-"`
 	FarmGroupId uint `example:"1"` // ID хозяйства, которому корова принадлежит
 
-	Holding *Farm
+	Holding   *Farm
 	HoldingID *uint
 
 	Breed   Breed `json:"-"`
@@ -63,4 +69,15 @@ type Cow struct {
 	BirthMethod   *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 
 	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это указатель на эту же корову в другом хоз-ве с другим инв. номером
+}
+
+func (c *Cow) BeforeCreate(tx *gorm.DB) error {
+	if c.RSHNNumber == nil {
+		c.RSHNNumber = new(string)
+		if c.SelecsNumber == nil {
+			return errors.New("нет ни селекса ни РСХН")
+		}
+		*c.RSHNNumber = "!" + strconv.FormatUint(uint64(*c.SelecsNumber), 10)
+	}
+	return nil
 }
