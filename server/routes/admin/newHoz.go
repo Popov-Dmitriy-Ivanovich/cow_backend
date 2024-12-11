@@ -62,15 +62,8 @@ func (s *Admin) NewHoz() func(*gin.Context) {
 		}
 
 		if err := db.Create(&hozs).Error; err != nil {
-			if err := updateSequenceFarms(); err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
-				return
-			}
-
-			if err := db.Create(&hozs).Error; err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя после обновления последовательности: " + err.Error()})
-				return
-			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении хозяйства: " + err.Error()})
+			return
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "Новое хозяйство создано"})

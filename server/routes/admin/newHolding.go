@@ -55,15 +55,8 @@ func (s *Admin) NewHolding() func(*gin.Context) {
 		}
 
 		if err := db.Create(&hold).Error; err != nil {
-			if err := updateSequenceFarms(); err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
-				return
-			}
-
-			if err := db.Create(&hold).Error; err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя после обновления последовательности: " + err.Error()})
-				return
-			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении холдинга: " + err.Error()})
+			return
 		}
 
 		c.JSON(http.StatusOK, gin.H{"message": "Новый холдинг создан"})
