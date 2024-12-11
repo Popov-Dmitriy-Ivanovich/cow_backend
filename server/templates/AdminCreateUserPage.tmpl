@@ -185,7 +185,7 @@
     };
 
     function checkEmailExists(email) {
-        return fetch(`/api/admin/checkEmail?email=${encodeURIComponent(email)}`)
+        return fetch(`/api/auth/checkEmail?email=${encodeURIComponent(email)}`)
             .then(response => response.json())
             .then(data => data.exists);
     }
@@ -217,7 +217,7 @@
 
             // Отправка данных, если email не существует
             console.log(data);
-            fetch('/api/admin/newUser', {
+            fetch('/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -237,7 +237,12 @@
             .catch((error) => {
                 console.error('Ошибка:', error);
             });
+            localStorage.setItem('showNotification', 'true');
+            setTimeout(function() {
+                location.reload();
+            }, 100);
         });
+        
     }
 
     function fetchFarms(regionId) {

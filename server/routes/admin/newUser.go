@@ -42,13 +42,11 @@ func (s *Admin) NewUser() func(*gin.Context) {
 		}
 		db := models.GetDb()
 
-		// обновление последовательности
 		if err := updateSequenceUser(); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
 			return
 		}
 
-		// Сохраняем нового пользователя в базе данных
 		if err := db.Create(&user).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя: " + err.Error()})
 			return
