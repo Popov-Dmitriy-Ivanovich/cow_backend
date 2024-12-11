@@ -222,18 +222,23 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	for col, val := range MONOGENETIC_ILLNESSES {
 		status := rec[gr.HeaderIndexes[col]]
 		data := models.GeneticIllnessData{}
+		dbIllness := models.GeneticIllness{}
+
+		if err := db.First(&dbIllness, map[string]any{"name": val.Name}).Error; err != nil {
+			return nil, errors.New("Не удалось найти заболевание " + val.Name)
+		}
+
+		data.Illness = dbIllness
+
 		if status == "" {
 			data.Status = nil
 		} else {
 			dbStatus := models.GeneticIllnessStatus{}
-			dbIllness := models.GeneticIllness{}
+
 			if err := db.First(&dbStatus, map[string]any{"status": status}).Error; err != nil {
 				return nil, errors.New("Не удалось найти статус заболевания " + status)
 			}
-			if err := db.First(&dbIllness, map[string]any{"name": val.Name}).Error; err != nil {
-				return nil, errors.New("Не удалось найти заболевание " + val.Name)
-			}
-			data.Illness = dbIllness
+
 		}
 		geneticIllnesses = append(geneticIllnesses, data)
 	}
@@ -258,6 +263,12 @@ func (cr *geneticRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow.Genetic.GeneticIllnessesData = cr.GeneticIllnesses
 	cow.Genetic.CowID = cow.ID
 	return *cow.Genetic, nil
+}
+
+func (cr *geneticRecord) Copy() *geneticRecord {
+	copy := geneticRecord{}
+	copy.HeaderIndexes = cr.HeaderIndexes
+	return &copy
 }
 
 const GENETIC_CSV_PATH = "./csv/genetics/"
@@ -307,6 +318,7 @@ func (l *Load) Genetic() func(*gin.Context) {
 		loaderWg := sync.WaitGroup{}
 		loadChannel := make(chan loaderData)
 		MakeLoadingPool(loadChannel, LoadRecordToDb[models.Genetic])
+
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
@@ -317,7 +329,7 @@ func (l *Load) Genetic() func(*gin.Context) {
 			}
 			loaderWg.Add(1)
 			loadChannel <- loaderData{
-				Loader:    recordWithHeader,
+				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,

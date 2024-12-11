@@ -29,7 +29,7 @@ func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error 
 	if !ok {
 		return errors.New("wrong type provided to load record to db")
 	}
-	if err := db.Create(&typedModel).Error; err != nil {
+	if err := db.Debug().Create(&typedModel).Error; err != nil {
 		return err
 	}
 
