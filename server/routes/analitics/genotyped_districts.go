@@ -50,7 +50,7 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 			return
 		}
 		db.Model(&models.District{}).Debug().Where(
-			"WHERE region_id = ? AND EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
+			"region_id = ? AND EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
 				" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND "+
 				" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ?  AND"+
 				" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id)))",
