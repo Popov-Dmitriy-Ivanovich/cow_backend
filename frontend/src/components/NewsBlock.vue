@@ -32,7 +32,7 @@ export default {
         }
     },
     async created() {
-        let id_region = 1;
+        let id_region = 36;
         const response = await fetch(`/api/regions/${id_region}/news`);
         const news_result = await response.json();
         this.news = news_result;

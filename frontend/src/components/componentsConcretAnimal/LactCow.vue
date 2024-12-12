@@ -21,11 +21,12 @@
                     <th>Дата отела</th>
                     <th>Удой за лактацию, л</th>
                     <th>Удой 305 дней, л</th>
-                    <th>Жир за лактацию</th>
-                    <th>Жир 305 дней</th>
-                    <th>Белок за лактацию</th>
-                    <th>Белок 305 дней</th>
-                    <th>Дойные дни</th>
+                    <th>Жир за лактацию, кг</th>
+                    <th>Жир 305 дней, кг</th>
+                    <th>Белок за лактацию, кг</th>
+                    <th>Белок 305 дней, кг</th>
+                    <th>Количество дойных дней</th>
+                    <th>Длительность сервис-периода</th>
                 </tr>
             </thead>
             <tbody class="lac-tablebody">
@@ -42,6 +43,7 @@
                     <td>{{ Math.floor(lact.ProteinAll) }}</td>
                     <td>{{ Math.floor(lact.Protein305) }}</td>
                     <td>{{ lact.Days }}</td>
+                    <td>{{ lact.ServicePeriod }}</td>
                 </tr>
             </tbody>
         </table>
@@ -60,6 +62,8 @@
                 <option value="MilkDaily">Удой среднесуточный</option>
                 <option value="FatDaily">Жир среднесуточный</option>
                 <option value="ProteinDaily">Белок среднесуточный</option>
+                <option value="Days">Количество дойных дней</option>
+                <option value="ServicePeriod">Длительность сервис-периода</option>
             </select>
         </div>
 
