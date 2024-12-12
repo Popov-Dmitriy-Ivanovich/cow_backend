@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "genmilk.ru",
     "basePath": "/api",
     "paths": {
         "/analitics/genotyped/years": {
