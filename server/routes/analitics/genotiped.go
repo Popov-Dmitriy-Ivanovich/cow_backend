@@ -14,6 +14,7 @@ type Genotyped struct {
 type genotypedStatistics struct {
 	Alive     int64
 	Genotyped int64
+	Ill       int64
 }
 
 func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
