@@ -163,8 +163,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 				Preload("FarmGroup.District").
 				Preload("FarmGroup.District.Region").First(&dbCow, id)
 			cmCount := uint(0)
-			cowCount++
-
+			cowCountInc := uint(1)
 			milk := float64(0)
 			fat := float64(0)
 			protein := float64(0)
@@ -174,6 +173,8 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 					if cm.CheckDate.Year() != int(yearInt) {
 						continue
 					}
+					cowCount += cowCountInc
+					cowCountInc = 0
 					cmCount++
 					milk += cm.Milk
 					fat += cm.Fat
