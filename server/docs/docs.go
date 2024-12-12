@@ -68,6 +68,64 @@ const docTemplate = `{
                 }
             }
         },
+        "/analitics/checkMilks/{year}/byDistrict/{district}/byHoz": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "район за который собирается статистика",
+                        "name": "district",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/analitics/checkMilks/{year}/byRegion": {
             "post": {
                 "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",

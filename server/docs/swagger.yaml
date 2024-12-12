@@ -980,6 +980,46 @@ info:
   title: GenMilk API
   version: "1.0"
 paths:
+  /analitics/checkMilks/{year}/byDistrict/{district}/byHoz:
+    post:
+      description: Возращает словарь год - количеств генотипированных коров, по ключу
+        -1 генотипированные за все годы
+      parameters:
+      - description: год за который собирается статистика
+        in: path
+        name: year
+        required: true
+        type: integer
+      - description: район за который собирается статистика
+        in: path
+        name: district
+        required: true
+        type: integer
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/cows_filter.CowsFilter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties:
+                type: boolean
+              type: object
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of years
+      tags:
+      - Analitics
   /analitics/checkMilks/{year}/byRegion:
     post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
