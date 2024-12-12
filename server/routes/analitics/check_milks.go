@@ -153,6 +153,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
+		cowCount := uint(0)
 		for _, id := range cowIds {
 			dbCow := models.Cow{}
 			db.Preload("Lactation").
@@ -160,38 +161,41 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 				Preload("FarmGroup").
 				Preload("FarmGroup.District").
 				Preload("FarmGroup.District.Region").First(&dbCow, id)
-			curCowInc := uint(1)
+			cmCount := uint(0)
+			cowCount++
 			for _, lac := range dbCow.Lactation {
 				for _, cm := range lac.CheckMilks {
 					if cm.CheckDate.Year() != int(yearInt) {
 						continue
 					}
+					cmCount++
 					val, ok := result[dbCow.FarmGroup.District.Region.Name]
 					if ok {
-						val.CmCount += 1
 						val.Milk += cm.Milk
 						val.Fat += cm.Fat
 						val.Protein += cm.Protein
-						val.CowCount += curCowInc
-						curCowInc = 0
+
 					} else {
 						val = cmByRegionStatistics{}
-						val.CmCount = 1
 						val.Milk = cm.Milk
 						val.Fat = cm.Fat
 						val.Protein = cm.Protein
-						val.CowCount = curCowInc
 						val.RegionId = dbCow.FarmGroup.District.RegionId
-						curCowInc = 0
 					}
 					result[dbCow.FarmGroup.District.Region.Name] = val
 				}
 			}
+			if val, ok := result[dbCow.FarmGroup.District.Region.Name]; ok {
+				val.Milk = val.Milk / float64(cmCount)
+				val.Fat = val.Fat / float64(cmCount)
+				val.Protein = val.Protein / float64(cmCount)
+				result[dbCow.FarmGroup.District.Region.Name] = val
+			}
 		}
 		for key, val := range result {
-			val.Milk = val.Milk / float64(val.CmCount) / float64(val.CowCount)
-			val.Fat = val.Fat / float64(val.CmCount) / float64(val.CowCount)
-			val.Protein = val.Protein / float64(val.CmCount) / float64(val.CowCount)
+			val.Milk = val.Milk / float64(cowCount)
+			val.Fat = val.Fat / float64(cowCount)
+			val.Protein = val.Protein / float64(cowCount)
 			result[key] = val
 		}
 		c.JSON(200, result)
