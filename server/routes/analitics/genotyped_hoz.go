@@ -68,7 +68,7 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 			genotypedCowFilter := cows_filter.NewCowFilteredModel(genotypedFilter, genotypedCowQuery)
 			genotypedCowFilter.Params["year"] = c.Param("year")
 			genotypedCowFilter.Params["district"] = c.Param("district")
-			aliveCowFilter.Params["hoz"] = strconv.FormatUint(uint64(key.ID), 10)
+			genotypedCowFilter.Params["hoz"] = strconv.FormatUint(uint64(key.ID), 10)
 			if err := filters.ApplyFilters(aliveCowFilter,
 				cows_filter.ByAbort{},
 				cows_filter.ByAnyIllneses{},
