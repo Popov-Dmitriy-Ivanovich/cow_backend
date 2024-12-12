@@ -2,20 +2,20 @@ package auth
 
 import (
 	"cow_backend/models"
-	"crypto/sha256"
-	"encoding/json"
-	"io"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type RegisterData struct {
-	NameSurnamePatronimic string
-	Role                  int
-	Email                 string
-	Phone                 string
-	Password              string
-	FarmId                uint
+	NameSurnamePatronimic string `json:"fullname"`
+	RoleID                int    `json:"role"`
+	Email                 string `json:"email"`
+	Phone                 string `json:"phone"`
+	Password              string `json:"password"`
+	FarmId                *uint  `json:"farm"`
+	RegionId              uint   `json:"region"`
 }
 
 // ListAccounts lists all existing accounts
@@ -29,42 +29,88 @@ type RegisterData struct {
 //	@Failure      422  {object}  map[string]error
 //	@Failure      500  {object}  map[string]error
 //	@Router       /auth/register [post]
-func (a *Auth) Register() func(*gin.Context) {
+func (s *Auth) Register() func(*gin.Context) {
 	return func(c *gin.Context) {
-		jsonData, err := io.ReadAll(c.Request.Body)
-		if err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
-
-		bodyData := RegisterData{}
-		if len(jsonData) != 0 {
-			err = json.Unmarshal(jsonData, &bodyData)
-			if err != nil {
-				c.JSON(422, gin.H{"error": err})
-				return
-			}
-		} else {
-			c.JSON(422, gin.H{"error": "no register data provided"})
-			return
-		}
-
-		hasher := sha256.New()
-		hasher.Write([]byte(bodyData.Password))
-		pasHash := hasher.Sum(nil)
-		newUser := models.User{
-			NameSurnamePatronimic: bodyData.NameSurnamePatronimic,
-			RoleId:                bodyData.Role,
-			Email:                 bodyData.Email,
-			Phone:                 bodyData.Phone,
-			FarmId:                &bodyData.FarmId,
-			Password:              pasHash,
-		}
+		request := RegisterData{}
 		db := models.GetDb()
-		if err := db.Create(&newUser).Error; err != nil {
-			c.JSON(500, err.Error())
+
+		if err := c.ShouldBindJSON(&request); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		c.JSON(200, "OK")
+
+		existUser := models.User{}
+		if err := db.Where("email = ?", request.Email).First(&existUser).Error; err == nil {
+			c.JSON(http.StatusUnprocessableEntity, gin.H{"error": "Пользователь с таким email уже существует"})
+			return
+		}
+
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при хешировании пароля"})
+			return
+		}
+
+		user := models.User{
+			NameSurnamePatronimic: request.NameSurnamePatronimic,
+			RoleId:                request.RoleID,
+			Email:                 request.Email,
+			Phone:                 request.Phone,
+			Password:              hashedPassword,
+			FarmId:                request.FarmId,
+			RegionId:              request.RegionId,
+		}
+
+		if err := updateSequenceUser(); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при обновлении последовательности: " + err.Error()})
+			return
+		}
+
+		if err := db.Create(&user).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при добавлении пользователя: " + err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Новый пользователь добавлен"})
 	}
+}
+
+// CheckEmail checks if user with given email already exists
+//
+//	@Summary      CHECK EMAIL
+//	@Tags         REGISTER
+//	@Param        email    query     string  true  "email of user to check"
+//	@Accept       json
+//	@Produce      json
+//	@Success      200  {object}  map[string]bool
+//	@Failure      500  {object}  map[string]error
+//	@Router       /auth/checkEmail [get]
+func (s *Auth) CheckEmail() func(*gin.Context) {
+	return func(c *gin.Context) {
+		email := c.Query("email")
+
+		db := models.GetDb()
+		user := models.User{}
+
+		if err := db.Where("email = ?", email).First(&user).Error; err == nil {
+			c.JSON(http.StatusOK, gin.H{"exists": true})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"exists": false})
+	}
+
+}
+
+func updateSequenceUser() error {
+	var maxID uint
+	db := models.GetDb()
+	if err := db.Model(&models.User{}).Select("max(id)").Scan(&maxID).Error; err != nil {
+		return err
+	}
+
+	if err := db.Exec("SELECT setval(pg_get_serial_sequence('users', 'id'), ?)", maxID).Error; err != nil {
+		return err
+	}
+	return nil
 }

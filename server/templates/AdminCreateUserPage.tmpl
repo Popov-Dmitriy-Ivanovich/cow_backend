@@ -183,43 +183,66 @@
             }, 1500);
         }
     };
+
+    function checkEmailExists(email) {
+        return fetch(`/api/auth/checkEmail?email=${encodeURIComponent(email)}`)
+            .then(response => response.json())
+            .then(data => data.exists);
+    }
+
     // Функция для отправки данных на сервер
     function sendData() {
         const data = {
             fullname: document.getElementById('fullname').value,
             password: document.getElementById('password').value,
-            role: document.getElementById('role').value,
+            role: parseInt(document.getElementById('role').value, 10),  // Преобразование в число
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            region: document.getElementById('region').value,
-            farm: document.getElementById('farm').value,
+            region: parseInt(document.getElementById('region').value, 10), // Преобразование в число
+            farm: parseInt(document.getElementById('farm').value, 10)   // Преобразование в число
         };
-        console.log(data)
-        fetch('/api/admin/newUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.error('Ошибка сервера:', response.status);
-                throw new Error('Сетевое соединение не установлено');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Успех:', data);
-        })
-        .catch((error) => {
-            console.error('Ошибка:', error);
-        });
 
-         localStorage.setItem('showNotification', 'true');
-        setTimeout(function() {
-            location.reload();
-        }, 100);
+        if (isNaN(data.role) || isNaN(data.region) || isNaN(data.farm)) {
+            alert("Введены неверные данные");
+            return;
+        }
+
+        // Проверка существования email
+        checkEmailExists(data.email).then(exists => {
+            if (exists) {
+                console.error('Email уже существует');
+                alert('Email уже существует');
+                return;
+            }
+
+            // Отправка данных, если email не существует
+            console.log(data);
+            fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Ошибка сервера:', response.status);
+                    throw new Error('Сетевое соединение не установлено');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Успех:', data);
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error);
+            });
+            localStorage.setItem('showNotification', 'true');
+            setTimeout(function() {
+                location.reload();
+            }, 100);
+        });
+        
     }
 
     function fetchFarms(regionId) {
@@ -228,7 +251,6 @@
         farmSelect.innerHTML = '<option value="" selected disable hidden>Хозяйство</option>'; // сброс
 
         if (regionId) {
-        console.log(regionId)
             // Отправка запроса на сервер
             fetch(`/api/regions/${regionId}/getFarms`)
                 .then(response => {

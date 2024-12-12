@@ -18,6 +18,7 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/createHoz", s.CreateHoz())
 	apiGroup.GET("/checkFarms", s.CheckHozTable(3))
 	apiGroup.GET("/createFarm", s.CreateFarm())
+	apiGroup.GET("/checkEmail", s.checkEmail())
 	apiGroup.POST("/approveCows", s.ApproveCows())
 	apiGroup.POST("/newUser", s.NewUser())
 	apiGroup.POST("/newHolding", s.NewHolding())

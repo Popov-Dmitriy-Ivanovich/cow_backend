@@ -9,7 +9,9 @@ func (s *Auth) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/auth")
 	apiGroup.POST("/login", s.Login())
 	apiGroup.POST("/register", s.Register())
+	apiGroup.GET("/checkEmail", s.CheckEmail())
 	testGroup := apiGroup.Group("/test")
-	testGroup.Use(AuthMiddleware([]int{1}))
+	testGroup.Use(AuthMiddleware(Admin))
 	testGroup.GET("/test", s.Test())
+
 }
