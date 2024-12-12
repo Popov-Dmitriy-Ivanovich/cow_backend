@@ -194,6 +194,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 				val.Fat = fat / float64(cmCount)
 				val.Protein = protein / float64(cmCount)
 				val.CowCount = cowCount
+				val.RegionId = dbCow.FarmGroup.District.RegionId
 				result[dbCow.FarmGroup.District.Region.Name] = val
 			}
 		}
