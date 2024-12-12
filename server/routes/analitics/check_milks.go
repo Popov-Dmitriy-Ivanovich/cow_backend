@@ -185,19 +185,22 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 					result[dbCow.FarmGroup.District.Region.Name] = val
 				}
 			}
-			if val, ok := result[dbCow.FarmGroup.District.Region.Name]; ok {
+			if val, ok := result[dbCow.FarmGroup.District.Region.Name]; ok && cmCount != 0 {
 				val.Milk = val.Milk / float64(cmCount)
 				val.Fat = val.Fat / float64(cmCount)
 				val.Protein = val.Protein / float64(cmCount)
 				result[dbCow.FarmGroup.District.Region.Name] = val
 			}
 		}
-		for key, val := range result {
-			val.Milk = val.Milk / float64(cowCount)
-			val.Fat = val.Fat / float64(cowCount)
-			val.Protein = val.Protein / float64(cowCount)
-			result[key] = val
+		if cowCount != 0 {
+			for key, val := range result {
+				val.Milk = val.Milk / float64(cowCount)
+				val.Fat = val.Fat / float64(cowCount)
+				val.Protein = val.Protein / float64(cowCount)
+				result[key] = val
+			}
 		}
+
 		c.JSON(200, result)
 	}
 }
