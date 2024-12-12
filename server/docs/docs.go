@@ -24,6 +24,50 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/analitics/checkMilks/years": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/analitics/genotyped/years": {
             "get": {
                 "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
@@ -1566,6 +1610,9 @@ const docTemplate = `{
                 },
                 "genotyped": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1580,6 +1627,9 @@ const docTemplate = `{
                 },
                 "holdID": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1591,6 +1641,9 @@ const docTemplate = `{
                 },
                 "genotyped": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1601,6 +1654,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "genotyped": {
+                    "type": "integer"
+                },
+                "ill": {
                     "type": "integer"
                 },
                 "regionID": {

@@ -18,6 +18,50 @@
     "host": "genmilk.ru",
     "basePath": "/api",
     "paths": {
+        "/analitics/checkMilks/years": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/analitics/genotyped/years": {
             "get": {
                 "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
@@ -1560,6 +1604,9 @@
                 },
                 "genotyped": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1574,6 +1621,9 @@
                 },
                 "holdID": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1585,6 +1635,9 @@
                 },
                 "genotyped": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1595,6 +1648,9 @@
                     "type": "integer"
                 },
                 "genotyped": {
+                    "type": "integer"
+                },
+                "ill": {
                     "type": "integer"
                 },
                 "regionID": {
