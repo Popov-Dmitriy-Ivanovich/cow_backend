@@ -7,13 +7,14 @@ import (
 )
 
 type ByDepartDate struct {
-
 }
 
 func (f ByDepartDate) Apply(fm filters.FilteredModel) error {
 	query := fm.GetQuery()
 	bodyData, ok := fm.GetFilterParameters()["object"].(CowsFilter)
-	if !ok { return errors.New("wrong object provided in filter filed object")}
+	if !ok {
+		return errors.New("wrong object provided in filter filed object")
+	}
 	if bodyData.DepartDateFrom != nil && bodyData.DepartDateTo != nil &&
 		*bodyData.DepartDateFrom != "" && *bodyData.DepartDateTo != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.DepartDateFrom)
@@ -24,7 +25,7 @@ func (f ByDepartDate) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("depart_date BETWEEN ? AND ?", bdFrom.UTC(), bdTo.UTC())
+		query = query.Where("depart_date BETWEEN ? AND ?", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC())
 	} else if bodyData.DepartDateFrom != nil && *bodyData.DepartDateFrom != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.DepartDateFrom)
 		if err != nil {
@@ -36,7 +37,7 @@ func (f ByDepartDate) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("depart_date <= ?", bdTo.UTC())
+		query = query.Where("depart_date <= ?", bdTo.AddDate(0, 0, 1).UTC())
 	}
 	fm.SetQuery(query)
 	return nil
