@@ -10,11 +10,18 @@
                         <th>Описание</th>
                     </tr>
                 </thead>
-                <tbody class="vet-tablebody">
+                <tbody class="vet-tablebody" v-if="cow_info.length">
                     <tr v-for="item in cow_info" :key="item.Name">
-                        <td>{{ item.Name }}</td>
-                        <td>{{ item.Status }}</td>
-                        <td>{{ item.Description }}</td>
+                        <td>{{ item.Name || 'Нет информации'}}</td>
+                        <td>{{ item.Status || 'Нет информации'}}</td>
+                        <td>{{ item.Description || 'Нет информации'}}</td>
+                    </tr>
+                </tbody>
+                <tbody v-else class="vet-tablebody">
+                    <tr>
+                        <td>Нет информации</td>
+                        <td>Нет информации</td>
+                        <td>Нет информации</td>
                     </tr>
                 </tbody>
             </table>
@@ -81,7 +88,7 @@ th {
 }
 
 td {
-    padding: 5px 3px;
+    padding: 5px 15px 5px 0;
 }
     
 .vet-header {

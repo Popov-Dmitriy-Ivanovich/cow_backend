@@ -195,7 +195,7 @@ export default {
 }
 
 .animal-rshn {
-    width: 100px;
+    width: 120px;
 }
 
 .animal-name {
@@ -204,7 +204,7 @@ export default {
 }
 
 .animal-hoz {
-    width: 250px;
+    width: 230px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

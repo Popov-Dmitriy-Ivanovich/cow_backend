@@ -1,6 +1,11 @@
 <template>
-    <div class="prev-chart" @click="toPrev">🠔 Назад</div>
-    <ChartYear/>
+    <div class="analytics-flex">
+        <div class="sub-block"></div>
+        <div>
+            <div class="prev-chart" @click="toPrev">🠔 Назад</div>
+            <ChartYear/>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -33,5 +38,16 @@ export default {
     color: rgb(103, 63, 205);
     padding-left: 10px;
     width: max-content;
+}
+
+.sub-block {
+    width: 320px;
+    background: none;
+    height: 20px;
+}
+.analytics-flex {
+    display: flex;
+    justify-content: space-around;
+    width: 90vw;
 }
 </style>
