@@ -16,7 +16,7 @@ import (
 // @Produce      json
 // @Success      200  {object}   models.Farm
 // @Failure      500  {object}  map[string]error
-// @Router       regions/{id}/getFarms [get]
+// @Router       /regions/{id}/getFarms [get]
 func (f *Regions) GetFarms() func(*gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")

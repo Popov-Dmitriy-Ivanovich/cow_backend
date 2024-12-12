@@ -126,7 +126,7 @@ definitions:
         type: boolean
       monogeneticIllneses:
         items:
-          $ref: '#/definitions/models.GeneticIllness'
+          $ref: '#/definitions/models.GeneticIllnessData'
         type: array
       name:
         example: Буренка
@@ -776,10 +776,10 @@ definitions:
       cowID:
         description: ID коровы
         type: integer
-      geneticIllnesses:
+      geneticIllnessesData:
         description: Список генетических заболеваний, пустой если нет
         items:
-          $ref: '#/definitions/models.GeneticIllness'
+          $ref: '#/definitions/models.GeneticIllnessData'
         type: array
       gtcFilePath:
         type: string
@@ -809,6 +809,30 @@ definitions:
         type: string
       omia:
         description: Какой-то там ОМИЯ номер
+        type: string
+    type: object
+  models.GeneticIllnessData:
+    properties:
+      geneticID:
+        type: integer
+      id:
+        type: integer
+      illness:
+        $ref: '#/definitions/models.GeneticIllness'
+      illnessID:
+        description: заболевание
+        type: integer
+      status:
+        $ref: '#/definitions/models.GeneticIllnessStatus'
+      statusID:
+        description: статус заболевания
+        type: integer
+    type: object
+  models.GeneticIllnessStatus:
+    properties:
+      id:
+        type: integer
+      status:
         type: string
     type: object
   models.Grade:
@@ -845,9 +869,9 @@ definitions:
         description: количество дней, когда корова дает молоко
         type: integer
       fat305:
-        type: integer
+        type: number
       fatAll:
-        type: integer
+        type: number
       id:
         type: integer
       insemenationDate:
@@ -855,16 +879,16 @@ definitions:
       insemenationNum:
         type: integer
       milk305:
-        type: integer
+        type: number
       milkAll:
-        type: integer
+        type: number
       number:
         description: номер лактации
         type: integer
       protein305:
-        type: integer
+        type: number
       proteinAll:
-        type: integer
+        type: number
       servicePeriod:
         description: 'сервис период коровы: время от отела до осеменения'
         type: integer
@@ -934,7 +958,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: genmilk.ru
+host: localhost:8080
 info:
   contact:
     email: support@swagger.io
@@ -982,8 +1006,10 @@ paths:
       summary: Get list of years
       tags:
       - Analitics
+  /analitics/genotyped/{year}/byDistrict/{district}/hoz:
     post:
-      description: Возращает словарь регион - количество живых коров, количество генотипированных
+      description: Возращает словарь хозяйство - количество живых коров, количество
+        генотипированных
       parameters:
       - description: год за который собирается статистика
         in: path
@@ -1009,7 +1035,7 @@ paths:
           schema:
             items:
               additionalProperties:
-                $ref: '#/definitions/analitics.byHoldStatistics'
+                $ref: '#/definitions/analitics.byHozStatistics'
               type: object
             type: array
         "500":
@@ -1044,45 +1070,6 @@ paths:
             items:
               additionalProperties:
                 $ref: '#/definitions/analitics.byHoldStatistics'
-              type: object
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: {}
-            type: object
-      summary: Get list of years
-      tags:
-      - Analitics
-    post:
-      description: Возращает словарь хозяйство - количество живых коров, количество
-        генотипированных
-      parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: холдинг за который собирается статистика
-        in: path
-        name: hold
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              additionalProperties:
-                $ref: '#/definitions/analitics.byHozStatistics'
               type: object
             type: array
         "500":
@@ -1947,7 +1934,7 @@ paths:
             type: object
       summary: Get farm by region id
       tags:
-      - Farms
+      - Regions
   /regions/{id}/news:
     get:
       description: Возращает новости региона

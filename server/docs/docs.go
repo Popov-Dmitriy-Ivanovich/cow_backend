@@ -146,9 +146,11 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/analitics/genotyped/{year}/byDistrict/{district}/hoz": {
             "post": {
-                "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
                 "produces": [
                     "application/json"
                 ],
@@ -189,7 +191,7 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                    "$ref": "#/definitions/analitics.byHozStatistics"
                                 }
                             }
                         }
@@ -239,62 +241,6 @@ const docTemplate = `{
                                 "type": "object",
                                 "additionalProperties": {
                                     "$ref": "#/definitions/analitics.byHoldStatistics"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Analitics"
-                ],
-                "summary": "Get list of years",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "год за который собирается статистика",
-                        "name": "year",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "холдинг за который собирается статистика",
-                        "name": "hold",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "applied filters",
-                        "name": "filter",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cows_filter.CowsFilter"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHozStatistics"
                                 }
                             }
                         }
@@ -1482,7 +1428,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Farms"
+                    "Regions"
                 ],
                 "summary": "Get farm by region id",
                 "parameters": [
@@ -1807,7 +1753,7 @@ const docTemplate = `{
                 "monogeneticIllneses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.GeneticIllness"
+                        "$ref": "#/definitions/models.GeneticIllnessData"
                     }
                 },
                 "name": {
@@ -2674,11 +2620,11 @@ const docTemplate = `{
                     "description": "ID коровы",
                     "type": "integer"
                 },
-                "geneticIllnesses": {
+                "geneticIllnessesData": {
                     "description": "Список генетических заболеваний, пустой если нет",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.GeneticIllness"
+                        "$ref": "#/definitions/models.GeneticIllnessData"
                     }
                 },
                 "gtcFilePath": {
@@ -2722,6 +2668,42 @@ const docTemplate = `{
                 },
                 "omia": {
                     "description": "Какой-то там ОМИЯ номер",
+                    "type": "string"
+                }
+            }
+        },
+        "models.GeneticIllnessData": {
+            "type": "object",
+            "properties": {
+                "geneticID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "illness": {
+                    "$ref": "#/definitions/models.GeneticIllness"
+                },
+                "illnessID": {
+                    "description": "заболевание",
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.GeneticIllnessStatus"
+                },
+                "statusID": {
+                    "description": "статус заболевания",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.GeneticIllnessStatus": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
                     "type": "string"
                 }
             }
@@ -2775,10 +2757,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "fat305": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "fatAll": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "id": {
                     "type": "integer"
@@ -2790,20 +2772,20 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "milk305": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "milkAll": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "number": {
                     "description": "номер лактации",
                     "type": "integer"
                 },
                 "protein305": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "proteinAll": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "servicePeriod": {
                     "description": "сервис период коровы: время от отела до осеменения",
@@ -2919,7 +2901,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "genmilk.ru",
+	Host:             "localhost:8080",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",
