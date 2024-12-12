@@ -125,8 +125,6 @@ export default {
                 this.searching_animal = result.LST;
                 this.search = true;
 
-                console.log(result);
-
                 this.total_pages = Math.ceil(result.N/50);
                 
                 if(this.isCows) this.search_error_cows = false;
@@ -160,8 +158,6 @@ export default {
 
 
                 this.current_filters = search_params;
-                
-                console.log('отправляю фильтры в таблицу');
 
                 let response = await fetch('/api/cows/filter', {
                     method: 'POST',
@@ -171,6 +167,8 @@ export default {
                     body: JSON.stringify(search_params),
                 });
                 let result = await response.json();
+                
+                console.log(result, 'что приходит');
 
                 this.total_pages = Math.ceil(result.N/50);
 

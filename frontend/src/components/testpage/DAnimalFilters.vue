@@ -206,6 +206,9 @@ export default {
             let send_filters = this.filters;
             for(let key in this.filters) {
                 this.filters[key] = null;
+                if(key==='monogeneticIllneses') {
+                    this.filters[key] = [];
+                }
             }
             this.exterior = null;
             this.list_ill_parameters = 0,

@@ -50,8 +50,27 @@
             <div v-if="animal_item.InbrindingCoeffByGenotype" class="animal-kfen">{{ animal_item.InbrindingCoeffByGenotype }}</div>
             <div v-else-if="filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeTo" class="animal-kfen"> - </div>
 
-            <div v-if="animal_item.Events" class="animal-kfen">{{ dateConverter(cevent) }}</div>
+            <div v-if="animal_item.Events" class="animal-krod">{{ dateConverter(cevent) }}</div>
             <div v-else-if="filters.illDateFrom || filters.illDateTo" class="animal-krod"> - </div>
+            
+            <!-- <div v-if="illname.length" class="illflex">
+                <div class="animal-ill" v-for="id in illname.length" :key="id"><div>{{ illname[id] }}</div> <div>{{ illstatus[id] }}</div></div>
+            </div>
+            <div v-else-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod"> - </div> -->
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HCD }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH1 }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH3 }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH4 }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH5 }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH6 }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.BLAD }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.CVM }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.DUMPS }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.BC }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.MF }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.FGFR2 }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.IH }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.FXID }}</div>
         </div>
     </div>
 </template>
@@ -73,6 +92,9 @@ export default {
             insemination: '',
             calving: '',
             cevent: '',
+            illname: [],
+            illstatus: [],
+            illmassobj: [],
         }
     },
     methods: {
@@ -118,6 +140,25 @@ export default {
                     this.cevent = this.animal_item.Events[0].Date;
                 }
             }
+        }
+        this.illname = [];
+        this.illstatus = [];
+        if(this.animal_item.MonogeneticIllneses && this.animal_item.MonogeneticIllneses.length) {
+            for (let i = 0; i < this.animal_item.MonogeneticIllneses.length; i++) {
+                if (this.animal_item.MonogeneticIllneses[i].Illness) {
+                    this.illname.push(this.animal_item.MonogeneticIllneses[i].Illness.Name);
+                    if (this.animal_item.MonogeneticIllneses[i].Status !== null) {
+                        this.illstatus.push(this.animal_item.MonogeneticIllneses[i].Status.Status);
+                    } else {
+                        this.illstatus.push('-');
+                    }
+                }
+
+            }
+        }
+        this.illmassobj = {};
+        for (let i = 0; i < this.illname.length; i++) {
+            this.illmassobj[this.illname[i]] = this.illstatus[i];
         }
     },
 }
@@ -203,5 +244,15 @@ export default {
 
 .animal-contrmilk  {
     width: 130px;
+}
+
+.animal-ill {
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.illflex {
+    display: flex;
 }
 </style>

@@ -4,7 +4,7 @@
                 <div class="rat-title">Оценка КРС по хозяйству</div>
             <div class="rating-item">
                 <div class="rating-param">Общая индексная оценка:</div>
-                <div>{{ ratings_hoz.GeneralValue || 'Нет информации'}}</div>
+                <div v-if="ratings_hoz">{{ ratings_hoz.GeneralValue || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему удою за 305 дней:</div>
@@ -73,8 +73,10 @@ export default {
         let response = await fetch(`/api/cows/${cow_id}/grades`)
         let result = await response.json();
         console.log(result);
-        if(result) {
+        if(result.ByHoz) {
             this.ratings_hoz = result.ByHoz;
+        }
+        if(result.ByRegion) {
             this.ratings_reg = result.ByRegion;
         }
     }

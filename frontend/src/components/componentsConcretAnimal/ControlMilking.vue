@@ -18,7 +18,7 @@
                     <th class="cm-date">Дата</th>
                     <th class="cm-nprob">Номер пробы</th>
                     <th class="cm-milkday">Дойные дни</th>
-                    <th class="cm-milk">Удой, л</th>
+                    <th class="cm-milk">Удой, кг</th>
                     <th class="cm-dry">Сухое вещество, %</th>
                     <th class="cm-zhir">Жир, %</th>
                     <th class="cm-belok">Белок, %</th>
@@ -36,6 +36,8 @@
                     <td>{{ milking.DryMatter.toFixed(2) }}</td>
                     <td>{{ milking.Fat.toFixed(2) }}</td>
                     <td>{{ milking.Protein.toFixed(2) }}</td>
+                    <td>{{ milking.FatRegard }}</td>
+                    <td>{{ milking.ProteinRegard }}</td>
                 </tr>
             </tbody>
         </table>
@@ -58,11 +60,12 @@
             <div class="chart-flex">
                 <div class="chart-param">Показатель: </div>
                 <select v-model="param_milking" class="select-param">
-                    <option value="Milk">Удой</option>
+                    <option value="Milk">Удой, кг</option>
+                    <option value="FatRegard">Жир, кг</option>
+                    <option value="ProteinRegard">Белок, кг</option>
                     <option value="Fat">Жир, %</option>
                     <option value="Protein">Белок, %</option>
-                    <!-- <option value="FatRegard">Жир, </option>
-                    <option value="ProteinRegard">Белок, </option> -->
+                    <option value="DryMatter">Сухое вещество, %</option>
                 </select>
             </div>
 
@@ -102,8 +105,8 @@ export default {
         this.cow_info = result;
         
         for (let i = 0; i < this.cow_info.length; i++) {
-            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat / this.cow_info[i].Milk)*100).toFixed(2);
-            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein / this.cow_info[i].Milk)*100).toFixed(2);
+            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat * this.cow_info[i].Milk)/100).toFixed(2);
+            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein * this.cow_info[i].Milk)/100).toFixed(2);
             if (this.cow_info[i].LactationNumber == this.check_lact) {
                 this.options.xaxis.categories.push(this.dateConverter(this.cow_info[i].CheckDate));
             }
@@ -141,7 +144,8 @@ export default {
             };
             for (let j = 0; j < obj.length; j++) {
                 if (obj[j].LactationNumber === nlact) {
-                    serie.data.push(obj[j][param].toFixed(2));
+                    let num = Math.round(obj[j][param] * 100)/100;
+                    serie.data.push(num);
                 }
             }
             arr.push(serie);
