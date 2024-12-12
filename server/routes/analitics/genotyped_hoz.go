@@ -24,12 +24,12 @@ import (
 // @Description  Возращает словарь хозяйство - количество живых коров, количество генотипированных
 // @Tags         Analitics
 // @Param        year    path     int  true  "год за который собирается статистика"
-// @Param        hold    path     int  true  "холдинг за который собирается статистика"
+// @Param        district    path     int  true  "район за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 // @Produce      json
 // @Success      200  {array}   map[string]byHozStatistics
 // @Failure      500  {object}  map[string]error
-// @Router       /analitics/genotyped/{year}/byHold/{hold}/hoz [post]
+// @Router       /analitics/genotyped/{year}/byDistrict/{district}/hoz [post]
 func (g Genotyped) HozPost() func(*gin.Context) {
 	return func(c *gin.Context) {
 		filterData := cows_filter.CowsFilter{}
@@ -44,30 +44,28 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 		keys := []byHozKeys{}
 		db := models.GetDb()
 		yearStr := c.Param("year")
-		yearInt, err := strconv.ParseInt(yearStr,10,64)
+		yearInt, err := strconv.ParseInt(yearStr, 10, 64)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
 		db.Model(&models.Farm{}).Debug().Where(
-			"EXISTS (SELECT 1 FROM cows where cows.id = farms.id AND cows.holding_id = ? AND "+
-			"(cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ?)",
-			c.Param("hold"),
-			time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC),
-			time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC)).Find(&keys)
+			"district_id = ? EXISTS (SELECT 1 FROM cows where cows.id = farms.id AND "+
+				"(cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ?)",
+			c.Param("district"),
+			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
+			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC)).Find(&keys)
 
 		result := make(map[string]byHozStatistics)
 		for _, key := range keys {
 			aliveCowQuery := db.Model(&models.Cow{})
 			aliveCowFilter := cows_filter.NewCowFilteredModel(aliveFilter, aliveCowQuery)
 			aliveCowFilter.Params["year"] = c.Param("year")
-			aliveCowFilter.Params["holding"] = strconv.FormatUint(uint64(key.ID), 10)
 			aliveCowFilter.Params["district"] = c.Param("district")
 
 			genotypedCowQuery := db.Model(&models.Cow{})
 			genotypedCowFilter := cows_filter.NewCowFilteredModel(genotypedFilter, genotypedCowQuery)
 			genotypedCowFilter.Params["year"] = c.Param("year")
-			genotypedCowFilter.Params["holding"] = strconv.FormatUint(uint64(key.ID), 10)
 			genotypedCowFilter.Params["district"] = c.Param("district")
 			if err := filters.ApplyFilters(aliveCowFilter,
 				cows_filter.ByAbort{},
