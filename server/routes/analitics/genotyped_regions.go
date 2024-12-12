@@ -43,19 +43,19 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 		keys := []byRegionKeys{}
 		db := models.GetDb()
 		yearStr := c.Param("year")
-		yearInt, err := strconv.ParseInt(yearStr,10,64)
+		yearInt, err := strconv.ParseInt(yearStr, 10, 64)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
 		db.Model(&models.Region{}).Debug().Where(
-			"EXISTS(SELECT 1 FROM districts where districts.region_id = regions.id AND " +
-				"EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND " +
-				" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND " +
-				" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ? AND",
+			"EXISTS(SELECT 1 FROM districts where districts.region_id = regions.id AND "+
+				"EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
+				" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND "+
+				" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ? AND"+
 				" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id))))",
-				time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC),
-				time.Date(int(yearInt)+1,1,1,0,0,0,0,time.UTC)).Find(&keys)
+			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
+			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC)).Find(&keys)
 
 		result := make(map[string]byRegionStatistics)
 		for _, key := range keys {
