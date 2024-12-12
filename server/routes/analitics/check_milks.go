@@ -4,6 +4,7 @@ import (
 	"cow_backend/filters"
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -179,24 +180,27 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 					protein += cm.Protein
 				}
 			}
+			fmt.Println("milk = ", milk, "cmCount = ", cmCount)
 			if val, ok := result[dbCow.FarmGroup.District.Region.Name]; ok && cmCount != 0 {
 				val.Milk += milk / float64(cmCount)
 				val.Fat += fat / float64(cmCount)
 				val.Protein += protein / float64(cmCount)
+				val.CowCount = cowCount
 				result[dbCow.FarmGroup.District.Region.Name] = val
 			} else if !ok && cmCount != 0 {
 				val := cmByRegionStatistics{}
 				val.Milk = milk / float64(cmCount)
 				val.Fat = fat / float64(cmCount)
 				val.Protein = protein / float64(cmCount)
+				val.CowCount = cowCount
 				result[dbCow.FarmGroup.District.Region.Name] = val
 			}
 		}
 		if cowCount != 0 {
 			for key, val := range result {
-				val.Milk = val.Milk / float64(cowCount)
-				val.Fat = val.Fat / float64(cowCount)
-				val.Protein = val.Protein / float64(cowCount)
+				val.Milk = val.Milk / float64(val.CowCount)
+				val.Fat = val.Fat / float64(val.CowCount)
+				val.Protein = val.Protein / float64(val.CowCount)
 				result[key] = val
 			}
 		}
