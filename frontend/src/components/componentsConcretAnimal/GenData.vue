@@ -30,7 +30,7 @@ export default {
     data() {
         return {
             cow_info:{},
-            blood_date: '',
+            blood_date: null,
         }
     },
     async created() {
@@ -38,8 +38,11 @@ export default {
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/genetic`);
         let result = await response.json();
-        this.cow_info = result;
-        this.blood_date = this.dateConverter(this.cow_info.BloodDate);
+        if (result) {
+            this.cow_info = result;
+            this.blood_date = this.dateConverter(this.cow_info.BloodDate);
+        }
+
     },
     methods: {
         true_false(val) {

@@ -45,21 +45,25 @@ export default {
         this.illnesses = result;
         let response1 = await fetch(`/api/cows/${cow_id}/genetic`)
         let result1 = await response1.json();
+        console.log(result1);
 
         for( let i = 0; i < this.illnesses.length; i++) {
             let obj = {
                 Name: this.illnesses[i].Name,
-                Status: 'нет',
+                Status: 'Нет информации',
                 Description: this.illnesses[i].Description,
             }
-            for (let j = 0; j < result1.GeneticIllnesses.length; j++) {
-                if (this.illnesses[i].Name === result1.GeneticIllnesses[j].Name) {
-                    obj.Status = 'да';
+            if(result1) {
+                for (let j = 0; j < result1.GeneticIllnesses.length; j++) {
+                    if (this.illnesses[i].Name === result1.GeneticIllnesses[j].Name) {
+                        obj.Status = 'да';
+                    } else {
+                        obj.Status = 'нет';
+                    }
                 }
             }
             this.cow_info.push(obj);
         }
-        console.log(this.cow_info, 'hgf');
     },
 }    
 </script>

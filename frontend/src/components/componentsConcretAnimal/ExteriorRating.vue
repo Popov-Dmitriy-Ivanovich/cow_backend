@@ -2,10 +2,11 @@
     <div>
         <div class="extrat-title">Оценка экстерьера</div>
         <div class="exterior-title">
-            <div>Общая оценка экстерьера: {{ cow_info.Rating }}</div>
-            <div class="krs-photo">
+            <div>Общая оценка экстерьера: {{ cow_info.Rating || 'Нет информации'}}</div>
+            <div class="krs-photo" v-if="cow_info.PicturePath">
                 <img width="100%" :src="logo">
             </div>
+            <div v-else class="krs-photo no-photo">Фото КРС</div>
             
         </div>
         <div>
@@ -14,121 +15,121 @@
                 <div class="column">
                     <div class="mark-with-num">
                         <div class="ext-param">Ширина груди: </div>
-                        <div>{{ cow_info.ChestWidth }}</div>
+                        <div>{{ cow_info.ChestWidth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Ширина таза: </div>
-                        <div>{{ cow_info.PelvicWidth }}</div>
+                        <div>{{ cow_info.PelvicWidth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Высота в крестце: </div>
-                        <div>{{ cow_info.SacrumHeight }}</div>
+                        <div>{{ cow_info.SacrumHeight || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Глубина туловища: </div>
-                        <div>{{ cow_info.BodyDepth }}</div>
+                        <div>{{ cow_info.BodyDepth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Тип экстерьера: </div>
-                        <div>{{ cow_info.ExteriorType }}</div>
+                        <div>{{ cow_info.ExteriorType || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Качество костяка/скакательный сустав (вид сзади): </div>
-                        <div>{{ cow_info.BoneQHockJointRear }}</div>
+                        <div>{{ cow_info.BoneQHockJointRear || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Угол наклона крестца: </div>
-                        <div>{{ cow_info.SacrumAngle }}</div>
+                        <div>{{ cow_info.SacrumAngle || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Длина крестца: </div>
-                        <div>{{ cow_info.AcrumLength }}</div>
+                        <div>{{ cow_info.AcrumLength || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Линия верха: </div>
-                        <div>{{ cow_info.TopLine }}</div>
+                        <div>{{ cow_info.TopLine || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Угол копыта: </div>
-                        <div>{{ cow_info.HoofAngle }}</div>
+                        <div>{{ cow_info.HoofAngle || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Постановка задних ног (вид сбоку): </div>
-                        <div>{{ cow_info.HindLegPosSide }}</div>
+                        <div>{{ cow_info.HindLegPosSide || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Постановка задних ног (вид сзади): </div>
-                        <div>{{ cow_info.HindLegPosRead }}</div>
+                        <div>{{ cow_info.HindLegPosRead || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Постановка передних ног (вид спереди): </div>
-                        <div>{{ cow_info.ForeLegPosFront }}</div>
+                        <div>{{ cow_info.ForeLegPosFront || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Глубина вымени: </div>
-                        <div>{{ cow_info.UdderDepth }}</div>
+                        <div>{{ cow_info.UdderDepth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Баланс вымени: </div>
-                        <div>{{ cow_info.UdderBalance }}</div>
+                        <div>{{ cow_info.UdderBalance || 'Нет информации'}}</div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="mark-with-num">
                         <div class="ext-param">Высота прикрепления задних долей вымени: </div>
-                        <div>{{ cow_info.HeightOfUdderAttach }}</div>
+                        <div>{{ cow_info.HeightOfUdderAttach || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Прикрепление передних долей вымени: </div>
-                        <div>{{ cow_info.ForeUdderAttach }}</div>
+                        <div>{{ cow_info.ForeUdderAttach || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Ширина задних долей вымени: </div>
-                        <div>{{ cow_info.HindUdderWidth }}</div>
+                        <div>{{ cow_info.HindUdderWidth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Длина передних долей вымени: </div>
-                        <div>{{ cow_info.ForeUdderWidth }}</div>
+                        <div>{{ cow_info.ForeUdderWidth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Расположение передних сосков (вид сзади): </div>
-                        <div>{{ cow_info.ForeUdderPlcRear }}</div>
+                        <div>{{ cow_info.ForeUdderPlcRear || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Расположение задних сосков: </div>
-                        <div>{{ cow_info.HindTeatPlc }}</div>
+                        <div>{{ cow_info.HindTeatPlc || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Длина передних сосков: </div>
-                        <div>{{ cow_info.ForeTeatLendth }}</div>
+                        <div>{{ cow_info.ForeTeatLendth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Длина задних сосков: </div>
-                        <div>{{ cow_info.RearTeatLength }}</div>
+                        <div>{{ cow_info.RearTeatLength || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Диаметр передних сосков: </div>
-                        <div>{{ cow_info.ForeTeatDiameter }}</div>
+                        <div>{{ cow_info.ForeTeatDiameter || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Диаметр задних сосков: </div>
-                        <div>{{ cow_info.RearTeatDiameter }}</div>
+                        <div>{{ cow_info.RearTeatDiameter || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Глубина центральной связки: </div>
-                        <div>{{ cow_info.CenterLigamentDepth }}</div>
+                        <div>{{ cow_info.CenterLigamentDepth || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Гармоничность движения: </div>
-                        <div>{{ cow_info.HarmonyOfMovement }}</div>
+                        <div>{{ cow_info.HarmonyOfMovement || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Упитанность: </div>
-                        <div>{{ cow_info.Conditioning }}</div>
+                        <div>{{ cow_info.Conditioning || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Выраженность молочных вен: </div>
-                        <div> {{ cow_info.ProminenceOfMilkVeins }}</div>
+                        <div> {{ cow_info.ProminenceOfMilkVeins || 'Нет информации'}}</div>
                     </div> 
                 </div> 
             </div>
@@ -137,19 +138,19 @@
                 <div class="column">
                     <div class="mark-with-num">
                         <div class="ext-param">Молочная сила: </div>
-                        <div>{{ cow_info.MilkStrength }}</div>
+                        <div>{{ cow_info.MilkStrength || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Телосложение: </div>
-                        <div>{{ cow_info.BodyStructure }}</div>
+                        <div>{{ cow_info.BodyStructure || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Конечности: </div>
-                        <div>{{ cow_info.Limbs }}</div>
+                        <div>{{ cow_info.Limbs || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Вымя: </div>
-                        <div>{{ cow_info.Udder }}</div>
+                        <div>{{ cow_info.Udder || 'Нет информации'}}</div>
                     </div>
                 </div>
             </div>
@@ -172,12 +173,15 @@ export default {
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/exterior`);
         let result = await response.json();
-        this.cow_info = result;
-        console.log(this.cow_info);
-        if(this.cow_info.PicturePath) {
-            this.img = this.cow_info.PicturePath;
-            //this.setImg(this.img);
+        if (result) {
+            this.cow_info = result;
+            console.log(this.cow_info);
+            if(this.cow_info.PicturePath) {
+                this.img = this.cow_info.PicturePath;
+                //this.setImg(this.img);
+            }
         }
+
     },
     methods: {
         show9Mark () {
@@ -229,6 +233,10 @@ export default {
     background-color: none;
 }
 
+.no-photo {
+    border: 1px solid rgb(207, 207, 207);
+}
+
 .ext-9mark-title, .ext-100mark-title {
     font-size: 120%;
     margin: 18px 0;
@@ -246,7 +254,7 @@ export default {
     /* flex-direction: column;
     flex-wrap: wrap; */
     justify-content: flex-start;
-    height: 450px;
+    height: max-content;
     font-size: 90%;
     margin-bottom: 15px;
 }
@@ -275,5 +283,6 @@ export default {
 
 .column {
     width: auto;
+    height: max-content;
 }
 </style>
