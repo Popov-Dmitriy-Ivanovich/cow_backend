@@ -13,35 +13,35 @@ import (
 )
 
 type FilterSerializedCow struct {
-	ID                        uint                    `validate:"required" example:"123"`
-	RSHNNumber                *string                 `validate:"required" example:"123"`
-	InventoryNumber           *string                 `validate:"required" example:"321"`
-	Name                      string                  `validate:"required" example:"Буренка"`
-	FarmGroupName             string                  `validate:"required" example:"ООО Аурус"`
-	BirthDate                 models.DateOnly         `validate:"required"`
-	Genotyped                 bool                    `validate:"required" example:"true"`
-	Approved                  bool                    `validate:"required" example:"true"`
-	DepartDate                *models.DateOnly        `json:",omitempty" validate:"optional"`
-	BreedName                 *string                 `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
-	CheckMilkDate             []models.DateOnly       `json:",omitempty" validate:"optional"`
-	InsemenationDate          []models.DateOnly       `json:",omitempty" validate:"optional"`
-	CalvingDate               []models.DateOnly       `json:",omitempty" validate:"optional"`
-	BirkingDate               *models.DateOnly        `json:",omitempty" validate:"optional"`
-	GenotypingDate            *models.DateOnly        `json:",omitempty" validate:"optional"`
-	InbrindingCoeffByFamily   *float64                `json:",omitempty" validate:"optional" example:"3.14"`
-	InbrindingCoeffByGenotype *float64                `json:",omitempty" validate:"optional" example:"3.14"`
-	MonogeneticIllneses       []models.GeneticIllness `json:",omitempty" validate:"optional"`
-	ExteriorRating            *float64                `json:",omitempty" validate:"optional"`
-	SexName                   *string                 `json:",omitempty" validate:"optional"`
-	HozName                   *string                 `json:",omitempty" validate:"optional"`
-	DeathDate                 *models.DateOnly        `json:",omitempty" validate:"optional"`
-	IsDead                    *bool                   `json:",omitempty" validate:"optional"`
-	IsTwins                   *bool                   `json:",omitempty" validate:"optional"`
-	IsStillBorn               *bool                   `json:",omitempty" validate:"optional"`
-	IsAborted                 *bool                   `json:",omitempty" validate:"optional"`
-	Events                    []models.Event          `json:",omitempty" validate:"optional"`
-	IsGenotyped               *bool                   `json:",omitempty" validate:"optional"`
-	CreatedAt                 *models.DateOnly        `json:",omitempty" validate:"optional"`
+	ID                        uint                        `validate:"required" example:"123"`
+	RSHNNumber                *string                     `validate:"required" example:"123"`
+	InventoryNumber           *string                     `validate:"required" example:"321"`
+	Name                      string                      `validate:"required" example:"Буренка"`
+	FarmGroupName             string                      `validate:"required" example:"ООО Аурус"`
+	BirthDate                 models.DateOnly             `validate:"required"`
+	Genotyped                 bool                        `validate:"required" example:"true"`
+	Approved                  bool                        `validate:"required" example:"true"`
+	DepartDate                *models.DateOnly            `json:",omitempty" validate:"optional"`
+	BreedName                 *string                     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
+	CheckMilkDate             []models.DateOnly           `json:",omitempty" validate:"optional"`
+	InsemenationDate          []models.DateOnly           `json:",omitempty" validate:"optional"`
+	CalvingDate               []models.DateOnly           `json:",omitempty" validate:"optional"`
+	BirkingDate               *models.DateOnly            `json:",omitempty" validate:"optional"`
+	GenotypingDate            *models.DateOnly            `json:",omitempty" validate:"optional"`
+	InbrindingCoeffByFamily   *float64                    `json:",omitempty" validate:"optional" example:"3.14"`
+	InbrindingCoeffByGenotype *float64                    `json:",omitempty" validate:"optional" example:"3.14"`
+	MonogeneticIllneses       []models.GeneticIllnessData `json:",omitempty" validate:"optional"`
+	ExteriorRating            *float64                    `json:",omitempty" validate:"optional"`
+	SexName                   *string                     `json:",omitempty" validate:"optional"`
+	HozName                   *string                     `json:",omitempty" validate:"optional"`
+	DeathDate                 *models.DateOnly            `json:",omitempty" validate:"optional"`
+	IsDead                    *bool                       `json:",omitempty" validate:"optional"`
+	IsTwins                   *bool                       `json:",omitempty" validate:"optional"`
+	IsStillBorn               *bool                       `json:",omitempty" validate:"optional"`
+	IsAborted                 *bool                       `json:",omitempty" validate:"optional"`
+	Events                    []models.Event              `json:",omitempty" validate:"optional"`
+	IsGenotyped               *bool                       `json:",omitempty" validate:"optional"`
+	CreatedAt                 *models.DateOnly            `json:",omitempty" validate:"optional"`
 }
 
 func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
@@ -73,7 +73,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 		res.GenotypingDate = c.Genetic.ResultDate
 	}
 	if len(filter.MonogeneticIllneses) != 0 || filter.HasAnyIllnes != nil {
-		// res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
+		res.MonogeneticIllneses = c.Genetic.GeneticIllnessesData
 	}
 	if filter.ControlMilkingDateFrom != nil && *filter.ControlMilkingDateFrom != "" ||
 		filter.ControlMilkingDateTo != nil && *filter.ControlMilkingDateTo != "" {
