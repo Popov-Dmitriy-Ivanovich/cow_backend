@@ -33,7 +33,7 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 		filterData.ControlMilkingDateTo = new(string)
 
 		*filterData.ControlMilkingDateFrom = "0001-01-01"
-		*filterData.ControlMilkingDateFrom = "4000-01-01"
+		*filterData.ControlMilkingDateTo = "4000-01-01"
 
 		db := models.GetDb()
 		cmCowQuery := db.Model(models.Cow{})
