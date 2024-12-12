@@ -122,7 +122,7 @@ var lactationRecordParsers = map[string]func(*lactationRecord, []string) error{
 		if err != nil {
 			return err
 		}
-		lr.Abort = abortInt == 0
+		lr.Abort = abortInt == 1
 		return nil
 	},
 

@@ -306,6 +306,12 @@ func (gr *gradeRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	return grCow, nil
 }
 
+func (gr *gradeRecord) Copy() *gradeRecord {
+	copy := gradeRecord{}
+	copy.HeaderIndexes = gr.HeaderIndexes
+	return &copy
+}
+
 const GRADE_CSV_PATH = "./csv/grades/"
 
 var gradeUniqueIndex uint64 = 0
@@ -364,7 +370,7 @@ func (l *Load) Grade() func(*gin.Context) {
 			}
 			loaderWg.Add(1)
 			loadChannel <- loaderData{
-				Loader:    recordWithHeader,
+				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,
