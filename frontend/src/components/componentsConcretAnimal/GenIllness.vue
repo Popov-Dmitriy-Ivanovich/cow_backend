@@ -45,7 +45,6 @@ export default {
         this.illnesses = result;
         let response1 = await fetch(`/api/cows/${cow_id}/genetic`)
         let result1 = await response1.json();
-        console.log(result1);
 
         for( let i = 0; i < this.illnesses.length; i++) {
             let obj = {
@@ -54,11 +53,13 @@ export default {
                 Description: this.illnesses[i].Description,
             }
             if(result1) {
-                for (let j = 0; j < result1.GeneticIllnesses.length; j++) {
-                    if (this.illnesses[i].Name === result1.GeneticIllnesses[j].Name) {
-                        obj.Status = 'да';
-                    } else {
-                        obj.Status = 'нет';
+                for (let j = 0; j < result1.GeneticIllnessesData.length; j++) {
+                    if (this.illnesses[i].Name === result1.GeneticIllnessesData[j].Illness.Name) {
+                        if(result1.GeneticIllnessesData[j].Status){
+                            obj.Status = result1.GeneticIllnessesData[j].Status.Status;
+                        } else {
+                            obj.Status = result1.GeneticIllnessesData[j].Status;
+                        }
                     }
                 }
             }

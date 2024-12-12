@@ -38,9 +38,10 @@ export default {
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/genetic`);
         let result = await response.json();
+        console.log(result);
         if (result) {
             this.cow_info = result;
-            this.blood_date = this.dateConverter(this.cow_info.BloodDate);
+            if (this.cow_info.BloodDate) this.blood_date = this.dateConverter(this.cow_info.BloodDate);
         }
 
     },
