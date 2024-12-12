@@ -50,7 +50,7 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 			return
 		}
 		db.Model(&models.Farm{}).Debug().Where(
-			"district_id = ? AND EXISTS (SELECT 1 FROM cows where (cows.farm_id = farms.id OR cows.farm_group_id = farms.id)AND "+
+			"district_id = ? AND EXISTS (SELECT 1 FROM cows where (cows.farm_group_id = farms.id) AND "+
 				"(cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ?)",
 			c.Param("district"),
 			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
