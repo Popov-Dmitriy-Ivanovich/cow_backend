@@ -106,19 +106,20 @@
         </div>
         <div class="filter-category category-last">
             <div>Наличие моногенных заболеваний</div>
-            <select class="filter-input" v-model="filters.isIll">
-                <option :value="null">не важно</option>
-                <option :value="true">есть все</option>
-                <option :value="false">отсутствуют все</option>
-                <option>есть из списка</option>
-                <option>отсутствует(ют) из списка</option>
+            <select class="filter-input" v-model="list_ill_parameters">
+                <option :value="0">не важно</option>
+                <option :value="1">есть любое</option>
+                <option :value="2">отсутствуют все</option>
+                <option :value="3">есть из списка</option>
+                <option :value="4">отсутствует(ют) из списка</option>
             </select><br>
-            <div>> Список заболеваний</div>
+            <div @click="isVisibleIll = !isVisibleIll" class="ill-list-title">> Список заболеваний</div>
             <!-- <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/> -->
-            <div v-for="ill in options" :key="ill.id" class="ill-item">
-                <label><input type="checkbox" :value="ill.id" v-model="checked_ill"> {{ ill.name }}</label>
-            </div>
-            
+            <div v-if="isVisibleIll">
+                <div v-for="ill in options" :key="ill.id" class="ill-item">
+                    <label><input type="checkbox" :value="ill.id" v-model="filters.monogeneticIllneses"> {{ ill.name }}</label>
+                </div>
+            </div> 
         </div>
         <div class="filters-buttons">
             <button class="filters-apply" @click.stop="fetchFilters">Применить</button>
@@ -165,8 +166,9 @@ export default {
                 inbrindingCoeffByFamilyTo: null,
                 inbrindingCoeffByGenotypeFrom: null,
                 inbrindingCoeffByGenotypeTo: null,
-                monogeneticIllneses: null,
+                monogeneticIllneses: [],
                 isIll: null,
+                hasAnyIllnes: null,
                 isGenotyped: null,
                 illDateFrom: null,
                 illDateTo: null,
@@ -178,7 +180,11 @@ export default {
 
             exterior: null,
             options: [],
+
             checked_ill: [],
+            list_ill_parameters: 0,
+
+            isVisibleIll: false,
         }
     },
     methods: {
@@ -202,9 +208,11 @@ export default {
                 this.filters[key] = null;
             }
             this.exterior = null;
+            this.list_ill_parameters = 0,
             this.clearBreed = !this.clearBreed;
             this.clearHoz = !this.clearHoz;
             this.clearIllness = !this.clearIllness;
+            this.isVisibleIll = false;
             console.log(this.filters, 'сбросить');
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
@@ -245,6 +253,24 @@ export default {
             } else {
                 this.filters.exteriorFrom = null;
                 this.filters.exteriorTo = null;
+            }
+        },
+        list_ill_parameters(new_val) {
+            if (new_val === 0) {
+                this.filters.isIll = null;
+                this.filters.hasAnyIllnes = null;
+            } else if (new_val === 1) {
+                this.filters.isIll = null;
+                this.filters.hasAnyIllnes = true;
+            } else if (new_val === 2) {
+                this.filters.isIll = null;
+                this.filters.hasAnyIllnes = false;
+            } else if (new_val === 3) {
+                this.filters.isIll = true;
+                this.filters.hasAnyIllnes = null;
+            } else if (new_val === 4) {
+                this.filters.isIll = false;
+                this.filters.hasAnyIllnes = null;
             }
         }
     },
@@ -371,5 +397,14 @@ export default {
 
 .ill-item {
     padding-top: 7px;
+}
+
+.ill-list-title {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ill-list-title:hover {
+    color: grey;
 }
 </style>
