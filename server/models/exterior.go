@@ -1,5 +1,11 @@
 package models
 
+import (
+	"errors"
+
+	"gorm.io/gorm"
+)
+
 type Exterior struct {
 	ID                    uint
 	CowID                 uint
@@ -40,4 +46,12 @@ type Exterior struct {
 	AcrumLength    *float64
 
 	PicturePath *string
+}
+
+func (e *Exterior) BeforeCreate(tx *gorm.DB) error {
+	if e.MilkStrength == nil || e.BodyStructure == nil || e.Limbs == nil || e.Udder == nil {
+		return errors.New("не возможно рассчитать рейтинг, нет одного из признаков со стобальной оценкой")
+	}
+	e.Rating = (*e.MilkStrength + *e.BodyStructure + *e.Limbs + *e.Udder) / 4.0
+	return nil
 }
