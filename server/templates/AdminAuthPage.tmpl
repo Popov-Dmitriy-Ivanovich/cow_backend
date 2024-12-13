@@ -103,24 +103,26 @@
 <body>
     <div class="form-container">
     <h1>Авторизация</h1>
+        <form id="authForm" onsubmit="sendData(); return false;">
             <input type="text" id="email" name="email" placeholder="Логин" required autocomplete="off">
 
             <input type="password" id="password" name="password" placeholder="Пароль" autocomplete="off" required>
 
-            <button class="submit-button" type="submit" onclick="sendData()">Войти</button>
+            <button class="submit-button" type="submit">Войти</button>
+        </form>
     </div>
 
 </body>
 
 <script>
-    function sendData() {
+        function sendData() {
         const data = {
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
         };
         
         // Отправка данных на сервер
-        fetch('/api/auth/login', {
+        fetch('/api/admin/adminLogin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -135,18 +137,15 @@
             return response.json();
         })
         .then(data => {
-            // Предполагаем, что ваша API возвращает токен в поле "token"
-            const token = data.token;
-            console.log(token);
-            
-            // Сохранение токена в localStorage
-            localStorage.setItem('authToken', token);
-
+            console.log('Успех:', data);
+            const url = `/api/admin`; 
+            window.location.href = url;
         })
         .catch((error) => {
             console.error('Ошибка:', error);
             alert('Ошибка при входе. Проверьте свои учетные данные.');
         });
+        
     }
     
 </script>

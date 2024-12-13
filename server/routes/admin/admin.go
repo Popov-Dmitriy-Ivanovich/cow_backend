@@ -1,8 +1,6 @@
 package admin
 
 import (
-	"cow_backend/routes/auth"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,9 +10,11 @@ type Admin struct {
 func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/admin")
 	apiGroup.GET("/login", s.Login())
+	apiGroup.POST("/adminLogin", s.AdminLogin())
+	apiGroup.GET("/adminLogout", s.AdminLogout())
 
 	adminGroup := apiGroup.Group("")
-	adminGroup.Use(auth.AuthMiddleware(auth.Admin))
+	adminGroup.Use(AdminMiddleware())
 	{
 		adminGroup.GET("", s.Index())
 		adminGroup.GET("/cowTable", s.CheckCowTable())
