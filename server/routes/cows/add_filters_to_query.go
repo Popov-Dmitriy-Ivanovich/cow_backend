@@ -58,8 +58,8 @@ type CowsFilter struct { // Фильтр коров
 
 func AddFiltersToQuery(bodyData cows_filter.CowsFilter, query *gorm.DB) (*gorm.DB, error) {
 	cfm := cows_filter.NewCowFilteredModel(bodyData, query)
-	if err := filters.ApplyFilters(cfm, 
-		cows_filter.ByAbort{}, 
+	if err := filters.ApplyFilters(cfm,
+		cows_filter.ByAbort{},
 		cows_filter.ByAnyIllneses{},
 		cows_filter.ByBirkingDate{},
 		cows_filter.ByBreed{},
@@ -80,9 +80,9 @@ func AddFiltersToQuery(bodyData cows_filter.CowsFilter, query *gorm.DB) (*gorm.D
 		cows_filter.BySex{},
 		cows_filter.ByStillBorn{},
 		cows_filter.ByTwins{},
-		cows_filter.ByMonogeneticIllnesses{}); 
-		err != nil {
-			return nil, err
-		}
+		cows_filter.ByMonogeneticIllnesses{},
+		cows_filter.OrderBy{}); err != nil {
+		return nil, err
+	}
 	return cfm.GetQuery(), nil
 }

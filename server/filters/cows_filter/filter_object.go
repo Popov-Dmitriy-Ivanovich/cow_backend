@@ -48,5 +48,6 @@ type CowsFilter struct { // Фильтр коров
 	CreatedAtFrom *string `validate:"optional"`
 	CreatedAtTo   *string `validate:"optional"`
 
-	OrderBy *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"
+	OrderBy     *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"
+	OrderByDesc *bool   // true - в порядке убывания, false - в порядке возрастания
 }

@@ -2427,6 +2427,10 @@ const docTemplate = `{
                     "description": "Может принимать следующие и только следующие значения: null, \"RSHN\", \"InventoryNumber\", \"Name\", \"HozName\", \"BirthDate\"",
                     "type": "string"
                 },
+                "orderByDesc": {
+                    "description": "true - в порядке убывания, false - в порядке возрастания",
+                    "type": "boolean"
+                },
                 "pageNumber": {
                     "description": "Номер страницы для отображения",
                     "type": "integer",
