@@ -47,4 +47,6 @@ type CowsFilter struct { // Фильтр коров
 	IsGenotyped   *bool   `validate:"optional"`
 	CreatedAtFrom *string `validate:"optional"`
 	CreatedAtTo   *string `validate:"optional"`
+
+	OrderBy *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"
 }

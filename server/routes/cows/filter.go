@@ -4,6 +4,7 @@ import (
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"encoding/json"
+	"sort"
 	"time"
 
 	// "fmt"
@@ -42,6 +43,48 @@ type FilterSerializedCow struct {
 	Events                    []models.Event              `json:",omitempty" validate:"optional"`
 	IsGenotyped               *bool                       `json:",omitempty" validate:"optional"`
 	CreatedAt                 *models.DateOnly            `json:",omitempty" validate:"optional"`
+}
+
+var orderFunctionsMap = map[string]func(FilterSerializedCow, FilterSerializedCow) bool{
+	"RSHN": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.RSHNNumber == nil {
+			return false
+		}
+		if r.RSHNNumber == nil {
+			return true
+		}
+		return *l.RSHNNumber < *r.RSHNNumber
+	},
+	"InventoryNumber": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.InventoryNumber == nil {
+			return false
+		}
+		if r.InventoryNumber == nil {
+			return true
+		}
+		return *l.InventoryNumber < *r.InventoryNumber
+	},
+	"Name": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.Name == "" {
+			return false
+		}
+		if r.Name == "" {
+			return true
+		}
+		return l.Name < r.Name
+	},
+	"HozName": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.HozName == nil {
+			return false
+		}
+		if r.HozName == nil {
+			return true
+		}
+		return *l.HozName < *r.HozName
+	},
+	"BirthDate": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		return l.BirthDate.Before(r.BirthDate.Time)
+	},
 }
 
 func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
@@ -284,6 +327,17 @@ func (c *Cows) Filter() func(*gin.Context) {
 		res := make([]FilterSerializedCow, 0, len(dbCows))
 		for _, c := range dbCows {
 			res = append(res, serializeByFilter(&c, &bodyData))
+		}
+
+		if bodyData.OrderBy != nil {
+			orderFunc, ok := orderFunctionsMap[*bodyData.OrderBy]
+			if ok {
+				sort.Slice(res, func(i, j int) bool {
+					l := res[i]
+					r := res[j]
+					return orderFunc(l, r)
+				})
+			}
 		}
 		// fmt.Print(query)
 		c.JSON(200, gin.H{

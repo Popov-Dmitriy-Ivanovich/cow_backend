@@ -662,6 +662,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/checkEmail": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "REGISTER"
+                ],
+                "summary": "CHECK EMAIL",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email of user to check",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "consumes": [
@@ -695,8 +736,15 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "422": {
-                        "description": "Unprocessable Entity",
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {}
@@ -1887,10 +1935,10 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "farmId": {
+                "farm": {
                     "type": "integer"
                 },
-                "nameSurnamePatronimic": {
+                "fullname": {
                     "type": "string"
                 },
                 "password": {
@@ -1898,6 +1946,9 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string"
+                },
+                "region": {
+                    "type": "integer"
                 },
                 "role": {
                     "type": "integer"
@@ -2371,6 +2422,10 @@ const docTemplate = `{
                     "items": {
                         "type": "integer"
                     }
+                },
+                "orderBy": {
+                    "description": "Может принимать следующие и только следующие значения: null, \"RSHN\", \"InventoryNumber\", \"Name\", \"HozName\", \"BirthDate\"",
+                    "type": "string"
                 },
                 "pageNumber": {
                     "description": "Номер страницы для отображения",

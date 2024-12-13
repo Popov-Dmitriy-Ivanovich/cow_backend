@@ -53,14 +53,16 @@ definitions:
     properties:
       email:
         type: string
-      farmId:
+      farm:
         type: integer
-      nameSurnamePatronimic:
+      fullname:
         type: string
       password:
         type: string
       phone:
         type: string
+      region:
+        type: integer
       role:
         type: integer
     type: object
@@ -426,6 +428,10 @@ definitions:
         items:
           type: integer
         type: array
+      orderBy:
+        description: 'Может принимать следующие и только следующие значения: null,
+          "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"'
+        type: string
       pageNumber:
         default: 1
         description: Номер страницы для отображения
@@ -1426,6 +1432,33 @@ paths:
       summary: Get list of years
       tags:
       - Analitics
+  /auth/checkEmail:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: email of user to check
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: CHECK EMAIL
+      tags:
+      - REGISTER
   /auth/login:
     post:
       consumes:
@@ -1446,8 +1479,13 @@ paths:
             items:
               type: string
             type: array
-        "422":
-          description: Unprocessable Entity
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: {}
+            type: object
+        "401":
+          description: Unauthorized
           schema:
             additionalProperties: {}
             type: object
