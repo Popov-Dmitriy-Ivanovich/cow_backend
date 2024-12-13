@@ -49,6 +49,26 @@
 
     </style>
 </head>
+<script>
+function checkAuth() {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+        console.log("error 1")
+        window.location.href = '/api/admin/login';
+    } else {
+        const isValid = validateToken(token);
+        if (!isValid) {
+            console.log("error 2")
+            window.location.href = '/login';
+        }
+    }
+}
+
+
+// Вызываем функцию проверки при загрузке страницы
+checkAuth();
+</script>
 <body>
     <div style="
         display: flex; 
@@ -125,5 +145,6 @@
         </div>
     </div>
 
-</body></html>
+</body>
+</html>
 {{ end }}

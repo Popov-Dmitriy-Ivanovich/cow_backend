@@ -1,6 +1,8 @@
 package admin
 
 import (
+	"cow_backend/routes/auth"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -9,28 +11,33 @@ type Admin struct {
 
 func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/admin")
-	apiGroup.GET("/cowTable", s.CheckCowTable())
-	apiGroup.GET("/checkUsers", s.CheckUsersTable())
-	apiGroup.GET("/createUser", s.CreateUser())
-	apiGroup.GET("/checkHoldings", s.CheckHozTable(1))
-	apiGroup.GET("/createHolding", s.CreateHolding())
-	apiGroup.GET("/checkHozs", s.CheckHozTable(2))
-	apiGroup.GET("/createHoz", s.CreateHoz())
-	apiGroup.GET("/checkFarms", s.CheckHozTable(3))
-	apiGroup.GET("/createFarm", s.CreateFarm())
-	apiGroup.GET("/checkEmail", s.checkEmail())
-	apiGroup.POST("/approveCows", s.ApproveCows())
-	apiGroup.POST("/newUser", s.NewUser())
-	apiGroup.POST("/newHolding", s.NewHolding())
-	apiGroup.POST("/newHoz", s.NewHoz())
-	apiGroup.POST("/newFarm", s.NewFarm())
-	apiGroup.DELETE("/deleteUser/:id", s.DeleteUser())
-	apiGroup.DELETE("/deleteHoz/:id", s.DeleteHoz())
-	apiGroup.GET("/userPage/:id", s.UpdateUserPage())
-	apiGroup.GET("/holdingPage/:id", s.UpdateFarmPage(1))
-	apiGroup.GET("/hozPage/:id", s.UpdateFarmPage(2))
-	apiGroup.GET("/farmPage/:id", s.UpdateFarmPage(3))
-	apiGroup.PUT("/updateUser/:id", s.UpdateUser())
-	apiGroup.PUT("/updateFarm/:id", s.UpdateFarm())
-	apiGroup.GET("", s.Index())
+	apiGroup.GET("/login", s.Login())
+
+	adminGroup := apiGroup.Group("")
+	adminGroup.Use(auth.AuthMiddleware(auth.Admin))
+	adminGroup.GET("", s.Index())
+	adminGroup.GET("/cowTable", s.CheckCowTable())
+	adminGroup.GET("/checkUsers", s.CheckUsersTable())
+	adminGroup.GET("/createUser", s.CreateUser())
+	adminGroup.GET("/checkHoldings", s.CheckHozTable(1))
+	adminGroup.GET("/createHolding", s.CreateHolding())
+	adminGroup.GET("/checkHozs", s.CheckHozTable(2))
+	adminGroup.GET("/createHoz", s.CreateHoz())
+	adminGroup.GET("/checkFarms", s.CheckHozTable(3))
+	adminGroup.GET("/createFarm", s.CreateFarm())
+	adminGroup.GET("/checkEmail", s.checkEmail())
+	adminGroup.POST("/approveCows", s.ApproveCows())
+	adminGroup.POST("/newUser", s.NewUser())
+	adminGroup.POST("/newHolding", s.NewHolding())
+	adminGroup.POST("/newHoz", s.NewHoz())
+	adminGroup.POST("/newFarm", s.NewFarm())
+	adminGroup.DELETE("/deleteUser/:id", s.DeleteUser())
+	adminGroup.DELETE("/deleteHoz/:id", s.DeleteHoz())
+	adminGroup.GET("/userPage/:id", s.UpdateUserPage())
+	adminGroup.GET("/holdingPage/:id", s.UpdateFarmPage(1))
+	adminGroup.GET("/hozPage/:id", s.UpdateFarmPage(2))
+	adminGroup.GET("/farmPage/:id", s.UpdateFarmPage(3))
+	adminGroup.PUT("/updateUser/:id", s.UpdateUser())
+	adminGroup.PUT("/updateFarm/:id", s.UpdateFarm())
+
 }

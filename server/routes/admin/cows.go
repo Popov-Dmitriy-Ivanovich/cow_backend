@@ -12,7 +12,7 @@ import (
 func (s *Admin) CheckCowTable() func(*gin.Context) {
 	return func(c *gin.Context) {
 		db := models.GetDb()
-		pageStr := c.Query("page") // Get the requested page number from the query string.
+		pageStr := c.Query("page")
 		page, err := strconv.Atoi(pageStr)
 		if err != nil {
 			page = 1

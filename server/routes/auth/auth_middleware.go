@@ -24,11 +24,12 @@ func AuthMiddleware(requiredRole ...RoleType) gin.HandlerFunc {
 		token := c.GetHeader("Authorization")
 		claims := &JwtClaims{}
 		token = strings.TrimPrefix(token, "Bearer ")
+		fmt.Println("token:", token)
 		jwtToken, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("JWT_KEY")), nil
 		})
 
-		fmt.Println(token)
+		fmt.Println("token:", token)
 
 		if err != nil || !jwtToken.Valid {
 			c.JSON(401, err.Error())
@@ -38,6 +39,9 @@ func AuthMiddleware(requiredRole ...RoleType) gin.HandlerFunc {
 
 		isAuthorized := false
 		userRole := GetRole(claims.Role)
+		if userRole == Admin {
+			isAuthorized = true
+		}
 		for _, role := range requiredRole {
 			if userRole == role {
 				isAuthorized = true
