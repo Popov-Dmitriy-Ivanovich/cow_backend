@@ -86,11 +86,12 @@
     <div class="form-example">
         <h1>Загрузка gtc</h1>
         <form action="/api/load/gtcFile" method="post" enctype="multipart/form-data">
-            <label for="gtc">Выберите файл:</label>
-            <input type="file" id="gtc" name="gtc" required>
+            <label for="gtc">Выберите gtc файлы:</label>
+            <input type="file" id="gtc" name="gtc" required multiple>
 
-            <label for="GeneticID">ID таблицы genetic</label>
-            <input type="text" id="GeneticID" name="GeneticID" required>
+            <label for="csv">Выберите csv файл:</label>
+            <input type="file" id="csv" name="csv" required>
+            
             <input type="submit" value="Загрузить">
         </form>
     </div>
