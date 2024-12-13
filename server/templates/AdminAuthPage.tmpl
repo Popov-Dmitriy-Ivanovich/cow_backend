@@ -137,29 +137,11 @@
         .then(data => {
             // Предполагаем, что ваша API возвращает токен в поле "token"
             const token = data.token;
-            console.log('Успех:', token);
+            console.log(token);
             
             // Сохранение токена в localStorage
             localStorage.setItem('authToken', token);
 
-            fetch ('/api/admin',
-                headres: {
-                    'Authorization' : 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(if (!response.ok) {
-                console.error('Ошибка сервера:', response.status);
-                throw new Error('Неудалось выполнить вход');
-                }
-                window.location.href = '/api/admin';
-                return response.json();
-            )
-            .catch((error) => {
-                console.error('Ошибка:', error);
-                alert('Ошибка при входе. Проверьте свои учетные данные.');
-            });
         })
         .catch((error) => {
             console.error('Ошибка:', error);

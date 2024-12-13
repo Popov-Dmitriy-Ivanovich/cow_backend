@@ -16,7 +16,7 @@ func (s *Admin) CreateUser() func(*gin.Context) {
 		roles := []models.Role{}
 		db.Order("name").Where("type = 2").Find(&farms)
 		db.Order("name").Find(&regions)
-		db.Find(&roles)
+		db.Where("id != 4").Find(&roles)
 
 		c.HTML(http.StatusOK, "AdminCreateUserPage.tmpl", gin.H{
 			"title":   "Создание пользователя",

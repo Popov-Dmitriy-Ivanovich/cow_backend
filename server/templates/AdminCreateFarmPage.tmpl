@@ -163,7 +163,7 @@
 
         <textarea id="address" name="address" rows="2" placeholder="Адрес" required></textarea>
 
-        <button class="submit-button" type="submit">Создать пользователя</button>
+        <button class="submit-button" type="submit">Создать ферму</button>
     </form>
         <div id="notification" class="notification" style="display:none;">Подтверждено</div>
     </div>
@@ -225,7 +225,7 @@
     console.log(regionId)
         // Очистка списка хозяйств
         const distSelect = document.getElementById('district');
-        distSelect.innerHTML = '<option value="" selected disable hidden>Хозяйства</option>'; // сброс
+        distSelect.innerHTML = '<option value="" selected disable hidden>Район</option>'; // сброс
 
         if (regionId) {
             // Отправка запроса на сервер
@@ -294,7 +294,7 @@
                     if(!hasHoz){
                         const option = document.createElement('option');
                         option.value = "";  
-                        option.textContent = "Нет районов в регионе";
+                        option.textContent = "Нет хозяйств в регионе";
                         option.disabled = true;
                         option.selected = true;
                         hozSelect.appendChild(option);

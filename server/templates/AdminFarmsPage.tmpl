@@ -354,7 +354,7 @@
 
     function edit() {
         if (selectedId !== null) {
-            const url = `/api/admin/createFarm`; 
+            const url = `/api/admin/farmPage/${selectedId}`; 
             window.location.href = url; 
         } else {
             alert("Пожалуйста, выберите ферму для редактирования.");
