@@ -29,8 +29,6 @@ func AuthMiddleware(requiredRole ...RoleType) gin.HandlerFunc {
 			return []byte(os.Getenv("JWT_KEY")), nil
 		})
 
-		fmt.Println("token:", token)
-
 		if err != nil || !jwtToken.Valid {
 			c.JSON(401, err.Error())
 			c.Abort()
