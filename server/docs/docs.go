@@ -1850,6 +1850,77 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/create": {
+            "post": {
+                "description": "Возращает список полов",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get list of sexes",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.createUserData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Sex"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/user/verifyEmail": {
+            "get": {
+                "description": "Запрос на валидацию имэйла",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get list of sexes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Sex"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -3220,6 +3291,119 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
+        },
+        "user.createUserData": {
+            "type": "object",
+            "properties": {
+                "newHold": {
+                    "$ref": "#/definitions/user.holdData"
+                },
+                "newHoz": {
+                    "$ref": "#/definitions/user.hozData"
+                },
+                "newUser": {
+                    "$ref": "#/definitions/user.userData"
+                }
+            }
+        },
+        "user.holdData": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cowsCount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hozNumber": {
+                    "type": "string"
+                },
+                "inn": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.hozData": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cowsCount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hozNumber": {
+                    "type": "string"
+                },
+                "inn": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parrentId": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.userData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "hozId": {
+                    "type": "integer"
+                },
+                "nameSurnamePatronimic": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "regionId": {
+                    "type": "integer"
+                },
+                "roleId": {
+                    "type": "integer"
+                }
+            }
         }
     },
     "securityDefinitions": {
@@ -3236,7 +3420,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "genmilk.ru",
+	Host:             "localhost:8080",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",

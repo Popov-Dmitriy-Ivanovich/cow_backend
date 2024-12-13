@@ -981,10 +981,84 @@ definitions:
       id:
         type: integer
     type: object
+  user.createUserData:
+    properties:
+      newHold:
+        $ref: '#/definitions/user.holdData'
+      newHoz:
+        $ref: '#/definitions/user.hozData'
+      newUser:
+        $ref: '#/definitions/user.userData'
+    type: object
+  user.holdData:
+    properties:
+      address:
+        type: string
+      cowsCount:
+        type: integer
+      description:
+        type: string
+      districtId:
+        type: string
+      email:
+        type: string
+      hozNumber:
+        type: string
+      inn:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      shortName:
+        type: string
+    type: object
+  user.hozData:
+    properties:
+      address:
+        type: string
+      cowsCount:
+        type: integer
+      description:
+        type: string
+      districtId:
+        type: integer
+      email:
+        type: string
+      hozNumber:
+        type: string
+      inn:
+        type: string
+      name:
+        type: string
+      parrentId:
+        type: integer
+      phone:
+        type: string
+      shortName:
+        type: string
+    type: object
+  user.userData:
+    properties:
+      email:
+        type: string
+      hozId:
+        type: integer
+      nameSurnamePatronimic:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      regionId:
+        type: integer
+      roleId:
+        type: integer
+    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: genmilk.ru
+host: localhost:8080
 info:
   contact:
     email: support@swagger.io
@@ -2228,6 +2302,53 @@ paths:
       summary: Get update date and ID
       tags:
       - Sexes
+  /user/create:
+    post:
+      description: Возращает список полов
+      parameters:
+      - description: applied filters
+        in: body
+        name: filter
+        required: true
+        schema:
+          $ref: '#/definitions/user.createUserData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Sex'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of sexes
+      tags:
+      - User
+  /user/verifyEmail:
+    get:
+      description: Запрос на валидацию имэйла
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Sex'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of sexes
+      tags:
+      - User
 securityDefinitions:
   BasicAuth:
     type: basic
