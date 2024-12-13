@@ -1,4 +1,4 @@
-{{ define "AdminAuthPage.tmpl" }}
+{{ define "AdminCreateNewsPage.tmpl"}}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -24,14 +24,37 @@
         margin-bottom: 20px;
     }
 
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+        color: #FFF;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+        background-color: #6f42c1;
+
+        position: absolute;
+        height: 100vh;
+        top: 0;
+        left: 0;
+    }
+
+    .back-button:hover {
+        background-color: #5a32a3; /* Темнее фиолетового при наведении */
+    }
+
     .form-container {
         background-color: #ffffff; /* Белый фон для формы */
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         text-align: center; /* Центрирование текста внутри блока */
-        max-width: 400px; /* Минимальная ширина контейнера */
-
+        max-width: 800px;
+        max-height: 400px;
         margin: 10px;
     }
 
@@ -42,11 +65,15 @@
     }
 
     input[type="text"],
+    input[type="email"],
+    input[type="tel"],
     input[type="password"],
+    input[type="number"],
+    textarea,
     select {
         width: 100%; /* Ширина полей ввода и селекта */
         padding: 10px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         border: 1px solid #ccc; /* Цвет рамки */
         border-radius: 5px; /* Скругление углов */
         box-sizing: border-box; /* Учет границ и отступов в ширине */
@@ -101,26 +128,58 @@
         
 </head>
 <body>
+    <h1>Создать новость</h1>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkNews'">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
+    </button>
     <div class="form-container">
-    <h1>Авторизация</h1>
-            <input type="text" id="email" name="email" placeholder="Логин" required autocomplete="off">
+        <form id="userForm" onsubmit="sendData(); return false;">
+            <input type="text" id="title" name="title" placeholder="Заголовок" required autocomplete="off">
 
-            <input type="password" id="password" name="password" placeholder="Пароль" autocomplete="off" required>
+            <select id="region" name="region" required>
+                <option value="" selected disable hidden>Регион</option>
+                {{ range .regions }}
+                    <option value="{{ .ID }}">{{ .Name }}</option>
+                {{ end }}
+            </select>
 
-            <button class="submit-button" type="submit" onclick="sendData()">Войти</button>
+            <textarea id="description" name="description" rows="15" placeholder="Текст новости"></textarea>
+
+            <button class="submit-button" type="submit">Создать новость</button>
+        </form>
     </div>
 
+    <div id="notification" class="notification" style="display:none;">Подтверждено</div>
 </body>
 
 <script>
+    window.onload = function() {
+        const notification = document.getElementById('notification');
+        
+        // Проверяем, нужно ли показывать уведомление
+        if (localStorage.getItem('showNotification') === 'true') {
+            notification.style.display = 'block';
+
+            // Удаляем уведомление через 1,5 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+                localStorage.removeItem('showNotification');
+            }, 1500);
+        }
+    };
+
+
+    // Функция для отправки данных на сервер
     function sendData() {
         const data = {
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
+            title: document.getElementById('title').value,
+            region: parseInt(document.getElementById('region').value, 10),
+            text: document.getElementById('description').value,
+            date: new Date()
+            
         };
-        
-        // Отправка данных на сервер
-        fetch('/api/auth/login', {
+
+        fetch('/api/admin/newNews', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -130,43 +189,21 @@
         .then(response => {
             if (!response.ok) {
                 console.error('Ошибка сервера:', response.status);
-                throw new Error('Неудалось выполнить вход');
+                throw new Error('Сетевое соединение не установлено');
             }
             return response.json();
         })
         .then(data => {
-            // Предполагаем, что ваша API возвращает токен в поле "token"
-            const token = data.token;
-            console.log('Успех:', token);
-            
-            // Сохранение токена в localStorage
-            localStorage.setItem('authToken', token);
-
-            fetch ('/api/admin',
-                headres: {
-                    'Authorization' : 'Bearer ' + token,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(if (!response.ok) {
-                console.error('Ошибка сервера:', response.status);
-                throw new Error('Неудалось выполнить вход');
-                }
-                window.location.href = '/api/admin';
-                return response.json();
-            )
-            .catch((error) => {
-                console.error('Ошибка:', error);
-                alert('Ошибка при входе. Проверьте свои учетные данные.');
-            });
+            console.log('Успех:', data);
         })
         .catch((error) => {
             console.error('Ошибка:', error);
-            alert('Ошибка при входе. Проверьте свои учетные данные.');
         });
+        localStorage.setItem('showNotification', 'true');
+        setTimeout(function() {
+            location.reload();
+        }, 100);
     }
-    
 </script>
 </html>
 {{ end }}

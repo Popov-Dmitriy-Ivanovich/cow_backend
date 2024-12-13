@@ -49,26 +49,7 @@
 
     </style>
 </head>
-<script>
-function checkAuth() {
-    const token = localStorage.getItem('authToken');
 
-    if (!token) {
-        console.log("error 1")
-        window.location.href = '/api/admin/login';
-    } else {
-        const isValid = validateToken(token);
-        if (!isValid) {
-            console.log("error 2")
-            window.location.href = '/login';
-        }
-    }
-}
-
-
-// Вызываем функцию проверки при загрузке страницы
-checkAuth();
-</script>
 <body>
     <div style="
         display: flex; 
@@ -137,6 +118,16 @@ checkAuth();
                     <div class="AdminChoise">
                         <div class="card_content">
                             Фермы
+                        </div>
+                    </div>
+                </button> 
+            </form>
+
+            <form action="/api/admin/checkNews">
+                <button class="AdminChoiseButton" type="submit">
+                    <div class="AdminChoise">
+                        <div class="card_content">
+                            Новости
                         </div>
                     </div>
                 </button> 

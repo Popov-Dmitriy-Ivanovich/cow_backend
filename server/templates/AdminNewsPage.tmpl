@@ -1,0 +1,392 @@
+{{ define "AdminNewsPage.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;  
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            margin-left: 60px;
+            margin-right: 12px;
+        }
+
+        .header {
+            position: rel;
+            height: 60px
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+            color: #FFF;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            background-color: #6f42c1;
+
+            position: absolute;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+
+        .back-button:hover {
+            background-color: #5a32a3; /* Темнее фиолетового при наведении */
+        }
+
+        h1 {
+            color: #6f42c1;  
+        }
+        
+        .admin-select-button {
+            position: relative;
+            left: 10px
+        }
+
+        .container-table {
+            margin-top: 30px;
+            width: 100%;
+            height: 75vh;
+            overflow: scroll;
+            background-color: #fff;
+        }
+        
+        table {
+            width: 100%;  
+            border-collapse: collapse;  
+            background-color: #fff;  
+            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+        }
+
+        th {
+            position: sticky;
+            top: 0px;
+            z-index: 999;
+        }
+
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #dddddd;  
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #6f42c1;  
+            color: white;  
+        }
+
+        tr:hover {
+            background: #e8e8e8;
+            cursor: pointer;
+        }
+
+        .selected-row {
+            background-color: blue; /* Цвет фона для выделенной строки */
+            color: white; /* Цвет текста для читаемости */
+        } 
+
+        .selected-row:hover {
+            background-color: #002a8c;
+        } 
+
+        .long_word_td_div::-webkit-scrollbar{
+            display: none;
+        }
+        .long_word_td_div{
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .pagination-container {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;  
+            margin: 5px 0;  
+        }
+
+        .pagination ul {
+            list-style: none;  
+            padding: 0;  
+        }
+
+        .pagination .page-item {
+            margin: 0 5px;  
+        }
+
+        .pagination .page-item .page-link {
+            display: inline-block;  
+            padding: 10px 15px;  
+            border: 1px solid #6f42c1;  
+            border-radius: 5px;  
+            color: #6f42c1;  
+            text-decoration: none;  
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #6f42c1;  
+            color: white;  
+        }
+
+        .pagination .page-item .page-link:hover {
+            background-color: #5c37a0;  
+            color: white;  
+        }
+        
+        .confirm .check-button {
+            padding: 10px 15px;  
+            border: 1px solid #6f42c1;  
+            border-radius: 5px;  
+            background-color: #6f42c1;  
+            color: white;  
+            cursor: pointer;  
+        }
+
+        .confirm .check-button:hover {
+            background-color: #5c37a0;  
+        }
+
+        .current-page {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: lightgreen;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .create-button {
+            position: absolute;
+            bottom: 20px;
+            right: 405px; /* Меняем правую позицию на левую */
+            background-color: #00ad0c; /* Синий цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-left: 15px; /* Отступ слева, если необходимо */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .create-button:hover {
+            background-color: #029c0c; /* Темно-синий при наведении */
+        }
+
+        .edit-button {
+            position: absolute;
+            bottom: 20px;
+            right: 270px; /* Меняем правую позицию на левую */
+            background-color: #007bff; /* Синий цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-left: 15px; /* Отступ слева, если необходимо */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .edit-button:hover {
+            background-color: #0056b3; /* Темно-синий при наведении */
+        }
+
+        .delete-button {
+            position: absolute;
+            bottom: 20px;
+            right: 160px;
+            background-color: #b30000; /* Красный цвет фона */
+            color: white; /* Белый цвет текста */
+            border: none; /* Без границ */
+            padding: 10px 15px; /* Отступы */
+            margin-right: 15px; /* Отступ справа */
+            cursor: pointer; /* Указатель при наведении */
+            border-radius: 5px; /* Закругленные углы */
+        }
+
+        .delete-button:hover {
+            background-color: darkred; /* Темно-красный при наведении */
+        }
+
+         .current-page {
+            background-color: #6f42c1;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Список новостей</h1>
+    </div>
+    <button class="back-button" onclick="window.location.href='/api/admin'">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
+    </button>
+    <div class="container-table">
+        <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Дата</th>
+                <th>Регион</th>
+                <th>Заголовок</th>
+                <th>Текст</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .news}}
+            <tr onclick="selectRow({{.ID}}, this)">
+                <td>{{if .ID}}{{.ID}}{{end}}</td>
+                <td>{{if .Date}}{{.Date}}{{end}}</td>
+                <td>{{if .RegionId}}{{.Region.Name}}{{end}}</td>
+                <td>{{if .Title}}{{.Title}}{{end}}</td>
+                <td>{{if .Text}}{{.Text}}{{end}}</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+    </div>
+    
+    <div class="pagination-container">
+        <div class="pagination">
+            {{if gt .totalPages 1}}
+                <ul class="pagination justify-content-center">
+                    {{if le .totalPages 5}}
+                        {{range $i := seq 1 .totalPages}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                    {{else}}
+                        {{range $i := seq 1 4}}
+                            <li class="page-item {{if eq $i $.currentPage}}active{{end}}">
+                                <a class="page-link" href="?page={{$i}}">{{$i}}</a>
+                            </li>
+                        {{end}}
+                        {{if ne $.currentPage 5}}
+                            <li class="page-item">
+                                <button class="page-link" onclick="goToPage()">...</button>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{.totalPages}}">{{.totalPages}}</a>
+                            </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+            {{end}}
+        </div>
+    </div>
+    <button class="create-button" onclick="create()">Создать</button>
+    <button class="edit-button" onclick="edit()">Редактировать</button>
+    <button class="delete-button" onclick="deleteNews()">Удалить</button>
+    <div class="current-page">Страница {{.currentPage}}</div>
+
+</body>
+<script>
+    function goToPage() {
+        let page = prompt("Введите номер страницы:");
+        page = parseInt(page);
+        
+        if (!isNaN(page) && page > 0 && page <= {{.totalPages}}) {
+            window.location.href = "?page=" + page;
+        } else {
+            alert("Некорректный номер страницы. Пожалуйста, введите число от 1 до " + {{.totalPages}} + ".");
+        }
+    }
+
+    let selectedId = null; // Переменная для хранения ID
+    let selectedRow = null; // Переменная для хранения выбранной строки
+
+    function selectRow(Id, row) {
+        if (selectedRow) {
+        selectedRow.classList.remove('selected-row'); // Убираем выделение с предыдущей строки
+        }
+        
+        selectedId = Id; // Запоминаем ID
+        selectedRow = row; // Сохраняем ссылку на текущую строку
+        selectedRow.classList.add('selected-row');
+    }
+
+    function create() {
+        const url = `/api/admin/createNews`; 
+        window.location.href = url; 
+    }
+
+    function edit() {
+        if (selectedId !== null) {
+            const url = `/api/admin/newsPage/${selectedId}`; 
+            window.location.href = url; 
+        } else {
+            alert("Пожалуйста, выберите новость для редактирования.");
+        }
+    }
+
+    function deleteNews() {
+    if (selectedId === null) {
+        alert("Пожалуйста, выберите новость для удаления.");
+        return;
+    }
+    
+    if (confirm("Вы уверены, что хотите удалить эту новость?")) {
+
+        fetch(`/api/admin/deleteNews/${selectedId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            console.log(selectedId, response)
+            if (response.ok) {
+                alert("Новость успешно удалена.");
+                location.reload();
+            } else {
+                alert("Ошибка при удалении новости.");
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert("Произошла ошибка при удалении новости.");
+        });
+    }
+}
+
+
+</script>
+</html>
+{{ end }}

@@ -48,3 +48,23 @@ func (s *Admin) DeleteHoz() func(*gin.Context) {
 	}
 
 }
+
+func (s *Admin) DeleteNews() func(*gin.Context) {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+		news := models.News{}
+		db := models.GetDb()
+		if err := db.First(&news, id).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Новость с таким ID не найдена"})
+			return
+		}
+
+		if err := db.Delete(&news).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Новость успешно удалена"})
+
+	}
+}
