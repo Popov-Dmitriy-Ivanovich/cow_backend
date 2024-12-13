@@ -107,11 +107,11 @@ func (u *User) Create() func(*gin.Context) {
 		to := []string{userData.NewUser.Email}
 		smtpHost := os.Getenv("SMTP_HOST")
 		smtpPort := os.Getenv("SMTP_PORT")
-		message := []byte("From: genmilk " + os.Getenv("EMAIL_FROM") + "\r\n" +
+		message := []byte(
 			"To: " + userData.NewUser.Email + "\r\n" +
-			"Subject: Подтвердите эл. почту\r\n" +
-			"\r\n" +
-			"Для подтверждения почты перейдите по ссылке: https://genmilk.ru/api/user/verifyEmail?data=" + accessString + " .\r\n")
+				"Subject: Подтвердите эл. почту\r\n" +
+				"\r\n" +
+				"Для подтверждения почты перейдите по ссылке: https://genmilk.ru/api/user/verifyEmail?data=" + accessString + " .\r\n")
 		auth := smtp.PlainAuth("", from, password, smtpHost)
 		fmt.Println(from, password)
 		if err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message); err != nil {
