@@ -22,6 +22,7 @@ func (s *Admin) CheckUsersTable() func(*gin.Context) {
 		offset := (page - 1) * limit
 		users := []models.User{}
 		db.
+			Where("role_id != 4").
 			Preload("Farm").
 			Preload("Region").
 			Preload("Role").

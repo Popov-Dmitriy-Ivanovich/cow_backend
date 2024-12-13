@@ -1,4 +1,4 @@
-{{ define "AdminUpdateHoldingPage.tmpl" }}
+{{ define "AdminUpdateNewsPage.tmpl" }}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -53,7 +53,8 @@
         padding: 20px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         text-align: center; /* Центрирование текста внутри блока */
-        max-width: 400px; /* Минимальная ширина контейнера */
+        max-width: 800px;
+        max-height: 400px;
         margin: 10px;
     }
 
@@ -72,7 +73,7 @@
     select {
         width: 100%; /* Ширина полей ввода и селекта */
         padding: 10px;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
         border: 1px solid #ccc; /* Цвет рамки */
         border-radius: 5px; /* Скругление углов */
         box-sizing: border-box; /* Учет границ и отступов в ширине */
@@ -127,44 +128,27 @@
         
 </head>
 <body>
-    <h1>Редактировать холдинг</h1>
-    <button class="back-button" onclick="window.location.href='/api/admin/checkHoldings'">
+    <h1>Редактировать пользователя</h1>
+    <button class="back-button" onclick="window.location.href='/api/admin/checkNews'">
         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
     </button>
     <div class="form-container">
-        <input type="text" id="holding_number" name="holding_number" placeholder="{{if .farm.HozNumber}}{{.farm.HozNumber}}{{else}}Номер холдинга{{end}}" required>
+            <input type="text" id="title" name="title" placeholder="{{if .news.Title}}{{.news.Title}}{{else}}Заголовок{{end}}" required>
 
-        <select id="region" name="region" onchange="fetchDistricts(this.value)">
-            <option value="{{.farm.District.RegionId}}" selected disable hidden >{{if .farm.District.Region.Name}}{{.farm.District.Region.Name}}{{else}}Регион{{end}}</option>
-            {{ range .regions }}
-                <option value="{{ .ID }}">{{ .Name }}</option>
-            {{ end }}
-        </select>
+            <select id="region" name="region">
+                <option value="{{.news.RegionId}}" selected disable hidden >{{.news.Region.Name}}</option>
+                {{ range .regions }}
+                    <option value="{{ .ID }}">{{ .Name }}</option>
+                {{ end }}
+            </select>
 
-        <select id="district" name="district" required>
-            <option value="{{.farm.DistrictId}}" selected disable hidden>{{if .farm.District.Name}}{{.farm.District.Name}}{{else}}Район{{end}}</option>
-            {{ range .districts }}
-                <option value="{{ .ID }}">{{ .Name }}</option>
-            {{ end }}
-        </select>
-        
-        <input type="text" id="fullname" name="fullname" placeholder="{{if .farm.Name}}{{.farm.Name}}{{else}}Полное название{{end}}" required>
+            <textarea id="description" name="description" rows="15" placeholder="{{if .news.Text}}{{.news.Text}}{{else}}Текст новости{{end}}" required></textarea>
 
-        <input type="text" id="name" name="name" placeholder="{{if .farm.NameShort}}{{.farm.NameShort}}{{else}}Название{{end}}" required>
-
-        <input type="text" id="inn" name="inn" placeholder="{{if .farm.Inn}}{{.farm.Inn}}{{else}}ИНН{{end}}" required>
-
-        <textarea id="address" name="address" rows="2" placeholder="{{if .farm.Address}}{{.farm.Address}}{{else}}Адрес{{end}}" required></textarea>
-
-        <input type="tel" id="phone" name="phone" placeholder="{{if .farm.Phone}}{{.farm.Phone}}{{else}}Телефон{{end}}" required>
-
-        <input type="email" id="email" name="email" placeholder="{{if .farm.Email}}{{.farm.Email}}{{else}}Email{{end}}" required>
-
-        <textarea id="description" name="description" rows="3" placeholder="{{if .farm.Description}}{{.farm.Description}}{{else}}Описание{{end}}" required></textarea>
-
-        <button class="submit-button" type="submit" onclick="sendData()">Подтвердить</button>
-        <div id="notification" class="notification" style="display:none;">Подтверждено</div>
+            <button class="submit-button" type="submit" onclick="sendData()">Подтвердить</button>
+            <div id="notification" class="notification" style="display:none;">Подтверждено</div>
     </div>
+    
+
     
 </body>
 
@@ -176,6 +160,7 @@
         if (localStorage.getItem('showNotification') === 'true') {
             notification.style.display = 'block';
 
+            // Удаляем уведомление через 1,5 секунды
             setTimeout(() => {
                 notification.style.display = 'none';
                 localStorage.removeItem('showNotification');
@@ -186,18 +171,12 @@
     // Функция для отправки данных на сервер
     function sendData() {
         const data = {
-            holding_number: document.getElementById('holding_number').value,
-            district: document.getElementById('district').value,
-            fullname: document.getElementById('fullname').value,
-            name: document.getElementById('name').value,
-            inn: document.getElementById('inn').value,
-            address: document.getElementById('address').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            description: document.getElementById('description').value,
+            title: document.getElementById('title').value,
+            region: parseInt(document.getElementById('region').value, 10),
+            text: document.getElementById('description').value,
         };
         console.log(data)
-        fetch('/api/admin/updateFarm/{{.farm.ID}}', {
+        fetch('/api/admin/updateNews/{{.news.ID}}', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -223,38 +202,6 @@
         setTimeout(function() {
             location.reload();
         }, 100);
-    }
-
-    function fetchDistricts(regionId) {
-        // Очистка списка хозяйств
-        const distSelect = document.getElementById('district');
-        distSelect.innerHTML = '<option value="" selected disable hidden></option>'; // сброс
-
-        if (regionId) {
-            // Отправка запроса на сервер
-            fetch(`/api/districts`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Сеть не отвечает');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Добавление новых опций в селект
-                    data.forEach(district => {
-                        if (district.RegionId == regionId) { // Пример условия фильтрации
-                            const option = document.createElement('option');
-                            option.value = district.ID; // Используем ID фермы в качестве значения
-                            option.textContent = district.Name; // Название фермы
-                            distSelect.appendChild(option);
-                        }
-                    });
-                     
-                })
-                .catch(error => {
-                    console.error('Ошибка:', error);
-                });
-        }
     }
 </script>
 </html>

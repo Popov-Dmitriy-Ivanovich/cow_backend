@@ -126,12 +126,12 @@
         
 </head>
 <body>
-    <h1>Редактировать хозяйство</h1>
+    <h1>Редактировать ферму</h1>
     <button class="back-button" onclick="window.location.href='/api/admin/checkFarms'">
         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
     </button>
     <div class="form-container">
-        <input type="text" id="holding_number" name="holding_number" placeholder="{{if .farm.HozNumber}}{{.farm.HozNumber}}{{else}}Номер хозяйства{{end}}" required>
+        <input type="text" id="holding_number" name="holding_number" placeholder="{{if .farm.HozNumber}}{{.farm.HozNumber}}{{else}}Номер фермы{{end}}" required>
 
         <select id="region" name="region" onchange="fetchDistricts(this.value)">
             <option value="{{.farm.District.RegionId}}" selected disable hidden >{{if .farm.District.Region.Name}}{{.farm.District.Region.Name}}{{else}}Регион{{end}}</option>

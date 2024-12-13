@@ -1,0 +1,153 @@
+{{ define "AdminAuthPage.tmpl" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4; /* Светлый фон */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Высота на весь экран */
+    }
+
+    h1 {
+        text-align: center;
+        color: #6f42c1; /* Светло-фиолетовый цвет */
+        margin-bottom: 20px;
+    }
+
+    .form-container {
+        background-color: #ffffff; /* Белый фон для формы */
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center; /* Центрирование текста внутри блока */
+        max-width: 400px; /* Минимальная ширина контейнера */
+
+        margin: 10px;
+    }
+
+    label {
+        display: block; /* Блоки для меток */
+        margin: 10px 0 5px;
+        text-align: left; /* Выравнивание текста в левой части */
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+        width: 100%; /* Ширина полей ввода и селекта */
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc; /* Цвет рамки */
+        border-radius: 5px; /* Скругление углов */
+        box-sizing: border-box; /* Учет границ и отступов в ширине */
+        -webkit-appearance: none; /* Убираем стандартный стиль селекта в WebKit-браузерах */
+        -moz-appearance: none; /* Убираем стандартный стиль селекта в Firefox */
+        appearance: none; /* Убираем стандартный стиль селекта для всех других браузеров */
+        background-color: #ffffff; /* Фон выпадающего списка */
+        background-repeat: no-repeat;
+        background-position: right 10px center; /* Позиция стрелки */
+        background-size: 12px; /* Размер стрелки */
+    }
+
+    /* Скрытие кнопок для ввода чисел */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none; /* Скрыть кнопки для WebKit-браузеров */
+        margin: 0; /* Удалить отступы */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield; /* Скрыть кнопки для Firefox */
+    }
+
+    .submit-button {
+        background-color: #6f42c1; /* Светло-фиолетовый цвет кнопки */
+        color: #ffffff; /* Белый текст на кнопке */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Плавное изменение цвета */
+        width: 100%; /* Кнопка занимает всю ширину */
+    }
+
+    .submit-button:hover {
+        background-color: #5a32a1; /* Темнее при наведении */
+    }
+
+    .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: lightgreen;
+            color: black;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+</style>
+        
+</head>
+<body>
+    <div class="form-container">
+    <h1>Авторизация</h1>
+        <form id="authForm" onsubmit="sendData(); return false;">
+            <input type="text" id="email" name="email" placeholder="Логин" required autocomplete="off">
+
+            <input type="password" id="password" name="password" placeholder="Пароль" autocomplete="off" required>
+
+            <button class="submit-button" type="submit">Войти</button>
+        </form>
+    </div>
+
+</body>
+
+<script>
+        function sendData() {
+        const data = {
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+        };
+        
+        // Отправка данных на сервер
+        fetch('/api/admin/adminLogin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Ошибка сервера:', response.status);
+                throw new Error('Неудалось выполнить вход');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Успех:', data);
+            const url = `/api/admin`; 
+            window.location.href = url;
+        })
+        .catch((error) => {
+            console.error('Ошибка:', error);
+            alert('Ошибка при входе. Проверьте свои учетные данные.');
+        });
+        
+    }
+    
+</script>
+</html>
+{{ end }}
