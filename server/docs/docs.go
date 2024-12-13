@@ -24,6 +24,217 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/analitics/checkMilks/years": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/checkMilks/{year}/byDistrict/{district}/byHoz": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "район за который собирается статистика",
+                        "name": "district",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/checkMilks/{year}/byRegion": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/checkMilks/{year}/byRegion/{region}/byDistrict": {
+            "post": {
+                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analitics"
+                ],
+                "summary": "Get list of years",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "год за который собирается статистика",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "регион за который собирается статистика",
+                        "name": "region",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cows_filter.CowsFilter"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/analitics/genotyped/years": {
             "get": {
                 "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
@@ -146,9 +357,11 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/analitics/genotyped/{year}/byDistrict/{district}/hoz": {
             "post": {
-                "description": "Возращает словарь регион - количество живых коров, количество генотипированных",
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
                 "produces": [
                     "application/json"
                 ],
@@ -189,7 +402,7 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHoldStatistics"
+                                    "$ref": "#/definitions/analitics.byHozStatistics"
                                 }
                             }
                         }
@@ -239,62 +452,6 @@ const docTemplate = `{
                                 "type": "object",
                                 "additionalProperties": {
                                     "$ref": "#/definitions/analitics.byHoldStatistics"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Analitics"
-                ],
-                "summary": "Get list of years",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "год за который собирается статистика",
-                        "name": "year",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "холдинг за который собирается статистика",
-                        "name": "hold",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "applied filters",
-                        "name": "filter",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cows_filter.CowsFilter"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHozStatistics"
                                 }
                             }
                         }
@@ -505,6 +662,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/checkEmail": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "REGISTER"
+                ],
+                "summary": "CHECK EMAIL",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "email of user to check",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "consumes": [
@@ -538,8 +736,15 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "422": {
-                        "description": "Unprocessable Entity",
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {}
@@ -933,6 +1138,45 @@ const docTemplate = `{
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/models.Lactation"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/cows/{id}/documents": {
+            "get": {
+                "description": "Возращает генетическую информацию для коровы, null, если нет",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of check milks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищется генетическая информация",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Document"
                             }
                         }
                     },
@@ -1482,7 +1726,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Farms"
+                    "Regions"
                 ],
                 "summary": "Get farm by region id",
                 "parameters": [
@@ -1606,6 +1850,76 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/user/create": {
+            "post": {
+                "description": "Возращает список полов",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get list of sexes",
+                "parameters": [
+                    {
+                        "description": "applied filters",
+                        "name": "filter",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user_create.createUserData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/user_create.createUserData"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/verifyEmail": {
+            "get": {
+                "description": "Запрос на валидацию имэйла",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get list of sexes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Sex"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1619,6 +1933,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "genotyped": {
+                    "type": "integer"
+                },
+                "ill": {
                     "type": "integer"
                 }
             }
@@ -1634,6 +1951,9 @@ const docTemplate = `{
                 },
                 "holdID": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1645,6 +1965,9 @@ const docTemplate = `{
                 },
                 "genotyped": {
                     "type": "integer"
+                },
+                "ill": {
+                    "type": "integer"
                 }
             }
         },
@@ -1655,6 +1978,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "genotyped": {
+                    "type": "integer"
+                },
+                "ill": {
                     "type": "integer"
                 },
                 "regionID": {
@@ -1679,10 +2005,10 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "farmId": {
+                "farm": {
                     "type": "integer"
                 },
-                "nameSurnamePatronimic": {
+                "fullname": {
                     "type": "string"
                 },
                 "password": {
@@ -1690,6 +2016,9 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string"
+                },
+                "region": {
+                    "type": "integer"
                 },
                 "role": {
                     "type": "integer"
@@ -1807,7 +2136,7 @@ const docTemplate = `{
                 "monogeneticIllneses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.GeneticIllness"
+                        "$ref": "#/definitions/models.GeneticIllnessData"
                     }
                 },
                 "name": {
@@ -2164,6 +2493,14 @@ const docTemplate = `{
                         "type": "integer"
                     }
                 },
+                "orderBy": {
+                    "description": "Может принимать следующие и только следующие значения: null, \"RSHN\", \"InventoryNumber\", \"Name\", \"HozName\", \"BirthDate\"",
+                    "type": "string"
+                },
+                "orderByDesc": {
+                    "description": "true - в порядке убывания, false - в порядке возрастания",
+                    "type": "boolean"
+                },
                 "pageNumber": {
                     "description": "Номер страницы для отображения",
                     "type": "integer",
@@ -2467,6 +2804,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.Document": {
+            "type": "object",
+            "properties": {
+                "cowID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Event": {
             "type": "object",
             "properties": {
@@ -2674,11 +3025,11 @@ const docTemplate = `{
                     "description": "ID коровы",
                     "type": "integer"
                 },
-                "geneticIllnesses": {
+                "geneticIllnessesData": {
                     "description": "Список генетических заболеваний, пустой если нет",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.GeneticIllness"
+                        "$ref": "#/definitions/models.GeneticIllnessData"
                     }
                 },
                 "gtcFilePath": {
@@ -2722,6 +3073,42 @@ const docTemplate = `{
                 },
                 "omia": {
                     "description": "Какой-то там ОМИЯ номер",
+                    "type": "string"
+                }
+            }
+        },
+        "models.GeneticIllnessData": {
+            "type": "object",
+            "properties": {
+                "geneticID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "illness": {
+                    "$ref": "#/definitions/models.GeneticIllness"
+                },
+                "illnessID": {
+                    "description": "заболевание",
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/models.GeneticIllnessStatus"
+                },
+                "statusID": {
+                    "description": "статус заболевания",
+                    "type": "integer"
+                }
+            }
+        },
+        "models.GeneticIllnessStatus": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "status": {
                     "type": "string"
                 }
             }
@@ -2775,10 +3162,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "fat305": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "fatAll": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "id": {
                     "type": "integer"
@@ -2790,20 +3177,20 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "milk305": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "milkAll": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "number": {
                     "description": "номер лактации",
                     "type": "integer"
                 },
                 "protein305": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "proteinAll": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "servicePeriod": {
                     "description": "сервис период коровы: время от отела до осеменения",
@@ -2900,6 +3287,119 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "user_create.createUserData": {
+            "type": "object",
+            "properties": {
+                "newHold": {
+                    "$ref": "#/definitions/user_create.holdData"
+                },
+                "newHoz": {
+                    "$ref": "#/definitions/user_create.hozData"
+                },
+                "newUser": {
+                    "$ref": "#/definitions/user_create.userData"
+                }
+            }
+        },
+        "user_create.holdData": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cowsCount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hozNumber": {
+                    "type": "string"
+                },
+                "inn": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_create.hozData": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cowsCount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hozNumber": {
+                    "type": "string"
+                },
+                "inn": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parrentId": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                }
+            }
+        },
+        "user_create.userData": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "hozId": {
+                    "type": "integer"
+                },
+                "nameSurnamePatronimic": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "regionId": {
+                    "type": "integer"
+                },
+                "roleId": {
                     "type": "integer"
                 }
             }

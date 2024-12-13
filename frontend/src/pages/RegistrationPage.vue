@@ -6,7 +6,7 @@
             <div class="login-link" @click="$router.push('/login')">Вход</div>
         </div>
         <label>Регион (область)</label><br>
-        <MultiselectRegions class="region"/>
+        <MultiselectReg class="region"/>
         <br>
         <label>Роль</label>
         <div class="role">
@@ -16,8 +16,20 @@
         </div>
         <label>ФИО</label><br>
         <input type="text" placeholder="Иванов Иван Иванович" class="registration-field" @keyup="valid" id="fio" autocomplete="off"> <br>
-        <label>Название организации</label><br>
-        <input type="text"  class="registration-field"> <br>
+        <label>Хозяйство</label><br>
+        <DMultiselectHoz  class="hoz"/> <br>
+        <div class="hoz-underline">Если нет нужного хозяйства, вы можете <span class="create-hoz">создать</span> его</div>
+
+        <!-- <div class="modal-createhoz">
+            <div class="background-modal">
+                <div class="registrate-title">Создание хозяйства</div>
+                <label>Холдинг</label><br>
+                <input type="text" class="registration-field"><br>
+                <label>Номер хозяйства</label><br>
+                <input type="number" class="registration-field"><br>
+            </div>
+        </div> -->
+
         <label>Электронная почта</label><br>
         <input type="email" placeholder="example@email.com" class="registration-field"> <br>
         <label>Телефон</label><br>
@@ -36,11 +48,12 @@
 </template>
 
 <script>
-import MultiselectRegions from '@/components/MultiselectRegions.vue';
+import MultiselectReg from '@/components/MultiselectReg.vue';
+import DMultiselectHoz from '@/components/testpage/DMultiselectHoz.vue';
 
 export default {
     components: {
-        MultiselectRegions
+        MultiselectReg, DMultiselectHoz
     },
     methods: {
         valid() {
@@ -129,5 +142,43 @@ export default {
     .region {
         max-width: 300px;
         margin: 15px 20px;
+    }
+
+    .hoz {
+        margin: 15px 20px 0 20px;
+    }
+
+    .create-hoz {
+        text-decoration: underline;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .create-hoz:hover {
+        color: black;
+    }
+
+    .hoz-underline {
+        font-size: 90%;
+        color: grey;
+        margin: 0 20px 15px 0;
+    }
+
+    .modal-createhoz {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0, 0.3);
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .background-modal {
+        background-color: white;
+        border-radius: 20px;
+        padding: 50px 80px;
     }
 </style>

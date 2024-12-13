@@ -23,11 +23,7 @@
                     <div>{{ mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="white-block-parent"></div>
                 <div class="main-cow__father animal-block isParent" v-if="Object.keys(father).length" @click="clickToParent(father.ID)">
@@ -38,11 +34,7 @@
                     <div>{{ father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
             </div>
             
@@ -55,11 +47,7 @@
                     <div>{{ grandmother_mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="white-block-grandparent_mini"></div>
                 <div class="main-cow__mother__father animal-block isParent" v-if="Object.keys(grandfather_mother).length"  @click="clickToParent(grandfather_mother.ID)">
@@ -70,26 +58,18 @@
                     <div>{{ grandfather_mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="white-block-grandparent"></div>
                 <div class="main-cow__father__mother animal-block isParent" v-if="Object.keys(grandmother_father).length"  @click="clickToParent(grandmother_father.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ grandmother_father.Name + '♀' || 'Кличка'}}</div><div>♀</div></div>
+                    <div class="name-flex"><div class="parent-name">{{ grandmother_father.Name || 'Кличка'}}</div><div>♀</div></div>
                     <div>{{ grandmother_father.IdentificationNumber || 'Идент. номер'}}</div>
                     <div>{{ grandmother_father.RSHNNumber || 'РСХН'}}</div>
                     <div>{{ grandmother_father.BirthDate || 'Дата рождения'}}</div>
                     <div>{{ grandmother_father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="white-block-grandparent_mini"></div>
                 <div class="main-cow__father__father animal-block isParent" v-if="Object.keys(grandfather_father).length"  @click="clickToParent(grandfather_father.ID)">
@@ -100,11 +80,7 @@
                     <div>{{ grandfather_father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
             </div>
 
@@ -117,11 +93,7 @@
                     <div>{{ mother_grandmother_mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="main-cow__mother__mother__father animal-block isParent" v-if="Object.keys(mother_grandmother_father).length" @click="clickToParent(mother_grandmother_father.ID)">
                     <div class="name-flex"><div class="parent-name">{{ mother_grandmother_father.Name || 'Кличка'}}</div><div>♂</div></div>
@@ -131,11 +103,7 @@
                     <div>{{ mother_grandmother_father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
 
 
@@ -149,11 +117,7 @@
                     <div>{{ mother_grandfather_mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="main-cow__father__mother__father animal-block isParent" v-if="Object.keys(father_grandfather_mother).length" @click="clickToParent(father_grandfather_mother.ID)">
                     <div class="name-flex"><div class="parent-name">{{ father_grandfather_mother.Name || 'Кличка'}}</div><div>♂</div></div>
@@ -163,11 +127,7 @@
                     <div>{{ father_grandfather_mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
 
                 <div class="main-cow__mother__father__mother animal-block isParent" v-if="Object.keys(father_grandmother_mother).length" @click="clickToParent(father_grandmother_mother.ID)">
@@ -178,11 +138,7 @@
                     <div>{{ father_grandmother_mother.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="main-cow__mother__father__father animal-block isParent" v-if="Object.keys(father_grandmother_father).length" @click="clickToParent(father_grandmother_father.ID)">
                     <div class="name-flex"><div class="parent-name">{{ father_grandmother_father.Name || 'Кличка'}}</div><div>♂</div></div>
@@ -192,11 +148,7 @@
                     <div>{{ father_grandmother_father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
 
                 <div class="main-cow__father__father__mother animal-block isParent" v-if="Object.keys(mother_grandfather_father).length" @click="clickToParent(mother_grandfather_father.ID)">
@@ -207,11 +159,7 @@
                     <div>{{ mother_grandfather_father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
                 <div class="main-cow__father__father__father animal-block isParent" v-if="Object.keys(father_grandfather_father).length" @click="clickToParent(father_grandfather_father.ID)">
                     <div class="name-flex"><div class="parent-name">{{ father_grandfather_father.Name || 'Кличка'}}</div><div>♂</div></div>
@@ -221,11 +169,7 @@
                     <div>{{ father_grandfather_father.BreedName || 'Порода'}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
-                    <div class="parent-name">{{'Кличка'}}</div>
-                    <div>{{ 'Идент. номер'}}</div>
-                    <div>{{ 'РСХН'}}</div>
-                    <div>{{ 'Дата рождения'}}</div>
-                    <div>{{ 'Порода'}}</div>
+                    <div>Нет информации</div>
                 </div>
             </div>
         </div>
@@ -299,32 +243,65 @@ export default {
 
             await this.fetchMother();
             await this.fetchFather();
+            console.log(this.mother);
 
             if (Object.keys(this.grandmother_mother).length && this.grandmother_mother.ID) {  //бабушка по матери
                 let response3 = await fetch(`/api/cows/${this.grandmother_mother.ID}`);
                 let result3 = await response3.json();
-                if(result3.Mother.ID) this.mother_grandmother_mother = result3.Mother;
-                if(result3.Father.ID) this.mother_grandmother_father = result3.Father;
+                this.grandmother_mother.BreedName = result3.BreedName;
+
+                if(result3.Mother.ID) {
+                    this.mother_grandmother_mother = result3.Mother;
+                    await this.fetchBreed(this.mother_grandmother_mother.BreedId, this.mother_grandmother_mother);
+                }
+                if(result3.Father.ID) {
+                    this.mother_grandmother_father = result3.Father;
+                    await this.fetchBreed(this.mother_grandmother_father.BreedId, this.mother_grandmother_father)
+                }
             }
             if (Object.keys(this.grandmother_father).length && this.grandmother_father.ID) {  //бабушка по отцу
                 let response4 = await fetch(`/api/cows/${this.grandmother_father.ID}`);
                 let result4 = await response4.json();
-                if(result4.Mother.ID) this.father_grandmother_mother = result4.Mother;
-                if(result4.Father.ID) this.father_grandmother_father = result4.Father;
+                this.grandmother_father.BreedName = result4.BreedName;
+
+                if(result4.Mother.ID) {
+                    this.father_grandmother_mother = result4.Mother;
+                    await this.fetchBreed(this.father_grandmother_mother.BreedId, this.father_grandmother_mother);
+                }
+                if(result4.Father.ID) {
+                    this.father_grandmother_father = result4.Father;
+                    await this.fetchBreed(this.father_grandmother_father.BreedId, this.father_grandmother_father);
+                }
             }
 
             if (Object.keys(this.grandfather_mother).length &&this.grandfather_mother.ID) {  //дедушка по матери
                 let response5 = await fetch(`/api/cows/${this.grandfather_mother.ID}`);
                 let result5 = await response5.json();
-                if(result5.Mother.ID) this.mother_grandfather_mother = result5.Mother;
-                if(result5.Father.ID) this.father_grandfather_mother = result5.Father;
+                this.grandfather_mother.BreedName = result5.BreedName;
+
+                if(result5.Mother.ID) {
+                    this.mother_grandfather_mother = result5.Mother;
+                    await this.fetchBreed(this.mother_grandfather_mother.BreedId, this.mother_grandfather_mother);
+                }
+                if(result5.Father.ID) {
+                    this.father_grandfather_mother = result5.Father;
+                    await this.fetchBreed(this.father_grandfather_mother.BreedId, this.father_grandfather_mother);
+                }
             }
 
             if (Object.keys(this.grandfather_father).length && this.grandfather_father.ID) {  //дедушка по отцу
                 let response6 = await fetch(`/api/cows/${this.grandfather_father.ID}`);
                 let result6 = await response6.json();
-                if(result6.Mother.ID) this.mother_grandfather_father = result6.Mother;
-                if(result6.Father.ID) this.father_grandfather_father = result6.Father;
+                this.grandfather_father.BreedName = result6.BreedName;
+
+                if(result6.Mother.ID) {
+                    this.mother_grandfather_father = result6.Mother;
+                    await this.fetchBreed(this.mother_grandfather_father.BreedId, this.mother_grandfather_father);
+                }
+                if(result6.Father.ID) {
+                    this.father_grandfather_father = result6.Father;
+                    await this.fetchBreed(this.father_grandfather_father.BreedId, this.father_grandfather_father);
+                }
             } 
         },
         async fetchMother() {
@@ -333,6 +310,7 @@ export default {
 
                 let response1 = await fetch(`/api/cows/${this.mother.ID}`);
                 let result1 = await response1.json();
+                this.mother.BreedName = result1.BreedName;
                 if(result1.Father.ID) this.grandfather_mother = result1.Father;
                 if(result1.Mother.ID) this.grandmother_mother = result1.Mother;
             }
@@ -344,9 +322,17 @@ export default {
                 let response2 = await fetch(`/api/cows/${this.father.ID}`);
                 let result2 = await response2.json();
                 console.log(result2, 'otec');
+                this.father.BreedName = result2.BreedName;
                 if(result2.Father.ID) this.grandfather_father = result2.Father;
                 if (result2.Mother.ID) this.grandmother_father = result2.Mother;
                 console.log(this.grandmother_father, 'inside function');
+            }
+        },
+        async fetchBreed(breedID, who) {
+            if(breedID) {
+                let response = await fetch(`/api/breeds/${breedID}`);
+                let result = await response.json();
+                who.BreedName = result.Name;
             }
         },
         clickToParent(id) {
@@ -378,18 +364,21 @@ export default {
 
 .animal-block, .animal-block-noinfo {
     width: 160px;
-    height: 90px;
+    height: 100px;
     background-color: rgb(236, 235, 244);
     border: 1px solid rgb(236, 235, 244);
     margin: 12px 15px;
     border-radius: 10px;
     font-size: 80%;
-    padding: 6px 7px;
+    padding: 10px 12px;
     transition: 0.3s;
 }
 
 .animal-block-noinfo {
     background-color: rgb(249, 248, 253);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* .animal-block:hover {
@@ -412,9 +401,10 @@ export default {
 
 .parent-name {
     color: black;
-
     font-size: 105%;
     font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .white-block-parent {

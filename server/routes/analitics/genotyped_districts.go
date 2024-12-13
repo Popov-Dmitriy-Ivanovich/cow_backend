@@ -38,9 +38,14 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 		}
 		aliveFilter := filterData
 		genotypedFilter := filterData
+		illFilter := filterData
 
 		genotypedFilter.IsGenotyped = new(bool)
 		*genotypedFilter.IsGenotyped = true
+
+		illFilter.HasAnyIllnes = new(bool)
+		*illFilter.HasAnyIllnes = true
+
 		keys := []byDistrictKeys{}
 		db := models.GetDb()
 		yearStr := c.Param("year")
@@ -50,7 +55,7 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 			return
 		}
 		db.Model(&models.District{}).Debug().Where(
-			"WHERE region_id = ? AND EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
+			"region_id = ? AND EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
 				" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND "+
 				" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ?  AND"+
 				" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id)))",
@@ -69,6 +74,12 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 			genotypedCowFilter := cows_filter.NewCowFilteredModel(genotypedFilter, genotypedCowQuery)
 			genotypedCowFilter.Params["year"] = c.Param("year")
 			genotypedCowFilter.Params["district"] = strconv.FormatUint(uint64(key.ID), 10)
+
+			illCowQuery := db.Model(&models.Cow{})
+			illCowFilter := cows_filter.NewCowFilteredModel(illFilter, illCowQuery)
+			illCowFilter.Params["year"] = c.Param("year")
+			illCowFilter.Params["district"] = strconv.FormatUint(uint64(key.ID), 10)
+
 			if err := filters.ApplyFilters(aliveCowFilter,
 				cows_filter.ByAbort{},
 				cows_filter.ByAnyIllneses{},
@@ -126,15 +137,48 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 				return
 			}
 
+			if err := filters.ApplyFilters(illCowFilter,
+				cows_filter.ByAbort{},
+				cows_filter.ByAnyIllneses{},
+				cows_filter.ByBirkingDate{},
+				cows_filter.ByBreed{},
+				cows_filter.ByBrithDate{},
+				cows_filter.ByCalvingDate{},
+				cows_filter.ByControlMilkingDate{},
+				cows_filter.ByCreatedAt{},
+				cows_filter.ByDeath{},
+				cows_filter.ByDepartDate{},
+				cows_filter.ByExterior{},
+				cows_filter.ByHoz{},
+				cows_filter.ByIllDate{},
+				cows_filter.ByInbrindingCoeffByFamily{},
+				cows_filter.ByInbrindingCoeffByGenotype{},
+				cows_filter.ByIsGenotyped{},
+				cows_filter.ByInsemenationDate{},
+				cows_filter.BySearchString{},
+				cows_filter.BySex{},
+				cows_filter.ByStillBorn{},
+				cows_filter.ByTwins{},
+				cows_filter.ByMonogeneticIllnesses{},
+				cows_filter.AliveInYear{},
+				cows_filter.LiveInDistrict{}); err != nil {
+				c.JSON(422, err.Error())
+				return
+			}
+
 			alive := int64(0)
 			genotyped := int64(0)
+			ill := int64(0)
 
 			aliveCowFilter.GetQuery().Debug().Count(&alive)
 			genotypedCowFilter.GetQuery().Debug().Count(&genotyped)
+			illCowFilter.GetQuery().Debug().Count(&ill)
+
 			result[key.Name] = byDistrictStatistics{
 				genotypedStatistics: genotypedStatistics{
 					Alive:     alive,
 					Genotyped: genotyped,
+					Ill:       ill,
 				},
 				DistrictID: key.ID,
 			}

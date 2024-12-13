@@ -14,6 +14,7 @@ type Genotyped struct {
 type genotypedStatistics struct {
 	Alive     int64
 	Genotyped int64
+	Ill       int64
 }
 
 func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
@@ -26,8 +27,7 @@ func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.POST("/years", g.YearsPost())
 	apiGroup.POST("/:year/regions", g.RegionsPost())
 	apiGroup.POST("/:year/byRegion/:region/districts", g.DistrictsPost())
-	apiGroup.POST("/:year/byDistrict/:district/hold", g.HoldingsPost())
-	apiGroup.POST("/:year/byDistrict/:district/byHold/:hold/hoz", g.HozPost())
+	apiGroup.POST("/:year/byDistrict/:district/hoz", g.HozPost())
 }
 
 // @Summary      Get list of years

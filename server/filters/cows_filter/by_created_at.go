@@ -25,7 +25,7 @@ func (f ByCreatedAt) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("created_at BETWEEN ? AND ?", bdFrom, bdTo)
+		query = query.Where("created_at BETWEEN ? AND ?", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC())
 	} else if bodyData.CreatedAtFrom != nil && *bodyData.CreatedAtFrom != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.CreatedAtFrom)
 		if err != nil {
@@ -37,7 +37,7 @@ func (f ByCreatedAt) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("created_at <= ?", bdTo.UTC())
+		query = query.Where("created_at <= ?", bdTo.AddDate(0, 0, 1).UTC())
 	}
 	fm.SetQuery(query)
 	return nil

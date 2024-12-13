@@ -1,4 +1,4 @@
-{{ define "GtcLoadPage.tmpl"}}
+{{ define "DocumentLoadPage.tmpl"}}
 <!DOCTYPE html>
 <html lang="ru">
 <head> 
@@ -14,6 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             position: relative;
         }
 
@@ -43,10 +44,7 @@
             display: block;
             margin-bottom: 20px;
         }
-        input[type="text"] {
-            display: block;
-            margin-bottom: 20px;
-        }
+
         input[type="submit"] {
             background-color: #6f42c1; /* Светло-фиолетовый цвет */
             color: white;
@@ -84,14 +82,14 @@
 <body>
     <button class="back-button" onclick="window.history.back();">Назад</button>
     <div class="form-example">
-        <h1>Загрузка gtc</h1>
-        <form action="/api/load/gtcFile" method="post" enctype="multipart/form-data">
-            <label for="gtc">Выберите gtc файлы:</label>
-            <input type="file" id="gtc" name="gtc" required multiple>
+        <h1>Загрузка коровы</h1>
+        <form action="/api/load/document" method="post" enctype="multipart/form-data">
+            <label for="Document">Выберите файл:</label>
+            <input type="file" id="Document" name="Document" required>
 
-            <label for="csv">Выберите csv файл:</label>
-            <input type="file" id="csv" name="csv" required>
-            
+            <label for="CowID">ID коровы:</label>
+            <input type="text" id="CowID" name="CowID" required>
+
             <input type="submit" value="Загрузить">
         </form>
     </div>

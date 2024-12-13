@@ -106,13 +106,20 @@
         </div>
         <div class="filter-category category-last">
             <div>Наличие моногенных заболеваний</div>
-            <select class="filter-input" v-model="filters.isIll">
-                <option :value="null">не важно</option>
-                <option :value="true">есть</option>
-                <option :value="false">отсутствует</option>
+            <select class="filter-input" v-model="list_ill_parameters">
+                <option :value="0">не важно</option>
+                <option :value="1">есть любое</option>
+                <option :value="2">отсутствуют все</option>
+                <option :value="3">есть из списка</option>
+                <option :value="4">отсутствует(ют) из списка</option>
             </select><br>
-            <div>Заболевание</div>
-            <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/>
+            <div @click="isVisibleIll = !isVisibleIll" class="ill-list-title">> Список заболеваний</div>
+            <!-- <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/> -->
+            <div v-if="isVisibleIll">
+                <div v-for="ill in options" :key="ill.id" class="ill-item">
+                    <label><input type="checkbox" :value="ill.id" v-model="filters.monogeneticIllneses"> {{ ill.name }}</label>
+                </div>
+            </div> 
         </div>
         <div class="filters-buttons">
             <button class="filters-apply" @click.stop="fetchFilters">Применить</button>
@@ -124,11 +131,11 @@
 <script>
 import MultiselectBreeds from '@/components/testpage/DMultiselectBreeds.vue';
 import MultiselectHoz from '@/components/testpage/DMultiselectHoz.vue';
-import MultiselectIllness from '@/components/testpage/DMultiselectIllness.vue';
+//import MultiselectIllness from '@/components/testpage/DMultiselectIllness.vue';
 
 export default {
     components: {
-        MultiselectHoz, MultiselectBreeds, MultiselectIllness
+        MultiselectHoz, MultiselectBreeds, //MultiselectIllness
     },
     data() {
         return {
@@ -159,8 +166,9 @@ export default {
                 inbrindingCoeffByFamilyTo: null,
                 inbrindingCoeffByGenotypeFrom: null,
                 inbrindingCoeffByGenotypeTo: null,
-                monogeneticIllneses: null,
+                monogeneticIllneses: [],
                 isIll: null,
+                hasAnyIllnes: null,
                 isGenotyped: null,
                 illDateFrom: null,
                 illDateTo: null,
@@ -171,6 +179,12 @@ export default {
             clearIllness: false,
 
             exterior: null,
+            options: [],
+
+            checked_ill: [],
+            list_ill_parameters: 0,
+
+            isVisibleIll: false,
         }
     },
     methods: {
@@ -192,11 +206,16 @@ export default {
             let send_filters = this.filters;
             for(let key in this.filters) {
                 this.filters[key] = null;
+                if(key==='monogeneticIllneses') {
+                    this.filters[key] = [];
+                }
             }
             this.exterior = null;
+            this.list_ill_parameters = 0,
             this.clearBreed = !this.clearBreed;
             this.clearHoz = !this.clearHoz;
             this.clearIllness = !this.clearIllness;
+            this.isVisibleIll = false;
             console.log(this.filters, 'сбросить');
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
@@ -238,6 +257,33 @@ export default {
                 this.filters.exteriorFrom = null;
                 this.filters.exteriorTo = null;
             }
+        },
+        list_ill_parameters(new_val) {
+            if (new_val === 0) {
+                this.filters.isIll = null;
+                this.filters.hasAnyIllnes = null;
+            } else if (new_val === 1) {
+                this.filters.isIll = null;
+                this.filters.hasAnyIllnes = true;
+            } else if (new_val === 2) {
+                this.filters.isIll = null;
+                this.filters.hasAnyIllnes = false;
+            } else if (new_val === 3) {
+                this.filters.isIll = true;
+                this.filters.hasAnyIllnes = null;
+            } else if (new_val === 4) {
+                this.filters.isIll = false;
+                this.filters.hasAnyIllnes = null;
+            }
+        }
+    },
+    async created() {
+        this.options = [];
+        const response = await fetch('/api/monogenetic_illnesses');
+        const illness = await response.json();
+        for (let i = 0; i < illness.length; i++) {
+            let ill = {name: illness[i].Name, id: illness[i].ID};
+            this.options.push(ill);
         }
     }
 }
@@ -352,8 +398,16 @@ export default {
     border-top: 1px solid rgb(218, 217, 230);
 }
 
-/* .illness {
-    position: relative;
-    z-index: 300;
-} */
+.ill-item {
+    padding-top: 7px;
+}
+
+.ill-list-title {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.ill-list-title:hover {
+    color: grey;
+}
 </style>

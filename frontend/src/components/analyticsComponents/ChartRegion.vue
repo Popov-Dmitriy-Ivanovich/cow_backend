@@ -2,7 +2,7 @@
     <div class="year-chart">
         <apexchart 
         id="analytics" 
-        width="700" 
+        width="850" 
         type="bar" 
         :options="options" 
         :series="series"

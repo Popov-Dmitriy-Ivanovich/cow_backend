@@ -17,4 +17,5 @@ func (c *Cows) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/:id/health", c.Health())
 	apiGroup.GET("/:id/grades", c.Grades())
 	apiGroup.POST("/filter", c.Filter())
+	apiGroup.GET("/:id/documents", c.Document())
 }

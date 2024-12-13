@@ -17,10 +17,10 @@ export default {
     },
     async created() {
         this.stat = [];
-        const response = await fetch('/api/analitics/genotyped/40000/regions');
+        const response = await fetch('/api/analitics/genotyped/40000/byRegion/36/districts');
         const result = await response.json();
         for( let key in result) {
-            let item = {name: key, value: result[key].Genotyped}
+            let item = {name: key + ' район', value: result[key].Genotyped}
             this.stat.push(item);
         }
     }

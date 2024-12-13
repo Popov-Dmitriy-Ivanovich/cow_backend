@@ -20,6 +20,7 @@ import (
 	"cow_backend/routes/regions"
 	"cow_backend/routes/sexes"
 	"cow_backend/routes/updates"
+	user_create "cow_backend/routes/user"
 	"fmt"
 	"text/template"
 
@@ -53,7 +54,7 @@ func seq(start, end int) []int {
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      localhost:8080
+// @host      genmilk.ru
 // @BasePath  /api
 
 // @securityDefinitions.basic  BasicAuth
@@ -79,7 +80,7 @@ func main() {
 	apiGroup := r.Group("/api")
 	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{},
 		&cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{},
-		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{}, &updates.Update{}, &partners.Partners{}, &admin.Admin{})
+		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{}, &updates.Update{}, &partners.Partners{}, &admin.Admin{}, &user_create.User{})
 
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiGroup.Static("/static", "static")

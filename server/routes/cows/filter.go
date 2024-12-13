@@ -4,6 +4,7 @@ import (
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"encoding/json"
+	"sort"
 	"time"
 
 	// "fmt"
@@ -13,35 +14,77 @@ import (
 )
 
 type FilterSerializedCow struct {
-	ID                        uint                    `validate:"required" example:"123"`
-	RSHNNumber                *string                 `validate:"required" example:"123"`
-	InventoryNumber           *string                 `validate:"required" example:"321"`
-	Name                      string                  `validate:"required" example:"Буренка"`
-	FarmGroupName             string                  `validate:"required" example:"ООО Аурус"`
-	BirthDate                 models.DateOnly         `validate:"required"`
-	Genotyped                 bool                    `validate:"required" example:"true"`
-	Approved                  bool                    `validate:"required" example:"true"`
-	DepartDate                *models.DateOnly        `json:",omitempty" validate:"optional"`
-	BreedName                 *string                 `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
-	CheckMilkDate             []models.DateOnly       `json:",omitempty" validate:"optional"`
-	InsemenationDate          []models.DateOnly       `json:",omitempty" validate:"optional"`
-	CalvingDate               []models.DateOnly       `json:",omitempty" validate:"optional"`
-	BirkingDate               *models.DateOnly        `json:",omitempty" validate:"optional"`
-	GenotypingDate            *models.DateOnly        `json:",omitempty" validate:"optional"`
-	InbrindingCoeffByFamily   *float64                `json:",omitempty" validate:"optional" example:"3.14"`
-	InbrindingCoeffByGenotype *float64                `json:",omitempty" validate:"optional" example:"3.14"`
-	MonogeneticIllneses       []models.GeneticIllness `json:",omitempty" validate:"optional"`
-	ExteriorRating            *float64                `json:",omitempty" validate:"optional"`
-	SexName                   *string                 `json:",omitempty" validate:"optional"`
-	HozName                   *string                 `json:",omitempty" validate:"optional"`
-	DeathDate                 *models.DateOnly        `json:",omitempty" validate:"optional"`
-	IsDead                    *bool                   `json:",omitempty" validate:"optional"`
-	IsTwins                   *bool                   `json:",omitempty" validate:"optional"`
-	IsStillBorn               *bool                   `json:",omitempty" validate:"optional"`
-	IsAborted                 *bool                   `json:",omitempty" validate:"optional"`
-	Events                    []models.Event          `json:",omitempty" validate:"optional"`
-	IsGenotyped               *bool                   `json:",omitempty" validate:"optional"`
-	CreatedAt                 *models.DateOnly        `json:",omitempty" validate:"optional"`
+	ID                        uint                        `validate:"required" example:"123"`
+	RSHNNumber                *string                     `validate:"required" example:"123"`
+	InventoryNumber           *string                     `validate:"required" example:"321"`
+	Name                      string                      `validate:"required" example:"Буренка"`
+	FarmGroupName             string                      `validate:"required" example:"ООО Аурус"`
+	BirthDate                 models.DateOnly             `validate:"required"`
+	Genotyped                 bool                        `validate:"required" example:"true"`
+	Approved                  bool                        `validate:"required" example:"true"`
+	DepartDate                *models.DateOnly            `json:",omitempty" validate:"optional"`
+	BreedName                 *string                     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
+	CheckMilkDate             []models.DateOnly           `json:",omitempty" validate:"optional"`
+	InsemenationDate          []models.DateOnly           `json:",omitempty" validate:"optional"`
+	CalvingDate               []models.DateOnly           `json:",omitempty" validate:"optional"`
+	BirkingDate               *models.DateOnly            `json:",omitempty" validate:"optional"`
+	GenotypingDate            *models.DateOnly            `json:",omitempty" validate:"optional"`
+	InbrindingCoeffByFamily   *float64                    `json:",omitempty" validate:"optional" example:"3.14"`
+	InbrindingCoeffByGenotype *float64                    `json:",omitempty" validate:"optional" example:"3.14"`
+	MonogeneticIllneses       []models.GeneticIllnessData `json:",omitempty" validate:"optional"`
+	ExteriorRating            *float64                    `json:",omitempty" validate:"optional"`
+	SexName                   *string                     `json:",omitempty" validate:"optional"`
+	HozName                   *string                     `json:",omitempty" validate:"optional"`
+	DeathDate                 *models.DateOnly            `json:",omitempty" validate:"optional"`
+	IsDead                    *bool                       `json:",omitempty" validate:"optional"`
+	IsTwins                   *bool                       `json:",omitempty" validate:"optional"`
+	IsStillBorn               *bool                       `json:",omitempty" validate:"optional"`
+	IsAborted                 *bool                       `json:",omitempty" validate:"optional"`
+	Events                    []models.Event              `json:",omitempty" validate:"optional"`
+	IsGenotyped               *bool                       `json:",omitempty" validate:"optional"`
+	CreatedAt                 *models.DateOnly            `json:",omitempty" validate:"optional"`
+}
+
+var orderFunctionsMap = map[string]func(FilterSerializedCow, FilterSerializedCow) bool{
+	"RSHN": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.RSHNNumber == nil {
+			return false
+		}
+		if r.RSHNNumber == nil {
+			return true
+		}
+		return *l.RSHNNumber < *r.RSHNNumber
+	},
+	"InventoryNumber": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.InventoryNumber == nil {
+			return false
+		}
+		if r.InventoryNumber == nil {
+			return true
+		}
+		return *l.InventoryNumber < *r.InventoryNumber
+	},
+	"Name": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.Name == "" {
+			return false
+		}
+		if r.Name == "" {
+			return true
+		}
+		return l.Name < r.Name
+	},
+	"HozName": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		if l.HozName == nil {
+			return false
+		}
+		if r.HozName == nil {
+			return true
+		}
+		return *l.HozName < *r.HozName
+	},
+	"BirthDate": func(l FilterSerializedCow, r FilterSerializedCow) bool {
+		return l.BirthDate.Before(r.BirthDate.Time)
+	},
 }
 
 func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
@@ -73,7 +116,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 		res.GenotypingDate = c.Genetic.ResultDate
 	}
 	if len(filter.MonogeneticIllneses) != 0 || filter.HasAnyIllnes != nil {
-		// res.MonogeneticIllneses = c.Genetic.GeneticIllnesses
+		res.MonogeneticIllneses = c.Genetic.GeneticIllnessesData
 	}
 	if filter.ControlMilkingDateFrom != nil && *filter.ControlMilkingDateFrom != "" ||
 		filter.ControlMilkingDateTo != nil && *filter.ControlMilkingDateTo != "" {
@@ -284,6 +327,17 @@ func (c *Cows) Filter() func(*gin.Context) {
 		res := make([]FilterSerializedCow, 0, len(dbCows))
 		for _, c := range dbCows {
 			res = append(res, serializeByFilter(&c, &bodyData))
+		}
+
+		if bodyData.OrderBy != nil {
+			orderFunc, ok := orderFunctionsMap[*bodyData.OrderBy]
+			if ok {
+				sort.Slice(res, func(i, j int) bool {
+					l := res[i]
+					r := res[j]
+					return orderFunc(l, r)
+				})
+			}
 		}
 		// fmt.Print(query)
 		c.JSON(200, gin.H{

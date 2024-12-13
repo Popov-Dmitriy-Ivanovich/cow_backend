@@ -3,8 +3,8 @@
         <div class="datagen-title">Данные о генотипировании</div>
         <div>Файл</div>
         <div class="datagen-download">    
-            <div class="download-file">{{ cow_info.GtcFilePath }}</div>
-            <div class="download-btn"><a :href="`/api/static/gtc/${cow_info.GtcFilePath}`" :download="cow_info.GtcFilePath" class="download-gtc">Скачать файл</a></div>
+            <div class="download-file">{{ cow_info.GtcFilePath || 'Нет информации'}} </div>
+            <div class="download-btn" v-if="cow_info.GtcFilePath"><a :href="`/api/static/gtc/${cow_info.GtcFilePath}`" :download="cow_info.GtcFilePath" class="download-gtc">Скачать файл</a></div>
         </div>
         <table class="genfile-table">
                 <thead>
@@ -16,9 +16,9 @@
                 </thead>
                 <tbody class="genfile-tablebody">
                     <tr>
-                        <td>{{true_false(cow_info.ResultDate)}}</td>
-                        <td>{{cow_info.ProbeNumber}}</td>
-                        <td>{{ blood_date }}</td>
+                        <td>{{true_false(cow_info.ResultDate) || 'Нет информации'}}</td>
+                        <td>{{cow_info.ProbeNumber || 'Нет информации'}}</td>
+                        <td>{{ blood_date || 'Нет информации'}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -30,7 +30,7 @@ export default {
     data() {
         return {
             cow_info:{},
-            blood_date: '',
+            blood_date: null,
         }
     },
     async created() {
@@ -38,8 +38,12 @@ export default {
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/genetic`);
         let result = await response.json();
-        this.cow_info = result;
-        this.blood_date = this.dateConverter(this.cow_info.BloodDate);
+        console.log(result);
+        if (result) {
+            this.cow_info = result;
+            if (this.cow_info.BloodDate) this.blood_date = this.dateConverter(this.cow_info.BloodDate);
+        }
+
     },
     methods: {
         true_false(val) {
@@ -92,6 +96,10 @@ export default {
     
 th {
     font-weight: normal;
+}
+
+td {
+    padding-right: 20px;
 }
     
 .genfile-header {
