@@ -19,7 +19,7 @@ func (f ByMonogeneticIllnesses) Apply(fm filters.FilteredModel) error {
 			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND "+
 				"EXISTS (SELECT 1 FROM genetic_illness_data WHERE genetic_illness_data.genetic_id = genetics.id AND genetic_illness_data.illness_id IN ? AND "+
 				"EXISTS (SELECT 1 FROM genetic_illness_statuses WHERE genetic_illness_statuses.id = genetic_illness_data.status_id AND "+
-				"(genetic_illness_statuses.status IS NOT NULL AND genetic_illness_statuses.status <> 'FREE'))))",
+				"(genetic_illness_statuses.status IS NULL OR genetic_illness_statuses.status <> 'FREE'))))",
 				bodyData.MonogeneticIllneses).
 				Preload("Genetic").
 				Preload("Genetic.GeneticIllnessesData").
@@ -32,7 +32,7 @@ func (f ByMonogeneticIllnesses) Apply(fm filters.FilteredModel) error {
 			query = query.Where("EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id AND "+
 				"NOT EXISTS (SELECT 1 FROM genetic_illness_data WHERE genetic_illness_data.genetic_id = genetics.id AND genetic_illness_data.illness_id IN ? AND"+
 				"EXISTS (SELECT 1 FROM genetic_illness_statuses WHERE genetic_illness_statuses.id = genetic_illness_data.status_id AND "+
-				"(genetic_illness_statuses.status IS NOT NULL AND genetic_illness_statuses.status <> 'FREE'))))",
+				"(genetic_illness_statuses.status IS NULL OR genetic_illness_statuses.status <> 'FREE'))))",
 				bodyData.MonogeneticIllneses).
 				Preload("Genetic").
 				Preload("Genetic.GeneticIllnessesData").
