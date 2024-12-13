@@ -1868,7 +1868,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.createUserData"
+                            "$ref": "#/definitions/user_create.createUserData"
                         }
                     }
                 ],
@@ -1878,15 +1878,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Sex"
+                                "$ref": "#/definitions/user_create.createUserData"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -3292,21 +3291,21 @@ const docTemplate = `{
                 }
             }
         },
-        "user.createUserData": {
+        "user_create.createUserData": {
             "type": "object",
             "properties": {
                 "newHold": {
-                    "$ref": "#/definitions/user.holdData"
+                    "$ref": "#/definitions/user_create.holdData"
                 },
                 "newHoz": {
-                    "$ref": "#/definitions/user.hozData"
+                    "$ref": "#/definitions/user_create.hozData"
                 },
                 "newUser": {
-                    "$ref": "#/definitions/user.userData"
+                    "$ref": "#/definitions/user_create.userData"
                 }
             }
         },
-        "user.holdData": {
+        "user_create.holdData": {
             "type": "object",
             "properties": {
                 "address": {
@@ -3341,7 +3340,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.hozData": {
+        "user_create.hozData": {
             "type": "object",
             "properties": {
                 "address": {
@@ -3379,7 +3378,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.userData": {
+        "user_create.userData": {
             "type": "object",
             "properties": {
                 "email": {
@@ -3420,7 +3419,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "genmilk.ru",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",

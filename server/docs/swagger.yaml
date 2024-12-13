@@ -981,16 +981,16 @@ definitions:
       id:
         type: integer
     type: object
-  user.createUserData:
+  user_create.createUserData:
     properties:
       newHold:
-        $ref: '#/definitions/user.holdData'
+        $ref: '#/definitions/user_create.holdData'
       newHoz:
-        $ref: '#/definitions/user.hozData'
+        $ref: '#/definitions/user_create.hozData'
       newUser:
-        $ref: '#/definitions/user.userData'
+        $ref: '#/definitions/user_create.userData'
     type: object
-  user.holdData:
+  user_create.holdData:
     properties:
       address:
         type: string
@@ -1013,7 +1013,7 @@ definitions:
       shortName:
         type: string
     type: object
-  user.hozData:
+  user_create.hozData:
     properties:
       address:
         type: string
@@ -1038,7 +1038,7 @@ definitions:
       shortName:
         type: string
     type: object
-  user.userData:
+  user_create.userData:
     properties:
       email:
         type: string
@@ -1058,7 +1058,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: localhost:8080
+host: genmilk.ru
 info:
   contact:
     email: support@swagger.io
@@ -2311,7 +2311,7 @@ paths:
         name: filter
         required: true
         schema:
-          $ref: '#/definitions/user.createUserData'
+          $ref: '#/definitions/user_create.createUserData'
       produces:
       - application/json
       responses:
@@ -2319,13 +2319,12 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Sex'
+              $ref: '#/definitions/user_create.createUserData'
             type: array
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
-            type: object
+            type: string
       summary: Get list of sexes
       tags:
       - User

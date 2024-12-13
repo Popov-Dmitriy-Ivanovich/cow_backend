@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "genmilk.ru",
     "basePath": "/api",
     "paths": {
         "/analitics/checkMilks/years": {
@@ -1862,7 +1862,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.createUserData"
+                            "$ref": "#/definitions/user_create.createUserData"
                         }
                     }
                 ],
@@ -1872,15 +1872,14 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Sex"
+                                "$ref": "#/definitions/user_create.createUserData"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -3286,21 +3285,21 @@
                 }
             }
         },
-        "user.createUserData": {
+        "user_create.createUserData": {
             "type": "object",
             "properties": {
                 "newHold": {
-                    "$ref": "#/definitions/user.holdData"
+                    "$ref": "#/definitions/user_create.holdData"
                 },
                 "newHoz": {
-                    "$ref": "#/definitions/user.hozData"
+                    "$ref": "#/definitions/user_create.hozData"
                 },
                 "newUser": {
-                    "$ref": "#/definitions/user.userData"
+                    "$ref": "#/definitions/user_create.userData"
                 }
             }
         },
-        "user.holdData": {
+        "user_create.holdData": {
             "type": "object",
             "properties": {
                 "address": {
@@ -3335,7 +3334,7 @@
                 }
             }
         },
-        "user.hozData": {
+        "user_create.hozData": {
             "type": "object",
             "properties": {
                 "address": {
@@ -3373,7 +3372,7 @@
                 }
             }
         },
-        "user.userData": {
+        "user_create.userData": {
             "type": "object",
             "properties": {
                 "email": {
