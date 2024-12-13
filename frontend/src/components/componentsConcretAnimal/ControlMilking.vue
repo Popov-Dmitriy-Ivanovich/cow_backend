@@ -24,20 +24,22 @@
                     <th class="cm-belok">Белок, %</th>
                     <th>Жир, кг</th>
                     <th>Белок, кг</th>
+                    <th>Количество соматических клеток</th>
                 </tr>
             </thead>
             <tbody class="cm-tablebody">
                 <tr v-for="milking in cow_info" :key="milking.CheckDate">
-                    <td>{{ milking.LactationNumber }}</td>
+                    <td>{{ milking.LactationNumber || 'Нет информации'}}</td>
                     <td>{{ dateConverter(milking.CheckDate) }}</td>
-                    <td>{{ milking.ProbeNumber }}</td>
-                    <td>{{ milking.MilkingDays }}</td>
-                    <td>{{ milking.Milk.toFixed(2) }}</td>
-                    <td>{{ milking.DryMatter.toFixed(2) }}</td>
-                    <td>{{ milking.Fat.toFixed(2) }}</td>
-                    <td>{{ milking.Protein.toFixed(2) }}</td>
-                    <td>{{ milking.FatRegard }}</td>
-                    <td>{{ milking.ProteinRegard }}</td>
+                    <td>{{ milking.ProbeNumber || 'Нет информации'}}</td>
+                    <td>{{ milking.MilkingDays || 'Нет информации'}}</td>
+                    <td v-if="milking.Milk">{{ milking.Milk.toFixed(1) }}</td><td v-else>Нет информации</td>
+                    <td v-if="milking.DryMatter">{{ milking.DryMatter.toFixed(2) }}</td><td v-else>Нет информации</td>
+                    <td v-if="milking.Fat">{{ milking.Fat.toFixed(1) }}</td><td v-else>Нет информации</td>
+                    <td v-if="milking.Protein">{{ milking.Protein.toFixed(1) }}</td><td v-else>Нет информации</td>
+                    <td>{{ milking.FatRegard || 'Нет информации'}}</td>
+                    <td>{{ milking.ProteinRegard || 'Нет информации'}}</td>
+                    <td>{{ milking.SomaticNucCount || 'Нет информации'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -105,8 +107,8 @@ export default {
         this.cow_info = result;
         
         for (let i = 0; i < this.cow_info.length; i++) {
-            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat * this.cow_info[i].Milk)/100).toFixed(2);
-            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein * this.cow_info[i].Milk)/100).toFixed(2);
+            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat * this.cow_info[i].Milk)/100).toFixed(1);
+            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein * this.cow_info[i].Milk)/100).toFixed(1);
             if (this.cow_info[i].LactationNumber == this.check_lact) {
                 this.options.xaxis.categories.push(this.dateConverter(this.cow_info[i].CheckDate));
             }

@@ -7,6 +7,7 @@
         :options="options" 
         :series="series"
         @dataPointSelection="clickHandler"
+        ref="chartyear"
         ></apexchart>
     </div>
 </template>
@@ -24,34 +25,137 @@ export default {
                 xaxis: {
                     categories: []
                 },
-                colors: ['#6e5add','#75a2e7']
+                colors: ['#6e5add','#75a2e7','#63d9cb'],
+                title: {
+                    text: 'Регионы',
+                    align: 'center',
+                    style: {
+                        fontSize:  '24px',
+                    },
+                }
             },
             series: [],
             common_info: {},
+            newX: [],
         }
     },
     async created() {
-        let mass_route = this.$route.path.split('/');
-        let year_id = mass_route[2];
-        let response = await fetch(`/api/analitics/genotyped/${year_id}/regions`);
-        let result = await response.json();
-        this.common_info = result;
-        let genyear_serie = {name: 'Генотипированных', data: []};
-        let allyear_serie = {name: 'Всего', data: []};
-        for (let key in result) {
-            this.options.xaxis.categories.push(key);
-            genyear_serie.data.push(result[key].Genotyped);
-            allyear_serie.data.push(result[key].Alive);
+        if (this.changeOpt === '' || this.changeOpt == 'ill') {
+            await this.fetchData();
+        } else if(this.changeOpt == 'lact') {
+            await this.fetchDataLact();
         }
-        this.series.push(allyear_serie);
-        this.series.push(genyear_serie);
     },
     methods: {
         clickHandler(event, chartContext, config) {
-            let nameReg = this.options.xaxis.categories[config.dataPointIndex];
-            let reg_id = this.common_info[nameReg].RegionID;
+            let nameReg = this.newX[config.dataPointIndex];
+            let reg_id;
+            if(this.changeOpt === '' || this.changeOpt == 'ill'){
+                reg_id = this.common_info[nameReg].RegionID;
+            } else if (this.changeOpt == 'lact') {
+                reg_id = this.common_info[nameReg].RegionId;
+            }
             let year = this.$route.params.id;
             this.$router.push(`/analytics/${year}/${reg_id}`);
+        },
+        async fetchData() {
+            this.series = [];
+            this.options.xaxis.categories = []; 
+            let mass_route = this.$route.path.split('/');
+            let year_id = mass_route[2];
+            let response = await fetch(`/api/analitics/genotyped/${year_id}/regions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(this.changeFilters),
+            });
+            let result = await response.json();
+            this.common_info = result;
+            let genyear_serie = {name: 'Генотипированных', data: []};
+            let allyear_serie = {name: 'Всего', data: []};
+            let illyear_serie = {name: 'Больных', data: []};
+            this.newX = [];
+            for (let key in result) {
+                this.newX.push(key);
+                genyear_serie.data.push(result[key].Genotyped);
+                allyear_serie.data.push(result[key].Alive);
+                if (this.changeOpt == 'ill') {
+                    illyear_serie.data.push(result[key].Ill);
+                }
+            }
+            this.series.push(allyear_serie);
+            this.series.push(genyear_serie);
+            if (this.changeOpt == 'ill') {
+                this.series.push(illyear_serie);
+            }
+
+            this.$refs.chartyear.updateOptions({
+                xaxis: {
+                    categories: this.newX,
+                }
+            });
+        },
+        async fetchDataLact() {
+            this.series = [];
+            this.options.xaxis.categories = []; 
+            let mass_route = this.$route.path.split('/');
+            let year_id = mass_route[2];
+            let response = await fetch(`/api/analitics/checkMilks/${year_id}/byRegion`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(this.changeFilters),
+            });
+            let result = await response.json();
+            this.common_info = result;
+            let milk_serie = {name: 'Удой', data: []};
+            let fat_serie = {name: 'Жир', data: []};
+            let protein_serie = {name: 'Белок', data: []};
+            this.newX = [];
+            for (let key in result) {
+                this.newX.push(key);
+                milk_serie.data.push(Math.round(result[key].Milk*100)/100);
+                fat_serie.data.push(Math.round(result[key].Fat*100)/100);
+                protein_serie.data.push(Math.round(result[key].Protein*100)/100);
+            }
+
+            this.series.push(milk_serie);
+            this.series.push(fat_serie);
+            this.series.push(protein_serie);
+
+            this.$refs.chartyear.updateOptions({
+                xaxis: {
+                    categories: this.newX,
+                }
+            });
+        }
+    },
+    watch: {
+        async changeFilters() {
+            if (this.changeOpt === '' || this.changeOpt == 'ill') {
+                await this.fetchData();
+            } else if(this.changeOpt == 'lact') {
+                await this.fetchDataLact();
+            }
+        },
+        async changeOpt() {
+            if (this.changeOpt === '' || this.changeOpt == 'ill') {
+                await this.fetchData();
+            } else if(this.changeOpt == 'lact') {
+                await this.fetchDataLact();
+            }
+        }
+    },
+    computed: {
+        changeFilters(){
+            let a = this.$store.state.filters;
+            return a;
+        },
+        changeOpt(){
+            let a = this.$store.state.option;
+            return a;
         }
     }
 }

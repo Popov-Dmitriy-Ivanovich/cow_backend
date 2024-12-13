@@ -2,11 +2,12 @@
     <div class="topbar flex-topbar" id="topbar" :class="{'topbar-main-style': this.$route.path != '/'}">
         <a href="http://www.vsau.ru/"><img src="../img/logo.png" width="75" class="img-logo"></a><div class="logo" @click="$router.push('/')">GenMilk</div>
         <div class="topbar-links" id="topbar-links">
-            <div class="point-of-bar" @click="$router.push('/animals')">Животные</div>
-            <div class="point-of-bar" @click="$router.push('/analytics')">Аналитика</div>
+            <div class="point-of-bar" @click="$router.push('/animals')" v-if="token">Животные</div>
+            <div class="point-of-bar" @click="$router.push('/analytics')" v-if="token">Аналитика</div>
             <div class="point-of-bar" @click="$router.push('/help')">Помощь</div>
             <div class="point-of-bar" @click="$router.push('/')">О проекте</div>
-            <div class="point-of-bar" @click="$router.push('/login')">Войти</div>
+            <div class="point-of-bar" @click="$router.push('/login')" v-if="!token">Войти</div>
+            <div class="point-of-bar" @click="logout" v-if="token">Выход</div>
         </div>
         <div id="date-update" class="date-update" :class="{'date-update-mainstyle': this.$route.path != '/'}">Дата обновления базы данных: {{ dateBD }}</div>
     </div>
@@ -48,6 +49,10 @@ export default {
             result += arr[1]; result += '.';
             result += arr[0];
             return result;
+        },
+        logout(){
+            localStorage.clear();
+            location.reload();
         }
     },
     async mounted() {
@@ -59,6 +64,12 @@ export default {
             this.dateBD = this.dateConverter(date_arr[0]);
         } catch(err) {
             this.dateBD = '';
+        }
+    },
+    computed: {
+        token(){
+            console.log(localStorage.getItem('jwt'));
+            return this.$store.state.isLogged || localStorage.getItem('jwt');
         }
     }
 }

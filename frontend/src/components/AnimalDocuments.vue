@@ -1,12 +1,18 @@
 <template>
     <div class="doc-title">Документы</div>
     <div class="doc-info">
-        <div>Документы</div>
+        <DocumentCow/>
     </div>
 </template>
 
 <script>
+import DocumentCow from './componentsConcretAnimal/DocumentCow.vue';
 
+export default {
+    components: {
+        DocumentCow
+    }
+}
 </script>
 
 <style scoped>

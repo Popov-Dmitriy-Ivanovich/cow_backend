@@ -200,7 +200,6 @@ export default {
             console.log(JSON.stringify(send_filters))
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
-            console.log('отправляю фильтры на главную страницу');
         },
         clearFilters() {
             let send_filters = this.filters;
@@ -216,7 +215,6 @@ export default {
             this.clearHoz = !this.clearHoz;
             this.clearIllness = !this.clearIllness;
             this.isVisibleIll = false;
-            console.log(this.filters, 'сбросить');
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },
