@@ -645,6 +645,15 @@ definitions:
       time.Time:
         type: string
     type: object
+  models.Document:
+    properties:
+      cowID:
+        type: integer
+      id:
+        type: integer
+      path:
+        type: string
+    type: object
   models.Event:
     properties:
       comment1:
@@ -1675,6 +1684,32 @@ paths:
             additionalProperties: {}
             type: object
       summary: Get list of children
+      tags:
+      - Cows
+  /cows/{id}/documents:
+    get:
+      description: Возращает генетическую информацию для коровы, null, если нет
+      parameters:
+      - description: ID коровы для которой ищется генетическая информация
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Document'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: Get list of check milks
       tags:
       - Cows
   /cows/{id}/exterior:

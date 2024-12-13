@@ -69,6 +69,14 @@ type Cow struct {
 	BirthMethod   *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 
 	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это указатель на эту же корову в другом хоз-ве с другим инв. номером
+
+	Documents []Document `json:"-"` // документы коровы
+}
+
+type Document struct {
+	ID    uint
+	CowID uint
+	Path  string
 }
 
 func (c *Cow) BeforeCreate(tx *gorm.DB) error {

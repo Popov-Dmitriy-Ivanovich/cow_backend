@@ -1097,6 +1097,45 @@
                 }
             }
         },
+        "/cows/{id}/documents": {
+            "get": {
+                "description": "Возращает генетическую информацию для коровы, null, если нет",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cows"
+                ],
+                "summary": "Get list of check milks",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID коровы для которой ищется генетическая информация",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Document"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/cows/{id}/exterior": {
             "get": {
                 "description": "Возращает информацию об экстерьере, null, если нет",
@@ -2626,6 +2665,20 @@
             "type": "object",
             "properties": {
                 "time.Time": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Document": {
+            "type": "object",
+            "properties": {
+                "cowID": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "path": {
                     "type": "string"
                 }
             }
