@@ -1,6 +1,6 @@
 <template>
     <div class="year-chart">
-        <apexchart 
+        <apexchart v-if="!err"
         id="analytics" 
         width="850" 
         type="bar" 
@@ -8,6 +8,7 @@
         :series="series"
         ref="chartdistr"
         ></apexchart>
+        <div v-if="err">Недостаточный уровень доступа</div>
     </div>
 </template>
 
@@ -36,6 +37,7 @@ export default {
             series: [],
             common_info: {},
             newX: [],
+            err: false,
         }
     },
     async created() {
@@ -47,6 +49,7 @@ export default {
     },
     methods: {
         async fetchData() {
+            this.err = false;
             this.series = [];
             this.options.xaxis.categories = []; 
             let mass_route = this.$route.path.split('/');
@@ -55,11 +58,16 @@ export default {
             let response = await fetch(`/api/analitics/genotyped/${year_id}/byDistrict/${district_id}/hoz`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': localStorage.getItem('jwt'),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
             let result = await response.json();
+            if(result.error) {
+                this.err = true;
+                return 0;
+            }
             this.common_info = result;
             let genyear_serie = {name: 'Генотипированных', data: []};
             let allyear_serie = {name: 'Всего', data: []};
@@ -86,6 +94,7 @@ export default {
             });
         },
         async fetchDataLact() {
+            this.err = false;
             this.series = [];
             this.options.xaxis.categories = []; 
             let mass_route = this.$route.path.split('/');
@@ -94,11 +103,16 @@ export default {
             let response = await fetch(`/api/analitics/checkMilks/${year_id}/byDistrict/${district_id}/byHoz`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': localStorage.getItem('jwt'),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
             let result = await response.json();
+            if(result.error) {
+                this.err = true;
+                return 0;
+            }
             this.common_info = result;
             let milk_serie = {name: 'Удой', data: []};
             let fat_serie = {name: 'Жир', data: []};

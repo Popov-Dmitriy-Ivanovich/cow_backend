@@ -1,8 +1,9 @@
 <template>
 <div>
     <div class="doc-title">Загрузка документов</div>
-    <form class="download-doc-form">
-        <input type="file">
+    <form class="download-doc-form" action="https://genmilk.ru/api/load/document" method="post" enctype="multipart/form-data">
+        <input type="file" id="Document" name="Document">
+        <input type="text" id="CowID" name="CowID" required="" :value="$route.params.id">
         <button type="submit">Загрузить</button>
     </form>
 
@@ -10,7 +11,9 @@
 </template>
 
 <script>
-
+export default {
+    
+}
 </script>
 
 <style scoped>
@@ -21,5 +24,9 @@
 }
 .download-doc-form {
     margin: 20px 0;
+}
+
+#CowID {
+    display: none;
 }
 </style>
