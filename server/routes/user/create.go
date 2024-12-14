@@ -17,14 +17,18 @@ type userData struct {
 	Email                 string
 	Phone                 string
 	Password              string
-	HozId                 uint
+
+	HozNumber 			  *uint // номер хоз-ва либо существующего, либо newHoz
+
 	RegionId              uint
 }
 
 type hozData struct {
 	HozNumber   string
 	DistrictId  uint
-	ParrentId   uint
+	
+	HoldNumber 	string // номер холдинга: либо существующего, либо newHold
+	
 	Name        string
 	ShortName   string
 	Inn         *string
@@ -49,9 +53,9 @@ type holdData struct {
 }
 
 type createUserData struct {
-	NewUser userData
-	NewHoz  *hozData
-	NewHold *holdData
+	NewUser models.UserRegisterRequest
+	NewHoz  *models.HozRegisterRequest
+	NewHold *models.HoldRegisterRequest
 }
 
 type userClaims struct {
@@ -143,7 +147,31 @@ func (u *User) VerifyEmail() func(*gin.Context) {
 			c.JSON(422, "ошибка подтверждения:"+err.Error())
 			return
 		}
+		
+		db := models.GetDb()
+		newUser := userClaims.UserData.NewUser
+		newHold := userClaims.UserData.NewHold
+		newHoz := userClaims.UserData.NewHoz
+		
 
-		c.JSON(200, userClaims.UserData)
+		if err := db.Create(&newUser).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		if newHold != nil {
+			if err := db.Create(newHold).Error; err != nil {
+				c.JSON(500, err.Error())
+				return
+			}
+		}
+		if newHoz != nil {
+			if err := db.Create(newHold).Error; err != nil {
+				c.JSON(500, err.Error())
+				return
+			}
+		}
+		
+		
+		c.JSON(200, "Запрос отправлен на рассмотрение")
 	}
 }
