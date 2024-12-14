@@ -34,20 +34,6 @@ import (
 // @Router       /analitics/genotyped/{year}/byDistrict/{district}/hoz [post]
 func (g Genotyped) HozPost() func(*gin.Context) {
 	return func(c *gin.Context) {
-		filterData := cows_filter.CowsFilter{}
-		if err := c.ShouldBindJSON(&filterData); err != nil {
-			c.JSON(422, err.Error())
-		}
-		aliveFilter := filterData
-		genotypedFilter := filterData
-		illFilter := filterData
-
-		genotypedFilter.IsGenotyped = new(bool)
-		*genotypedFilter.IsGenotyped = true
-
-		illFilter.HasAnyIllnes = new(bool)
-		*illFilter.HasAnyIllnes = true
-
 		district := c.Param("district")
 		roleId, exists := c.Get("RoleId")
 		if !exists {
@@ -69,6 +55,20 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 				return
 			}
 		}
+
+		filterData := cows_filter.CowsFilter{}
+		if err := c.ShouldBindJSON(&filterData); err != nil {
+			c.JSON(422, err.Error())
+		}
+		aliveFilter := filterData
+		genotypedFilter := filterData
+		illFilter := filterData
+
+		genotypedFilter.IsGenotyped = new(bool)
+		*genotypedFilter.IsGenotyped = true
+
+		illFilter.HasAnyIllnes = new(bool)
+		*illFilter.HasAnyIllnes = true
 
 		keys := []byHozKeys{}
 		db := models.GetDb()

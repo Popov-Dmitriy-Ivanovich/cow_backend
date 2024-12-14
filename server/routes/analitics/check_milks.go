@@ -4,7 +4,10 @@ import (
 	"cow_backend/filters"
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
+	"cow_backend/routes/auth"
 	"fmt"
+	"log"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +17,7 @@ type CheckMilks struct{}
 
 func (cm *CheckMilks) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/checkMilks")
+	apiGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
 	apiGroup.POST("/years", cm.ByYear())
 	apiGroup.POST("/:year/byRegion", cm.ByRegion())
 	apiGroup.POST("/:year/byRegion/:region/byDistrict", cm.ByDistrict())
@@ -234,6 +238,29 @@ type cmByDistrictStatistics struct {
 // @Router       /analitics/checkMilks/{year}/byRegion/{region}/byDistrict [post]
 func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 	return func(c *gin.Context) {
+		region := c.Param("region")
+
+		roleId, exists := c.Get("RoleId")
+		if !exists {
+			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
+			return
+		}
+
+		if roleId != 3 && roleId != 4 {
+			regionId, exists := c.Get("RegionId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
+				return
+			}
+
+			log.Println(regionId, region)
+			if regionId != region {
+				c.JSON(421, gin.H{"error": "Нет доступа к региону"})
+				c.Abort()
+				return
+			}
+		}
+
 		filterData := cows_filter.CowsFilter{}
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
@@ -369,6 +396,28 @@ type cmByHozStatistics struct {
 // @Router       /analitics/checkMilks/{year}/byDistrict/{district}/byHoz [post]
 func (cm CheckMilks) ByHoz() func(*gin.Context) {
 	return func(c *gin.Context) {
+		district := c.Param("district")
+		roleId, exists := c.Get("RoleId")
+		if !exists {
+			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
+			return
+		}
+
+		if roleId == 1 {
+			distId, exists := c.Get("DistId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "DistId не найден в контексте")
+				return
+			}
+
+			log.Println(distId, district)
+			if distId != district {
+				c.JSON(421, gin.H{"error": "Нет доступа к округу"})
+				c.Abort()
+				return
+			}
+		}
+
 		filterData := cows_filter.CowsFilter{}
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
