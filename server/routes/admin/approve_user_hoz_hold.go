@@ -140,7 +140,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 			"nextPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt+1,10),
 			"prevPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt-1,10),
 			"approveUrl": "https://genmilk.ru/api/admin/approveUser/" + strconv.FormatUint(userCreateNumberInt,10),
-			"rejectUrl	": "https://genmilk.ru/api/admin/rejectUser/" + strconv.FormatUint(userCreateNumberInt,10),
+			"rejectUrl": "https://genmilk.ru/api/admin/rejectUser/" + strconv.FormatUint(userCreateNumberInt,10),
 		}
 		c.HTML(200, "AdminApproveUserPage.tmpl", params)
 	}
