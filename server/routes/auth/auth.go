@@ -1,6 +1,10 @@
 package auth
 
-import "github.com/gin-gonic/gin"
+import (
+	"cow_backend/routes/admin"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Auth struct {
 }
@@ -8,8 +12,10 @@ type Auth struct {
 func (s *Auth) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/auth")
 	apiGroup.POST("/login", s.Login())
-	apiGroup.POST("/register", s.Register())
 	apiGroup.GET("/checkEmail", s.CheckEmail())
+	adminGroup := apiGroup.Group("")
+	adminGroup.Use(admin.AdminMiddleware())
+	adminGroup.POST("/adminRegister", s.Register())
 	testGroup := apiGroup.Group("/test")
 	testGroup.Use(AuthMiddleware(Admin))
 	testGroup.GET("/test", s.Test())
