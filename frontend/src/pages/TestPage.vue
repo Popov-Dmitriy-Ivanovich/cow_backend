@@ -29,8 +29,8 @@
                 <div class="sort">
                     <div>Сортировка по: </div>
                     <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
-                        <option :value="null">-нет-</option>
-                        <option :value="'Name'">кличке</option>
+                        <!-- <option :value="null">-нет-</option> -->
+                        <option :value="null">кличке</option>
                         <option :value="'RSHN'">РСХН</option>
                         <option :value="'BirthDate'">дате рождения</option>
                         <option :value="'InventoryNumber'">инвентарному номеру</option>
@@ -126,11 +126,12 @@ export default {
                 if(this.isChild) search_params.sex = [1,2];
                 search_params.entitiesOnPage = 25;
                 if(this.sort) {
-                    search_params.orderByDesc = true;
+                    search_params.orderByDesc = false;
+                    search_params.orderBy = this.sort;
                 } else {
-                    search_params.orderByDesc = null;
+                    search_params.orderBy = 'Name';
+                    search_params.orderByDesc = false;
                 }
-                search_params.orderBy = this.sort;
 
                 this.current_filters = search_params;
                 this.animal_filters = search_params;
@@ -180,11 +181,12 @@ export default {
                 if(this.isChild) search_params.sex = [1,2];
                 search_params.entitiesOnPage = 25;
                 if(this.sort) {
-                    search_params.orderByDesc = true;
+                    search_params.orderByDesc = false;
+                    search_params.orderBy = this.sort;
                 } else {
+                    search_params.orderBy = 'Name';
                     search_params.orderByDesc = null;
                 }
-                search_params.orderBy = this.sort;
                 this.current_filters = search_params;
 
                 let response = await fetch('/api/cows/filter', {
