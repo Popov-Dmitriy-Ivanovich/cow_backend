@@ -25,46 +25,46 @@
                 <div v-if="(filters.inbrindingCoeffByFamilyFrom || filters.inbrindingCoeffByFamilyFrom===0) || (filters.inbrindingCoeffByFamilyTo || filters.inbrindingCoeffByFamilyTo===0)" class="animal-krod">Коэффициент инбридинга по родословной</div>
                 <div v-if="(filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeFrom===0) || (filters.inbrindingCoeffByGenotypeTo || filters.inbrindingCoeffByGenotypeTo===0)" class="animal-kfen">Коэффициент инбридинга по генотипу</div>
                 <div v-if="filters.illDateFrom || filters.illDateTo" class="animal-krod">Дата заболевания</div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     HCD
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     HH1
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     HH3
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     HH4
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     HH5
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     HH6
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     BLAD
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     CVM
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     DUMPS
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     BC
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     MF
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     FGFR2
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     IH
                 </div>
-                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod">
+                <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     FXID
                 </div>
             </div>
