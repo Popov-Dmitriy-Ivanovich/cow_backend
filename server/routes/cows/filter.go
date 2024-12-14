@@ -4,7 +4,6 @@ import (
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -39,14 +38,15 @@ type FilterSerializedCow struct {
 	ExteriorRating            *float64                    `json:",omitempty" validate:"optional"`
 	SexName                   *string                     `json:",omitempty" validate:"optional"`
 	HozName                   *string                     `json:",omitempty" validate:"optional"`
-	DeathDate                 *models.DateOnly            `json:",omitempty" validate:"optional"`
-	IsDead                    *bool                       `json:",omitempty" validate:"optional"`
-	IsTwins                   *bool                       `json:",omitempty" validate:"optional"`
-	IsStillBorn               *bool                       `json:",omitempty" validate:"optional"`
-	IsAborted                 *bool                       `json:",omitempty" validate:"optional"`
-	Events                    []models.Event              `json:",omitempty" validate:"optional"`
-	IsGenotyped               *bool                       `json:",omitempty" validate:"optional"`
-	CreatedAt                 *models.DateOnly            `json:",omitempty" validate:"optional"`
+	// RegionId                  *uint                       `json:",omitempty" validate:"optional"`
+	DeathDate   *models.DateOnly `json:",omitempty" validate:"optional"`
+	IsDead      *bool            `json:",omitempty" validate:"optional"`
+	IsTwins     *bool            `json:",omitempty" validate:"optional"`
+	IsStillBorn *bool            `json:",omitempty" validate:"optional"`
+	IsAborted   *bool            `json:",omitempty" validate:"optional"`
+	Events      []models.Event   `json:",omitempty" validate:"optional"`
+	IsGenotyped *bool            `json:",omitempty" validate:"optional"`
+	CreatedAt   *models.DateOnly `json:",omitempty" validate:"optional"`
 }
 
 var orderFunctionsMap = map[string]func(FilterSerializedCow, FilterSerializedCow) bool{
@@ -106,9 +106,15 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 		filter.DepartDateFrom != nil && *filter.DepartDateFrom != "" {
 		res.DepartDate = c.DepartDate
 	}
+
 	if len(filter.BreedId) != 0 {
 		res.BreedName = &c.Breed.Name
 	}
+
+	// if filter.RegionId != nil {
+	// 	res.RegionId = &c.FarmGroup.District.RegionId
+	// }
+
 	if filter.InbrindingCoeffByFamilyFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
 		res.InbrindingCoeffByFamily = c.InbrindingCoeffByFamily
 	}
@@ -313,7 +319,6 @@ func (c *Cows) Filter() func(*gin.Context) {
 			}
 
 			farmId := uint(farmIdUint64)
-			log.Println(farmId)
 			bodyData.HozId = &farmId
 		}
 

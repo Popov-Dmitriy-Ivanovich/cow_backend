@@ -6,7 +6,7 @@ type CowsFilter struct { // Фильтр коров
 	EntitiesOnPage *uint   `default:"50" validate:"optional"`      // Количество сущностей на странице
 	Sex            []uint  //ID пола коровы (если нужно несколько разных полов - несколько ID)
 	HozId          *uint   `example:"1" validate:"optional"` //ID фермы, для которой ищутся коровы
-	//RegionId               *uint   `example:"1" validate:"optional"`          //ID региона, для которого ищутся коровы
+	// RegionId               *uint   `example:"1" validate:"optional"`          //ID региона, для которого ищутся коровы
 	BirthDateFrom          *string `example:"1800-01-21" validate:"optional"` //Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или позднее)
 	BirthDateTo            *string `example:"2800-01-21" validate:"optional"` //Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или раньше)
 	IsDead                 *bool   `default:"false" validate:"optional"`      //Фильтр живых/мертвых коров (true - ищет мертвых, false - живых)
