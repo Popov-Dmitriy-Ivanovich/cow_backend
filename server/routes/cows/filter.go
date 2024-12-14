@@ -4,7 +4,7 @@ import (
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"encoding/json"
-	"sort"
+	// "sort"
 	"time"
 
 	// "fmt"
@@ -329,16 +329,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			res = append(res, serializeByFilter(&c, &bodyData))
 		}
 
-		if bodyData.OrderBy != nil {
-			orderFunc, ok := orderFunctionsMap[*bodyData.OrderBy]
-			if ok {
-				sort.Slice(res, func(i, j int) bool {
-					l := res[i]
-					r := res[j]
-					return orderFunc(l, r)
-				})
-			}
-		}
+		
 		// fmt.Print(query)
 		c.JSON(200, gin.H{
 			"N":   resCount,
