@@ -29,12 +29,16 @@ export default {
             body: JSON.stringify(obj),
         });
         const result = await response.json();
-        console.log(result);
-        for( let key in result) {
+        if (result.error) {
+            this.stat.push({name: 'Ошибка доступа', value: '-', regard: '-'});
+        } else {
+            for( let key in result) {
             let val = Math.round(((result[key].Genotyped / result[key].Alive)*100)*100)/100;
             let item = {name: key + ' район', value: result[key].Genotyped, regard:val};
             this.stat.push(item);
         }
+        }
+
     }
 }
 </script>

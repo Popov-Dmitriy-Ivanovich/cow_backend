@@ -1,9 +1,9 @@
 <template>
 <div>
     <button class="back-button" onclick="window.history.back();">Назад</button>
-    <div class="form-example">
+    <div class="form-example" >
         <h1>Загрузка коровы</h1>
-        <form action="https://genmilk.ru/api/load/document" method="post" enctype="multipart/form-data">
+        <form id="form-document">
             <label for="Document">Выберите файл:</label>
             <input type="file" id="Document" name="Document" required="">
 
@@ -17,7 +17,30 @@
 </template>
 
 <script>
+export default {
+    mounted() {
+        let formDocument = document.getElementById('form-document');
+        formDocument.addEventListener('submit', this.sendData)
+    },
+    methods: {
+        async sendData(event) {
+            event.preventDefault();
+            let formData = new FormData();
+            let file = document.getElementById('Document').value;
+            formData.append('Document', file);
 
+            // let response = await fetch('/api/load/document', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Authorization': localStorage.getItem('jwt')
+            //     },
+            //     body: formData
+            // })
+            // let result = await response.json();
+            console.log(formData);
+        }
+    }
+}
 </script>
 
 <style scoped>
