@@ -1,12 +1,21 @@
 <template>
     <div class="doc-title">Документы</div>
     <div class="doc-info">
-        <div>Документы</div>
+        <DownloadDocument/>
+        <hr class="doc-sep">
+        <DocumentCow/>
     </div>
 </template>
 
 <script>
+import DocumentCow from './componentsConcretAnimal/DocumentCow.vue';
+import DownloadDocument from '@/components/componentsConcretAnimal/DownloadDocument.vue'
 
+export default {
+    components: {
+        DocumentCow, DownloadDocument
+    }
+}
 </script>
 
 <style scoped>
@@ -24,5 +33,10 @@
     border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     padding: 30px 40px;
+}
+
+.doc-sep {
+    border: 1px solid rgb(224, 224, 224);
+    margin-bottom: 40px;
 }
 </style>

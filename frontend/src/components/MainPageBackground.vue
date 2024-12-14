@@ -8,8 +8,10 @@
                 решение при осеменении и выбраковке животных
             </div>
             <div>
-                <button class="but-login" @click="$router.push('/login')">Войти</button>
-                <button class="but-reg" @click="$router.push('/registration')">Регистрация</button>
+                <button class="but-login" @click="$router.push('/login')" v-if="!token">Войти</button>
+                <button class="but-reg" @click="$router.push('/registration')" v-if="!token">Регистрация</button>
+                <button class="but-login" @click="$router.push('/animals')" v-if="token">Животные</button>
+                <button class="but-reg" @click="$router.push('/analytics')" v-if="token">Аналитика</button>
             </div>
         </div>
         
@@ -17,7 +19,14 @@
 </template>
 
 <script>
-
+export default {
+    computed: {
+        token(){
+            console.log(localStorage.getItem('jwt'));
+            return this.$store.state.isLogged || localStorage.getItem('jwt');
+        }
+    }
+}
 </script>
 
 <style scoped>

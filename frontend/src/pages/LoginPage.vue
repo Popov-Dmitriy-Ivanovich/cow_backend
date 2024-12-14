@@ -1,23 +1,57 @@
 <template>
     <div class="lg">
-    <form class="login">
-        <div class="login-title">
-            <div>Вход</div>
-            <div class="registration-link" @click="$router.push('/registration')">Регистрация</div>
-        </div>
-        <label for="login-email" class="login-label">Почта</label><br>
-        <input type="email" class="login-input" id="login-email"><br>
-        <label for="login-password" class="login-label">Пароль</label><br>
-        <input type="password" class="login-input" id="login-password"><br>
-        <div class="forgot-password">Забыли пароль?</div>
-        <div class="login-btns">
-            <button type="submit" class="btn login-btn">Вход</button>
-        </div>
-    </form></div>
+        <form class="login" id="login-form" method="post">
+            <div class="login-title">
+                <div>Вход</div>
+                <div class="registration-link" @click="$router.push('/registration')">Регистрация</div>
+            </div>
+            <label for="login-email" class="login-label">Почта</label><br>
+            <input type="email" class="login-input" id="login-email" v-model="email"><br>
+            <label for="login-password" class="login-label">Пароль</label><br>
+            <input type="password" class="login-input" id="login-password" v-model="pass"><br>
+            <div class="forgot-password">Забыли пароль?</div>
+            <div class="login-btns">
+                <button type="submit" class="btn login-btn">Вход</button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
+export default {
+    data() {
+        return {
+            email: '',
+            pass: '',
+        }
+    },
+    async mounted() {
+        let formLogin = document.getElementById('login-form');
+        formLogin.addEventListener('submit', this.handleFormSubmit);
+    },
+    methods: {
+        async handleFormSubmit(event) {
+            event.preventDefault();
+            let obj = {};
+            obj.email = document.getElementById('login-email').value;
+            obj.password = document.getElementById('login-password').value;
+            let response = await fetch('/api/auth/login',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(obj),
+            });
+            let result = await response.json();
+            localStorage.setItem('jwt', result.token);
 
+            this.$store.commit('SET_ISLOGGED', Boolean(localStorage.getItem('jwt')));
+            console.log(this.$store.state.isLogged);
+
+            location.reload();
+        }
+    }
+}
 </script>
 
 <style scoped>

@@ -17,33 +17,35 @@
                     <th>Номер лактации</th>
                     <th>Кратность осеменения</th>
                     <th>Дата осеменения</th>
-                    <th>Количество рожденных телят</th>
+                    <th>Количество телят</th>
+                    <th>Аборт</th>
                     <th>Дата отела</th>
-                    <th>Удой за лактацию, л</th>
-                    <th>Удой 305 дней, л</th>
-                    <th>Жир за лактацию, кг</th>
-                    <th>Жир 305 дней, кг</th>
-                    <th>Белок за лактацию, кг</th>
-                    <th>Белок 305 дней, кг</th>
+                    <th>Суммарный удой, кг</th>
+                    <th>Суммарный удой за 305 дней, кг</th>
+                    <th>Суммарный жир, кг</th>
+                    <th>Суммарный жир за 305 дней, кг</th>
+                    <th>Суммарный белок, кг</th>
+                    <th>Суммарный белок за 305 дней, кг</th>
                     <th>Количество дойных дней</th>
                     <th>Длительность сервис-периода</th>
                 </tr>
             </thead>
             <tbody class="lac-tablebody">
                 <tr v-for="lact in cow_info" :key="lact.Number">
-                    <td>{{ lact.Number }}</td>
-                    <td>{{ lact.InsemenationNum }}</td>
-                    <td>{{ dateConverter(lact.InsemenationDate) }}</td>
-                    <td>{{ lact.CalvingCount }}</td>
-                    <td>{{ dateConverter(lact.CalvingDate) }}</td>
-                    <td>{{ Math.floor(lact.MilkAll) }}</td>
-                    <td>{{ Math.floor(lact.Milk305) }}</td>
-                    <td>{{ Math.floor(lact.FatAll) }}</td>
-                    <td>{{ Math.floor(lact.Fat305) }}</td>
-                    <td>{{ Math.floor(lact.ProteinAll) }}</td>
-                    <td>{{ Math.floor(lact.Protein305) }}</td>
-                    <td>{{ lact.Days }}</td>
-                    <td>{{ lact.ServicePeriod }}</td>
+                    <td>{{ lact.Number || 'Нет информации'}}</td>
+                    <td>{{ lact.InsemenationNum || 'Нет информации'}}</td>
+                    <td v-if="lact.InsemenationDate">{{ dateConverter(lact.InsemenationDate) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.CalvingCount">{{ lact.CalvingCount || 'Нет информации'}}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.Abort===true || lact.Abort===false">{{ yesNo(lact.Abort) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.CalvingDate">{{ dateConverter(lact.CalvingDate) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.MilkAll">{{ Math.floor(lact.MilkAll) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.Milk305">{{ Math.floor(lact.Milk305) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.FatAll">{{ Math.floor(lact.FatAll) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.Fat305">{{ Math.floor(lact.Fat305) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.ProteinAll">{{ Math.floor(lact.ProteinAll) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.Protein305">{{ Math.floor(lact.Protein305) }}</td><td v-else>Нет информации</td>
+                    <td>{{ lact.Days || 'Нет информации'}}</td>
+                    <td>{{ lact.ServicePeriod || 'Нет информации'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -53,15 +55,15 @@
         <div class="chart-flex">
             <div class="chart-param">Показатель: </div>
             <select v-model="param_milking" class="select-param">
-                <option value="MilkAll">Удой полный</option>
-                <option value="Milk305">Удой 305 дней</option>
-                <option value="FatAll">Жир полный</option>
-                <option value="Fat305">Жир 305 дней</option>
-                <option value="ProteinAll">Белок полный</option>
-                <option value="Protein305">Белок 305 дней</option>
-                <option value="MilkDaily">Удой среднесуточный</option>
-                <option value="FatDaily">Жир среднесуточный</option>
-                <option value="ProteinDaily">Белок среднесуточный</option>
+                <option value="MilkAll">Суммарный удой, кг</option>
+                <option value="Milk305">Суммарный удой за 305 дней, кг</option>
+                <option value="FatAll">Суммарный жир, кг</option>
+                <option value="Fat305">Суммарный жир за 305 дней, кг</option>
+                <option value="ProteinAll">Суммарный белок, кг</option>
+                <option value="Protein305">Суммарный белок за 305 дней, кг</option>
+                <option value="MilkDaily">Удой среднесуточный, кг</option>
+                <option value="FatDaily">Жир среднесуточный, кг</option>
+                <option value="ProteinDaily">Белок среднесуточный, кг</option>
                 <option value="Days">Количество дойных дней</option>
                 <option value="ServicePeriod">Длительность сервис-периода</option>
             </select>
@@ -128,6 +130,10 @@ export default {
             result += arr[1]; result += '.';
             result += arr[0];
             return result;
+        },
+        yesNo(param) {
+            if(param) return 'Да';
+            else return 'Нет';
         }
     },
     watch: {
@@ -148,7 +154,7 @@ export default {
 }
 
 .parent-table {
-    width: 40vw;
+    width: 49vw;
     overflow-x: auto;
 }
 
@@ -164,6 +170,7 @@ th {
 td {
     width: auto;
     min-width: 130px;
+    padding-right: 7px;
 }
 
 .lac-header {
