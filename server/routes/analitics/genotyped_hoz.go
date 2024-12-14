@@ -4,6 +4,8 @@ import (
 	"cow_backend/filters"
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
+	"log"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -45,6 +47,28 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 
 		illFilter.HasAnyIllnes = new(bool)
 		*illFilter.HasAnyIllnes = true
+
+		district := c.Param("district")
+		roleId, exists := c.Get("RoleId")
+		if !exists {
+			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
+			return
+		}
+
+		if roleId == 1 {
+			distId, exists := c.Get("DistId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "DistId не найден в контексте")
+				return
+			}
+
+			log.Println(distId, district)
+			if distId != district {
+				c.JSON(421, gin.H{"error": "Нет доступа к округу"})
+				c.Abort()
+				return
+			}
+		}
 
 		keys := []byHozKeys{}
 		db := models.GetDb()
