@@ -12,7 +12,7 @@ import AnaliticPage from '@/pages/AnaliticPage.vue';
 import AnaliticYear from '@/pages/AnaliticYear.vue';
 import AnaliticRegion from '@/pages/AnaliticRegion.vue';
 import AnaliticDistrict from '@/pages/AnaliticDistrict.vue';
-import AnaliticHolding from '@/pages/AnaliticHolding.vue';
+import MainChartComp from '@/pages/MainChartComp.vue';
 
 const routes = [
     {
@@ -21,7 +21,8 @@ const routes = [
     },
     {
         path: '/login',
-        component: LoginPage
+        component: LoginPage,
+        meta: {noAuth: true}
     },
     {
         path: '/help',
@@ -29,15 +30,18 @@ const routes = [
     },
     {
         path: '/registration',
-        component: RegistrationPage
+        component: RegistrationPage,
+        meta: {noAuth: true}
     },
     {
         path: '/animals',
-        component: TestPage
+        component: TestPage,
+        meta: {requiresAuth: true}
     },
     {
         path: '/animals/:id',
-        component: ConcretAnimalPage
+        component: ConcretAnimalPage,
+        meta: {requiresAuth: true}
     },
     {
         path: '/participants',
@@ -50,23 +54,26 @@ const routes = [
 
     {
         path: '/analytics',
-        component: AnaliticPage
-    },
-    {
-        path: '/analytics/:id',
-        component: AnaliticYear
-    },
-    {
-        path: '/analytics/:id/:region',
-        component: AnaliticRegion
-    },
-    {
-        path: '/analytics/:id/:region/:district',
-        component: AnaliticDistrict
-    },
-    {
-        path: '/analytics/:id/:region/:district/:hold',
-        component: AnaliticHolding
+        component: AnaliticPage,
+        meta: {requiresAuth: true},
+        children: [
+            {
+                path: '',
+                component: MainChartComp,
+            },
+            {
+                path: ':id',
+                component: AnaliticYear
+            },
+            {
+                path: ':id/:region',
+                component: AnaliticRegion
+            },
+            {
+                path: ':id/:region/:district',
+                component: AnaliticDistrict
+            }
+        ]
     },
 ];
 
@@ -79,5 +86,10 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     // scrollBehavior
 });
+
+router.beforeEach((to) => {
+    if(to.meta.requiresAuth && !(localStorage.getItem('jwt'))) return '/';
+    if(to.meta.noAuth && (localStorage.getItem('jwt'))) return '/';
+})
 
 export default router;

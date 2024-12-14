@@ -137,6 +137,7 @@ export default {
         let search_params = this.filters;
         search_params.sex = [1,2];
         search_params.pageNumber = 1;
+        search_params.entitiesOnPage = 25;
         const response = await fetch('/api/cows/filter', {            
             method: 'POST',
             headers: {
@@ -149,7 +150,7 @@ export default {
         this.animals = res_animals.LST;
         if(res_animals.LST.length == 0) this.errorr = true;
         //Передаю текущую первую страницу и кол-во страниц наверх
-        this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/50));
+        this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/search_params.entitiesOnPage));
         this.isLoadingChild = false;
         console.log(res_animals);
     },
@@ -160,6 +161,7 @@ export default {
                 let search_params = {};
                 search_params.sex = [1,2];
                 search_params.pageNumber = newValue;
+                search_params.entitiesOnPage = 25;
                 const response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {

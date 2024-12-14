@@ -109,6 +109,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
+                search_params.entitiesOnPage = 25;
 
                 this.current_filters = search_params;
 
@@ -125,7 +126,7 @@ export default {
                 this.searching_animal = result.LST;
                 this.search = true;
 
-                this.total_pages = Math.ceil(result.N/50);
+                this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
                 
                 if(this.isCows) this.search_error_cows = false;
                 if(this.isBulls) this.search_error_bulls = false;
@@ -155,7 +156,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
-
+                search_params.entitiesOnPage = 25;
 
                 this.current_filters = search_params;
 
@@ -170,7 +171,7 @@ export default {
                 
                 console.log(result, 'что приходит');
 
-                this.total_pages = Math.ceil(result.N/50);
+                this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
 
                 if(this.isCows) this.search_error_cows = false;
                 if(this.isBulls) this.search_error_bulls = false;

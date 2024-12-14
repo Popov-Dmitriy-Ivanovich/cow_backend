@@ -3,7 +3,7 @@
     <div class="statistic-title">Статистика по генотипированию</div>
     <div v-for="item in stat" :key="item.name" class="statis-text">
         <div>{{ item.name }}</div>
-        <div>{{ item.value }} животных</div>
+        <div>{{ item.value }} животных (~{{ item.regard }}% от общего количества)</div>
     </div>
 </div>
 </template>
@@ -17,10 +17,19 @@ export default {
     },
     async created() {
         this.stat = [];
-        const response = await fetch('/api/analitics/genotyped/40000/byRegion/36/districts');
+        let obj = {};
+        const response = await fetch('/api/analitics/genotyped/40000/byRegion/36/districts',{
+            method: 'POST',
+            headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(obj),
+        });
         const result = await response.json();
+        console.log(result);
         for( let key in result) {
-            let item = {name: key + ' район', value: result[key].Genotyped}
+            let val = Math.round(((result[key].Genotyped / result[key].Alive)*100)*100)/100;
+            let item = {name: key + ' район', value: result[key].Genotyped, regard:val};
             this.stat.push(item);
         }
     }
@@ -46,7 +55,7 @@ export default {
 }
 
 .statis-text {
-    width: 40%;
+    width: 50%;
     display: flex;
     justify-content: space-between;
 }
