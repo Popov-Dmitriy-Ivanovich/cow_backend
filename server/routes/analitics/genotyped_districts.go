@@ -34,20 +34,6 @@ import (
 // @Router       /analitics/genotyped/{year}/byRegion/{region}/districts [post]
 func (g Genotyped) DistrictsPost() func(*gin.Context) {
 	return func(c *gin.Context) {
-		filterData := cows_filter.CowsFilter{}
-		if err := c.ShouldBindJSON(&filterData); err != nil {
-			c.JSON(422, err.Error())
-		}
-		aliveFilter := filterData
-		genotypedFilter := filterData
-		illFilter := filterData
-
-		genotypedFilter.IsGenotyped = new(bool)
-		*genotypedFilter.IsGenotyped = true
-
-		illFilter.HasAnyIllnes = new(bool)
-		*illFilter.HasAnyIllnes = true
-
 		region := c.Param("region")
 
 		roleId, exists := c.Get("RoleId")
@@ -70,6 +56,20 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 				return
 			}
 		}
+
+		filterData := cows_filter.CowsFilter{}
+		if err := c.ShouldBindJSON(&filterData); err != nil {
+			c.JSON(422, err.Error())
+		}
+		aliveFilter := filterData
+		genotypedFilter := filterData
+		illFilter := filterData
+
+		genotypedFilter.IsGenotyped = new(bool)
+		*genotypedFilter.IsGenotyped = true
+
+		illFilter.HasAnyIllnes = new(bool)
+		*illFilter.HasAnyIllnes = true
 
 		keys := []byDistrictKeys{}
 		db := models.GetDb()
