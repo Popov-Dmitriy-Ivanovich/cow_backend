@@ -107,7 +107,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 		db := models.GetDb()
 		userRegReq := models.UserRegisterRequest{}
 		if err := db.Offset(int(userCreateNumberInt)).Limit(1).Find(&userRegReq).Error; err != nil {
-			c.JSON(500, err.Error())
+			c.HTML(200, "AdminApproveUserPage", gin.H{})
 			return
 		}
 		
@@ -129,6 +129,10 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 			c.JSON(500, err.Error())
 			return
 		}
+		prevNumber :=  userCreateNumberInt
+		if prevNumber != 0 {
+			prevNumber--
+		}
 		params := gin.H{
 			"email" : userRegReq.Email,
 			"name": userRegReq.NameSurnamePatronimic,
@@ -138,7 +142,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 			"hozNumber": hoz.HozNumber,
 			"region": region.Name,
 			"nextPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt+1,10),
-			"prevPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt-1,10),
+			"prevPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(prevNumber,10),
 			"approveUrl": "https://genmilk.ru/api/admin/approveUser/" + strconv.FormatUint(userCreateNumberInt,10),
 			"rejectUrl": "https://genmilk.ru/api/admin/rejectUser/" + strconv.FormatUint(userCreateNumberInt,10),
 		}
