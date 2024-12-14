@@ -2,17 +2,12 @@ package admin
 
 import (
 	"cow_backend/models"
-	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"golang.org/x/crypto/bcrypt"
-)
-
-var (
-	key   = []byte("super-secret-key")
-	store = sessions.NewCookieStore(key)
 )
 
 type AuthData struct {
@@ -22,8 +17,8 @@ type AuthData struct {
 
 func AdminMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		store := sessions.NewCookieStore([]byte(os.Getenv("JWT_KEY")))
 		session, _ := store.Get(c.Request, "cookie-name")
-		fmt.Println("Сессия начата")
 		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
 			c.Redirect(http.StatusFound, "/api/admin/login")
 			c.Abort()
@@ -40,6 +35,7 @@ func CheckPassword(hashedPassword, password string) error {
 
 func (s *Admin) AdminLogin() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		store := sessions.NewCookieStore([]byte(os.Getenv("JWT_KEY")))
 		session, _ := store.Get(c.Request, "cookie-name")
 
 		var user AuthData
@@ -86,6 +82,7 @@ func (s *Admin) AdminLogin() gin.HandlerFunc {
 
 func (s *Admin) AdminLogout() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		store := sessions.NewCookieStore([]byte(os.Getenv("JWT_KEY")))
 		session, _ := store.Get(c.Request, "cookie-name")
 
 		session.Values["authenticated"] = false

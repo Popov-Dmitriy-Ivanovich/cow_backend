@@ -174,9 +174,9 @@
                 {{ end }}
             </select>
 
-            <textarea id="description" name="description" rows="15" placeholder="Текст новости"></textarea>
+            <textarea id="description" name="description" rows="15" placeholder="Текст новости" required></textarea>
             
-            <input type="date" id="date" name="date" style>
+            <input type="date" id="date" name="date" required>
 
             <button class="submit-button" type="submit">Создать новость</button>
         </form>
@@ -208,8 +208,7 @@
             title: document.getElementById('title').value,
             region: parseInt(document.getElementById('region').value, 10),
             text: document.getElementById('description').value,
-            date: new Date()
-            
+            date: new Date(document.getElementById('date').value)
         };
 
         fetch('/api/admin/newNews', {

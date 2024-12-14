@@ -22,13 +22,25 @@ func (f *Regions) GetFarms() func(*gin.Context) {
 		id := c.Param("id")
 		db := models.GetDb()
 		farms := []models.Farm{}
-		dist := models.District{}
-		if err := db.Where("region_id = ?", id).First(&dist).Error; err != nil {
+		dists := []models.District{}
+		if err := db.Where("region_id = ?", id).Find(&dists).Error; err != nil {
 			c.JSON(500, err.Error)
 			return
 		}
-		if err := db.Where("district_id = ?", dist.ID).Find(&farms).Error; err != nil {
-			c.JSON(500, err.Error)
+
+		if len(dists) == 0 {
+			c.JSON(200, gin.H{"farms": farms})
+			return
+		}
+
+		var districtIDs []uint
+
+		for _, dist := range dists {
+			districtIDs = append(districtIDs, dist.ID)
+		}
+
+		if err := db.Where("district_id IN ?", districtIDs).Find(&farms).Error; err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
 		c.JSON(200, gin.H{"farms": farms})
