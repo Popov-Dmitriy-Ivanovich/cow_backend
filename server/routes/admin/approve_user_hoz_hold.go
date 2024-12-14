@@ -107,7 +107,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 		db := models.GetDb()
 		userRegReq := models.UserRegisterRequest{}
 		if err := db.Offset(int(userCreateNumberInt)).Limit(1).Find(&userRegReq).Error; err != nil {
-			c.HTML(200, "AdminApproveUserPage", gin.H{})
+			c.HTML(200, "AdminApproveUserPageEnd.tmpl", gin.H{})
 			return
 		}
 		
