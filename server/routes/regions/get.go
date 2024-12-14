@@ -3,6 +3,7 @@ package regions
 import (
 	"cow_backend/models"
 	"cow_backend/routes"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,6 +47,9 @@ func (r *Regions) News() func(*gin.Context) {
 		if err := db.Preload("News").First(&region, id).Error; err != nil {
 			c.JSON(404, err.Error())
 		}
-		c.JSON(200, region.News)
+		sort.Slice(region.News,func(i, j int) bool {
+			return region.News[i].Date.After(region.News[j].Date.Time)
+		})
+		c.JSON(200, region.News[0:5])
 	}
 }
