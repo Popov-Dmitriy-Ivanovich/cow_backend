@@ -4,6 +4,10 @@ import (
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"encoding/json"
+	"log"
+	"net/http"
+	"strconv"
+
 	// "sort"
 	"time"
 
@@ -273,6 +277,13 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 //	@Router       /cows/filter [post]
 func (c *Cows) Filter() func(*gin.Context) {
 	return func(c *gin.Context) {
+
+		roleId, exists := c.Get("RoleId")
+		if !exists {
+			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
+			return
+		}
+
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
 			c.JSON(500, gin.H{"error": err})
@@ -287,6 +298,41 @@ func (c *Cows) Filter() func(*gin.Context) {
 				return
 			}
 		}
+
+		if roleId == 1 {
+			farmIdStr, exists := c.Get("FarmId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "FarmId не найден в контексте")
+				return
+			}
+
+			farmIdUint64, err := strconv.ParseUint(farmIdStr.(string), 10, 0)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, "Ошибка преобразования FarmId: "+err.Error())
+				return
+			}
+
+			farmId := uint(farmIdUint64)
+			log.Println(farmId)
+			bodyData.HozId = &farmId
+		}
+
+		// if roleId == 2 {
+		// 	regionIdStr, exists := c.Get("RegionId")
+		// 	if !exists {
+		// 		c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
+		// 		return
+		// 	}
+
+		// 	regionIdUint64, err := strconv.ParseUint(regionIdStr.(string), 10, 0)
+		// 	if err != nil {
+		// 		c.JSON(http.StatusInternalServerError, "Ошибка преобразования RegionId: "+err.Error())
+		// 		return
+		// 	}
+
+		// 	regionId := uint(regionIdUint64)
+		// 	bodyData.RegionId = &regionId
+		// }
 
 		db := models.GetDb()
 		query := db.Model(&models.Cow{}).Preload("FarmGroup").Preload("Genetic")
@@ -329,7 +375,6 @@ func (c *Cows) Filter() func(*gin.Context) {
 			res = append(res, serializeByFilter(&c, &bodyData))
 		}
 
-		
 		// fmt.Print(query)
 		c.JSON(200, gin.H{
 			"N":   resCount,
