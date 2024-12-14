@@ -4,6 +4,8 @@ import (
 	"cow_backend/filters"
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
+	"log"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -45,6 +47,29 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 
 		illFilter.HasAnyIllnes = new(bool)
 		*illFilter.HasAnyIllnes = true
+
+		region := c.Param("region")
+
+		roleId, exists := c.Get("RoleId")
+		if !exists {
+			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
+			return
+		}
+
+		if roleId != 3 && roleId != 4 {
+			regionId, exists := c.Get("RegionId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
+				return
+			}
+
+			log.Println(regionId, region)
+			if regionId != region {
+				c.JSON(421, gin.H{"error": "Нет доступа к региону"})
+				c.Abort()
+				return
+			}
+		}
 
 		keys := []byDistrictKeys{}
 		db := models.GetDb()

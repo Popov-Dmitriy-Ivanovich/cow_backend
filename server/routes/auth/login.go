@@ -18,8 +18,11 @@ type AuthData struct {
 
 type JwtClaims struct {
 	jwt.RegisteredClaims
-	UserId uint
-	Role   int
+	UserId   uint
+	RoleId   int
+	RegionId uint
+	FarmId   *uint
+	Distid   uint
 }
 
 func CheckPassword(hashedPassword, password string) error {
@@ -48,7 +51,7 @@ func (s *Auth) Login() func(*gin.Context) {
 
 		db := models.GetDb()
 		storedUser := models.User{}
-		if err := db.Where("email = ?", user.Email).First(&storedUser).Error; err != nil {
+		if err := db.Where("email = ?", user.Email).Preload("Farm").First(&storedUser).Error; err != nil {
 			c.JSON(401, gin.H{"error": "Пользователь не найден"})
 			return
 		}
@@ -63,8 +66,11 @@ func (s *Auth) Login() func(*gin.Context) {
 		expTimeAccess := time.Now().Add(5 * time.Hour)
 
 		claimsAccess := &JwtClaims{
-			UserId: storedUser.ID,
-			Role:   storedUser.RoleId,
+			UserId:   storedUser.ID,
+			RoleId:   storedUser.RoleId,
+			RegionId: storedUser.RegionId,
+			FarmId:   storedUser.FarmId,
+			Distid:   storedUser.Farm.DistrictId,
 			RegisteredClaims: jwt.RegisteredClaims{
 				ExpiresAt: jwt.NewNumericDate(expTimeAccess),
 			},
