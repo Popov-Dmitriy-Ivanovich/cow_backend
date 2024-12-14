@@ -141,7 +141,8 @@ export default {
                 const response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                        'Content-Type': 'application/json;charset=utf-8',
+                        'Authorization': localStorage.getItem('jwt')
                     },
                     body: JSON.stringify(search_params),
                 });
@@ -192,7 +193,8 @@ export default {
                 let response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                        'Content-Type': 'application/json;charset=utf-8',
+                        'Authorization': localStorage.getItem('jwt')
                     },
                     body: JSON.stringify(search_params),
                 });
