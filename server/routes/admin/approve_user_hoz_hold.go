@@ -107,7 +107,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 		db := models.GetDb()
 		userRegReq := models.UserRegisterRequest{}
 		if qRes := db.Offset(int(userCreateNumberInt)).Limit(1).Find(&userRegReq); qRes.Error != nil {
-			c.JSON(500, err.Error())
+			c.JSON(500, qRes.Error.Error())
 			return
 		} else if qRes.RowsAffected == 0 {
 			c.HTML(200, "AdminApproveUserPageEnd.tmpl", gin.H{})
