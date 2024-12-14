@@ -13,10 +13,10 @@ type Farms struct {
 
 func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/farms")
-	apiGroup.GET("/:id", f.GetByID())
-	apiGroup.GET("/", f.GetByFilter())
 	authGroup := apiGroup.Group("")
 	authGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
+	apiGroup.GET("/:id", f.GetByID())
+	authGroup.GET("/", f.GetByFilter())
 	authGroup.GET("/hoz", func(c *gin.Context) {
 		roleId, exists := c.Get("RoleId")
 		if !exists {
