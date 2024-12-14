@@ -52,5 +52,6 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 		adminGroup.PUT("/updateNews/:id", s.UpdateNews())
 		adminGroup.GET("/printUser/:number", s.PrintUser())
 		adminGroup.GET("/approveUser/:number", s.ApproveUser())
+		adminGroup.GET("/rejectUser/:number", s.RejectUser())
 	}
 }
