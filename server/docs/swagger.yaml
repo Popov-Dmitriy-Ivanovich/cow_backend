@@ -881,6 +881,58 @@ definitions:
         example: 1
         type: integer
     type: object
+  models.HoldRegisterRequest:
+    properties:
+      address:
+        type: string
+      cowsCount:
+        type: integer
+      description:
+        type: string
+      districtId:
+        type: string
+      email:
+        type: string
+      hozNumber:
+        type: string
+      id:
+        type: integer
+      inn:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      shortName:
+        type: string
+    type: object
+  models.HozRegisterRequest:
+    properties:
+      address:
+        type: string
+      cowsCount:
+        type: integer
+      description:
+        type: string
+      districtId:
+        type: integer
+      email:
+        type: string
+      holdNumber:
+        type: string
+      hozNumber:
+        type: string
+      id:
+        type: integer
+      inn:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      shortName:
+        type: string
+    type: object
   models.Lactation:
     properties:
       abort:
@@ -926,7 +978,6 @@ definitions:
       id:
         type: integer
       regionId:
-        description: Region   *Region `json:"-"`
         type: integer
       text:
         type: string
@@ -981,68 +1032,15 @@ definitions:
       id:
         type: integer
     type: object
-  user_create.createUserData:
+  models.UserRegisterRequest:
     properties:
-      newHold:
-        $ref: '#/definitions/user_create.holdData'
-      newHoz:
-        $ref: '#/definitions/user_create.hozData'
-      newUser:
-        $ref: '#/definitions/user_create.userData'
-    type: object
-  user_create.holdData:
-    properties:
-      address:
-        type: string
-      cowsCount:
-        type: integer
-      description:
-        type: string
-      districtId:
-        type: string
       email:
         type: string
       hozNumber:
+        description: 'номер хоз-ва к которому привязвыается пользователь: либо существует,
+          либо newHoz'
         type: string
-      inn:
-        type: string
-      name:
-        type: string
-      phone:
-        type: string
-      shortName:
-        type: string
-    type: object
-  user_create.hozData:
-    properties:
-      address:
-        type: string
-      cowsCount:
-        type: integer
-      description:
-        type: string
-      districtId:
-        type: integer
-      email:
-        type: string
-      hozNumber:
-        type: string
-      inn:
-        type: string
-      name:
-        type: string
-      parrentId:
-        type: integer
-      phone:
-        type: string
-      shortName:
-        type: string
-    type: object
-  user_create.userData:
-    properties:
-      email:
-        type: string
-      hozId:
+      id:
         type: integer
       nameSurnamePatronimic:
         type: string
@@ -1055,10 +1053,19 @@ definitions:
       roleId:
         type: integer
     type: object
+  user_create.createUserData:
+    properties:
+      newHold:
+        $ref: '#/definitions/models.HoldRegisterRequest'
+      newHoz:
+        $ref: '#/definitions/models.HozRegisterRequest'
+      newUser:
+        $ref: '#/definitions/models.UserRegisterRequest'
+    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: genmilk.ru
+host: localhost:8080
 info:
   contact:
     email: support@swagger.io
