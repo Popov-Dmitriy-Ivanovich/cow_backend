@@ -338,6 +338,7 @@
         const cowIds = Array.from(checkboxes);
         const approved = []; // Для подтвержденных коров
         const notApproved = []; // Для непрошедших коров
+        const currentDate = new Date(); //Дата обновления данных
 
         
         // Разделяем коров на подтвержденные и непрошедшие
@@ -354,6 +355,7 @@
         const data = {
             approved: approved, // Здесь находятся ID подтвержденных коров (значение 1)
             notApproved: notApproved, // Здесь находятся ID непрошедших коров (значение -1)
+            currentDate: currentDate,
         };
 
         // Отправка на сервер
