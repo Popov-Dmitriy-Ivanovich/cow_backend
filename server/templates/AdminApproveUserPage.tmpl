@@ -1,0 +1,105 @@
+{{ define "AdminApproveUserPage.tmpl" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: rgb(222, 186, 255);
+        }
+        .MainCard {
+            background-color:  rgb(233, 214, 250);
+            border-radius: 30px;
+            margin: 1% 5%;
+            padding: 2% 5%;
+        }
+        .UserData {
+            font-size: 25px;
+            margin: 1% 20%;
+            padding: 2%;
+            text-align: center;
+            border-radius: 30px;
+            background-color: rgb(242, 228, 255);
+        }
+        #NextUser {
+            font-size: 25px;
+            margin: 1% 20%;
+            padding: 2%;
+            text-align: center;
+            border-radius: 30px;
+            background-color: rgb(185, 2, 185);
+        }
+        input[type="submit"]
+        {
+            font-size:25px;
+        }
+        *:focus {
+            outline: none;
+        }
+        .Next {
+            background-color: red;
+            font-size: 25px;
+
+            text-align: center;
+
+
+        }
+        .Confirm{
+            background-color: blue;
+            font-size: 25px;
+            text-align: center;
+        }
+        .Uebuttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .ActionButton {
+            background-color:rgb(136, 46, 219);
+            padding: 2%;
+            border-radius: 30px;
+            color: white
+        }
+    </style>
+</head>
+<body>
+<div class="MainCard">
+    <div class="UserData">
+        Email: {{.email}}
+    </div>
+    <div class="UserData">
+        Name: {{.name}}
+    </div>
+    <div class="UserData">
+        Role: {{.role}}
+    </div>
+    <div class="UserData">
+        Phone: {{.phone}}
+    </div>
+    <div class="UserData">
+        hoz: {{.hoz}}
+    </div>
+    <div class="UserData">
+        hozNumber: {{.hozNumber}}
+    </div>
+    <div class="UserData">
+        region: {{.region}}
+    </div>
+    <div class="UserData">
+        <div class="Uebuttons">
+            <div class="ActionButton" id="ConfirmUeButton">  Подтвердить  </div>
+        
+            <div class="ActionButton" onclick="location.href='https:\/\/genmilk.ru\/api\/admin\/printUser\/1';">&nbsp; Следующий </div>
+        </div>     
+    </div> 
+</div>
+<script>
+    document.getElementById('ConfirmUeButton')
+        .addEventListener('click', function (event) {
+            fetch("{{.approveUrl}}").then((res) => {
+                res.text().then(res => {alert(res)})
+            })
+        });
+</script>
+</body>
+{{ end }}

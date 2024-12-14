@@ -12,9 +12,10 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/login", s.Login())
 	apiGroup.POST("/adminLogin", s.AdminLogin())
 	apiGroup.GET("/adminLogout", s.AdminLogout())
-
+	
 	adminGroup := apiGroup.Group("")
 	adminGroup.Use(AdminMiddleware())
+	
 	{
 		adminGroup.GET("", s.Index())
 		adminGroup.GET("/cowTable", s.CheckCowTable())
@@ -49,5 +50,7 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 		adminGroup.PUT("/updateUser/:id", s.UpdateUser())
 		adminGroup.PUT("/updateFarm/:id", s.UpdateFarm())
 		adminGroup.PUT("/updateNews/:id", s.UpdateNews())
+		adminGroup.GET("/printUser/:number", s.PrintUser())
+		adminGroup.GET("/approveUser/:number", s.ApproveUser())
 	}
 }

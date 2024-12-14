@@ -1,0 +1,114 @@
+package admin
+
+import (
+	"cow_backend/models"
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
+)
+// /admin/approveUser/:number
+func (a *Admin) ApproveUser() func(*gin.Context) {
+	return func(c *gin.Context) {
+		userCreateNumber := c.Param("number")
+		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
+		db := models.GetDb()
+		userRegReq := models.UserRegisterRequest{}
+		if err := db.Offset(int(userCreateNumberInt)).Limit(1).Find(&userRegReq).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userRegReq.Password), bcrypt.DefaultCost)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Ошибка при хешировании пароля"})
+			return
+		}
+		hoz := models.Farm{}
+		role := models.Role{}
+		region := models.Region{}
+
+		if err := db.First(&hoz, map[string]any{"hoz_number":userRegReq.HozNumber}).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+
+		if err := db.First(&role,userRegReq.RoleId).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+
+		if err := db.First(&region, userRegReq.RegionId).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		userReg := models.User{
+			NameSurnamePatronimic: userRegReq.NameSurnamePatronimic,
+			Email: userRegReq.Email,
+			Phone: userRegReq.Phone,
+			Password: hashedPassword,
+			Farm: &hoz,
+			Region: region,
+			Role: role,
+		}
+		if err := db.Create(&userReg).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		c.JSON(200, "Пользователь подтвержден")
+	}
+}
+
+// /admin/printUser/:number
+func (a *Admin) PrintUser() func(*gin.Context) {
+	return func(c *gin.Context) {
+		userCreateNumber := c.Param("number")
+		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
+		db := models.GetDb()
+		userRegReq := models.UserRegisterRequest{}
+		if err := db.Offset(int(userCreateNumberInt)).Limit(1).Find(&userRegReq).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		
+		hoz := models.Farm{}
+		role := models.Role{}
+		region := models.Region{}
+
+		if err := db.First(&hoz, map[string]any{"hoz_number":userRegReq.HozNumber}).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+
+		if err := db.First(&role,userRegReq.RoleId).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+
+		if err := db.First(&region, userRegReq.RegionId).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		
+		params := gin.H{
+			"email" : userRegReq.Email,
+			"name": userRegReq.NameSurnamePatronimic,
+			"role": role.Name,
+			"phone": userRegReq.Phone,
+			"hoz": hoz.Name,
+			"hozNumber": hoz.HozNumber,
+			"region": region.Name,
+			"nextPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt+1,10),
+			"approveUrl": "https://genmilk.ru/api/admin/approveUser/" + strconv.FormatUint(userCreateNumberInt,10),
+		}
+		c.HTML(200, "AdminApproveUserPage.tmpl", params)
+	}
+}

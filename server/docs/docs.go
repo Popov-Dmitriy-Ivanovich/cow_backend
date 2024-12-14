@@ -3142,6 +3142,85 @@ const docTemplate = `{
                 }
             }
         },
+        "models.HoldRegisterRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cowsCount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "hozNumber": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "inn": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.HozRegisterRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "cowsCount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "districtId": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "holdNumber": {
+                    "type": "string"
+                },
+                "hozNumber": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "inn": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "shortName": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Lactation": {
             "type": "object",
             "properties": {
@@ -3208,7 +3287,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "regionId": {
-                    "description": "Region   *Region ` + "`" + `json:\"-\"` + "`" + `",
                     "type": "integer"
                 },
                 "text": {
@@ -3291,100 +3369,17 @@ const docTemplate = `{
                 }
             }
         },
-        "user_create.createUserData": {
+        "models.UserRegisterRequest": {
             "type": "object",
             "properties": {
-                "newHold": {
-                    "$ref": "#/definitions/user_create.holdData"
-                },
-                "newHoz": {
-                    "$ref": "#/definitions/user_create.hozData"
-                },
-                "newUser": {
-                    "$ref": "#/definitions/user_create.userData"
-                }
-            }
-        },
-        "user_create.holdData": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "cowsCount": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "districtId": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
                 "hozNumber": {
+                    "description": "номер хоз-ва к которому привязвыается пользователь: либо существует, либо newHoz",
                     "type": "string"
                 },
-                "inn": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "shortName": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_create.hozData": {
-            "type": "object",
-            "properties": {
-                "address": {
-                    "type": "string"
-                },
-                "cowsCount": {
-                    "type": "integer"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "districtId": {
-                    "type": "integer"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "hozNumber": {
-                    "type": "string"
-                },
-                "inn": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "parrentId": {
-                    "type": "integer"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "shortName": {
-                    "type": "string"
-                }
-            }
-        },
-        "user_create.userData": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "hozId": {
+                "id": {
                     "type": "integer"
                 },
                 "nameSurnamePatronimic": {
@@ -3401,6 +3396,20 @@ const docTemplate = `{
                 },
                 "roleId": {
                     "type": "integer"
+                }
+            }
+        },
+        "user_create.createUserData": {
+            "type": "object",
+            "properties": {
+                "newHold": {
+                    "$ref": "#/definitions/models.HoldRegisterRequest"
+                },
+                "newHoz": {
+                    "$ref": "#/definitions/models.HozRegisterRequest"
+                },
+                "newUser": {
+                    "$ref": "#/definitions/models.UserRegisterRequest"
                 }
             }
         }
