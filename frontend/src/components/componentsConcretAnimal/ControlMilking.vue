@@ -17,7 +17,7 @@
                     <th>Номер лактации</th>
                     <th class="cm-date">Дата</th>
                     <th class="cm-nprob">Номер пробы</th>
-                    <th class="cm-milkday">Дойные дни</th>
+                    <th class="cm-milkday">Дойный день</th>
                     <th class="cm-milk">Удой, кг</th>
                     <th class="cm-dry">Сухое вещество, %</th>
                     <th class="cm-zhir">Жир, %</th>

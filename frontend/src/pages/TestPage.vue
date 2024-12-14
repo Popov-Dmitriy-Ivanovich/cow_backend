@@ -25,44 +25,58 @@
         </div>
         <div class="filters-and-table">
             <DAnimalFilters @applyFilters="findAnimals"/>
-            <DCowsTable 
-            v-if="isCows" 
-            v-bind:isSearch="search" 
-            v-bind:search_result="searching_animal" 
-            v-bind:search_error="search_error_cows"
-            v-bind:cp="current_page"
-            v-bind:tp="total_pages"
-            v-bind:filters="animal_filters"
-            @defPages="setPages"
-            @changePageButSearch="changePage"
-            v-bind:isLoading="isLoading"
-            /> 
-            
-            <DBullsTable 
-            v-if="isBulls" 
-            v-bind:isSearch="search" 
-            v-bind:search_result="searching_animal" 
-            v-bind:search_error="search_error_bulls"
-            v-bind:cp="current_page"
-            v-bind:tp="total_pages"
-            v-bind:filters="animal_filters"
-            @defPages="setPages"
-            @changePageButSearch="changePage"
-            v-bind:isLoading="isLoading"
-            />
+            <div>
+                <div class="sort">
+                    <div>Сортировка по: </div>
+                    <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
+                        <option :value="null">-нет-</option>
+                        <option :value="'Name'">кличке</option>
+                        <option :value="'RSHN'">РСХН</option>
+                        <option :value="'BirthDate'">дате рождения</option>
+                        <option :value="'InventoryNumber'">инвентарному номеру</option>
+                        <option :value="'HozName'">хозяйству</option>
+                    </select>
+                </div>
 
-            <DChildTable 
-            v-if="isChild" 
-            v-bind:isSearch="search" 
-            v-bind:search_result="searching_animal" 
-            v-bind:search_error="search_error_child"
-            v-bind:cp="current_page"
-            v-bind:tp="total_pages"
-            v-bind:filters="animal_filters"
-            @defPages="setPages"
-            @changePageButSearch="changePage"
-            v-bind:isLoading="isLoading"
-            />
+                <DCowsTable 
+                v-if="isCows" 
+                v-bind:isSearch="search" 
+                v-bind:search_result="searching_animal" 
+                v-bind:search_error="search_error_cows"
+                v-bind:cp="current_page"
+                v-bind:tp="total_pages"
+                v-bind:filters="animal_filters"
+                @defPages="setPages"
+                @changePageButSearch="changePage"
+                v-bind:isLoading="isLoading"
+                /> 
+                
+                <DBullsTable 
+                v-if="isBulls" 
+                v-bind:isSearch="search" 
+                v-bind:search_result="searching_animal" 
+                v-bind:search_error="search_error_bulls"
+                v-bind:cp="current_page"
+                v-bind:tp="total_pages"
+                v-bind:filters="animal_filters"
+                @defPages="setPages"
+                @changePageButSearch="changePage"
+                v-bind:isLoading="isLoading"
+                />
+
+                <DChildTable 
+                v-if="isChild" 
+                v-bind:isSearch="search" 
+                v-bind:search_result="searching_animal" 
+                v-bind:search_error="search_error_child"
+                v-bind:cp="current_page"
+                v-bind:tp="total_pages"
+                v-bind:filters="animal_filters"
+                @defPages="setPages"
+                @changePageButSearch="changePage"
+                v-bind:isLoading="isLoading"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -93,6 +107,7 @@ export default {
             animal_filters: {},
 
             isLoading: false,
+            sort: null,
         }
     },
     methods: {
@@ -110,8 +125,15 @@ export default {
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
                 search_params.entitiesOnPage = 25;
+                if(this.sort) {
+                    search_params.orderByDesc = true;
+                } else {
+                    search_params.orderByDesc = null;
+                }
+                search_params.orderBy = this.sort;
 
                 this.current_filters = search_params;
+                this.animal_filters = search_params;
 
                 console.log(JSON.stringify(search_params), 'параметры для отправки');
 
@@ -157,7 +179,12 @@ export default {
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
                 search_params.entitiesOnPage = 25;
-
+                if(this.sort) {
+                    search_params.orderByDesc = true;
+                } else {
+                    search_params.orderByDesc = null;
+                }
+                search_params.orderBy = this.sort;
                 this.current_filters = search_params;
 
                 let response = await fetch('/api/cows/filter', {
@@ -361,5 +388,28 @@ export default {
     font-size: 90%;
     padding: 18px 7px;
     color:black;
+}
+
+.sort {
+    font-family: Open Sans, sans-serif;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.filter-input {
+    height: 30px;
+    width: 200px;
+    padding: 0 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    border: 3px solid rgb(195, 200, 212);
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.sort div {
+    margin: 0 10px 0 15px;
 }
 </style>
