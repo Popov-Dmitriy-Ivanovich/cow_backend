@@ -1,23 +1,16 @@
 package auth
 
 import (
-	"os"
-	"strings"
-
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
 )
 
 func (a *Auth) Test() func(*gin.Context) {
 	return func(c *gin.Context) {
-		token := c.GetHeader("Authorization")
-		claims := &JwtClaims{}
-		token = strings.TrimPrefix(token, "Bearer ")
-		jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
-			return []byte(os.Getenv("JWT_KEY")), nil
-		})
 
-		res := claims.Role
+		roleId, _ := c.Get("RoleId")
+		regionId, _ := c.Get("RegionId")
+		farmId, _ := c.Get("FarmId")
+		res := gin.H{"roleId": roleId, "regionId": regionId, "farmId": farmId}
 		c.JSON(200, res)
 	}
 }
