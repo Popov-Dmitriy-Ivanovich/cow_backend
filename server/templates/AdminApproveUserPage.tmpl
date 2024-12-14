@@ -88,7 +88,7 @@
     <div class="UserData">
         <div class="Uebuttons">
             <div class="ActionButton" id="ConfirmUeButton">  Подтвердить  </div>
-        
+            <div class="ActionButton" id="RejectUeButton">  Отклонить  </div>
             <div class="ActionButton" onclick="location.href='https:\/\/genmilk.ru\/api\/admin\/printUser\/1';">&nbsp; Следующий </div>
         </div>     
     </div> 
@@ -97,6 +97,12 @@
     document.getElementById('ConfirmUeButton')
         .addEventListener('click', function (event) {
             fetch("{{.approveUrl}}").then((res) => {
+                res.text().then(res => {alert(res)})
+            })
+        });
+    document.getElementById('RejectUeButton')
+        .addEventListener('click', function (event) {
+            fetch("{{.rejectUrl}}").then((res) => {
                 res.text().then(res => {alert(res)})
             })
         });

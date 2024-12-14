@@ -2,12 +2,14 @@ package admin
 
 import (
 	"cow_backend/models"
+	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
+
 // /admin/approveUser/:number
 func (a *Admin) ApproveUser() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -59,7 +61,36 @@ func (a *Admin) ApproveUser() func(*gin.Context) {
 			c.JSON(500, err.Error())
 			return
 		}
+
+		if err := db.Delete(&userRegReq).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
 		c.JSON(200, "Пользователь подтвержден")
+	}
+}
+
+// /admin/rejectUser/:number
+func (a *Admin) RejectUser() func(*gin.Context) {
+	return func(c *gin.Context) {
+		userCreateNumber := c.Param("number")
+		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		if err != nil {
+			c.JSON(422, err.Error())
+			return
+		}
+		db := models.GetDb()
+		userRegReq := models.UserRegisterRequest{}
+		if err := db.Offset(int(userCreateNumberInt)).Limit(1).Find(&userRegReq).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+
+		if err := db.Delete(&userRegReq).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		c.JSON(200, "Пользователь отклонен")
 	}
 }
 
@@ -68,6 +99,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 	return func(c *gin.Context) {
 		userCreateNumber := c.Param("number")
 		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		fmt.Println("Page printuser", userCreateNumber, userCreateNumberInt)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -108,6 +140,7 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 			"region": region.Name,
 			"nextPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt+1,10),
 			"approveUrl": "https://genmilk.ru/api/admin/approveUser/" + strconv.FormatUint(userCreateNumberInt,10),
+			"rejectUrl": "https://genmilk.ru/api/admin/rejectUser/" + strconv.FormatUint(userCreateNumberInt,10),
 		}
 		c.HTML(200, "AdminApproveUserPage.tmpl", params)
 	}

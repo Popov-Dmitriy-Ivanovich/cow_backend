@@ -80,7 +80,8 @@ func main() {
 	apiGroup := r.Group("/api")
 	routes.WriteRoutes(apiGroup, &routes.Api{}, &regions.Regions{}, &farms.Farms{}, &breeds.Breeds{}, &checkmilks.CheckMilks{},
 		&cows.Cows{}, &dailymilks.DailyMilk{}, &districts.Districts{}, &lactations.Lactations{}, &sexes.Sexes{}, &analitics.Analitics{},
-		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{}, &updates.Update{}, &partners.Partners{}, &admin.Admin{}, &user_create.User{})
+		&monogenetic_illnesses.MonogeneticIllneses{}, &gui.Gui{}, &load.Load{}, &auth.Auth{}, &updates.Update{}, &partners.Partners{}, 
+		&admin.Admin{}, &user_create.User{})
 
 	apiGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiGroup.Static("/static", "static")
