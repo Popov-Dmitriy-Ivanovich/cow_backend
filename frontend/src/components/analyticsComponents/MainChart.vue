@@ -39,6 +39,9 @@ export default {
                     enabled: false
                 },
                 colors: ['#6e5add'],
+                tooltip: {
+                    enabled: false,
+                }
             },
             series: [],
             newX: [],
@@ -63,10 +66,12 @@ export default {
         async fetchData() {
             this.series = [];
             this.options.xaxis.categories = []; 
+            console.log(localStorage.getItem('jwt'));
             let response = await fetch(`/api/analitics/genotyped/years`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': localStorage.getItem('jwt'),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
@@ -95,7 +100,8 @@ export default {
             let response = await fetch(`/api/analitics/checkMilks/years`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': localStorage.getItem('jwt'),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
@@ -106,9 +112,6 @@ export default {
                 this.newX.push(key);
                 obj.data.push(1);
             }
-
-            this.newX.push('Все года');
-            obj.data.push(1);
 
             this.$refs.mainchart.updateOptions({
                 xaxis: {

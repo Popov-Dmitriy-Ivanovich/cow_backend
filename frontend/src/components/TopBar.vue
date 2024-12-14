@@ -4,6 +4,7 @@
         <div class="topbar-links" id="topbar-links">
             <div class="point-of-bar" @click="$router.push('/animals')" v-if="token">Животные</div>
             <div class="point-of-bar" @click="$router.push('/analytics')" v-if="token">Аналитика</div>
+            <div class="point-of-bar" @click="$router.push('/gui')" v-if="token">Загрузка файлов</div>
             <div class="point-of-bar" @click="$router.push('/help')">Помощь</div>
             <div class="point-of-bar" @click="$router.push('/')">О проекте</div>
             <div class="point-of-bar" @click="$router.push('/login')" v-if="!token">Войти</div>

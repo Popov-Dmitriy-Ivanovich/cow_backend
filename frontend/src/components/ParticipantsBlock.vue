@@ -3,8 +3,11 @@
         <div class="part-text">
             Участники
         </div>
+        <div class="part-text-low">Для реализации программы образован консорциум из более 30 
+            компаний, включая крупные агропромышленные холдинги, образовательные 
+            учреждения и генетические лаборатории</div>
         <div class="part-blocks">
-            <div v-for="participant in participants" :key="participant[0]">
+            <div v-for="participant in participants" :key="participant[0]" class="part-block">
                 <ParticipantItem v-bind:participant="participant"/>
             </div>
         </div>
@@ -47,6 +50,10 @@ export default {
         text-align: center;
         font-family: Open Sans, sans-serif;
         color: rgb(37, 0, 132);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .part-text {
@@ -67,5 +74,15 @@ export default {
 
     .show-part:hover {
         color:rgb(83, 101, 237);
+    }
+
+    .part-text-low {
+        color: black;
+        width: 50%;
+        margin-bottom: 30px;
+    }
+
+    .part-block {
+        margin: 0 50px;
     }
 </style>
