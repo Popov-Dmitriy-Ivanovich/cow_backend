@@ -1,5 +1,11 @@
 package models
 
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
+
 type Genetic struct {
 	ID                        uint                 `gorm:"primaryKey"` // ID записи о генотипировании
 	CowID                     uint                 // ID коровы
@@ -31,4 +37,14 @@ type GeneticIllness struct {
 type GeneticIllnessStatus struct {
 	ID     uint `gorm:"primaryKey"`
 	Status string
+}
+
+func (g *Genetic) BeforeCreate(tx *gorm.DB) error {
+	if g.ResultDate == nil {
+		g.ResultDate = &DateOnly{Time: time.Now().UTC()}
+	}
+	if g.BloodDate == nil {
+		g.BloodDate = &DateOnly{Time: time.Now().UTC()}
+	}
+	return nil
 }
