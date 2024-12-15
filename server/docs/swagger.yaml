@@ -89,7 +89,10 @@ definitions:
       createdAt:
         $ref: '#/definitions/models.DateOnly'
       deathDate:
-        $ref: '#/definitions/models.DateOnly'
+        allOf:
+        - $ref: '#/definitions/models.DateOnly'
+        description: RegionId                  *uint                       `json:",omitempty"
+          validate:"optional"`
       departDate:
         $ref: '#/definitions/models.DateOnly'
       events:
@@ -289,8 +292,8 @@ definitions:
         example: "2800-01-21"
         type: string
       birthDateFrom:
-        description: Фильтр по дню рождения коровы ОТ (возращает всех кто родился
-          в эту дату или позднее)
+        description: RegionId               *uint   `example:"1" validate:"optional"`          //ID
+          региона, для которого ищутся коровы
         example: "1800-01-21"
         type: string
       birthDateTo:
@@ -679,9 +682,33 @@ definitions:
       daysFromLactation:
         description: дни от начала лактации
         type: integer
+      eventType:
+        $ref: '#/definitions/models.EventType'
+      eventType1:
+        $ref: '#/definitions/models.EventType'
+      eventType1Id:
+        type: integer
+      eventType2:
+        $ref: '#/definitions/models.EventType'
+      eventType2Id:
+        type: integer
       eventTypeId:
         type: integer
       id:
+        type: integer
+    type: object
+  models.EventType:
+    properties:
+      code:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      parentId:
+        type: integer
+      type:
+        description: Should be enum
         type: integer
     type: object
   models.Exterior:
@@ -1017,6 +1044,13 @@ definitions:
       regNum:
         description: номер региона (Архангельская область = 29)
         type: integer
+    type: object
+  models.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
     type: object
   models.Sex:
     properties:
@@ -1614,6 +1648,35 @@ paths:
       summary: REGISTER
       tags:
       - REGISTER
+  /auth/roles:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Role'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: {}
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: {}
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: {}
+            type: object
+      summary: LOGIN
+      tags:
+      - LOGIN
   /breeds:
     get:
       description: Возращает список всех пород. Разрешает отсутсвие фильтров

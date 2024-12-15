@@ -810,6 +810,49 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/roles": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "LOGIN"
+                ],
+                "summary": "LOGIN",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Role"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {}
+                        }
+                    }
+                }
+            }
+        },
         "/breeds": {
             "get": {
                 "description": "Возращает список всех пород. Разрешает отсутсвие фильтров",
@@ -2068,7 +2111,12 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.DateOnly"
                 },
                 "deathDate": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "RegionId                  *uint                       ` + "`" + `json:\",omitempty\" validate:\"optional\"` + "`" + `",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "departDate": {
                     "$ref": "#/definitions/models.DateOnly"
@@ -2331,7 +2379,7 @@ const docTemplate = `{
                     "example": "2800-01-21"
                 },
                 "birthDateFrom": {
-                    "description": "Фильтр по дню рождения коровы ОТ (возращает всех кто родился в эту дату или позднее)",
+                    "description": "RegionId               *uint   ` + "`" + `example:\"1\" validate:\"optional\"` + "`" + `          //ID региона, для которого ищутся коровы",
                     "type": "string",
                     "example": "1800-01-21"
                 },
@@ -2841,10 +2889,46 @@ const docTemplate = `{
                     "description": "дни от начала лактации",
                     "type": "integer"
                 },
+                "eventType": {
+                    "$ref": "#/definitions/models.EventType"
+                },
+                "eventType1": {
+                    "$ref": "#/definitions/models.EventType"
+                },
+                "eventType1Id": {
+                    "type": "integer"
+                },
+                "eventType2": {
+                    "$ref": "#/definitions/models.EventType"
+                },
+                "eventType2Id": {
+                    "type": "integer"
+                },
                 "eventTypeId": {
                     "type": "integer"
                 },
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.EventType": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "Should be enum",
                     "type": "integer"
                 }
             }
@@ -3344,6 +3428,17 @@ const docTemplate = `{
                 "regNum": {
                     "description": "номер региона (Архангельская область = 29)",
                     "type": "integer"
+                }
+            }
+        },
+        "models.Role": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
