@@ -4,11 +4,11 @@
     <div class="form-example">
         <h1>Загрузка gtc</h1>
         <form action="https://genmilk.ru/api/load/gtcFile" method="post" enctype="multipart/form-data">
-            <label for="gtc">Выберите gtc файлы:</label>
-            <input type="file" id="gtc" name="gtc" required="" multiple="">
-
-            <label for="csv">Выберите csv файл:</label>
+            <label for="csv">Csv файл сопоставления Селекса gtc-файлу:</label>
             <input type="file" id="csv" name="csv" required="">
+
+            <label for="gtc">Список gtc-файлов:</label>
+            <input type="file" id="gtc" name="gtc" required="" multiple="">
             
             <input type="submit" value="Загрузить">
         </form>

@@ -5,7 +5,7 @@
             <div class="doc-name">{{ doc.Path || 'Нет информации' }}</div>
             <div class="doc-btns">
                 <a :href="`/api/static/documents/${doc.Path}`" :download="doc.Path" class="doc-link"><div class="doc-download btn">Скачать</div></a>
-                <div class="doc-delete btn">Удалить</div>
+                <!-- <div class="doc-delete btn">Удалить</div> -->
             </div>
 
         </div>

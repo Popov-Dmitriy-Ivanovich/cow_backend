@@ -5,10 +5,10 @@
             <h1>Загрузка информации о генотипировании</h1>
             <form action="https://genmilk.ru/api/load/exterior" method="post" enctype="multipart/form-data">            
             
-                <label for="CsvFile">CSV файл:</label>
+                <label for="CsvFile">CSV-файл сопоставления Селекса файлу фотографии:</label>
                 <input type="file" id="CsvFile" name="CsvFile" required="">
                 
-                <label for="Pictures">Фото экстерьера:</label>
+                <label for="Pictures">Список файлов фотографий животных:</label>
                 <input type="file" id="Pictures" name="Pictures" required="" multiple="">
 
 

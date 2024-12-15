@@ -12,7 +12,7 @@
             <button class="UserChoiseButton" @click="$router.push(`/gui/downloadControlMilking`)">Загрузка контрольных доений</button> 
         </div>
         <div class="UserChoise">
-            <button class="UserChoiseButton" @click="$router.push(`/gui/downloadEvents`)">Загрузка вет. событий</button> 
+            <button class="UserChoiseButton" @click="$router.push(`/gui/downloadEvents`)">Загрузка ветеринарных событий</button> 
         </div>
         <div class="UserChoise">
             <button class="UserChoiseButton" @click="$router.push(`/gui/downloadGenotype`)">Загрузка генотипирования</button> 

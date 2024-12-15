@@ -112,55 +112,63 @@ export default {
             result += arr[1]; result += '.';
             result += arr[0];
             return result;
+        },
+        settings() {
+            this.check_milk = '';
+            if (this.animal_item.CheckMilkDate) {
+                if (this.animal_item.CheckMilkDate.length) {
+                    this.check_milk = this.animal_item.CheckMilkDate[0];
+                }
+            }
+            this.insemination = '';
+            if (this.animal_item.InsemenationDate) {
+                if (this.animal_item.InsemenationDate.length) {
+                    this.insemination = this.animal_item.InsemenationDate[0];
+                }
+            }
+            this.calving = '';
+            if (this.animal_item.CalvingDate) {
+                if(this.animal_item.CalvingDate.length) {
+                    this.calving = this.animal_item.CalvingDate[0];
+                }
+            }
+            this.cevent = '';
+            if (this.animal_item.Events) {
+                if (this.animal_item.Events.length) {
+                    if (this.animal_item.Events[0].Date) {
+                        this.cevent = this.animal_item.Events[0].Date;
+                    }
+                }
+            }
+            this.illname = [];
+            this.illstatus = [];
+            if(this.animal_item.MonogeneticIllneses && this.animal_item.MonogeneticIllneses.length) {
+                for (let i = 0; i < this.animal_item.MonogeneticIllneses.length; i++) {
+                    if (this.animal_item.MonogeneticIllneses[i].Illness) {
+                        this.illname.push(this.animal_item.MonogeneticIllneses[i].Illness.Name);
+                        if (this.animal_item.MonogeneticIllneses[i].Status !== null) {
+                            this.illstatus.push(this.animal_item.MonogeneticIllneses[i].Status.Status);
+                        } else {
+                            this.illstatus.push('-');
+                        }
+                    }
+
+                }
+            }
+            this.illmassobj = {};
+            for (let i = 0; i < this.illname.length; i++) {
+                this.illmassobj[this.illname[i]] = this.illstatus[i];
+            }
         }
     },
     mounted() {
-        this.check_milk = '';
-        if (this.animal_item.CheckMilkDate) {
-            if (this.animal_item.CheckMilkDate.length) {
-                this.check_milk = this.animal_item.CheckMilkDate[0];
-            }
-        }
-        this.insemination = '';
-        if (this.animal_item.InsemenationDate) {
-            if (this.animal_item.InsemenationDate.length) {
-                this.insemination = this.animal_item.InsemenationDate[0];
-            }
-        }
-        this.calving = '';
-        if (this.animal_item.CalvingDate) {
-            if(this.animal_item.CalvingDate.length) {
-                this.calving = this.animal_item.CalvingDate[0];
-            }
-        }
-        this.cevent = '';
-        if (this.animal_item.Events) {
-            if (this.animal_item.Events.length) {
-                if (this.animal_item.Events[0].Date) {
-                    this.cevent = this.animal_item.Events[0].Date;
-                }
-            }
-        }
-        this.illname = [];
-        this.illstatus = [];
-        if(this.animal_item.MonogeneticIllneses && this.animal_item.MonogeneticIllneses.length) {
-            for (let i = 0; i < this.animal_item.MonogeneticIllneses.length; i++) {
-                if (this.animal_item.MonogeneticIllneses[i].Illness) {
-                    this.illname.push(this.animal_item.MonogeneticIllneses[i].Illness.Name);
-                    if (this.animal_item.MonogeneticIllneses[i].Status !== null) {
-                        this.illstatus.push(this.animal_item.MonogeneticIllneses[i].Status.Status);
-                    } else {
-                        this.illstatus.push('-');
-                    }
-                }
-
-            }
-        }
-        this.illmassobj = {};
-        for (let i = 0; i < this.illname.length; i++) {
-            this.illmassobj[this.illname[i]] = this.illstatus[i];
-        }
+        this.settings();
     },
+    watch: {
+        animal_item(){
+            this.settings();
+        }
+    }
 }
 </script>
 

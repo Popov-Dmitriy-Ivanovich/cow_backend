@@ -8,23 +8,23 @@
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему удою за 305 дней:</div>
-                <div>{{ ratings_hoz.EbvMilk || 'Нет информации'}}</div>
+                <div>{{ round(ratings_hoz.EbvMilk) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему жиру за 305 дней:</div>
-                <div>{{ ratings_hoz.EbvFat || 'Нет информации'}}</div>
+                <div>{{ round(ratings_hoz.EbvFat) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему белку за 305 дней:</div>
-                <div>{{ ratings_hoz.EbvProtein || 'Нет информации'}}</div>
+                <div>{{ round(ratings_hoz.EbvProtein) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по средней кратности осеменения:</div>
-                <div>{{ ratings_hoz.EbvInsemenation || 'Нет информации'}}</div>
+                <div>{{ round(ratings_hoz.EbvInsemenation) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по средней длительности сервис-периода:</div>
-                <div>{{ ratings_hoz.EvbService || 'Нет информации'}}</div>
+                <div>{{ round(ratings_hoz.EvbService) || 'Нет информации'}}</div>
             </div>
         </div>
 
@@ -32,27 +32,27 @@
             <div class="rat-title">Оценка КРС по региону</div>
             <div class="rating-item">
                 <div class="rating-param">Общая индексная оценка:</div>
-                <div>{{ ratings_reg.GeneralValue || 'Нет информации'}}</div>
+                <div>{{ round(ratings_reg.GeneralValue) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему удою за 305 дней:</div>
-                <div>{{ ratings_reg.EbvMilk || 'Нет информации'}}</div>
+                <div>{{ round(ratings_reg.EbvMilk) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему жиру за 305 дней:</div>
-                <div>{{ ratings_reg.EbvFat || 'Нет информации'}}</div>
+                <div>{{ round(ratings_reg.EbvFat) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по среднему белку за 305 дней:</div>
-                <div>{{ ratings_reg.EbvProtein || 'Нет информации'}}</div>
+                <div>{{ round(ratings_reg.EbvProtein) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по средней кратности осеменения:</div>
-                <div>{{ ratings_reg.EbvInsemenation || 'Нет информации'}}</div>
+                <div>{{ round(ratings_reg.EbvInsemenation) || 'Нет информации'}}</div>
             </div>
             <div class="rating-item">
                 <div class="rating-param">EBV по средней длительности сервис-периода:</div>
-                <div>{{ ratings_reg.EvbService || 'Нет информации'}}</div>
+                <div>{{ round(ratings_reg.EvbService) || 'Нет информации'}}</div>
             </div>
         </div>
         
@@ -78,6 +78,11 @@ export default {
         }
         if(result.ByRegion) {
             this.ratings_reg = result.ByRegion;
+        }
+    },
+    methods: {
+        round(num) {
+            return Math.round(num*100)/100;
         }
     }
 }
