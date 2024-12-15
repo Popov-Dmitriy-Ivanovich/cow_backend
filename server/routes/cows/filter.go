@@ -322,22 +322,22 @@ func (c *Cows) Filter() func(*gin.Context) {
 			bodyData.HozId = &farmId
 		}
 
-		// if roleId == 2 {
-		// 	regionIdStr, exists := c.Get("RegionId")
-		// 	if !exists {
-		// 		c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
-		// 		return
-		// 	}
+		if roleId == 2 {
+			regionIdStr, exists := c.Get("RegionId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
+				return
+			}
 
-		// 	regionIdUint64, err := strconv.ParseUint(regionIdStr.(string), 10, 0)
-		// 	if err != nil {
-		// 		c.JSON(http.StatusInternalServerError, "Ошибка преобразования RegionId: "+err.Error())
-		// 		return
-		// 	}
+			regionIdUint64, err := strconv.ParseUint(regionIdStr.(string), 10, 0)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, "Ошибка преобразования RegionId: "+err.Error())
+				return
+			}
 
-		// 	regionId := uint(regionIdUint64)
-		// 	bodyData.RegionId = &regionId
-		// }
+			regionId := uint(regionIdUint64)
+			bodyData.RegionId = &regionId
+		}
 
 		db := models.GetDb()
 		query := db.Model(&models.Cow{}).Preload("FarmGroup").Preload("Genetic").Where("approved <> -1")

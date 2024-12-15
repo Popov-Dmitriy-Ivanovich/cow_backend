@@ -51,4 +51,5 @@ type CowsFilter struct { // Фильтр коров
 
 	OrderBy     *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"
 	OrderByDesc *bool   // true - в порядке убывания, false - в порядке возрастания
+	RegionId 	*uint // по региону
 }
