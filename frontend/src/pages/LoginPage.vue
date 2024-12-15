@@ -13,6 +13,7 @@
             <div class="login-btns">
                 <button type="submit" class="btn login-btn">Вход</button>
             </div>
+            <div v-if="error" class="error-log">Неправильный логин и/или пароль</div>
         </form>
     </div>
 </template>
@@ -23,6 +24,7 @@ export default {
         return {
             email: '',
             pass: '',
+            error: false,
         }
     },
     async mounted() {
@@ -31,6 +33,7 @@ export default {
     },
     methods: {
         async handleFormSubmit(event) {
+            this.error = false;
             event.preventDefault();
             let obj = {};
             obj.email = document.getElementById('login-email').value;
@@ -43,12 +46,17 @@ export default {
                 body: JSON.stringify(obj),
             });
             let result = await response.json();
-            localStorage.setItem('jwt', result.token);
+            if(result.token) {
+                localStorage.setItem('jwt', result.token);
 
-            this.$store.commit('SET_ISLOGGED', Boolean(localStorage.getItem('jwt')));
-            console.log(localStorage.getItem('jwt'), 'jwt');
+                this.$store.commit('SET_ISLOGGED', Boolean(localStorage.getItem('jwt')));
+                console.log(localStorage.getItem('jwt'), 'jwt');
 
-            location.reload();
+                location.reload();
+            } else {
+                this.error = true;
+            }
+
         }
     }
 }
@@ -64,7 +72,7 @@ export default {
     .login {
         font-family: Open Sans, sans-serif;
         background-color: white;
-        padding: 50px 80px 70px 80px;
+        padding: 50px 80px 50px 80px;
         border-radius: 20px;
     }
 
@@ -144,5 +152,10 @@ export default {
     .login-btns {
         position: relative;
         top: 30px;
+    }
+
+    .error-log {
+        margin-top: 20px;
+        color: red;
     }
 </style>

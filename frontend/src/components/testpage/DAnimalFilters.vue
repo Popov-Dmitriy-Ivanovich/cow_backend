@@ -15,7 +15,7 @@
             <label class="range">От: <input type='date' class="filter-input filter-date" v-model="filters.departDateFrom"></label><br>
             <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.departDateTo"></label>
         </div>
-        <div class="filter-category">
+        <div class="filter-category" v-if="!fromAnal">
             <div>Животное мертво</div>
             <select class="filter-input" v-model="filters.isDead">
                 <option :value="null">не важно</option>
@@ -136,6 +136,11 @@ import MultiselectHoz from '@/components/testpage/DMultiselectHoz.vue';
 export default {
     components: {
         MultiselectHoz, MultiselectBreeds, //MultiselectIllness
+    },
+    props: {
+        fromAnal: {
+            type: Boolean,
+        }
     },
     data() {
         return {

@@ -2,43 +2,109 @@
     <div class="help-page">
         <div class="help-title">
             <div class="help-title-text">Помощь</div>
-            <div class="searchhelp-line">
-                <input type="text" placeholder="Поиск информации..." class="search-help" autocomplete="off">
-                <button class="searchhelp-btn">Найти</button>
-            </div>
         </div>
         <div class="help-section">
             <div class="helpsection-title">Животные, поиск и выбор</div>
             <div class="help-flexblocks">
-                <HelpBlock/>
-                <HelpBlock/>
+                <HelpBlock>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как попасть на вкладку животные?
+                        </template>
+                        <template v-slot:answer>
+                            Вверху любой страницы сайта есть горизонтальное меню, после логина пользователя в этом меню появятся вкладки «Животные», «Аналитика», «Загрузка файлов». Для того, чтобы перейти к поиску и выбору животных необходимо перейти на вкладку «Животные».
+                        </template>
+                    </HelpQuestion>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как найти нужное КРС?
+                        </template>
+                        <template v-slot:answer>
+                            Вкладка животные поддерживает фильтрацию животных по опреленному пользователем признаку. Может показать животных выбранного пользователем пола. Поддерживает поиск животного по селексу, идентификационному номеру, РСХН номеру, кличке.
+                        </template>
+                    </HelpQuestion>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как узнать полную информацию о КРС?
+                        </template>
+                        <template v-slot:answer>
+                            В блоке отображения животных выберете строку с интересующим вас КРС, сайт перенаправит пользователя на страницу 
+                            с информацией о животном. Пользователю доступны следующие блоки информации: «Общая информация» 
+                            (основные данные о КРС, такие как порода, кличка, факт генотипирования и т. д.), «Оценки» (данные об оценках ebv коровы 
+                            по региону и по хозяйству), «Генетика» (данные о моногенных заболеваниях и gtc файл), «Экстерьер» (данные об экстерьере: 
+                            фото и оценки параметров), «Здоровье» (данные о ветеренарных событиях), «Контрольные доения и лактации» (список всех 
+                            лактаций и контрольных доений выбранной коровы с возможностью построить граффик), «Родословная» (дерево предков коровы 
+                            до прародителей и список потомков), «Документы» (загруженные фермером документы).
+                        </template>
+                    </HelpQuestion>
+                </HelpBlock>
             </div>
         </div>   
         <div class="help-section">
             <div class="helpsection-title">Аналитика, диаграммы и отчеты</div>
+            <div class="help-flexblocks">
+                <HelpBlock>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как попасть на вкладку Аналитика?
+                        </template>
+                        <template v-slot:answer>
+                            В верху любой страницы сайта есть горизонтальное меню, после логина пользователя в этом меню появятся вкладки «Животные», «Аналитика», 
+                            «Загрузка файлов». Для того, чтобы перейти к аналитике необходимо перейти на вкладку «Аналитика».
+                        </template>
+                    </HelpQuestion>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как собрать аналитику только по интересующим животным?
+                        </template>
+                        <template v-slot:answer>
+                            В правой части вкладки аналитика находятся фильтры, аналитика собирается только по живым КРС, удовлетворяющим условиям фильтров.
+                        </template>
+                    </HelpQuestion>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как перейти в аналитику по году, региону, району?
+                        </template>
+                        <template v-slot:answer>
+                            При нажатии на столбец аналитики сайт перенаправит вас на аналитику по параметру соответсвующему значению оси X выбранного столбца.
+                        </template>
+                    </HelpQuestion>
+                </HelpBlock>
+            </div>
         </div> 
         <div class="help-section">
             <div class="helpsection-title">Загрузка и обновление данных</div>
-        </div> 
-        <div class="help-section">
-            <div class="helpsection-title">Участие в проекте, доступ к данным</div>
+            <div class="help-flexblocks">
+                <HelpBlock>
+                    <HelpQuestion>
+                        <template v-slot:title>
+                            Как попасть во вкладку «Загрузка файлов»?
+                        </template>
+                        <template v-slot:answer>
+                            В верху любой страницы сайта есть горизонтальное меню, после логина пользователя в этом меню появятся вкладки «Животные», «Аналитика», «Загрузка файлов». 
+                            Для того, чтобы перейти к загрузке файлов нужно перейти на вкладку «Загрузка файлов».
+                        </template>
+                    </HelpQuestion>
+                </HelpBlock>
+            </div>
         </div> 
     </div>
 </template>
 
 <script>
 import HelpBlock from '@/components/HelpBlock.vue';
+import HelpQuestion from '@/components/HelpQuestion.vue';
 
 export default {
     components: {
-        HelpBlock,
+        HelpBlock, HelpQuestion
     }
 }
 </script>
 
 <style scoped>
 .help-page {
-    margin-top: 110px;
+    margin-top: 130px;
     font-family: Open Sans, sans-serif;
     padding-left: 11%;
 }
@@ -46,50 +112,7 @@ export default {
 .help-title-text {
     font-size: 200%;
     padding: 10px 0 30px 0;
-}
-
-.searchhelp-line {
-    display: flex;
-    align-items: center;
-}
-
-.search-help {
-    width: 75%;
-    height: 30px;
-    padding: 0 15px;
-    font-size: 110%;
-    outline: none;
-    border-radius: 10px;
-    border: 2px solid rgb(210, 208, 218);
-    background-color: rgb(255, 255, 255);
-    transition: 0.3s;
-}
-
-.search-help:focus {
-    border: 2px solid rgb(122, 123, 193);
-}
-    
-.search-help::placeholder {
-    opacity: 0.5;
-    color:rgb(79, 60, 126);
-}
-
-.searchhelp-btn {
-    background-color: white;
-    border: 1px solid rgb(101, 102, 170);
-    color: rgb(101, 102, 170);
-    padding: 0 7px;
-    height: 30px;
-    border-radius: 10px;
-    width: 70px;
-    cursor: pointer;
-    margin: 0 15px;
-    transition: 0.3s;
-}
-
-.searchhelp-btn:hover {
-    background-color: rgb(101, 102, 170);
-    color: white;
+    color: rgb(37, 0, 132);
 }
 
 .help-section {

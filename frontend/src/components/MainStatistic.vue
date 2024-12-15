@@ -15,7 +15,7 @@ export default {
             stat: [],
         }
     },
-    async created() {
+    async mounted() {
         this.stat = [];
         let obj = {};
         console.log(localStorage.getItem('jwt'));
@@ -29,6 +29,7 @@ export default {
             body: JSON.stringify(obj),
         });
         const result = await response.json();
+        console.log(result);
         if (result.error) {
             this.stat.push({name: 'Ошибка доступа', value: '-', regard: '-'});
         } else {

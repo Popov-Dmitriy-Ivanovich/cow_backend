@@ -1,6 +1,6 @@
 <template>
 <div class="help-block">
-
+    <slot></slot>
 </div>
 </template>
 
@@ -11,8 +11,7 @@
 <style scoped>
 .help-block {
     background-color: white;
-    min-width: 500px;
-    width: max-content;
+    width: 40%;
     min-height: 300px;
     height: max-content;
     margin: 20px 25px 0 0;
