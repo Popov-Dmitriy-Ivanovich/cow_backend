@@ -9,7 +9,8 @@
             background-color: rgb(255, 255, 255);
         }
         .MainCard {
-            background-color:  rgb(233, 214, 250);
+            background-color:  rgb(255, 237, 252);
+            border: solid 5px rgb(143, 39, 143) ;
             border-radius: 30px;
             margin: 1% 5%;
             padding: 2% 5%;
@@ -20,7 +21,15 @@
             padding: 2%;
             text-align: center;
             border-radius: 30px;
-            background-color: rgb(242, 228, 255);
+            background-color: #e2c7ff;   
+        }
+        .UserData1 {
+            font-size: 25px;
+            margin: 1% 10%;
+            padding: 2%;
+            text-align: center;
+            border-radius: 30px;
+            background-color: rgb(255, 237, 252);   
         }
         #NextUser {
             font-size: 25px;
@@ -55,10 +64,11 @@
             justify-content: space-between;
         }
         .ActionButton {
-            background-color:rgb(136, 46, 219);
+            background-color:#e2c7ff;
+            border: 5px solid rgb(185, 111, 255);
             padding: 2%;
             border-radius: 30px;
-            color: white
+            color: rgb(0, 0, 0)
         }
     </style>
 </head>
@@ -85,7 +95,7 @@
     <div class="UserData">
         Регион: {{.region}}
     </div>
-    <div class="UserData">
+    <div class="UserData1">
         <div class="Uebuttons">
             <div class="ActionButton" onclick="location.href={{.prevPage}}">&nbsp; Предыдущий </div>
             <div class="ActionButton" id="ConfirmUeButton">  Подтвердить  </div>
