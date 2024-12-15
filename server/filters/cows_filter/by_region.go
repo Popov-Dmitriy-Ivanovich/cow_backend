@@ -19,7 +19,7 @@ func (f ByRegion) Apply(fm filters.FilteredModel) error {
 	}
 
 	query = query.Where("EXIST (SELECT 1 FROM farms WHERE farms.id = cows.farm_id OR farms.id = cows.farm_group_id AND "+
-	"EXIST(SELECT 1 FROM districts where districts.id = farms.district_id AND districts.region_id = ?))", bodyData.RegionId)
+	"EXISTS(SELECT 1 FROM districts where districts.id = farms.district_id AND districts.region_id = ?))", bodyData.RegionId)
 	fm.SetQuery(query)
 	return nil
 }
