@@ -230,9 +230,9 @@
                 <td><input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
                 <td>{{if .CreatedAt}}{{.CreatedAt.Format "02-01-2006"}}{{end}}</td>
                 <td>{{if .IdentificationNumber}}{{.IdentificationNumber}}{{end}}</td>
-                <td>{{if .InventoryNumber}}{{.InventoryNumber}}{{end}}</td>
-                <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
                 <td>{{if .SelecsNumber}}{{.SelecsNumber}}{{end}}</td>
+                <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
+                <td>{{if .InventoryNumber}}{{.InventoryNumber}}{{end}}</td>
                 <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
                 <td>{{if .FarmGroupId}}{{.FarmGroup.Name}}{{end}}</td>
                 <td>{{if .BreedId}}{{.Breed.Name}}{{end}}</td>
