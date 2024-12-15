@@ -22,6 +22,7 @@ func (s *Admin) checkNews() func(*gin.Context) {
 		offset := (page - 1) * limit
 		news := []models.News{}
 		db.
+			Order("Date DESC").
 			Preload("Region").
 			Limit(limit).
 			Offset(offset).
@@ -149,6 +150,7 @@ func (s *Admin) UpdateNews() func(*gin.Context) {
 		news.Title = request.Title
 		news.RegionId = request.RegionId
 		news.Text = request.Text
+		news.Date = request.Date
 
 		if err := db.Save(&news).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, err.Error())

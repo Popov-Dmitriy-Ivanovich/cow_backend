@@ -201,23 +201,22 @@
         <table>
         <thead>
             <tr>
-                <th>ID <input class="checkbox-red" type="checkbox" id="check-all" onclick="toggle(this)"></th>
-                <th>Дата создания</th>
+                <th><input class="checkbox-red" type="checkbox" id="check-all" onclick="toggle(this)"></th>
+                <th>Дата добавления</th>
+                <th>Идентификатор</th>
+                <th>Селекс</th>
+                <th>РСХН</th>
+                <th>Инв номер</th>
                 <th>Ферма</th>
                 <th>Хозяйство</th>
                 <th>Порода</th>
                 <th>Пол</th>
                 <th>Селекс отца</th>
                 <th>Селекс матери</th>
-                <th>Идентификатор</th>
-                <th>Инв номер</th>
-                <th>Селекс</th>
-                <th>РСХН</th>
-                <th>Имя</th>
+                <th>Кличка</th>
                 <th>Коэф. инбриндинга</th>
                 <th>Дата рождения</th>
-                <th>День отбытия из коровника</th>
-                <th>Дата смерти</th>
+                <th>День выбытия</th>
                 <th>Дата перебирковки</th>
                 <th>Предыдущее хоз.</th>
                 <th>Хоз. рождения</th>
@@ -228,23 +227,22 @@
         <tbody>
             {{range .cows}} <!-- Итерация по списку коров -->
             <tr onclick="toggleCheckbox(this, event)">
-                <td>{{if .ID}}{{.ID}}{{end}}<input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
+                <td><input type="checkbox" class="cow-checkbox" value="{{.ID}}"></td>
                 <td>{{if .CreatedAt}}{{.CreatedAt.Format "02-01-2006"}}{{end}}</td>
+                <td>{{if .IdentificationNumber}}{{.IdentificationNumber}}{{end}}</td>
+                <td>{{if .InventoryNumber}}{{.InventoryNumber}}{{end}}</td>
+                <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
+                <td>{{if .SelecsNumber}}{{.SelecsNumber}}{{end}}</td>
                 <td>{{if .FarmID}}{{.Farm.Name}}{{end}}</td>
                 <td>{{if .FarmGroupId}}{{.FarmGroup.Name}}{{end}}</td>
                 <td>{{if .BreedId}}{{.Breed.Name}}{{end}}</td>
                 <td>{{if .SexId}}{{.Sex.Name}}{{end}}</td>
                 <td>{{if .FatherSelecs}}{{.FatherSelecs}}{{end}}</td>
                 <td>{{if .MotherSelecs}}{{.MotherSelecs}}{{end}}</td>
-                <td>{{if .IdentificationNumber}}{{.IdentificationNumber}}{{end}}</td>
-                <td>{{if .InventoryNumber}}{{.InventoryNumber}}{{end}}</td>
-                <td>{{if .SelecsNumber}}{{.SelecsNumber}}{{end}}</td>
-                <td>{{if .RSHNNumber}}{{.RSHNNumber}}{{end}}</td>
                 <td>{{if .Name}}{{.Name}}{{end}}</td>
                 <td>{{if .InbrindingCoeffByFamily}}{{.InbrindingCoeffByFamily}}{{end}}</td>
                 <td>{{if .BirthDate}}{{.BirthDate.Format "02-01-2006"}}{{end}}</td>
                 <td>{{if .DepartDate}}{{.DepartDate.Format "02-01-2006"}}{{end}}</td>
-                <td>{{if .DeathDate}}{{.DeathDate.Format "02-01-2006"}}{{end}}</td>
                 <td>{{if .BirkingDate}}{{.BirkingDate.Format "02-01-2006"}}{{end}}</td>
                 <td>{{if .PreviousHozId}}{{.PreviousHoz.Name}}{{end}}</td>
                 <td>{{if .BirthHozId}}{{.BirthHoz.Name}}{{end}}</td>
