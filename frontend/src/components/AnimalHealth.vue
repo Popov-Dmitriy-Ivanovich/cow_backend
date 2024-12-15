@@ -1,16 +1,18 @@
 <template>
     <div class="health-title">Здоровье</div>
     <div class="health-info">
-        
+        <HealthCow/>
     </div>
 </template>
 
 <script>
+import HealthCow from './componentsConcretAnimal/HealthCow.vue';
+
 
 
 export default {
     components: {
-        
+        HealthCow
     }
 }
 </script>
