@@ -30,8 +30,8 @@
                     <div>Сортировка по: </div>
                     <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
                         <!-- <option :value="null">-нет-</option> -->
-                        <option :value="null">кличке</option>
-                        <option :value="'RSHN'">РСХН</option>
+                        <option :value="'Name'">кличке</option>
+                        <option :value="null">РСХН</option>
                         <option :value="'BirthDate'">дате рождения</option>
                         <option :value="'InventoryNumber'">инвентарному номеру</option>
                         
@@ -129,7 +129,7 @@ export default {
                     search_params.orderByDesc = false;
                     search_params.orderBy = this.sort;
                 } else {
-                    search_params.orderBy = 'Name';
+                    search_params.orderBy = 'RSHN';
                     search_params.orderByDesc = false;
                 }
 
@@ -185,7 +185,7 @@ export default {
                     search_params.orderByDesc = false;
                     search_params.orderBy = this.sort;
                 } else {
-                    search_params.orderBy = 'Name';
+                    search_params.orderBy = 'RSHN';
                     search_params.orderByDesc = false;
                 }
                 this.current_filters = search_params;

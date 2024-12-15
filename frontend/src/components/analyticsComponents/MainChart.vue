@@ -47,7 +47,7 @@ export default {
             newX: [],
         }
     },
-    async created() {
+    async mounted() {
         if (this.changeOpt === '' || this.changeOpt == 'ill') {
             await this.fetchData();
         } else if(this.changeOpt == 'lact') {
@@ -93,6 +93,7 @@ export default {
             });
             console.log(this.options.xaxis.categories);
             this.series.push(obj);
+            console.log('функция 1');
         },
         async fetchDataLact() {
             this.series = [];
@@ -120,6 +121,7 @@ export default {
             });
 
             this.series.push(obj);
+            console.log('функция 2');
         }
     },
     watch: {
