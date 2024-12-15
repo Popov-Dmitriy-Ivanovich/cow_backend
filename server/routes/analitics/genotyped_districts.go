@@ -34,6 +34,8 @@ import (
 // @Router       /analitics/genotyped/{year}/byRegion/{region}/districts [post]
 func (g Genotyped) DistrictsPost() func(*gin.Context) {
 	return func(c *gin.Context) {
+		
+
 		region := c.Param("region")
 
 		roleId, exists := c.Get("RoleId")
@@ -65,11 +67,18 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 		genotypedFilter := filterData
 		illFilter := filterData
 
+		aliveFilter.IsDead = new(bool)
+		*aliveFilter.IsDead = false
+
 		genotypedFilter.IsGenotyped = new(bool)
 		*genotypedFilter.IsGenotyped = true
+		genotypedFilter.IsDead = new(bool)
+		*genotypedFilter.IsDead = false
 
 		illFilter.HasAnyIllnes = new(bool)
 		*illFilter.HasAnyIllnes = true
+		illFilter.IsDead = new(bool)
+		*illFilter.IsDead = false
 
 		keys := []byDistrictKeys{}
 		db := models.GetDb()

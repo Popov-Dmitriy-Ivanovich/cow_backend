@@ -39,11 +39,18 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 		genotypedFilter := filterData
 		illFilter := filterData
 
+		aliveFilter.IsDead = new(bool)
+		*aliveFilter.IsDead = false
+
 		genotypedFilter.IsGenotyped = new(bool)
 		*genotypedFilter.IsGenotyped = true
+		genotypedFilter.IsDead = new(bool)
+		*genotypedFilter.IsDead = false
 
 		illFilter.HasAnyIllnes = new(bool)
 		*illFilter.HasAnyIllnes = true
+		illFilter.IsDead = new(bool)
+		*illFilter.IsDead = false
 
 		keys := []byRegionKeys{}
 		db := models.GetDb()

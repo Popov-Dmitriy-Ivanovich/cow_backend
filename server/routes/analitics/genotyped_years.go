@@ -24,6 +24,9 @@ func (g Genotyped) YearsPost() func(*gin.Context) {
 		}
 		tmp := bool(true)
 		filterData.IsGenotyped = &tmp
+		filterData.IsDead = new(bool)
+		*filterData.IsDead = false
+
 
 		db := models.GetDb()
 		query := db.Model(&models.Cow{})

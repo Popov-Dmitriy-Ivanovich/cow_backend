@@ -34,6 +34,8 @@ import (
 // @Router       /analitics/genotyped/{year}/byDistrict/{district}/hoz [post]
 func (g Genotyped) HozPost() func(*gin.Context) {
 	return func(c *gin.Context) {
+		
+
 		district := c.Param("district")
 		roleId, exists := c.Get("RoleId")
 		if !exists {
@@ -64,12 +66,19 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 		genotypedFilter := filterData
 		illFilter := filterData
 
+		aliveFilter.IsDead = new(bool)
+		*aliveFilter.IsDead = false
+
 		genotypedFilter.IsGenotyped = new(bool)
 		*genotypedFilter.IsGenotyped = true
+		genotypedFilter.IsDead = new(bool)
+		*genotypedFilter.IsDead = false
 
 		illFilter.HasAnyIllnes = new(bool)
 		*illFilter.HasAnyIllnes = true
-
+		illFilter.IsDead = new(bool)
+		*illFilter.IsDead = false
+		
 		keys := []byHozKeys{}
 		db := models.GetDb()
 		yearStr := c.Param("year")
