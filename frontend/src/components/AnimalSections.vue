@@ -5,7 +5,7 @@
         <li @click="changeSection('rating')">Оценки</li>
         <li @click="changeSection('genetic')">Генетика</li>
         <li @click="changeSection('exterior')">Экстерьер</li>
-        <li @click="changeSection('health')">Здоровье</li>
+        <li @click="changeSection('health')">Ветеринарные мероприятия</li>
         <li @click="changeSection('milking')">Контрольные доения и лактации</li>
         <li @click="changeSection('lineage')">Родословная</li>
         <li @click="changeSection('documents')">Документы</li> 

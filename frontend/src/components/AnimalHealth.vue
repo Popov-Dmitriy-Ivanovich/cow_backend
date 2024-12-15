@@ -1,5 +1,5 @@
 <template>
-    <div class="health-title">Здоровье</div>
+    <div class="health-title">Ветеринарные мероприятия</div>
     <div class="health-info">
         <HealthCow/>
     </div>

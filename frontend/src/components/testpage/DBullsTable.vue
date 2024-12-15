@@ -140,6 +140,11 @@ export default {
         search_params.sex = [3];
         search_params.pageNumber = 1;
         search_params.entitiesOnPage = 25;
+        if(!search_params.orderBy) {
+            search_params.orderBy = 'RSHN';
+            search_params.orderByDesc = false;
+        }
+
         const response = await fetch('/api/cows/filter', {
             method: 'POST',
             headers: {
@@ -166,7 +171,7 @@ export default {
                 search_params.pageNumber = newValue;
                 search_params.entitiesOnPage = 25;
                 if(!search_params.orderBy) {
-                    search_params.orderBy = 'Name';
+                    search_params.orderBy = 'RSHN';
                     search_params.orderByDesc = false;
                 }
                 const response = await fetch('/api/cows/filter', {

@@ -1,21 +1,21 @@
 <template>
-<div>
+<div class="parent-table">
     <table class="lac-table">
         <thead>
             <tr class="lac-header">
+                <th>Дата</th>
                 <th>Группа события</th>
                 <th>Событие</th>
-                <th>Подвид события</th>
-                <th>Дата</th>
+                <th>Разновидность события</th>
                 <th>Дней с начала лактации</th>
             </tr>
         </thead>
         <tbody class="lac-tablebody">
             <tr v-for="lact in cow_info" :key="lact.Number">
+                <td v-if="lact.Date">{{ dateConverter(lact.Date) || 'Нет информации'}}</td><td v-else>Нет информации</td>
                 <td v-if="lact.EventType">{{ lact.EventType.Name || 'Нет информации'}}</td><td v-else>Нет информации</td>
                 <td v-if="lact.EventType1">{{ lact.EventType1.Name || 'Нет информации'}}</td><td v-else>Нет информации</td>
                 <td v-if="lact.EventType2">{{ lact.EventType2.Name || 'Нет информации'}}</td><td v-else>Нет информации</td>
-                <td v-if="lact.Date">{{ dateConverter(lact.Date) || 'Нет информации'}}</td><td v-else>Нет информации</td>
                 <td v-if="lact.DaysFromLactation">{{ lact.DaysFromLactation || 'Нет информации'}}</td><td v-else>Нет информации</td>
             </tr>
         </tbody>
@@ -50,6 +50,11 @@ export default {
 </script>
 
 <style scoped>
+.parent-table {
+    width: 49vw;
+    overflow-x: auto;
+}
+
 .lac-table {
     margin-bottom: 30px;
     text-align: left;
@@ -62,7 +67,7 @@ th {
 td {
     width: auto;
     min-width: 130px;
-    padding-right: 7px;
+    padding-right: 15px;
 }
 
 .lac-header {

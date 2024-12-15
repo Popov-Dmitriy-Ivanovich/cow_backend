@@ -27,6 +27,9 @@ export default {
             forFilters: true,
         }
     },
+    created() {
+        this.$store.commit('SET_OPTION', this.opt);
+    },
     methods: {
         async fetchAnalyticsFilters(filters){
             this.$store.commit('SET_FILTERS', filters);
