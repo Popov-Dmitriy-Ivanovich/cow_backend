@@ -28,7 +28,7 @@ func (f *Cows) Health() func(*gin.Context) {
 		}
 
 		events := []models.Event{}
-		db.Preload("EventType").Find(&events, "cow_id = ? AND event_type_id IN (1, 2, 3, 4)", id)
+		db.Preload("EventType").Preload("EventType1").Preload("EventType2").Find(&events, "cow_id = ? AND event_type_id IN (1, 2, 3, 4)", id)
 
 		c.JSON(200, events)
 	}

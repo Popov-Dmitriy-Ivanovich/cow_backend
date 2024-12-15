@@ -5,8 +5,14 @@ type Event struct {
 
 	CowId uint
 
-	EventType   EventType `json:"-"`
-	EventTypeId uint
+	EventType   	EventType
+	EventTypeId 	uint
+
+	EventType1 		EventType
+	EventType1Id 	uint
+
+	EventType2 		EventType
+	EventType2Id 	uint
 
 	DataResourse      string // источник данные
 	DaysFromLactation uint   // дни от начала лактации
