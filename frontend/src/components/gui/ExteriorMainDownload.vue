@@ -2,15 +2,11 @@
     <div>
         <button class="back-button" @click="$router.push(`/gui`)">Назад</button>
         <div class="form-example">
-            <h1>Загрузка фотографий экстерьера</h1>
-            <form action="https://genmilk.ru/api/load/exterior" method="post" enctype="multipart/form-data">            
+            <h1>Загрузка файлов экстерьера</h1>
+            <form method="post" enctype="multipart/form-data">            
             
-                <label for="CsvFile">Csv-файл сопоставления Селекса файлу фотографии:</label>
+                <label for="CsvFile">Csv-файл:</label>
                 <input type="file" id="CsvFile" name="CsvFile" required="">
-                
-                <label for="Pictures">Список файлов фотографий животных:</label>
-                <input type="file" id="Pictures" name="Pictures" required="" multiple="">
-
 
                 <input type="submit" value="Загрузить">
             </form>
