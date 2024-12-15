@@ -149,12 +149,13 @@ export default {
             body: JSON.stringify(search_params),
         });
         const res_animals = await response.json();
-
+        
         this.animals = res_animals.LST;
         if(res_animals.LST.length == 0) this.errorr = true;
         //Передаю текущую первую страницу и кол-во страниц наверх
         this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/search_params.entitiesOnPage));
         this.isLoadingBulls = false;
+        console.log(res_animals);
     },
     watch: {
         async cp(newValue) {

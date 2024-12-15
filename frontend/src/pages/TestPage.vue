@@ -186,7 +186,7 @@ export default {
                     search_params.orderBy = this.sort;
                 } else {
                     search_params.orderBy = 'Name';
-                    search_params.orderByDesc = null;
+                    search_params.orderByDesc = false;
                 }
                 this.current_filters = search_params;
 
@@ -233,7 +233,8 @@ export default {
             let response = await fetch('/api/cows/filter', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                        'Content-Type': 'application/json;charset=utf-8',
+                        'Authorization': localStorage.getItem('jwt')
                     },
                     body: JSON.stringify(this.current_filters),
                 });

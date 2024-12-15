@@ -2,7 +2,7 @@
     <div>
         <button class="back-button" @click="$router.push(`/gui`)">Назад</button>
         <div class="form-example">
-            <h1>Загрузка коровы</h1>
+            <h1>Загрузка животных</h1>
             <form action="https://genmilk.ru/api/load/cow" method="post" enctype="multipart/form-data">
                 <label for="csv">Выберите файл:</label>
                 <input type="file" id="csv" name="csv" required="">
