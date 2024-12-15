@@ -17,16 +17,8 @@ export default {
     },
     async mounted() {
         this.stat = [];
-        let obj = {};
-        console.log(localStorage.getItem('jwt'));
-        const response = await fetch('/api/analitics/genotyped/40000/byRegion/36/districts',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': localStorage.getItem('jwt')
-            },
-            body: JSON.stringify(obj),
+        const response = await fetch('/api/analitics/genotyped/40000/byRegion/36/districts', {
+            method: 'GET',
         });
         const result = await response.json();
         console.log(result);
