@@ -6,7 +6,7 @@
             <div class="news-icon">✎</div>
             <div class="news-text">
                 <div class="piece-news-title">{{ item.Title }}</div>
-                <div class="news-description">{{ item.Text }}</div>
+                <div class="news-description"><span>{{ item.Text }}</span></div>
             </div>
             <div class="news-date">{{ dateConverter(item.Date) }}</div>
         </div>

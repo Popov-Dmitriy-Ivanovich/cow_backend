@@ -23,7 +23,7 @@ export default {
         }
     },
     async created() {
-        const response = await fetch('/api/farms?parrent_id=null');
+        const response = await fetch('/api/farms/hoz');
         const res_farms = await response.json();
         for (let i = 0; i < 3; i ++) {
             this.farms.push(res_farms[i]);

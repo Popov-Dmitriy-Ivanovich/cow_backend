@@ -87,6 +87,9 @@ export default {
                 },
                 xaxis: {
                     categories: []
+                },
+                tooltip: {
+                    enabled: false,
                 }
             },
             series: [],

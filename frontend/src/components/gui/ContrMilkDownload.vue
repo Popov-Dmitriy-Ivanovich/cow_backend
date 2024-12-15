@@ -2,7 +2,7 @@
     <div class="cm-main">
         <button class="back-button" @click="$router.push(`/gui`)">Назад</button>
         <div class="form-example">
-            <h1>Загрузка контрольных доек</h1>
+            <h1>Загрузка контрольных доений</h1>
             <form action="https://genmilk.ru/api/load/checkMilk" method="post" enctype="multipart/form-data">
                 <label for="csv">Выберите файл:</label>
                 <input type="file" id="csv" name="csv" required="">
