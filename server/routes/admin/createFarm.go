@@ -17,7 +17,7 @@ func (s *Admin) CreateFarm() func(*gin.Context) {
 		db.Order("name").Find(&districts)
 		db.Where("type = 2").Find(&hozs)
 		c.HTML(http.StatusOK, "AdminCreateFarmPage.tmpl", gin.H{
-			"title":     "Создание хозяйства",
+			"title":     "Создание фермы",
 			"hozs":      hozs,
 			"regions":   regions,
 			"districts": districts})
