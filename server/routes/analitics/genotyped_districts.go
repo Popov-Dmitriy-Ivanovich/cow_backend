@@ -99,17 +99,17 @@ func (g Genotyped) DistrictsPost() func(*gin.Context) {
 
 		result := make(map[string]byDistrictStatistics)
 		for _, key := range keys {
-			aliveCowQuery := db.Model(&models.Cow{})
+			aliveCowQuery := db.Model(&models.Cow{}).Where("approved <> -1")
 			aliveCowFilter := cows_filter.NewCowFilteredModel(aliveFilter, aliveCowQuery)
 			aliveCowFilter.Params["year"] = c.Param("year")
 			aliveCowFilter.Params["district"] = strconv.FormatUint(uint64(key.ID), 10)
 
-			genotypedCowQuery := db.Model(&models.Cow{})
+			genotypedCowQuery := db.Model(&models.Cow{}).Where("approved <> -1")
 			genotypedCowFilter := cows_filter.NewCowFilteredModel(genotypedFilter, genotypedCowQuery)
 			genotypedCowFilter.Params["year"] = c.Param("year")
 			genotypedCowFilter.Params["district"] = strconv.FormatUint(uint64(key.ID), 10)
 
-			illCowQuery := db.Model(&models.Cow{})
+			illCowQuery := db.Model(&models.Cow{}).Where("approved <> -1")
 			illCowFilter := cows_filter.NewCowFilteredModel(illFilter, illCowQuery)
 			illCowFilter.Params["year"] = c.Param("year")
 			illCowFilter.Params["district"] = strconv.FormatUint(uint64(key.ID), 10)

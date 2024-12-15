@@ -29,7 +29,7 @@ func (g Genotyped) YearsPost() func(*gin.Context) {
 
 
 		db := models.GetDb()
-		query := db.Model(&models.Cow{})
+		query := db.Model(&models.Cow{}).Where("approved <> -1")
 		cfm := cows_filter.NewCowFilteredModel(filterData, query)
 		if err := filters.ApplyFilters(cfm,
 			cows_filter.ByAbort{},

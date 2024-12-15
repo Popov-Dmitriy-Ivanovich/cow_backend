@@ -340,7 +340,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// }
 
 		db := models.GetDb()
-		query := db.Model(&models.Cow{}).Preload("FarmGroup").Preload("Genetic")
+		query := db.Model(&models.Cow{}).Preload("FarmGroup").Preload("Genetic").Where("approved <> -1")
 		if nQuery, err := AddFiltersToQuery(bodyData, query); err != nil {
 			c.JSON(422, err.Error())
 			return

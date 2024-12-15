@@ -78,7 +78,7 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 		*illFilter.HasAnyIllnes = true
 		illFilter.IsDead = new(bool)
 		*illFilter.IsDead = false
-		
+
 		keys := []byHozKeys{}
 		db := models.GetDb()
 		yearStr := c.Param("year")
@@ -96,19 +96,19 @@ func (g Genotyped) HozPost() func(*gin.Context) {
 
 		result := make(map[string]byHozStatistics)
 		for _, key := range keys {
-			aliveCowQuery := db.Model(&models.Cow{})
+			aliveCowQuery := db.Model(&models.Cow{}).Where("approved <> -1")
 			aliveCowFilter := cows_filter.NewCowFilteredModel(aliveFilter, aliveCowQuery)
 			aliveCowFilter.Params["year"] = c.Param("year")
 			aliveCowFilter.Params["district"] = c.Param("district")
 			aliveCowFilter.Params["hoz"] = strconv.FormatUint(uint64(key.ID), 10)
 
-			genotypedCowQuery := db.Model(&models.Cow{})
+			genotypedCowQuery := db.Model(&models.Cow{}).Where("approved <> -1")
 			genotypedCowFilter := cows_filter.NewCowFilteredModel(genotypedFilter, genotypedCowQuery)
 			genotypedCowFilter.Params["year"] = c.Param("year")
 			genotypedCowFilter.Params["district"] = c.Param("district")
 			genotypedCowFilter.Params["hoz"] = strconv.FormatUint(uint64(key.ID), 10)
 
-			illCowQuery := db.Model(&models.Cow{})
+			illCowQuery := db.Model(&models.Cow{}).Where("approved <> -1")
 			illCowFilter := cows_filter.NewCowFilteredModel(illFilter, illCowQuery)
 			illCowFilter.Params["year"] = c.Param("year")
 			illCowFilter.Params["district"] = c.Param("district")

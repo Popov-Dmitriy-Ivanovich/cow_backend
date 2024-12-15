@@ -48,7 +48,7 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 
 
 		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{})
+		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
 		if err := filters.ApplyFilters(cmCowFilter,
 			cows_filter.ByAbort{},
@@ -128,7 +128,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 		*filterData.IsDead = false
 
 		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{})
+		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
 		if err := filters.ApplyFilters(cmCowFilter,
 			cows_filter.ByAbort{},
@@ -281,7 +281,7 @@ func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 		*filterData.IsDead = false
 
 		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{})
+		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
 		if err := filters.ApplyFilters(cmCowFilter,
 			cows_filter.ByAbort{},
@@ -439,9 +439,9 @@ func (cm CheckMilks) ByHoz() func(*gin.Context) {
 
 		filterData.IsDead = new(bool)
 		*filterData.IsDead = false
-		
+
 		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{})
+		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
 		if err := filters.ApplyFilters(cmCowFilter,
 			cows_filter.ByAbort{},
