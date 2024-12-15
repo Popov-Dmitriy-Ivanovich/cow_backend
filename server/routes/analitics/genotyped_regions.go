@@ -4,6 +4,8 @@ import (
 	"cow_backend/filters"
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
+	"log"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -31,6 +33,11 @@ import (
 // @Router       /analitics/genotyped/{year}/regions [post]
 func (g Genotyped) RegionsPost() func(*gin.Context) {
 	return func(c *gin.Context) {
+		roleId, exists := c.Get("RoleId")
+		if !exists {
+			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
+			return
+		}
 		filterData := cows_filter.CowsFilter{}
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
@@ -60,14 +67,35 @@ func (g Genotyped) RegionsPost() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		db.Model(&models.Region{}).Debug().Where(
-			"EXISTS(SELECT 1 FROM districts where districts.region_id = regions.id AND "+
-				"EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
-				" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND "+
-				" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ? AND"+
-				" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id))))",
-			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
-			time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC)).Find(&keys)
+		log.Println(roleId)
+		if roleId == 1 {
+			regionId, exists := c.Get("RegionId")
+			if !exists {
+				c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
+				return
+			}
+
+			db.Model(&models.Region{}).Debug().Where(
+				"EXISTS(SELECT 1 FROM districts where districts.region_id = regions.id AND "+
+					"EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
+					" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND "+
+					" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ? AND"+
+					" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id)))) AND regions.id = ?",
+				time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
+				time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
+				regionId).Find(&keys)
+
+		} else {
+			db.Model(&models.Region{}).Debug().Where(
+				"EXISTS(SELECT 1 FROM districts where districts.region_id = regions.id AND "+
+					"EXISTS(SELECT 1 FROM farms where farms.district_id = districts.id AND "+
+					" EXISTS (SELECT 1 FROM cows WHERE (cows.farm_id = farms.id OR cows.farm_group_id = farms.id) AND "+
+					" (cows.death_date IS NULL OR cows.death_date < ?) AND cows.birth_date < ? AND"+
+					" EXISTS (SELECT 1 FROM genetics where genetics.cow_id = cows.id))))",
+				time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC),
+				time.Date(int(yearInt)+1, 1, 1, 0, 0, 0, 0, time.UTC)).Find(&keys)
+
+		}
 
 		result := make(map[string]byRegionStatistics)
 		for _, key := range keys {
