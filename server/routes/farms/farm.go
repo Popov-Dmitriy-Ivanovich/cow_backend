@@ -3,6 +3,7 @@ package farms
 import (
 	"cow_backend/models"
 	"cow_backend/routes/auth"
+
 	// "net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 	authGroup.GET("/hoz", func(c *gin.Context) {
 		db := models.GetDb()
 		farms := []models.Farm{}
-		
+
 		if err := db.Find(&farms, map[string]any{"type": 2}).Error; err != nil {
 			c.JSON(500, err.Error())
 			return
@@ -28,5 +29,5 @@ func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 	authGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
 	apiGroup.GET("/:id", f.GetByID())
 	authGroup.GET("/", f.GetByFilter())
-	
+
 }
