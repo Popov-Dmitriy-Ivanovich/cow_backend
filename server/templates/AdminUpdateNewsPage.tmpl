@@ -207,6 +207,7 @@
             title: document.getElementById('title').value,
             region: parseInt(document.getElementById('region').value, 10),
             text: document.getElementById('description').value,
+            date: new Date(document.getElementById('date').value)
         };
         console.log(data)
         fetch('/api/admin/updateNews/{{.news.ID}}', {

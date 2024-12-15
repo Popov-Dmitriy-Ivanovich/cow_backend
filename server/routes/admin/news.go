@@ -149,6 +149,7 @@ func (s *Admin) UpdateNews() func(*gin.Context) {
 		news.Title = request.Title
 		news.RegionId = request.RegionId
 		news.Text = request.Text
+		news.Date = request.Date
 
 		if err := db.Save(&news).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, err.Error())
