@@ -16,6 +16,8 @@ func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/farms")
 	apiGroup.GET("/:id", f.GetByID())
 	authGroup := apiGroup.Group("")
+	authGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
+	authGroup.GET("/", f.GetByFilter())
 	authGroup.GET("/hoz", func(c *gin.Context) {
 		db := models.GetDb()
 		farms := []models.Farm{}
@@ -27,8 +29,4 @@ func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 
 		c.JSON(200, farms)
 	})
-	authGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
-	apiGroup.GET("/:id", f.GetByID())
-	authGroup.GET("/", f.GetByFilter())
-
 }
