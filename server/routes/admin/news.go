@@ -22,6 +22,7 @@ func (s *Admin) checkNews() func(*gin.Context) {
 		offset := (page - 1) * limit
 		news := []models.News{}
 		db.
+			Order("Date DESC").
 			Preload("Region").
 			Limit(limit).
 			Offset(offset).
