@@ -39,7 +39,7 @@ func (s *Admin) UpdateFarmPage(typeHoz int) func(*gin.Context) {
 		}
 
 		c.HTML(http.StatusOK, AdminPages[typeHoz], gin.H{
-			"title":     "Редактирование холдинга",
+			"title":     "Редактирование",
 			"farm":      farm,
 			"holds":     holds,
 			"hoz":       hoz,

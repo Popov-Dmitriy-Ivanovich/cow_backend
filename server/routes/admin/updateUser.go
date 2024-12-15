@@ -31,7 +31,7 @@ func (s *Admin) UpdateUserPage() func(*gin.Context) {
 		}
 
 		c.HTML(http.StatusOK, "AdminUpdateUserPage.tmpl", gin.H{
-			"title":   "Редактирование пользователя",
+			"title":   "Редактирование",
 			"user":    user,
 			"farms":   farms,
 			"regions": regions,
