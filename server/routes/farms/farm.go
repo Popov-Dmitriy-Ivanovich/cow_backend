@@ -14,6 +14,7 @@ type Farms struct {
 
 func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/farms")
+	apiGroup.GET("/:id", f.GetByID())
 	authGroup := apiGroup.Group("")
 	authGroup.GET("/hoz", func(c *gin.Context) {
 		db := models.GetDb()
