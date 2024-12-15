@@ -14,6 +14,11 @@
 
 <script>
 export default {
+    props: {
+        uspeh: {
+            type: Boolean,
+        }
+    },
     data() {
         return {
             cow_info: [],
@@ -25,8 +30,15 @@ export default {
         console.log(result);
         this.cow_info = result;
     },
-    methods: {
-
+    watch: {
+        async uspeh(new_val) {
+            if(new_val) {
+                let response = await fetch(`/api/cows/${this.$route.params.id}/documents`);
+                let result = await response.json();
+                console.log(result);
+                this.cow_info = result;
+            }
+        }
     }
 }
 </script>

@@ -40,6 +40,7 @@ export default {
             console.log(result);
             if (result == 'ok') {
                 this.uspeh = true;
+                this.$emit('changeUspeh', this.uspeh);
             }
         }
     }

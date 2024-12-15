@@ -21,7 +21,10 @@
             <button class="UserChoiseButton" @click="$router.push(`/gui/downloadRating`)">Загрузка оценок</button> 
         </div>
         <div class="UserChoise">
-            <button class="UserChoiseButton" @click="$router.push(`/gui/downloadExterior`)">Загрузка экстерьера</button> 
+            <button class="UserChoiseButton" @click="$router.push(`/gui/exteriorDownload`)">Загрузка файлов экстерьера</button> 
+        </div>
+        <div class="UserChoise">
+            <button class="UserChoiseButton" @click="$router.push(`/gui/downloadExterior`)">Загрузка фотографий экстерьера</button> 
         </div>
         <div class="UserChoise">
             <button class="UserChoiseButton" @click="$router.push(`/gui/downloadGtc`)">Загрузка gtc-файла</button> 

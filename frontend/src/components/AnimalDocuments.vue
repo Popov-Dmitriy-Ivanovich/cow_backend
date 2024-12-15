@@ -1,9 +1,9 @@
 <template>
     <div class="doc-title">Документы</div>
     <div class="doc-info">
-        <DownloadDocument/>
+        <DownloadDocument @changeUspeh="Uspeh"/>
         <hr class="doc-sep">
-        <DocumentCow/>
+        <DocumentCow v-bind:uspeh="uspeh"/>
     </div>
 </template>
 
@@ -12,8 +12,18 @@ import DocumentCow from './componentsConcretAnimal/DocumentCow.vue';
 import DownloadDocument from '@/components/componentsConcretAnimal/DownloadDocument.vue'
 
 export default {
+    data() {
+        return {
+            uspeh: false,
+        }
+    },
     components: {
         DocumentCow, DownloadDocument
+    },
+    methods: {
+        Uspeh(data) {
+            this.uspeh = data;
+        }
     }
 }
 </script>
