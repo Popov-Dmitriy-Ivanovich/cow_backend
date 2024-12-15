@@ -3,8 +3,6 @@ package analitics
 import (
 	"cow_backend/models"
 	"cow_backend/routes/auth"
-	"log"
-	"net/http"
 	"strconv"
 	"time"
 
@@ -22,16 +20,17 @@ type genotypedStatistics struct {
 
 func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/genotyped")
-	apiGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
 	apiGroup.GET("/years", g.Years())
 	apiGroup.GET("/:year/regions", g.Regions())
 	apiGroup.GET("/:year/byRegion/:region/districts", g.Districts())
 	apiGroup.GET("/:year/byDistrict/:district/hold", g.Hold())
 	apiGroup.GET("/:year/byHold/:hold/hoz", g.Hoz())
-	apiGroup.POST("/years", g.YearsPost())
-	apiGroup.POST("/:year/regions", g.RegionsPost())
-	apiGroup.POST("/:year/byRegion/:region/districts", g.DistrictsPost())
-	apiGroup.POST("/:year/byDistrict/:district/hoz", g.HozPost())
+	authGroup := apiGroup.Group("")
+	authGroup.Use(auth.AuthMiddleware(auth.Farmer, auth.RegionalOff, auth.FederalOff))
+	authGroup.POST("/years", g.YearsPost())
+	authGroup.POST("/:year/regions", g.RegionsPost())
+	authGroup.POST("/:year/byRegion/:region/districts", g.DistrictsPost())
+	authGroup.POST("/:year/byDistrict/:district/hoz", g.HozPost())
 }
 
 // @Summary      Get list of years
@@ -160,27 +159,6 @@ func (g Genotyped) Districts() func(*gin.Context) {
 		region := c.Param("region")
 		year := c.Param("year")
 
-		roleId, exists := c.Get("RoleId")
-		if !exists {
-			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
-			return
-		}
-
-		if roleId != 3 && roleId != 4 {
-			regionId, exists := c.Get("RegionId")
-			if !exists {
-				c.JSON(http.StatusInternalServerError, "RegionId не найден в контексте")
-				return
-			}
-
-			log.Println(regionId, region)
-			if regionId != region {
-				c.JSON(421, gin.H{"error": "Нет доступа к региону"})
-				c.Abort()
-				return
-			}
-		}
-
 		yearInt, err := strconv.ParseInt(year, 10, 64)
 		if err != nil {
 			c.JSON(422, err.Error())
@@ -249,27 +227,6 @@ func (g Genotyped) Hold() func(*gin.Context) {
 
 		year := c.Param("year")
 		district := c.Param("district")
-
-		roleId, exists := c.Get("RoleId")
-		if !exists {
-			c.JSON(http.StatusInternalServerError, "RoleId не найден в контексте")
-			return
-		}
-
-		if roleId == 1 {
-			distId, exists := c.Get("DistId")
-			if !exists {
-				c.JSON(http.StatusInternalServerError, "DistId не найден в контексте")
-				return
-			}
-
-			log.Println(distId, district)
-			if distId != district {
-				c.JSON(421, gin.H{"error": "Нет доступа к округу"})
-				c.Abort()
-				return
-			}
-		}
 
 		db := models.GetDb()
 		yearInt, err := strconv.ParseUint(year, 10, 64)
