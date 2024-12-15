@@ -34,7 +34,7 @@
                         <option :value="'RSHN'">РСХН</option>
                         <option :value="'BirthDate'">дате рождения</option>
                         <option :value="'InventoryNumber'">инвентарному номеру</option>
-                        <option :value="'HozName'">хозяйству</option>
+                        
                     </select>
                 </div>
 
