@@ -124,14 +124,14 @@ export default {
     },
     watch: {
         async changeFilters() {
-            if (this.changeOpt === '') {
+            if (this.changeOpt === '' || this.changeOpt == 'ill') {
                 await this.fetchData();
             } else if(this.changeOpt == 'lact') {
                 await this.fetchDataLact();
             }
         },
         async changeOpt() {
-            if (this.changeOpt === '') {
+            if (this.changeOpt === '' || this.changeOpt == 'ill') {
                 await this.fetchData();
             } else if(this.changeOpt == 'lact') {
                 await this.fetchDataLact();

@@ -1,6 +1,6 @@
 <template>
     <div class="analytics-flex">
-        <DAnimalFilters class="analytics-filters" @applyFilters="fetchAnalyticsFilters"/>
+        <DAnimalFilters class="analytics-filters" @applyFilters="fetchAnalyticsFilters" v-bind:fromAnal="forFilters"/>
         <div class="chart-block">
             <div class="analytics-title">Статистика для сравнительного анализа хозяйств и регионов</div>
             <select v-model="opt" class="filter-input">
@@ -24,6 +24,7 @@ export default {
     data() {
         return{
             opt: '',
+            forFilters: true,
         }
     },
     methods: {
