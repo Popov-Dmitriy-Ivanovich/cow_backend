@@ -74,6 +74,8 @@ func (l *Load) GtcFile() func(*gin.Context) {
 			}
 			if dbCow.Genetic == nil {
 				dbCow.Genetic = new(models.Genetic)
+				dbCow.Genetic.ResultDate = &models.DateOnly{Time: time.Now().UTC()}
+				dbCow.Genetic.BloodDate = &models.DateOnly{Time: time.Now().UTC()}
 			}
 			dbCow.Genetic.GtcFilePath = &filePath
 
