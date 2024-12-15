@@ -269,10 +269,16 @@
         // Очистка списка хозяйств
         const hozSelect = document.getElementById('hoz');
         hozSelect.innerHTML = '<option value="" selected disable hidden>Хозяйство</option>'; // сброс
-
+        const token = localStorage.getItem('yourTokenKey');
         if (districtId) {
             // Отправка запроса на сервер
-            fetch(`/api/farms`)
+            fetch(`/api/farms/hoz`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Сеть не отвечает');
