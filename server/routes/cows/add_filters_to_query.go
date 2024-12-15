@@ -81,7 +81,8 @@ func AddFiltersToQuery(bodyData cows_filter.CowsFilter, query *gorm.DB) (*gorm.D
 		cows_filter.ByStillBorn{},
 		cows_filter.ByTwins{},
 		cows_filter.ByMonogeneticIllnesses{},
-		cows_filter.OrderBy{}); err != nil {
+		cows_filter.OrderBy{},
+		cows_filter.ByRegion{}); err != nil {
 		return nil, err
 	}
 	return cfm.GetQuery(), nil
