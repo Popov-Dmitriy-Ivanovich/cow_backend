@@ -18,7 +18,7 @@ func (f *Farms) WriteRoutes(rg *gin.RouterGroup) {
 		db := models.GetDb()
 		farms := []models.Farm{}
 		
-		if err := db.Find(&farms, map[string]any{"type": 3}).Error; err != nil {
+		if err := db.Find(&farms, map[string]any{"type": 2}).Error; err != nil {
 			c.JSON(500, err.Error())
 			return
 		}
