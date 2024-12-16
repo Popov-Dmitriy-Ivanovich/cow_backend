@@ -16,8 +16,8 @@ func (s *Admin) UpdateUserPage() func(*gin.Context) {
 		farms := []models.Farm{}
 		regions := []models.Region{}
 		roles := []models.Role{}
-		db.Where("type = 2").Find(&farms)
-		db.Find(&regions)
+		db.Order("name").Where("type = 2").Find(&farms)
+		db.Order("name").Find(&regions)
 		db.Where("id != 4").Find(&roles)
 
 		user := models.User{}
