@@ -1,24 +1,25 @@
 <template>
     <div class="rg">
-    <form class="registrate">
+    <form class="registrate" id="form-registrate">
         <div class="registrate-title">
             <div>Регистрация</div>
             <div class="login-link" @click="$router.push('/login')">Вход</div>
         </div>
-        <label>Регион (область)</label><br>
-        <MultiselectReg class="region"/>
+        <label>Регион (область) <span class="required">*</span></label><br>
+        <MultiselectReg class="region" @sendToMain="setIdReg"/>
         <br>
-        <label>Роль</label>
-        <div class="role">
-            <input type="radio" name="role">Федеральный чиновник<br>
-            <input type="radio" name="role">Региональный чиновник<br>
-            <input type="radio" name="role">Фермер<br>
-        </div>
-        <label>ФИО</label><br>
-        <input type="text" placeholder="Иванов Иван Иванович" class="registration-field" @keyup="valid" id="fio" autocomplete="off"> <br>
         <label>Хозяйство</label><br>
-        <DMultiselectHoz  class="hoz"/> <br>
-        <div class="hoz-underline">Если нет нужного хозяйства, вы можете <span class="create-hoz">создать</span> его</div>
+        <MultiselectHozRegister  class="hoz" @sendToMain="setIdHoz" v-bind:regionId="newUser.regionId"/> <br>
+        <!-- <div class="hoz-underline">Если нет нужного хозяйства, вы можете <span class="create-hoz">создать</span> его</div> -->
+        <label>Роль <span class="required">*</span></label>
+        <div class="role">
+            <input type="radio" name="role" :value="3" v-model="newUser.roleId">Федеральный чиновник<br>
+            <input type="radio" name="role" :value="2" v-model="newUser.roleId">Региональный чиновник<br>
+            <input type="radio" name="role" :value="1" v-model="newUser.roleId">Фермер<br>
+        </div>
+        <label>ФИО <span class="required">*</span></label><br>
+        <input type="text" placeholder="Иванов Иван Иванович" class="registration-field" @keyup="valid" id="fio" autocomplete="off" v-model="newUser.nameSurnamePatronimic"> <br>
+
 
         <!-- <div class="modal-createhoz">
             <div class="background-modal">
@@ -30,35 +31,119 @@
             </div>
         </div> -->
 
-        <label>Электронная почта</label><br>
-        <input type="email" placeholder="example@email.com" class="registration-field"> <br>
-        <label>Телефон</label><br>
+        <label>Электронная почта <span class="required">*</span></label><br>
+        <input type="email" placeholder="example@email.com" class="registration-field" v-model="newUser.email"> <br>
+        <label>Телефон <span class="required">*</span></label><br>
         <input type="tel" 
         pattern="^(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$" 
         placeholder="8 999 999 99 99"
-        class="registration-field"> <br>
-        <label>Пароль</label><br>
-        <input type="password"  class="registration-field"> <br>
-        <label>Повторите пароль</label><br>
-        <input type="password"  class="registration-field"> <br>
+        class="registration-field"
+        v-model="newUser.phone"> <br>
+        <label>Пароль <span class="required">*</span></label><br>
+        <input type="password"  class="registration-field" v-model="newUser.password"> <br>
+        <label>Повторите пароль <span class="required">*</span></label><br>
+        <input type="password"  class="registration-field" v-model="repeatPassword"> <br>
+        <div v-if="notSamePasswords" class="error">Пароли не совпадают</div>
         <label>Ваши ожидания от проекта генетической селекции</label><br>
         <textarea  class="registration-field textarea"></textarea> <br>
         <button type="submit" class="registr-btn">Отправить</button>
+        <div v-if="notAllFields" class="error">Пожалуйста, заполните все необходимые поля</div>
+        <div v-if="success" class="success">Успех. На указанную почту было отправлено письмо. 
+            Для завершения регистрации перейдите по ссылке, указанной в нём. Можете покинуть эту страницу.</div>
     </form></div>
 </template>
 
 <script>
 import MultiselectReg from '@/components/MultiselectReg.vue';
-import DMultiselectHoz from '@/components/testpage/DMultiselectHoz.vue';
+import MultiselectHozRegister from '@/MultiselectHozRegister.vue';
 
 export default {
+    data(){
+        return{
+            newUser: {
+                email: null,
+                hozNumber: '0',
+                nameSurnamePatronimic: null,
+                password: null,
+                phone: null,
+                regionId: null,
+                roleId: null,
+            },
+            newHoz: null,
+            newHold: null,
+
+            repeatPassword: null,
+
+            notAllFields: false,
+            notSamePasswords: false,
+            success: false,
+        }
+    },
     components: {
-        MultiselectReg, DMultiselectHoz
+        MultiselectReg, MultiselectHozRegister
     },
     methods: {
         valid() {
             document.getElementById('fio').value = document.getElementById('fio').value.replace(/[\d]/g,'');
-        }
+        },
+        async handleFormSubmit(event){ 
+            event.preventDefault();
+
+            this.notAllFields = false;
+            this.notSamePasswords = false;
+            this.success = false;
+
+            if (this.newUser.hozNumber === null) {
+                this.newUser.hozNumber = '0';
+            }
+
+            for (let key in this.newUser) {
+                if (this.newUser[key] === null) {
+                    this.notAllFields = true;
+                    return 0;
+                }
+            }
+
+            if(this.newUser.password !== this.repeatPassword) {
+                this.notSamePasswords = true;
+                return 0;
+            }
+            let obj = {};
+            obj.newUser = this.newUser;
+            obj.newHoz = this.newHoz;
+            obj.newHold = this.newHold;
+            let response = await fetch(`/api/user/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(obj),
+            })
+            
+            if(response.status == 200) {
+                this.success = true;
+            }
+
+        },
+        setIdReg(new_val){
+            if (new_val) {
+                this.newUser.regionId = new_val;
+            } else {
+                this.newUser.regionId = null;
+            }
+        },
+        setIdHoz(new_val){
+            if (new_val) {
+                this.newUser.hozNumber = new_val;
+            } else {
+                this.newUser.hozNumber = null;
+            }
+        },
+
+    },
+    mounted() {
+        let formRegistrate = document.getElementById('form-registrate');
+        formRegistrate.addEventListener('submit', this.handleFormSubmit);
     }
 }
 </script>
@@ -180,5 +265,22 @@ export default {
         background-color: white;
         border-radius: 20px;
         padding: 50px 80px;
+    }
+
+    .required {
+        color: red;
+    }
+
+    .error {
+        font-size: 90%;
+        padding: 10px 0;
+        color: red;
+    }
+
+    .success {
+        font-size: 90%;
+        padding: 10px 0;
+        color: green;
+        max-width: 350px;
     }
 </style>

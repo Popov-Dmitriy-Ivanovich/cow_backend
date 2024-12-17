@@ -111,7 +111,7 @@ func (u *User) Create() func(*gin.Context) {
 		to := []string{userData.NewUser.Email}
 		smtpHost := os.Getenv("SMTP_HOST")
 		smtpPort := os.Getenv("SMTP_PORT")
-		message := []byte(
+		message := []byte("From: genmilk@aurusoft.ru\r\n"+	
 			"To: " + userData.NewUser.Email + "\r\n" +
 				"Subject: Подтвердите эл. почту\r\n" +
 				"\r\n" +
