@@ -122,17 +122,14 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 			hoz.Name = "Ферма, указанная пользователем отсутсвует в базе данных"
 			hoz.HozNumber = new(string)
 			*hoz.HozNumber = "Номер фермы, указанный пользователем не найден в базе данных"
-			// return
 		}
 
 		if err := db.First(&role,userRegReq.RoleId).Error; err != nil {
-			c.JSON(500, err.Error())
-			return
+			role.Name = "Указанная пользователем роль не существует в базе данных"
 		}
 
 		if err := db.First(&region, userRegReq.RegionId).Error; err != nil {
-			c.JSON(500, err.Error())
-			return
+			region.Name = "Указанный пользователем регион не существует в базе данных"
 		}
 		prevNumber :=  userCreateNumberInt
 		if prevNumber != 0 {
