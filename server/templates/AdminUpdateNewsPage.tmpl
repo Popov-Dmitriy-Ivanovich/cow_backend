@@ -164,7 +164,7 @@
         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
     </button>
     <div class="form-container">
-            <input type="text" id="title" name="title" placeholder="{{if .news.Title}}{{.news.Title}}{{else}}Заголовок{{end}}" required>
+            <input type="text" id="title" name="title" {{if .news.Title}}value="{{.news.Title}}"{{else}}placeholder="Заголовок"{{end}} required>
 
             <select id="region" name="region">
                 <option value="{{.news.RegionId}}" selected disable hidden >{{.news.Region.Name}}</option>
