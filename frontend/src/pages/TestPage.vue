@@ -27,7 +27,7 @@
             <DAnimalFilters @applyFilters="findAnimals"/>
             <div>
                 <div class="sort">
-                    <div>Сортировка по: </div>
+                    <div>Сортировать: </div>
                     <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
                         <!-- <option :value="null">-нет-</option> -->
                         <option :value="'Name'">кличке</option>
@@ -35,6 +35,10 @@
                         <option :value="'BirthDate'">дате рождения</option>
                         <option :value="'InventoryNumber'">инвентарному номеру</option>
                         
+                    </select>
+                    <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
+                        <option :value="false">по возрастанию</option>
+                        <option :value="true">по убыванию</option>
                     </select>
                 </div>
 
@@ -108,6 +112,7 @@ export default {
 
             isLoading: false,
             sort: null,
+            order: false,
         }
     },
     methods: {
@@ -126,11 +131,11 @@ export default {
                 if(this.isChild) search_params.sex = [1,2];
                 search_params.entitiesOnPage = 25;
                 if(this.sort) {
-                    search_params.orderByDesc = false;
+                    search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
                 } else {
                     search_params.orderBy = 'RSHN';
-                    search_params.orderByDesc = false;
+                    search_params.orderByDesc = this.order;
                 }
 
                 this.current_filters = search_params;
@@ -182,11 +187,11 @@ export default {
                 if(this.isChild) search_params.sex = [1,2];
                 search_params.entitiesOnPage = 25;
                 if(this.sort) {
-                    search_params.orderByDesc = false;
+                    search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
                 } else {
                     search_params.orderBy = 'RSHN';
-                    search_params.orderByDesc = false;
+                    search_params.orderByDesc = this.order;
                 }
                 this.current_filters = search_params;
 
@@ -412,6 +417,7 @@ export default {
     border: 3px solid rgb(195, 200, 212);
     border-radius: 10px;
     transition: 0.3s;
+    margin-right: 10px;
 }
 
 .sort div {

@@ -76,24 +76,15 @@ export default {
         }
     },
     mounted() {
-        this.list = this.start_value;
-        
-    },
-    created() {
-        // window.addEventListener('mouseup', function(e){
-        //     if(!document.querySelector('.combobox').contains(e.target)) {
-        //         this.isVisible = false;
-        //         console.log(this.isVisible, 'внутри ифа');
-        //     }
-        // })
+        this.list = this.start_value; 
     },
     watch: {
         clear() {
             this.text1 = "";
         },
-        // isVisible(new_value) {
-        //     console.log(new_value);
-        // }
+        start_value(new_val) {
+            this.list = new_val;
+        }
     }
 }
 </script>
