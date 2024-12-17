@@ -119,8 +119,10 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 		region := models.Region{}
 
 		if err := db.First(&hoz, map[string]any{"hoz_number":userRegReq.HozNumber}).Error; err != nil {
-			c.JSON(500, err.Error())
-			return
+			hoz.Name = "Ферма, указанная пользователем отсутсвует в базе данных"
+			hoz.HozNumber = new(string)
+			*hoz.HozNumber = "Номер фермы, указанный пользователем не найден в базе данных"
+			// return
 		}
 
 		if err := db.First(&role,userRegReq.RoleId).Error; err != nil {
