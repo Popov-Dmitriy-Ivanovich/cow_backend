@@ -14,8 +14,8 @@ func (s *Admin) UpdateFarmPage(typeHoz int) func(*gin.Context) {
 		db := models.GetDb()
 		regions := []models.Region{}
 		districts := []models.District{}
-		db.Find(&regions)
-		db.Find(&districts)
+		db.Order("name").Find(&regions)
+		db.Order("name").Find(&districts)
 
 		farm := models.Farm{}
 		if err := db.
