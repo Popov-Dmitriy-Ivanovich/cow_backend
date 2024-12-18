@@ -48,8 +48,7 @@
         <textarea  class="registration-field textarea"></textarea> <br>
         <button type="submit" class="registr-btn">Отправить</button>
         <div v-if="notAllFields" class="error">Пожалуйста, заполните все необходимые поля</div>
-        <div v-if="success" class="success">Успех. На указанную почту было отправлено письмо. 
-            Для завершения регистрации перейдите по ссылке, указанной в нём. Можете покинуть эту страницу.</div>
+        <div v-if="success" class="success">На указанную почту было отправлено письмо. Для подтверждения регистрации перейдите по ссылке, указанной в письме.</div>
     </form></div>
 </template>
 
