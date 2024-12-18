@@ -1,0 +1,68 @@
+{{ define "MessageResponse.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .parent {
+                font-family: Open Sans, sans-serif;
+                font-size: 110%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #f8f7fc;
+            }
+
+            .flex-parent {
+                display: flex;
+                width: 100%;
+                height: 80vh;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .parent-link {
+                margin: 20px 30px;
+                
+            }
+
+            .link {
+                text-decoration: none;
+                color: rgb(37, 0, 132);
+                transition: 0.3s;
+            }
+
+            .link:hover {
+                padding-left: 20px;
+                color: rgb(117, 61, 213);
+            }
+
+            .block-for-text {
+                background-color: white;
+                padding: 150px 30px;
+                border-radius: 20px;
+                box-shadow: 0 7px 29px 0 hsla(240, 5%, 41%, .2);
+            }
+
+            .main-text {
+                color: rgb(37, 0, 132);
+                width: 500px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="parent">
+            <div class="parent-link"><a href="https://genmilk.ru/" class="link">🠐 На главную</a></div>
+            <div class="flex-parent">
+                <div class="block-for-text">
+                    <div class="main-text">В ближайшее время администратор свяжется с вами для завершения регистрации</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{{ end }}

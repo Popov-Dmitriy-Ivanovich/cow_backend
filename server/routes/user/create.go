@@ -172,6 +172,6 @@ func (u *User) VerifyEmail() func(*gin.Context) {
 		}
 		
 		
-		c.JSON(200, "Запрос отправлен на рассмотрение")
+		c.HTML(200, "MessageResponse.tmpl", gin.H{})
 	}
 }
