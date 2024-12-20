@@ -28,7 +28,12 @@ func (f *Cows) Health() func(*gin.Context) {
 		}
 
 		events := []models.Event{}
-		db.Preload("EventType").Preload("EventType1").Preload("EventType2").Order("date desc").Find(&events, "cow_id = ? AND event_type_id IN (1, 2, 3, 4)", id)
+		db.
+			Preload("EventType").
+			Preload("EventType1").
+			Preload("EventType2").
+			Order("date desc").
+			Find(&events, "cow_id = ? AND EXISTS (SELECT 1 FROM event_types where event_types.id = events.event_type_id AND event_types.type IN (1, 2, 3, 4))", id)
 
 		c.JSON(200, events)
 	}
