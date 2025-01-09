@@ -43,6 +43,7 @@ services:
     volumes:
       - ./dockered_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - habrdb-data:/var/lib/postgresql/data
+    # UNCOMMENT THIS ROWS TO HAVE POSTGRESQL AVALIABLE  FROM OUTSIDE DOCKER NETWORK
     # ports:
     #   - "5432:5432"
     
