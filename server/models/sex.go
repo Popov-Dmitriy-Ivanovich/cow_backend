@@ -2,5 +2,5 @@ package models
 
 type Sex struct {
 	ID   uint `gorm:"primaryKey"`
-	Name string
+	Name string // Название пола
 }

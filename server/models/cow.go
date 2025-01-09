@@ -19,7 +19,7 @@ type Cow struct {
 	FarmGroupId uint `example:"1"` // ID хозяйства, которому корова принадлежит
 
 	Holding   *Farm
-	HoldingID *uint
+	HoldingID *uint // ID холдинга, которому принадлежит корова
 
 	Breed   Breed `json:"-"`
 	BreedId uint  `example:"1"` // ID породы коровы
@@ -55,7 +55,7 @@ type Cow struct {
 	// Exterior                float64  `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
 	InbrindingCoeffByFamily *float64 `example:"3.14"` // Коэф. инбриндинга по роду
 
-	Approved    int       `example:"1"` // Целое число, что-то для админов, чтобы подтверждать коров
+	Approved    int       `example:"1"` // Целое число, 0 - корова не подтверждена, 1 - корова подтверждена, -1 - корова отклонена
 	BirthDate   DateOnly  // День рождения
 	DepartDate  *DateOnly // День отбытия из коровника
 	DeathDate   *DateOnly // Дата смерти
@@ -68,15 +68,15 @@ type Cow struct {
 	BirthHozId    *uint   // ID хозяйства рождения
 	BirthMethod   *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 
-	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это указатель на эту же корову в другом хоз-ве с другим инв. номером
+	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это предыдущий селекс коровы
 
 	Documents []Document `json:"-"` // документы коровы
 }
 
 type Document struct {
-	ID    uint
-	CowID uint
-	Path  string
+	ID    uint // ID
+	CowID uint // ID коровы, для которой хранитя документ
+	Path  string // путь к документу относительно genmilk.ru/api/static/documents
 }
 
 func (c *Cow) BeforeCreate(tx *gorm.DB) error {

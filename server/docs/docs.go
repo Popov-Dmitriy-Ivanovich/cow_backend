@@ -2204,7 +2204,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "approved": {
-                    "description": "Целое число, что-то для админов, чтобы подтверждать коров",
+                    "description": "Целое число, 0 - корова не подтверждена, 1 - корова подтверждена, -1 - корова отклонена",
                     "type": "integer",
                     "example": 1
                 },
@@ -2303,6 +2303,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.Farm"
                 },
                 "holdingID": {
+                    "description": "ID холдинга, которому принадлежит корова",
                     "type": "integer"
                 },
                 "hozHame": {
@@ -2554,6 +2555,10 @@ const docTemplate = `{
                     "type": "integer",
                     "default": 1
                 },
+                "regionId": {
+                    "description": "по региону",
+                    "type": "integer"
+                },
                 "searchQuery": {
                     "description": "Имя, номер РСХН или инвентарный номер, по которым ищется корова",
                     "type": "string",
@@ -2637,7 +2642,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "approved": {
-                    "description": "Целое число, что-то для админов, чтобы подтверждать коров",
+                    "description": "Целое число, 0 - корова не подтверждена, 1 - корова подтверждена, -1 - корова отклонена",
                     "type": "integer",
                     "example": 1
                 },
@@ -2725,6 +2730,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.Farm"
                 },
                 "holdingID": {
+                    "description": "ID холдинга, которому принадлежит корова",
                     "type": "integer"
                 },
                 "id": {
@@ -2788,19 +2794,19 @@ const docTemplate = `{
                     ]
                 },
                 "fat": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Суммарный жир ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "fatEvening": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Жир вечером ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "fatMorning": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Жир утром` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "fatNoon": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Жир днем ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "id": {
@@ -2811,35 +2817,35 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "milk": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Суммарный надой ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "milkEvening": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Надой вечером ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "milkMorning": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Надой утром ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "milkNoon": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Надой днем ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "protein": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Суммарный белок ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "proteinEvening": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Белок вечером ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "proteinMorning": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Белок утром ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 },
                 "proteinNoon": {
-                    "description": "Параметр дойки ` + "`" + `example:\"12\"` + "`" + `",
+                    "description": "Белок днем ` + "`" + `example:\"12\"` + "`" + `",
                     "type": "integer"
                 }
             }
@@ -2856,12 +2862,15 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cowID": {
+                    "description": "ID коровы, для которой хранитя документ",
                     "type": "integer"
                 },
                 "id": {
+                    "description": "ID",
                     "type": "integer"
                 },
                 "path": {
+                    "description": "путь к документу относительно genmilk.ru/api/static/documents",
                     "type": "string"
                 }
             }
@@ -2870,20 +2879,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "comment1": {
+                    "description": "Коментарий 1 (по всей видиости сюда что-то пришет врач)",
                     "type": "string"
                 },
                 "comment2": {
+                    "description": "Коментарий 2",
                     "type": "string"
                 },
                 "cowId": {
+                    "description": "ID коровы",
                     "type": "integer"
                 },
                 "dataResourse": {
-                    "description": "источник данные",
+                    "description": "источник данных",
                     "type": "string"
                 },
                 "date": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата ветеринарного события",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "daysFromLactation": {
                     "description": "дни от начала лактации",
@@ -2896,15 +2913,18 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.EventType"
                 },
                 "eventType1Id": {
+                    "description": "стандартизированная название события",
                     "type": "integer"
                 },
                 "eventType2": {
                     "$ref": "#/definitions/models.EventType"
                 },
                 "eventType2Id": {
+                    "description": "стандартизированное разновидность события",
                     "type": "integer"
                 },
                 "eventTypeId": {
+                    "description": "стандартизированная группа события",
                     "type": "integer"
                 },
                 "id": {
@@ -2916,19 +2936,22 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
+                    "description": "код группы или разновидности или названия события",
                     "type": "integer"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "name": {
+                    "description": "Название группы/названия/разновидности события",
                     "type": "string"
                 },
                 "parentId": {
+                    "description": "ID старшего в иерархии типов события типа (для разновидности события ID группы событий, которой эта разновидность принадлежит)",
                     "type": "integer"
                 },
                 "type": {
-                    "description": "Should be enum",
+                    "description": "1 - группа события, 2 - разновидность события, 3 - название события",
                     "type": "integer"
                 }
             }
@@ -3053,18 +3076,23 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "address": {
+                    "description": "Адрес",
                     "type": "string"
                 },
                 "cowsCount": {
+                    "description": "количество коров",
                     "type": "integer"
                 },
                 "description": {
+                    "description": "описание",
                     "type": "string"
                 },
                 "districtId": {
+                    "description": "ID района, в котором находится хозяйство",
                     "type": "integer"
                 },
                 "email": {
+                    "description": "эл. почта",
                     "type": "string"
                 },
                 "hozNumber": {
@@ -3075,21 +3103,27 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "inn": {
+                    "description": "ИНН",
                     "type": "string"
                 },
                 "name": {
+                    "description": "Название хозяйства",
                     "type": "string"
                 },
                 "nameShort": {
+                    "description": "Краткое название хозйства",
                     "type": "string"
                 },
                 "parrentId": {
+                    "description": "ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)",
                     "type": "integer"
                 },
                 "phone": {
+                    "description": "телефон",
                     "type": "string"
                 },
                 "type": {
+                    "description": "Тип: хозяйство, ферма, холдинг",
                     "type": "integer"
                 }
             }
@@ -3117,6 +3151,7 @@ const docTemplate = `{
                     }
                 },
                 "gtcFilePath": {
+                    "description": "путь к gtc файлу относительно genmilk.ru/api/static/gtc",
                     "type": "string"
                 },
                 "id": {
@@ -3165,6 +3200,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "geneticID": {
+                    "description": "ID данных о генотипировании коровы, к которым относятся данные о заболеваниях коровы",
                     "type": "integer"
                 },
                 "id": {
@@ -3174,14 +3210,14 @@ const docTemplate = `{
                     "$ref": "#/definitions/models.GeneticIllness"
                 },
                 "illnessID": {
-                    "description": "заболевание",
+                    "description": "ID заболевание",
                     "type": "integer"
                 },
                 "status": {
                     "$ref": "#/definitions/models.GeneticIllnessStatus"
                 },
                 "statusID": {
-                    "description": "статус заболевания",
+                    "description": "ID статус заболевания",
                     "type": "integer"
                 }
             }
@@ -3193,6 +3229,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status": {
+                    "description": "Статус заболевания: FREE, CARIER, BAD ...",
                     "type": "string"
                 }
             }
@@ -3201,18 +3238,23 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "ebvFat": {
+                    "description": "Оценка жира по EBV",
                     "type": "number"
                 },
                 "ebvInsemenation": {
+                    "description": "Оценка кратности осеменения по EBV",
                     "type": "number"
                 },
                 "ebvMilk": {
+                    "description": "Оценка удоя по EBV",
                     "type": "number"
                 },
                 "ebvProtein": {
+                    "description": "Оценка белка по EBV",
                     "type": "number"
                 },
                 "evbService": {
+                    "description": "Оценка длительности сервисного периода по EBV",
                     "type": "number"
                 },
                 "generalValue": {
@@ -3309,15 +3351,18 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "abort": {
+                    "description": "был ли аборт",
                     "type": "boolean"
                 },
                 "calvingCount": {
+                    "description": "Количество рожденных телят: 0 - мертворождение, 2 - двойня",
                     "type": "integer"
                 },
                 "calvingDate": {
                     "$ref": "#/definitions/models.DateOnly"
                 },
                 "cowId": {
+                    "description": "ID коровы, данные о лактации которой записаны",
                     "type": "integer"
                 },
                 "days": {
@@ -3325,24 +3370,34 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "fat305": {
+                    "description": "Суммарный жир за 305 дней",
                     "type": "number"
                 },
                 "fatAll": {
+                    "description": "Суммарный жир",
                     "type": "number"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "insemenationDate": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата осеменения",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "insemenationNum": {
+                    "description": "Количество осеменений",
                     "type": "integer"
                 },
                 "milk305": {
+                    "description": "Суммарный надой за 305 дней",
                     "type": "number"
                 },
                 "milkAll": {
+                    "description": "Суммарный надой",
                     "type": "number"
                 },
                 "number": {
@@ -3350,9 +3405,11 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "protein305": {
+                    "description": "Суммарный белок за 305 дней",
                     "type": "number"
                 },
                 "proteinAll": {
+                    "description": "Суммарный белок",
                     "type": "number"
                 },
                 "servicePeriod": {
@@ -3365,18 +3422,26 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "date": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата новости",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "id": {
                     "type": "integer"
                 },
                 "regionId": {
+                    "description": "ID региона для которого записана новость",
                     "type": "integer"
                 },
                 "text": {
+                    "description": "Текст новости",
                     "type": "string"
                 },
                 "title": {
+                    "description": "Заголовок новости",
                     "type": "string"
                 }
             }
@@ -3385,25 +3450,30 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "address": {
+                    "description": "Адрес",
                     "type": "string"
                 },
                 "description": {
+                    "description": "описание партнера",
                     "type": "string"
                 },
                 "email": {
+                    "description": "эл. почта",
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "logoPath": {
-                    "description": "replaced byte data",
+                    "description": "путь к логотипу партнера относительно genmlik.ru/api/static/partners",
                     "type": "string"
                 },
                 "name": {
+                    "description": "Название партнера",
                     "type": "string"
                 },
                 "phone": {
+                    "description": "телефон",
                     "type": "string"
                 }
             }
@@ -3416,6 +3486,7 @@ const docTemplate = `{
                     "default": 1
                 },
                 "name": {
+                    "description": "название региона",
                     "type": "string",
                     "example": "Усть-Каменский"
                 },
@@ -3438,6 +3509,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
+                    "description": "название роли",
                     "type": "string"
                 }
             }
@@ -3449,6 +3521,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
+                    "description": "Название пола",
                     "type": "string"
                 }
             }
@@ -3457,6 +3530,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "date": {
+                    "description": "Дата обновления базы данных",
                     "type": "string"
                 },
                 "id": {

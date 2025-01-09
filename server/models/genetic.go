@@ -15,16 +15,16 @@ type Genetic struct {
 	InbrindingCoeffByGenotype *float64             // Коэф. инбриндинга по генотипу
 	GeneticIllnessesData      []GeneticIllnessData `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Список генетических заболеваний, пустой если нет
 
-	GtcFilePath *string
+	GtcFilePath *string // путь к gtc файлу относительно genmilk.ru/api/static/gtc
 }
 
 type GeneticIllnessData struct {
 	ID        uint `gorm:"primaryKey"`
-	GeneticID uint
+	GeneticID uint // ID данных о генотипировании коровы, к которым относятся данные о заболеваниях коровы
 	Status    *GeneticIllnessStatus
-	StatusID  *uint // статус заболевания
+	StatusID  *uint // ID статус заболевания
 	Illness   GeneticIllness
-	IllnessID uint // заболевание
+	IllnessID uint // ID заболевание
 }
 
 type GeneticIllness struct {
@@ -36,7 +36,7 @@ type GeneticIllness struct {
 
 type GeneticIllnessStatus struct {
 	ID     uint `gorm:"primaryKey"`
-	Status string
+	Status string // Статус заболевания: FREE, CARIER, BAD ...
 }
 
 func (g *Genetic) BeforeCreate(tx *gorm.DB) error {

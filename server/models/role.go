@@ -3,5 +3,5 @@ package models
 type Role struct {
 	ID uint `gorm:"primaryKey"`
 
-	Name string
+	Name string // название роли
 }

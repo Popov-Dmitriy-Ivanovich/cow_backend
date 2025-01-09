@@ -5,20 +5,20 @@ type Farm struct {
 
 	// Region   Region `json:"-"`
 	// RegionId uint
-	HozNumber  *string  // номер хоз-ва, интересно а можно ли его сдлеать интом?
+	HozNumber  *string  // номер хоз-ва
 	District   District `json:"-"`
-	DistrictId uint
+	DistrictId uint // ID района, в котором находится хозяйство
 	Parrent    *Farm `json:"-"`
-	ParrentId  *uint
+	ParrentId  *uint // ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)
 
-	Type      uint
-	Name      string
-	NameShort string
-	Inn       *string
+	Type      uint // Тип: хозяйство, ферма, холдинг
+	Name      string // Название хозяйства
+	NameShort string // Краткое название хозйства
+	Inn       *string // ИНН
 
-	Address     string
-	Phone       *string
-	Email       *string
-	Description *string
-	CowsCount   *uint
+	Address     string // Адрес
+	Phone       *string // телефон
+	Email       *string // эл. почта
+	Description *string // описание
+	CowsCount   *uint // количество коров
 }
