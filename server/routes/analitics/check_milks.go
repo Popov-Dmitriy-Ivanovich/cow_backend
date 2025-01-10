@@ -46,7 +46,6 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 		filterData.IsDead = new(bool)
 		*filterData.IsDead = false
 
-
 		db := models.GetDb()
 		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
@@ -123,7 +122,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 
 		*filterData.ControlMilkingDateFrom = "0001-01-01"
 		*filterData.ControlMilkingDateTo = "4000-01-01"
-		
+
 		filterData.IsDead = new(bool)
 		*filterData.IsDead = false
 

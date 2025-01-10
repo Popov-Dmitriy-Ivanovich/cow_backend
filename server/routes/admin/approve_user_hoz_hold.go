@@ -14,7 +14,7 @@ import (
 func (a *Admin) ApproveUser() func(*gin.Context) {
 	return func(c *gin.Context) {
 		userCreateNumber := c.Param("number")
-		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber, 10, 64)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -34,12 +34,12 @@ func (a *Admin) ApproveUser() func(*gin.Context) {
 		role := models.Role{}
 		region := models.Region{}
 
-		if err := db.First(&hoz, map[string]any{"hoz_number":userRegReq.HozNumber}).Error; err != nil {
+		if err := db.First(&hoz, map[string]any{"hoz_number": userRegReq.HozNumber}).Error; err != nil {
 			c.JSON(500, err.Error())
 			return
 		}
 
-		if err := db.First(&role,userRegReq.RoleId).Error; err != nil {
+		if err := db.First(&role, userRegReq.RoleId).Error; err != nil {
 			c.JSON(500, err.Error())
 			return
 		}
@@ -50,12 +50,12 @@ func (a *Admin) ApproveUser() func(*gin.Context) {
 		}
 		userReg := models.User{
 			NameSurnamePatronimic: userRegReq.NameSurnamePatronimic,
-			Email: userRegReq.Email,
-			Phone: userRegReq.Phone,
-			Password: hashedPassword,
-			Farm: &hoz,
-			Region: region,
-			Role: role,
+			Email:                 userRegReq.Email,
+			Phone:                 userRegReq.Phone,
+			Password:              hashedPassword,
+			Farm:                  &hoz,
+			Region:                region,
+			Role:                  role,
 		}
 		if err := db.Create(&userReg).Error; err != nil {
 			c.JSON(500, err.Error())
@@ -74,7 +74,7 @@ func (a *Admin) ApproveUser() func(*gin.Context) {
 func (a *Admin) RejectUser() func(*gin.Context) {
 	return func(c *gin.Context) {
 		userCreateNumber := c.Param("number")
-		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber, 10, 64)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -98,7 +98,7 @@ func (a *Admin) RejectUser() func(*gin.Context) {
 func (a *Admin) PrintUser() func(*gin.Context) {
 	return func(c *gin.Context) {
 		userCreateNumber := c.Param("number")
-		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber,10,64)
+		userCreateNumberInt, err := strconv.ParseUint(userCreateNumber, 10, 64)
 		fmt.Println("Page printuser", userCreateNumber, userCreateNumberInt)
 		if err != nil {
 			c.JSON(422, err.Error())
@@ -113,40 +113,40 @@ func (a *Admin) PrintUser() func(*gin.Context) {
 			c.HTML(200, "AdminApproveUserPageEnd.tmpl", gin.H{})
 			return
 		}
-		
+
 		hoz := models.Farm{}
 		role := models.Role{}
 		region := models.Region{}
 
-		if err := db.First(&hoz, map[string]any{"hoz_number":userRegReq.HozNumber}).Error; err != nil {
+		if err := db.First(&hoz, map[string]any{"hoz_number": userRegReq.HozNumber}).Error; err != nil {
 			hoz.Name = "Ферма, указанная пользователем отсутсвует в базе данных"
 			hoz.HozNumber = new(string)
 			*hoz.HozNumber = "Номер фермы, указанный пользователем не найден в базе данных"
 		}
 
-		if err := db.First(&role,userRegReq.RoleId).Error; err != nil {
+		if err := db.First(&role, userRegReq.RoleId).Error; err != nil {
 			role.Name = "Указанная пользователем роль не существует в базе данных"
 		}
 
 		if err := db.First(&region, userRegReq.RegionId).Error; err != nil {
 			region.Name = "Указанный пользователем регион не существует в базе данных"
 		}
-		prevNumber :=  userCreateNumberInt
+		prevNumber := userCreateNumberInt
 		if prevNumber != 0 {
 			prevNumber--
 		}
 		params := gin.H{
-			"email" : userRegReq.Email,
-			"name": userRegReq.NameSurnamePatronimic,
-			"role": role.Name,
-			"phone": userRegReq.Phone,
-			"hoz": hoz.Name,
-			"hozNumber": hoz.HozNumber,
-			"region": region.Name,
-			"nextPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt+1,10),
-			"prevPage": "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(prevNumber,10),
-			"approveUrl": "https://genmilk.ru/api/admin/approveUser/" + strconv.FormatUint(userCreateNumberInt,10),
-			"rejectUrl": "https://genmilk.ru/api/admin/rejectUser/" + strconv.FormatUint(userCreateNumberInt,10),
+			"email":      userRegReq.Email,
+			"name":       userRegReq.NameSurnamePatronimic,
+			"role":       role.Name,
+			"phone":      userRegReq.Phone,
+			"hoz":        hoz.Name,
+			"hozNumber":  hoz.HozNumber,
+			"region":     region.Name,
+			"nextPage":   "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(userCreateNumberInt+1, 10),
+			"prevPage":   "https://genmilk.ru/api/admin/printUser/" + strconv.FormatUint(prevNumber, 10),
+			"approveUrl": "https://genmilk.ru/api/admin/approveUser/" + strconv.FormatUint(userCreateNumberInt, 10),
+			"rejectUrl":  "https://genmilk.ru/api/admin/rejectUser/" + strconv.FormatUint(userCreateNumberInt, 10),
 		}
 		c.HTML(200, "AdminApproveUserPage.tmpl", params)
 	}

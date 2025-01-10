@@ -39,17 +39,17 @@ type CowsFilter struct { // Фильтр коров
 	InbrindingCoeffByGenotypeTo   *float64 `default:"3.14" validate:"optional"` //фильтр по коэф. инбриндинга по генотипу ДО
 
 	HasAnyIllnes        *bool  `default:"false" validate:"optional"` //Флаг true - возращает коров у которых есть хотябы одно заболевение, false - возращает коров, у которых нет ни одного
-	IsIll               *bool  `default:"false" validate:"optional"` //??? Не реализован
-	MonogeneticIllneses []uint // ID ген. заболеваний их /api/mongenetic_illnesses
+	IsIll               *bool  `default:"false" validate:"optional"` //Фильтр по наличию генетических заболеваний
+	MonogeneticIllneses []uint // ID ген. заболеваний из /api/mongenetic_illnesses
 
 	IllDateFrom *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате начала болезни ОТ
 	IllDateTo   *string `example:"1800-01-21" validate:"optional"` // Фильтр по дате начала болезни ДО
 
-	IsGenotyped   *bool   `validate:"optional"`
-	CreatedAtFrom *string `validate:"optional"`
-	CreatedAtTo   *string `validate:"optional"`
+	IsGenotyped   *bool   `validate:"optional"` // Фильтр по наличию информации о генотипировании
+	CreatedAtFrom *string `validate:"optional"` // Фильтр по дате внесения записи в БД ОТ
+	CreatedAtTo   *string `validate:"optional"` // Фильтр по дате внесения записи в БД ДО
 
 	OrderBy     *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"
 	OrderByDesc *bool   // true - в порядке убывания, false - в порядке возрастания
-	RegionId 	*uint // по региону
+	RegionId    *uint   // по региону
 }

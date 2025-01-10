@@ -47,7 +47,7 @@ func (r *Regions) News() func(*gin.Context) {
 		if err := db.Preload("News").First(&region, id).Error; err != nil {
 			c.JSON(404, err.Error())
 		}
-		sort.Slice(region.News,func(i, j int) bool {
+		sort.Slice(region.News, func(i, j int) bool {
 			return region.News[i].Date.After(region.News[j].Date.Time)
 		})
 		c.JSON(200, region.News[0:5])

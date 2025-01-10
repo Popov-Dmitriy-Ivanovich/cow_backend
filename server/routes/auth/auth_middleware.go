@@ -54,11 +54,11 @@ func AuthMiddleware(requiredRole ...RoleType) gin.HandlerFunc {
 			return
 		}
 
-		var RegionId string = strconv.FormatUint(uint64(claims.RegionId), 10)
+		var RegionId = strconv.FormatUint(uint64(claims.RegionId), 10)
 		farm := *claims.FarmId
-		var FarmId string = strconv.FormatUint(uint64(farm), 10)
-		var UserId string = strconv.FormatUint(uint64(claims.UserId), 10)
-		var DistId string = strconv.FormatUint(uint64(claims.Distid), 10)
+		var FarmId = strconv.FormatUint(uint64(farm), 10)
+		var UserId = strconv.FormatUint(uint64(claims.UserId), 10)
+		var DistId = strconv.FormatUint(uint64(claims.Distid), 10)
 		c.Set("RoleId", claims.RoleId)
 		c.Set("RegionId", RegionId)
 		c.Set("FarmId", FarmId)

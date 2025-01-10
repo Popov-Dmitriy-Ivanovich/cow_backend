@@ -74,8 +74,8 @@ type Cow struct {
 }
 
 type Document struct {
-	ID    uint // ID
-	CowID uint // ID коровы, для которой хранитя документ
+	ID    uint   // ID
+	CowID uint   // ID коровы, для которой хранитя документ
 	Path  string // путь к документу относительно genmilk.ru/api/static/documents
 }
 

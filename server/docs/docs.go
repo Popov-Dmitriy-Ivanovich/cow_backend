@@ -2417,9 +2417,11 @@ const docTemplate = `{
                     "example": "2800-01-21"
                 },
                 "createdAtFrom": {
+                    "description": "Фильтр по дате внесения записи в БД ОТ",
                     "type": "string"
                 },
                 "createdAtTo": {
+                    "description": "Фильтр по дате внесения записи в БД ДО",
                     "type": "string"
                 },
                 "departDateFrom": {
@@ -2518,10 +2520,11 @@ const docTemplate = `{
                     "default": false
                 },
                 "isGenotyped": {
+                    "description": "Фильтр по наличию информации о генотипировании",
                     "type": "boolean"
                 },
                 "isIll": {
-                    "description": "??? Не реализован",
+                    "description": "Фильтр по наличию генетических заболеваний",
                     "type": "boolean",
                     "default": false
                 },
@@ -2536,7 +2539,7 @@ const docTemplate = `{
                     "default": false
                 },
                 "monogeneticIllneses": {
-                    "description": "ID ген. заболеваний их /api/mongenetic_illnesses",
+                    "description": "ID ген. заболеваний из /api/mongenetic_illnesses",
                     "type": "array",
                     "items": {
                         "type": "integer"

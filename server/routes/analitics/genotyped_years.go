@@ -27,7 +27,6 @@ func (g Genotyped) YearsPost() func(*gin.Context) {
 		filterData.IsDead = new(bool)
 		*filterData.IsDead = false
 
-
 		db := models.GetDb()
 		query := db.Model(&models.Cow{}).Where("approved <> -1")
 		cfm := cows_filter.NewCowFilteredModel(filterData, query)

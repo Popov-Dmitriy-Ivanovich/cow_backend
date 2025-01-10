@@ -10,13 +10,13 @@ import (
 
 type ReserealizedCow struct {
 	models.Cow
-	BreedName *string          // порода, null если нет
-	SexName   *string          // пол, null если нет
-	FarmName  *string          // ферма на которой живет, null если нет
-	HozHame   *string          // хозяйство на котором живет, null, если нет
-	
-	Father  *models.Cow	
-	Mother  *models.Cow
+	BreedName *string // порода, null если нет
+	SexName   *string // пол, null если нет
+	FarmName  *string // ферма на которой живет, null если нет
+	HozHame   *string // хозяйство на котором живет, null, если нет
+
+	Father *models.Cow
+	Mother *models.Cow
 }
 
 func (rc ReserealizedCow) GetReserealizer() routes.Reserealizer {
@@ -50,22 +50,21 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 	}
 
 	if cow.FatherSelecs != nil {
-		if err := db.Limit(1).Order("depart_date desc").Find(father, 
-		map[string]any{"selecs_number": cow.FatherSelecs}).Error; err != nil {
+		if err := db.Limit(1).Order("depart_date desc").Find(father,
+			map[string]any{"selecs_number": cow.FatherSelecs}).Error; err != nil {
 			return ReserealizedCow{}, err
 		}
 		rc.Father = father
 	}
-	
+
 	if cow.MotherSelecs != nil {
-		if err := db.Limit(1).Order("depart_date desc").Find(mother, 
-		map[string]any{"selecs_number": cow.MotherSelecs}).Error; err != nil {
+		if err := db.Limit(1).Order("depart_date desc").Find(mother,
+			map[string]any{"selecs_number": cow.MotherSelecs}).Error; err != nil {
 			return ReserealizedCow{}, err
 		}
 		rc.Mother = mother
 	}
-	
-	
+
 	rc.Cow = cow
 	rc.BreedName = &breed.Name
 	rc.SexName = &sex.Name

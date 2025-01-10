@@ -34,7 +34,6 @@ import (
 // @Router       /analitics/genotyped/{year}/byDistrict/{district}/hoz [post]
 func (g Genotyped) HozPost() func(*gin.Context) {
 	return func(c *gin.Context) {
-		
 
 		district := c.Param("district")
 		roleId, exists := c.Get("RoleId")

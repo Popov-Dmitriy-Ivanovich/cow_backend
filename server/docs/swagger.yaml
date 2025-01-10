@@ -90,7 +90,7 @@ definitions:
         $ref: '#/definitions/models.DateOnly'
       deathDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: RegionId                  *uint                       `json:",omitempty"
           validate:"optional"`
       departDate:
@@ -150,14 +150,14 @@ definitions:
       sexName:
         type: string
     required:
-    - approved
-    - birthDate
-    - farmGroupName
-    - genotyped
-    - id
-    - inventoryNumber
-    - name
-    - rshnnumber
+      - approved
+      - birthDate
+      - farmGroupName
+      - genotyped
+      - id
+      - inventoryNumber
+      - name
+      - rshnnumber
     type: object
   cows.ReserealizedCow:
     properties:
@@ -168,11 +168,11 @@ definitions:
         type: integer
       birkingDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата перебирковки
       birthDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: День рождения
       birthHozId:
         description: ID хозяйства рождения
@@ -194,11 +194,11 @@ definitions:
         type: string
       deathDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата смерти
       departDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: День отбытия из коровника
       exterior:
         $ref: '#/definitions/models.Exterior'
@@ -330,8 +330,10 @@ definitions:
         example: "2800-01-21"
         type: string
       createdAtFrom:
+        description: Фильтр по дате внесения записи в БД ОТ
         type: string
       createdAtTo:
+        description: Фильтр по дате внесения записи в БД ДО
         type: string
       departDateFrom:
         description: Фильтр по дате открепления коровы ищет всех коров открепленных
@@ -415,10 +417,11 @@ definitions:
         description: Фильтр живых/мертвых коров (true - ищет мертвых, false - живых)
         type: boolean
       isGenotyped:
+        description: Фильтр по наличию информации о генотипировании
         type: boolean
       isIll:
         default: false
-        description: ??? Не реализован
+        description: Фильтр по наличию генетических заболеваний
         type: boolean
       isStillBorn:
         default: false
@@ -429,7 +432,7 @@ definitions:
         description: Фильтр по родам двойняшек Было / не было
         type: boolean
       monogeneticIllneses:
-        description: ID ген. заболеваний их /api/mongenetic_illnesses
+        description: ID ген. заболеваний из /api/mongenetic_illnesses
         items:
           type: integer
         type: array
@@ -473,7 +476,7 @@ definitions:
     properties:
       checkDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата конрольной дойки
       dryMatter:
         description: сухой материал
@@ -514,11 +517,11 @@ definitions:
         type: integer
       birkingDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата перебирковки
       birthDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: День рождения
       birthHozId:
         description: ID хозяйства рождения
@@ -537,11 +540,11 @@ definitions:
         type: string
       deathDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата смерти
       departDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: День отбытия из коровника
       exterior:
         $ref: '#/definitions/models.Exterior'
@@ -615,7 +618,7 @@ definitions:
     properties:
       date:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата дойки
       fat:
         description: Суммарный жир `example:"12"`
@@ -692,7 +695,7 @@ definitions:
         type: string
       date:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата ветеринарного события
       daysFromLactation:
         description: дни от начала лактации
@@ -858,7 +861,7 @@ definitions:
     properties:
       bloodDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата взятия пробы крови
       cowID:
         description: ID коровы
@@ -882,7 +885,7 @@ definitions:
         type: string
       resultDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата получения  результата
     type: object
   models.GeneticIllness:
@@ -1029,7 +1032,7 @@ definitions:
         type: integer
       insemenationDate:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата осеменения
       insemenationNum:
         description: Количество осеменений
@@ -1057,7 +1060,7 @@ definitions:
     properties:
       date:
         allOf:
-        - $ref: '#/definitions/models.DateOnly'
+          - $ref: '#/definitions/models.DateOnly'
         description: Дата новости
       id:
         type: integer
@@ -1187,24 +1190,24 @@ paths:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: район за который собирается статистика
-        in: path
-        name: district
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: район за который собирается статистика
+          in: path
+          name: district
+          required: true
+          type: integer
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1217,29 +1220,29 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/checkMilks/{year}/byRegion:
     post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1252,34 +1255,34 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/checkMilks/{year}/byRegion/{region}/byDistrict:
     post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: регион за который собирается статистика
-        in: path
-        name: region
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: регион за который собирается статистика
+          in: path
+          name: region
+          required: true
+          type: integer
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1292,24 +1295,24 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/checkMilks/years:
     post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
       parameters:
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1322,28 +1325,28 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/genotyped/{year}/byDistrict/{district}/hold:
     get:
       description: Возращает словарь хозяйство - количество живых коров, количество
         генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: район за который собирается статистика
-        in: path
-        name: district
-        required: true
-        type: integer
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: район за который собирается статистика
+          in: path
+          name: district
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1356,34 +1359,34 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/genotyped/{year}/byDistrict/{district}/hoz:
     post:
       description: Возращает словарь хозяйство - количество живых коров, количество
         генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: район за который собирается статистика
-        in: path
-        name: district
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: район за который собирается статистика
+          in: path
+          name: district
+          required: true
+          type: integer
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1396,28 +1399,28 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/genotyped/{year}/byHold/{hold}/hoz:
     get:
       description: Возращает словарь хозяйство - количество живых коров, количество
         генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: холдинг за который собирается статистика
-        in: path
-        name: hold
-        required: true
-        type: integer
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: холдинг за который собирается статистика
+          in: path
+          name: hold
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1430,27 +1433,27 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/genotyped/{year}/byRegion/{region}/districts:
     get:
       description: Возращает словарь район - количество живых коров, количество генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: регион за который собирается статистика
-        in: path
-        name: region
-        required: true
-        type: integer
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: регион за который собирается статистика
+          in: path
+          name: region
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1463,32 +1466,32 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
     post:
       description: Возращает словарь район - количество живых коров, количество генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: регион за который собирается статистика
-        in: path
-        name: region
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: регион за который собирается статистика
+          in: path
+          name: region
+          required: true
+          type: integer
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1501,22 +1504,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/genotyped/{year}/regions:
     get:
       description: Возращает словарь регион - количество живых коров, количество генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1529,27 +1532,27 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
     post:
       description: Возращает словарь регион - количество живых коров, количество генотипированных
       parameters:
-      - description: год за который собирается статистика
-        in: path
-        name: year
-        required: true
-        type: integer
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: год за который собирается статистика
+          in: path
+          name: year
+          required: true
+          type: integer
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1562,17 +1565,17 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /analitics/genotyped/years:
     get:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1585,23 +1588,23 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
     post:
       description: Возращает словарь год - количеств генотипированных коров, по ключу
         -1 генотипированные за все годы
       parameters:
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1614,23 +1617,23 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of years
       tags:
-      - Analitics
+        - Analitics
   /auth/checkEmail:
     get:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: email of user to check
-        in: query
-        name: email
-        required: true
-        type: string
+        - description: email of user to check
+          in: query
+          name: email
+          required: true
+          type: string
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1641,24 +1644,24 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: CHECK EMAIL
       tags:
-      - REGISTER
+        - REGISTER
   /auth/login:
     post:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: applied filters
-        in: body
-        name: AuthData
-        required: true
-        schema:
-          $ref: '#/definitions/auth.AuthData'
+        - description: applied filters
+          in: body
+          name: AuthData
+          required: true
+          schema:
+            $ref: '#/definitions/auth.AuthData'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1669,34 +1672,34 @@ paths:
         "400":
           description: Bad Request
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
         "401":
           description: Unauthorized
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: LOGIN
       tags:
-      - LOGIN
+        - LOGIN
   /auth/register:
     post:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: applied filters
-        in: body
-        name: RegisterData
-        required: true
-        schema:
-          $ref: '#/definitions/auth.RegisterData'
+        - description: applied filters
+          in: body
+          name: RegisterData
+          required: true
+          schema:
+            $ref: '#/definitions/auth.RegisterData'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1707,20 +1710,20 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: REGISTER
       tags:
-      - REGISTER
+        - REGISTER
   /auth/roles:
     get:
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1731,26 +1734,26 @@ paths:
         "400":
           description: Bad Request
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
         "401":
           description: Unauthorized
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: LOGIN
       tags:
-      - LOGIN
+        - LOGIN
   /breeds:
     get:
       description: Возращает список всех пород. Разрешает отсутсвие фильтров
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1761,22 +1764,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of breeds
       tags:
-      - Breeds
+        - Breeds
   /breeds/{id}:
     get:
       description: Возращает породу.
       parameters:
-      - description: ID конкретной породы, если нужно вернуть одну.
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID конкретной породы, если нужно вернуть одну.
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1785,21 +1788,21 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get breed
       tags:
-      - Breeds
+        - Breeds
   /checkMilks:
     get:
       description: Возращает список контрольных доек
       parameters:
-      - description: id лактации, для корой ищутся котнольные дойки
-        in: query
-        name: lactation_id
-        type: integer
+        - description: id лактации, для корой ищутся котнольные дойки
+          in: query
+          name: lactation_id
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1810,21 +1813,21 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of checkMilks
       tags:
-      - CheckMilks
+        - CheckMilks
   /checkMilks/{id}:
     get:
       description: Возращает контрольную дойку
       parameters:
-      - description: id контрольной дойки
-        in: path
-        name: id
-        type: integer
+        - description: id контрольной дойки
+          in: path
+          name: id
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1833,23 +1836,23 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get checkMilk
       tags:
-      - CheckMilks
+        - CheckMilks
   /cows:
     get:
       description: Возращает коров удовлетворяющих условиям фильтрации.
       parameters:
-      - description: ID фермы (НЕ хозяйства), к которой принадлежит корова
-        in: query
-        name: farm_id
-        type: integer
-      - description: ID хозяйства (НЕ фермы), к которому принадлежит корова
-        in: query
-        name: farm_group_id
-        type: integer
+        - description: ID фермы (НЕ хозяйства), к которой принадлежит корова
+          in: query
+          name: farm_id
+          type: integer
+        - description: ID хозяйства (НЕ фермы), к которому принадлежит корова
+          in: query
+          name: farm_group_id
+          type: integer
       responses:
         "200":
           description: OK
@@ -1858,23 +1861,23 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of cows
       tags:
-      - Cows
+        - Cows
   /cows/{id}:
     get:
       description: Возращает конкретную корову. Поля Father и Mother, имеют FatherId
         и MotherID null всегда, это неправильно, но так надо
       parameters:
-      - description: ID конкретной коровы, чтобы ее вернуть
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID конкретной коровы, чтобы ее вернуть
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1883,22 +1886,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of cows
       tags:
-      - Cows
+        - Cows
   /cows/{id}/checkMilks:
     get:
       description: Возращает список всех контрольных доек для конкретной коровы.
       parameters:
-      - description: ID коровы для которой ищутся контрольные дойки
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищутся контрольные дойки
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1909,22 +1912,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of check milks
       tags:
-      - Cows
+        - Cows
   /cows/{id}/children:
     get:
       description: Возращает список всех детей для конкретной коровы.
       parameters:
-      - description: ID коровы для которой ищутся лактации
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищутся лактации
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1935,22 +1938,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of children
       tags:
-      - Cows
+        - Cows
   /cows/{id}/documents:
     get:
       description: Возращает генетическую информацию для коровы, null, если нет
       parameters:
-      - description: ID коровы для которой ищется генетическая информация
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищется генетическая информация
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1961,22 +1964,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of check milks
       tags:
-      - Cows
+        - Cows
   /cows/{id}/exterior:
     get:
       description: Возращает информацию об экстерьере, null, если нет
       parameters:
-      - description: ID коровы для которой ищется экстерьер
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищется экстерьер
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -1985,22 +1988,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get exterior
       tags:
-      - Cows
+        - Cows
   /cows/{id}/genetic:
     get:
       description: Возращает генетическую информацию для коровы, null, если нет
       parameters:
-      - description: ID коровы для которой ищется генетическая информация
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищется генетическая информация
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2009,22 +2012,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of check milks
       tags:
-      - Cows
+        - Cows
   /cows/{id}/grades:
     get:
       description: Возращает список всех оценок конкретной коровы.
       parameters:
-      - description: ID коровы для которой ищутся оценки
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищутся оценки
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2035,22 +2038,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of children
       tags:
-      - Cows
+        - Cows
   /cows/{id}/health:
     get:
       description: Возращает список всех ветеренарных мероприятий для конкретной коровы.
       parameters:
-      - description: ID коровы для которой ищутся вет мероприятия
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищутся вет мероприятия
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2061,22 +2064,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of health events
       tags:
-      - Cows
+        - Cows
   /cows/{id}/lactations:
     get:
       description: Возращает список всех лактаций для конкретной коровы.
       parameters:
-      - description: ID коровы для которой ищутся лактации
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: ID коровы для которой ищутся лактации
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2087,24 +2090,24 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of lactations
       tags:
-      - Cows
+        - Cows
   /cows/filter:
     post:
       consumes:
-      - application/json
+        - application/json
       parameters:
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/cows_filter.CowsFilter'
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/cows_filter.CowsFilter'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2115,26 +2118,26 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get filtered list of cows
       tags:
-      - Cows
+        - Cows
   /dailyMilks:
     get:
       description: Возвращает дойки удовлетворяющие фильтрам
       parameters:
-      - description: id lactation to search dailimilks
-        in: query
-        name: lactation_id
-        type: integer
+        - description: id lactation to search dailimilks
+          in: query
+          name: lactation_id
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2145,22 +2148,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of DailyMilks
       tags:
-      - DailyMilks
+        - DailyMilks
   /dailyMilks/{id}:
     get:
       description: Возращает конкретную дойку коровы.
       parameters:
-      - description: id of farm to return
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: id of farm to return
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2169,16 +2172,16 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of DailyMilks
       tags:
-      - DailyMilks
+        - DailyMilks
   /districts:
     get:
       description: Возращает все районы. Разрешает отсутсвие фильтров
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2189,21 +2192,21 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of Districts
       tags:
-      - Districtts
+        - Districtts
   /farms:
     get:
       description: Возращает список ферм. Разрешает отсутсвие фильтров
       parameters:
-      - description: ID более главной фермы, null для поиска хозяйств
-        in: query
-        name: parrent_id
-        type: object
+        - description: ID более главной фермы, null для поиска хозяйств
+          in: query
+          name: parrent_id
+          type: object
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2214,22 +2217,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of farms
       tags:
-      - Farms
+        - Farms
   /farms/{id}:
     get:
       description: GВозращает конкретную ферму
       parameters:
-      - description: id of farm to return
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: id of farm to return
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2238,24 +2241,24 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get farm
       tags:
-      - Farms
+        - Farms
   /lactations/{id}:
     get:
       description: |-
         Возращает конкретную лактацию
         DOES NOT RETURN SUBOBJECTS
       parameters:
-      - description: id лактации
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: id лактации
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2264,16 +2267,16 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of farms
       tags:
-      - Lactations
+        - Lactations
   /monogenetic_illnesses:
     get:
       description: Возращает список генетических заболеваний
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2284,16 +2287,16 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of monogenetic illnesses
       tags:
-      - MonogeneticIllnessses
+        - MonogeneticIllnessses
   /partners:
     get:
       description: Возращает список партнеров
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2304,16 +2307,16 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of partners
       tags:
-      - Partners
+        - Partners
   /regions:
     get:
       description: Возращает все регионы
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2324,22 +2327,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of regions
       tags:
-      - Regions
+        - Regions
   /regions/{id}:
     get:
       description: Возращает регион
       parameters:
-      - description: id региона
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: id региона
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2348,22 +2351,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of regions
       tags:
-      - Regions
+        - Regions
   /regions/{id}/getFarms:
     get:
       description: Возращает все фермы в регионе
       parameters:
-      - description: id of region
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: id of region
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2372,22 +2375,22 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get farm by region id
       tags:
-      - Regions
+        - Regions
   /regions/{id}/news:
     get:
       description: Возращает новости региона
       parameters:
-      - description: id региона
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: id региона
+          in: path
+          name: id
+          required: true
+          type: integer
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2396,16 +2399,16 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of regions
       tags:
-      - Regions
+        - Regions
   /sexes:
     get:
       description: Возращает список полов
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2416,16 +2419,16 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of sexes
       tags:
-      - Sexes
+        - Sexes
   /updates:
     get:
       description: Возращает дату апдейта БД
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2436,23 +2439,23 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get update date and ID
       tags:
-      - Sexes
+        - Sexes
   /user/create:
     post:
       description: Возращает список полов
       parameters:
-      - description: applied filters
-        in: body
-        name: filter
-        required: true
-        schema:
-          $ref: '#/definitions/user_create.createUserData'
+        - description: applied filters
+          in: body
+          name: filter
+          required: true
+          schema:
+            $ref: '#/definitions/user_create.createUserData'
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2466,12 +2469,12 @@ paths:
             type: string
       summary: Get list of sexes
       tags:
-      - User
+        - User
   /user/verifyEmail:
     get:
       description: Запрос на валидацию имэйла
       produces:
-      - application/json
+        - application/json
       responses:
         "200":
           description: OK
@@ -2482,11 +2485,11 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties: {}
+            additionalProperties: { }
             type: object
       summary: Get list of sexes
       tags:
-      - User
+        - User
 securityDefinitions:
   BasicAuth:
     type: basic

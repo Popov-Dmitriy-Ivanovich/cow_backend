@@ -18,17 +18,17 @@ type userData struct {
 	Phone                 string
 	Password              string
 
-	HozNumber 			  *uint // номер хоз-ва либо существующего, либо newHoz
+	HozNumber *uint // номер хоз-ва либо существующего, либо newHoz
 
-	RegionId              uint
+	RegionId uint
 }
 
 type hozData struct {
-	HozNumber   string
-	DistrictId  uint
-	
-	HoldNumber 	string // номер холдинга: либо существующего, либо newHold
-	
+	HozNumber  string
+	DistrictId uint
+
+	HoldNumber string // номер холдинга: либо существующего, либо newHold
+
 	Name        string
 	ShortName   string
 	Inn         *string
@@ -111,11 +111,11 @@ func (u *User) Create() func(*gin.Context) {
 		to := []string{userData.NewUser.Email}
 		smtpHost := os.Getenv("SMTP_HOST")
 		smtpPort := os.Getenv("SMTP_PORT")
-		message := []byte("From: genmilk@aurusoft.ru\r\n"+	
+		message := []byte("From: genmilk@aurusoft.ru\r\n" +
 			"To: " + userData.NewUser.Email + "\r\n" +
-				"Subject: Подтвердите эл. почту\r\n" +
-				"\r\n" +
-				"Для подтверждения почты перейдите по ссылке: https://genmilk.ru/api/user/verifyEmail?data=" + accessString + " .\r\n")
+			"Subject: Подтвердите эл. почту\r\n" +
+			"\r\n" +
+			"Для подтверждения почты перейдите по ссылке: https://genmilk.ru/api/user/verifyEmail?data=" + accessString + " .\r\n")
 		auth := smtp.PlainAuth("", from, password, smtpHost)
 		fmt.Println(from, password)
 		if err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message); err != nil {
@@ -147,12 +147,11 @@ func (u *User) VerifyEmail() func(*gin.Context) {
 			c.JSON(422, "ошибка подтверждения:"+err.Error())
 			return
 		}
-		
+
 		db := models.GetDb()
 		newUser := userClaims.UserData.NewUser
 		newHold := userClaims.UserData.NewHold
 		newHoz := userClaims.UserData.NewHoz
-		
 
 		if err := db.Create(&newUser).Error; err != nil {
 			c.JSON(500, err.Error())
@@ -170,8 +169,7 @@ func (u *User) VerifyEmail() func(*gin.Context) {
 				return
 			}
 		}
-		
-		
+
 		c.HTML(200, "MessageResponse.tmpl", gin.H{})
 	}
 }

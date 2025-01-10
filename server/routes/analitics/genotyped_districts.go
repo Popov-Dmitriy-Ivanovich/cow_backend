@@ -34,7 +34,6 @@ import (
 // @Router       /analitics/genotyped/{year}/byRegion/{region}/districts [post]
 func (g Genotyped) DistrictsPost() func(*gin.Context) {
 	return func(c *gin.Context) {
-		
 
 		region := c.Param("region")
 

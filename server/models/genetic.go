@@ -35,7 +35,7 @@ type GeneticIllness struct {
 }
 
 type GeneticIllnessStatus struct {
-	ID     uint `gorm:"primaryKey"`
+	ID     uint   `gorm:"primaryKey"`
 	Status string // Статус заболевания: FREE, CARIER, BAD ...
 }
 

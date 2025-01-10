@@ -12,10 +12,10 @@ func (s *Admin) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.GET("/login", s.Login())
 	apiGroup.POST("/adminLogin", s.AdminLogin())
 	apiGroup.GET("/adminLogout", s.AdminLogout())
-	
+
 	adminGroup := apiGroup.Group("")
 	adminGroup.Use(AdminMiddleware())
-	
+
 	{
 		adminGroup.GET("", s.Index())
 		adminGroup.GET("/cowTable", s.CheckCowTable())
