@@ -7,7 +7,7 @@ type News struct {
 	Date DateOnly // Дата новости
 
 	Region   *Region `json:"-"`
-	RegionId *uint   // ID региона для которого записана новость
+	RegionId *uint   `gorm:"index"` // ID региона для которого записана новость
 	Title    string  // Заголовок новости
 	Text     string  // Текст новости
 }

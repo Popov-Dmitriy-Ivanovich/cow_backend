@@ -13,19 +13,19 @@ type Cow struct {
 	CreatedAt time.Time `example:"2007-01-01"`          // Время создания коровы в базе данных
 
 	Farm   *Farm `json:"-"`
-	FarmID *uint `example:"1"` // ID фермы, которой корова принадлежит
+	FarmID *uint `gorm:"index" example:"1"` // ID фермы, которой корова принадлежит
 
 	FarmGroup   Farm `json:"-"`
-	FarmGroupId uint `example:"1"` // ID хозяйства, которому корова принадлежит
+	FarmGroupId uint `gorm:"index" example:"1"` // ID хозяйства, которому корова принадлежит
 
 	Holding   *Farm
-	HoldingID *uint // ID холдинга, которому принадлежит корова
+	HoldingID *uint `gorm:"index"` // ID холдинга, которому принадлежит корова
 
 	Breed   Breed `json:"-"`
-	BreedId uint  `example:"1"` // ID породы коровы
+	BreedId uint  `gorm:"index" example:"1"` // ID породы коровы
 
 	Sex   Sex  `json:"-"`
-	SexId uint `example:"1"` // ID пола коровы
+	SexId uint `gorm:"index" example:"1"` // ID пола коровы
 
 	Events []Event `json:"-"`
 
@@ -46,20 +46,20 @@ type Cow struct {
 	Exterior  *Exterior
 	Lactation []Lactation `json:"-"`
 
-	IdentificationNumber *string // он все-таки есть! это какой-то не российский номер коровы
-	InventoryNumber      *string `example:"1213321"`    // Инвентарный номер коровы
-	SelecsNumber         *uint64 `example:"98989"`      // Селекс номер коровы
-	RSHNNumber           *string `example:"1323323232"` // РСХН номер коровы
-	Name                 string  `example:"Дима"`       // Кличка коровы
+	IdentificationNumber *string `gorm:"index"`                      // он все-таки есть! это какой-то не российский номер коровы
+	InventoryNumber      *string `gorm:"index" example:"1213321"`    // Инвентарный номер коровы
+	SelecsNumber         *uint64 `gorm:"index" example:"98989"`      // Селекс номер коровы
+	RSHNNumber           *string `gorm:"index" example:"1323323232"` // РСХН номер коровы
+	Name                 string  `gorm:"index" example:"Дима"`       // Кличка коровы
 
 	// Exterior                float64  `example:"3.14"` // Оценка экстерьера коровы, будет переделано в ID экстерьера коровы
-	InbrindingCoeffByFamily *float64 `example:"3.14"` // Коэф. инбриндинга по роду
+	InbrindingCoeffByFamily *float64 `gorm:"index" example:"3.14"` // Коэф. инбриндинга по роду
 
-	Approved    int       `example:"1"` // Целое число, 0 - корова не подтверждена, 1 - корова подтверждена, -1 - корова отклонена
-	BirthDate   DateOnly  // День рождения
-	DepartDate  *DateOnly // День отбытия из коровника
-	DeathDate   *DateOnly // Дата смерти
-	BirkingDate *DateOnly // Дата перебирковки
+	Approved    int       `gorm:"index" example:"1"` // Целое число, 0 - корова не подтверждена, 1 - корова подтверждена, -1 - корова отклонена
+	BirthDate   DateOnly  `gorm:"index"`             // День рождения
+	DepartDate  *DateOnly `gorm:"index"`             // День отбытия из коровника
+	DeathDate   *DateOnly `gorm:"index"`             // Дата смерти
+	BirkingDate *DateOnly `gorm:"index"`             // Дата перебирковки
 
 	// Новые поля
 	PreviousHoz   *Farm   `json:"-"`
@@ -75,7 +75,7 @@ type Cow struct {
 
 type Document struct {
 	ID    uint   // ID
-	CowID uint   // ID коровы, для которой хранитя документ
+	CowID uint   `gorm:"index"` // ID коровы, для которой хранитя документ
 	Path  string // путь к документу относительно genmilk.ru/api/static/documents
 }
 

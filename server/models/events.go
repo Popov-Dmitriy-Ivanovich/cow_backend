@@ -3,23 +3,23 @@ package models
 type Event struct {
 	ID uint `gorm:"primaryKey"`
 
-	CowId uint // ID коровы
+	CowId uint `gorm:"index"` // ID коровы
 
 	EventType   EventType
-	EventTypeId uint // стандартизированная группа события
+	EventTypeId uint `gorm:"index"` // Стандартизированная группа события
 
 	EventType1   EventType
-	EventType1Id uint // стандартизированная название события
+	EventType1Id uint `gorm:"index"` // Стандартизированная название события
 
 	EventType2   *EventType
-	EventType2Id *uint // стандартизированное разновидность события
+	EventType2Id *uint `gorm:"index"` // Стандартизированное разновидность события
 
-	DataResourse      *string // источник данных
-	DaysFromLactation uint    // дни от начала лактации
+	DataResourse      *string // Источник данных
+	DaysFromLactation uint    // Дни от начала лактации
 
-	Date     DateOnly // Дата ветеринарного события
-	Comment1 *string  // Коментарий 1 (по всей видиости сюда что-то пришет врач)
-	Comment2 *string  // Коментарий 2
+	Date     DateOnly `gorm:"index"` // Дата ветеринарного события
+	Comment1 *string  // Комментарий 1 (по всей видимости сюда что-то пришит врач)
+	Comment2 *string  // Комментарий 2
 }
 
 type EventType struct { // бывший EventList
@@ -31,5 +31,5 @@ type EventType struct { // бывший EventList
 	Name string // Название группы/названия/разновидности события
 
 	Code uint // код группы или разновидности или названия события
-	Type uint // 1 - группа события, 2 - разновидность события, 3 - название события
+	Type uint `gorm:"index"` // 1 - группа события, 2 - разновидность события, 3 - название события
 }

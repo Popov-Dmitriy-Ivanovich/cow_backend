@@ -2,8 +2,8 @@ package models
 
 type DailyMilk struct {
 	ID             uint     `gorm:"primaryKey"`
-	LactationId    uint     // ID лактации во время котороый была дойка `example:"1"`
-	Date           DateOnly // Дата дойки
+	LactationId    uint     `gorm:"index"` // ID лактации во время котороый была дойка `example:"1"`
+	Date           DateOnly `gorm:"index"` // Дата дойки
 	Milk           int      // Суммарный надой `example:"12"`
 	MilkMorning    *int     // Надой утром `example:"12"`
 	MilkNoon       *int     // Надой днем `example:"12"`

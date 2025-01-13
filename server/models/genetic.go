@@ -7,24 +7,25 @@ import (
 )
 
 type Genetic struct {
-	ID                        uint                 `gorm:"primaryKey"` // ID записи о генотипировании
-	CowID                     uint                 // ID коровы
-	ProbeNumber               string               // Номер пробы
-	BloodDate                 *DateOnly            // Дата взятия пробы крови
-	ResultDate                *DateOnly            // Дата получения  результата
-	InbrindingCoeffByGenotype *float64             // Коэф. инбриндинга по генотипу
-	GeneticIllnessesData      []GeneticIllnessData `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Список генетических заболеваний, пустой если нет
+	ID                        uint      `gorm:"primaryKey"` // ID записи о генотипировании
+	CowID                     uint      `gorm:"index"`      // ID коровы
+	ProbeNumber               string    // Номер пробы
+	BloodDate                 *DateOnly `gorm:"index"` // Дата взятия пробы крови
+	ResultDate                *DateOnly `gorm:"index"` // Дата получения  результата
+	InbrindingCoeffByGenotype *float64  `gorm:"index"` // Коэф. инбриндинга по генотипу
+
+	GeneticIllnessesData []GeneticIllnessData `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Список генетических заболеваний, пустой если нет
 
 	GtcFilePath *string // путь к gtc файлу относительно genmilk.ru/api/static/gtc
 }
 
 type GeneticIllnessData struct {
 	ID        uint `gorm:"primaryKey"`
-	GeneticID uint // ID данных о генотипировании коровы, к которым относятся данные о заболеваниях коровы
+	GeneticID uint `gorm:"index"` // ID данных о генотипировании коровы, к которым относятся данные о заболеваниях коровы
 	Status    *GeneticIllnessStatus
-	StatusID  *uint // ID статус заболевания
+	StatusID  *uint `gorm:"index"` // ID статус заболевания
 	Illness   GeneticIllness
-	IllnessID uint // ID заболевание
+	IllnessID uint `gorm:"index"` // ID заболевание
 }
 
 type GeneticIllness struct {

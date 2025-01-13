@@ -5,7 +5,7 @@ type Farm struct {
 
 	// Region   Region `json:"-"`
 	// RegionId uint
-	HozNumber  *string  // номер хоз-ва
+	HozNumber  *string  `gorm:"index"` // номер хоз-ва
 	District   District `json:"-"`
 	DistrictId uint     // ID района, в котором находится хозяйство
 	Parrent    *Farm    `json:"-"`
