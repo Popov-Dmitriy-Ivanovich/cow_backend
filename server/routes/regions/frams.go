@@ -6,16 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListAccounts lists all existing accounts
+// GetFarms
 //
 //	@Summary      Get farm by region id
-//	@Description  Возращает все фермы в регионе
+//	@Description  Возращает все фермы в регионе (Данные представлены как словарь с единственным ключем "farms")
 //
 // @Tags         Regions
 // @Param        id    path     int  true  "id of region"
 // @Produce      json
-// @Success      200  {object}   models.Farm
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   models.Farm
+// @Failure      500  {object}  string
 // @Router       /regions/{id}/getFarms [get]
 func (f *Regions) GetFarms() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -24,7 +24,7 @@ func (f *Regions) GetFarms() func(*gin.Context) {
 		farms := []models.Farm{}
 		dists := []models.District{}
 		if err := db.Where("region_id = ?", id).Find(&dists).Error; err != nil {
-			c.JSON(500, err.Error)
+			c.JSON(500, err.Error())
 			return
 		}
 
@@ -40,7 +40,7 @@ func (f *Regions) GetFarms() func(*gin.Context) {
 		}
 
 		if err := db.Where("district_id IN ?", districtIDs).Find(&farms).Error; err != nil {
-			c.JSON(500, gin.H{"error": err.Error()})
+			c.JSON(500, err.Error())
 			return
 		}
 		c.JSON(200, gin.H{"farms": farms})

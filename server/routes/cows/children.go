@@ -8,20 +8,18 @@ import (
 
 type Children struct {
 	Child     models.Cow
-	HozmName  string `json:"hoz_name"`
-	BreedName string `json:"breed_name"`
+	HozmName  string `json:"hoz_name"`   // Название хозяйства, в котором ребенок
+	BreedName string `json:"breed_name"` // Порода ребенка
 }
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get list of children
-//	@Description  Возращает список всех детей для конкретной коровы.
-//	@Tags         Cows
-//	@Param        id   path      int  true  "ID коровы для которой ищутся лактации"
-//
+// Children
+// @Summary      Get list of children
+// @Description  Возращает список всех детей для конкретной коровы.
+// @Tags         Cows
+// @Param        id   path      int  true  "ID коровы для которой ищутся лактации"
 // @Produce      json
-// @Success      200  {array}   models.Lactation
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   Children
+// @Failure      500  {object}  string
 // @Router       /cows/{id}/children [get]
 func (f *Cows) Children() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -29,7 +27,7 @@ func (f *Cows) Children() func(*gin.Context) {
 		cow := models.Cow{}
 		db := models.GetDb()
 		if err := db.First(&cow, id).Error; err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 			return
 		}
 
@@ -41,12 +39,12 @@ func (f *Cows) Children() func(*gin.Context) {
 			var farm models.Farm
 			var breed models.Breed
 			if err := db.First(&farm, child.FarmGroupId).Error; err != nil {
-				c.JSON(500, err)
+				c.JSON(500, err.Error())
 				return
 			}
 
 			if err := db.First(&breed, child.BreedId).Error; err != nil {
-				c.JSON(500, err)
+				c.JSON(500, err.Error())
 				return
 			}
 

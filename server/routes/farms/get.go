@@ -8,29 +8,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get farm
-//	@Description  GВозращает конкретную ферму
-//
+// GetByID
+// @Summary      Get farm
+// @Description  Возращает конкретную ферму (хозяйство, холдинг)
 // @Tags         Farms
 // @Param        id    path     int  true  "id of farm to return"
 // @Produce      json
 // @Success      200  {object}   models.Farm
-// @Failure      500  {object}  map[string]error
+// @Failure      422  {object}   string
+// @Failure      404  {object}   string
 // @Router       /farms/{id} [get]
 func (f *Farms) GetByID() func(*gin.Context) {
 	return routes.GenerateGetFunctionById[models.Farm]()
 }
 
-//	@Summary      Get list of farms
-//	@Description  Возращает список ферм. Разрешает отсутсвие фильтров
-//
+// GetByFilter
+// @Summary      Get list of farms
+// @Description  Возращает список ферм. Разрешает отсутсвие фильтров
 // @Tags         Farms
-// @Param        parrent_id    query     object  false  "ID более главной фермы, null для поиска хозяйств"
+// @Param        parrent_id    query     object  false  "ID более главной фермы, null для поиска холдингов"
 // @Produce      json
 // @Success      200  {array}   models.Farm
-// @Failure      500  {object}  map[string]error
+// @Failure      422  {object}   string
+// @Failure      404  {object}   string
 // @Router       /farms [get]
 func (f *Farms) GetByFilter() func(*gin.Context) {
 	return func(c *gin.Context) {

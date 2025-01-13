@@ -11,8 +11,8 @@ import (
 
 type ReserealizedCheckMilk struct {
 	models.CheckMilk
-	MilkingDays     int
-	LactationNumber uint
+	MilkingDays     int  // День доения относительно начала лактации
+	LactationNumber uint // Номер лактации
 }
 
 func (rcm ReserealizedCheckMilk) GetReserealizer() routes.Reserealizer {
@@ -42,7 +42,7 @@ func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, e
 	return *rcm, nil
 }
 
-// ListAccounts lists all existing accounts
+// CheckMilks
 //
 //	@Summary      Get list of check milks
 //	@Description  Возращает список всех контрольных доек для конкретной коровы.
@@ -50,8 +50,8 @@ func (rcm *ReserealizedCheckMilk) FromBaseModel(c any) (routes.Reserealizable, e
 //	@Param        id   path      int  true  "ID коровы для которой ищутся контрольные дойки"
 //
 // @Produce      json
-// @Success      200  {array}   models.CheckMilk
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   ReserealizedCheckMilk
+// @Failure      500  {object}  string
 // @Router       /cows/{id}/checkMilks [get]
 func (f *Cows) CheckMilks() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -59,7 +59,7 @@ func (f *Cows) CheckMilks() func(*gin.Context) {
 		cow := models.Cow{}
 		db := models.GetDb()
 		if err := db.Preload("Lactation").Preload("Lactation.CheckMilks").First(&cow, id).Error; err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 			return
 		}
 		cms := []models.CheckMilk{}
@@ -70,12 +70,12 @@ func (f *Cows) CheckMilks() func(*gin.Context) {
 		for _, cm := range cms {
 			reserealizer := &ReserealizedCheckMilk{}
 			if reserealized, err := reserealizer.FromBaseModel(cm); err != nil {
-				c.JSON(500, err)
+				c.JSON(500, err.Error())
 				return
 			} else {
 				appended, ok := reserealized.(ReserealizedCheckMilk)
 				if !ok {
-					c.JSON(500, errors.New("could not resrerealize"))
+					c.JSON(500, "could not resrerealize")
 					return
 				}
 				res = append(res, appended)

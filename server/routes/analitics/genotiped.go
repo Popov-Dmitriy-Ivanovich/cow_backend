@@ -13,9 +13,9 @@ type Genotyped struct {
 }
 
 type genotypedStatistics struct {
-	Alive     int64
-	Genotyped int64
-	Ill       int64
+	Alive     int64 // количество живых коров
+	Genotyped int64 // количество генотипированных коров
+	Ill       int64 // количество больных коров
 }
 
 func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
@@ -33,12 +33,12 @@ func (g Genotyped) WriteRoutes(rg *gin.RouterGroup) {
 	authGroup.POST("/:year/byDistrict/:district/hoz", g.HozPost())
 }
 
+// Years
 // @Summary      Get list of years
 // @Description  Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы
-// @Tags         Analitics
+// @Tags         Analytics (GeneticGET)
 // @Produce      json
-// @Success      200  {array}   map[int]uint
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   map[int]uint
 // @Router       /analitics/genotyped/years [get]
 func (g Genotyped) Years() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -62,7 +62,7 @@ func (g Genotyped) Years() func(*gin.Context) {
 
 type byRegionStatistics struct {
 	genotypedStatistics
-	RegionID uint
+	RegionID uint // ID региона
 }
 
 type byRegionKeys struct {
@@ -70,13 +70,14 @@ type byRegionKeys struct {
 	ID   uint
 }
 
-// @Summary      Get list of years
+// Regions
+// @Summary      Get genetic analytics by region
 // @Description  Возращает словарь регион - количество живых коров, количество генотипированных
-// @Tags         Analitics
+// @Tags         Analytics (GeneticGET)
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Produce      json
-// @Success      200  {array}   map[string]byRegionStatistics
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   map[string]byRegionStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/genotyped/{year}/regions [get]
 func (g Genotyped) Regions() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -136,7 +137,7 @@ func (g Genotyped) Regions() func(*gin.Context) {
 
 type byDistrictStatistics struct {
 	genotypedStatistics
-	DistrictID uint
+	DistrictID uint // ID района
 }
 
 type byDistrictKeys struct {
@@ -144,14 +145,15 @@ type byDistrictKeys struct {
 	ID   uint
 }
 
-// @Summary      Get list of years
+// Districts
+// @Summary      Get genetic analytics by districts
 // @Description  Возращает словарь район - количество живых коров, количество генотипированных
-// @Tags         Analitics
+// @Tags         Analytics (GeneticGET)
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        region    path     int  true  "регион за который собирается статистика"
 // @Produce      json
-// @Success      200  {array}   map[string]byDistrictStatistics
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   map[string]byDistrictStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/genotyped/{year}/byRegion/{region}/districts [get]
 func (g Genotyped) Districts() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -210,17 +212,19 @@ func (g Genotyped) Districts() func(*gin.Context) {
 
 type byHoldStatistics struct {
 	genotypedStatistics
-	HoldID *uint
+	HoldID *uint // ID хозяйства (что-то с этим не так, потому что статистика по холдингам не собирается)
 }
 
-// @Summary      Get list of years
+// Hold
+// @Summary      Получить аналитику по хозяйству
 // @Description  Возращает словарь хозяйство - количество живых коров, количество генотипированных
-// @Tags         Analitics
+// @Description  Получилась какая-то фигня, по-моему этот рут был просто переписан и не переименован, т.к. были непонятки с ТЗ
+// @Tags         Analytics (GeneticGET)
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        district    path     int  true  "район за который собирается статистика"
 // @Produce      json
-// @Success      200  {array}   map[string]byHoldStatistics
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   map[string]byHoldStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/genotyped/{year}/byDistrict/{district}/hold [get]
 func (g Genotyped) Hold() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -266,14 +270,15 @@ type byHozKeys struct {
 	ID   uint
 }
 
+// Hoz
 // @Summary      Get list of years
 // @Description  Возращает словарь хозяйство - количество живых коров, количество генотипированных
-// @Tags         Analitics
+// @Tags         Analytics (GeneticGET)
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        hold    path     int  true  "холдинг за который собирается статистика"
 // @Produce      json
-// @Success      200  {array}   map[string]byHoldStatistics
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   map[string]byHoldStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/genotyped/{year}/byHold/{hold}/hoz [get]
 func (g Genotyped) Hoz() func(*gin.Context) {
 	return func(c *gin.Context) {

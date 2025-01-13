@@ -15,8 +15,8 @@ type ReserealizedCow struct {
 	FarmName  *string // ферма на которой живет, null если нет
 	HozHame   *string // хозяйство на котором живет, null, если нет
 
-	Father *models.Cow
-	Mother *models.Cow
+	Father *models.Cow // Отец
+	Mother *models.Cow // Мать
 }
 
 func (rc ReserealizedCow) GetReserealizer() routes.Reserealizer {
@@ -73,28 +73,27 @@ func (rc *ReserealizedCow) FromBaseModel(c any) (routes.Reserealizable, error) {
 	return *rc, nil
 }
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get list of cows
-//	@Description  Возращает конкретную корову. Поля Father и Mother, имеют FatherId и MotherID null всегда, это неправильно, но так надо
-//	@Tags         Cows
-//	@Param        id   path      int  true  "ID конкретной коровы, чтобы ее вернуть"
-//	@Produce      json
-//	@Success      200  {object}   ReserealizedCow
-//	@Failure      500  {object}  map[string]error
-//	@Router       /cows/{id} [get]
+// GetByID
+// @Summary      Get concrete cow
+// @Description  Возращает конкретную корову. Поля Father и Mother, имеют FatherId и MotherID null всегда, это неправильно, но так надо
+// @Tags         Cows
+// @Param        id   path      int  true  "ID конкретной коровы, чтобы ее вернуть"
+// @Produce      json
+// @Success      200  {object}   ReserealizedCow
+// @Failure      500  {object}   string
+// @Router       /cows/{id} [get]
 func (f *Cows) GetByID() func(*gin.Context) {
 	return routes.GenerateReserealizingGetFunctionByID[models.Cow, ReserealizedCow](ReserealizedCow{})
-	// return routes.GenerateGetFunction[models.Cow]("farm_id", "farm_group_id")
 }
 
+// GetByFilter
 // @Summary      Get list of cows
 // @Description  Возращает коров удовлетворяющих условиям фильтрации.
 // @Tags         Cows
 // @Param        farm_id    query     int  false  "ID фермы (НЕ хозяйства), к которой принадлежит корова"
 // @Param 		 farm_group_id query int false "ID хозяйства (НЕ фермы), к которому принадлежит корова"
-// @Success      200  {object}   ReserealizedCow
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   ReserealizedCow
+// @Failure      500  {object}  string
 // @Router       /cows [get]
 func (f *Cows) GetByFilter() func(*gin.Context) {
 	return routes.GenerateReserealizingGetFunctionByFilters[models.Cow, ReserealizedCow](ReserealizedCow{}, "farm_id", "farm_group_id")

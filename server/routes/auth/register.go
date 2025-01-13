@@ -18,17 +18,17 @@ type RegisterData struct {
 	RegionId              uint   `json:"region"`
 }
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      REGISTER
-//	@Tags         REGISTER
-//	@Param        RegisterData    body     RegisterData  true  "applied filters"
-//	@Accept       json
-//	@Produce      json
-//	@Success      200  {array}   string
-//	@Failure      422  {object}  map[string]error
-//	@Failure      500  {object}  map[string]error
-//	@Router       /auth/register [post]
+// Register
+// @Summary      REGISTER (FOR ADMIN PAGE)
+// @Description  Нужно для админки
+// @Tags         REGISTER
+// @Param        RegisterData    body     RegisterData  true  "applied filters"
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   string
+// @Failure      422  {object}  map[string]error
+// @Failure      500  {object}  map[string]error
+// @Router       /auth/register [post]
 func (s *Auth) Register() func(*gin.Context) {
 	return func(c *gin.Context) {
 		request := RegisterData{}
@@ -77,7 +77,7 @@ func (s *Auth) Register() func(*gin.Context) {
 
 // CheckEmail checks if user with given email already exists
 //
-//	@Summary      CHECK EMAIL
+//	@Summary      CHECK EMAIL (USED FOR ADMIN PAGE)
 //	@Tags         REGISTER
 //	@Param        email    query     string  true  "email of user to check"
 //	@Accept       json

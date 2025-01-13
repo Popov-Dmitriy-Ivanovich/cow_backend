@@ -8,36 +8,39 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetByFilter
 // @Summary      Get list of regions
 // @Description   Возращает все регионы
 // @Tags         Regions
 // @Produce      json
 // @Success      200  {array}   models.Region
-// @Failure      500  {object}  map[string]error
+// @Failure      500  {object}  string
 // @Router       /regions [get]
 func (r *Regions) GetByFilter() func(*gin.Context) {
 	return routes.GenerateGetFunctionByFilters[models.Region](true)
 }
 
-// @Summary      Get list of regions
+// GetByID
+// @Summary      Get concrete region
 // @Description   Возращает регион
 // @Tags         Regions
 // @Param        id    path     int  true  "id региона"
 // @Produce      json
 // @Success      200  {object}   models.Region
-// @Failure      500  {object}  map[string]error
+// @Failure      500  {object}   string
 // @Router       /regions/{id} [get]
 func (r *Regions) GetByID() func(*gin.Context) {
 	return routes.GenerateGetFunctionById[models.Region]()
 }
 
-// @Summary      Get list of regions
+// News
+// @Summary      Get region's news
 // @Description  Возращает новости региона
 // @Tags         Regions
 // @Param        id    path     int  true  "id региона"
 // @Produce      json
-// @Success      200  {object}   models.News
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   models.News
+// @Failure      500  {object}  string
 // @Router       /regions/{id}/news [get]
 func (r *Regions) News() func(*gin.Context) {
 	return func(c *gin.Context) {

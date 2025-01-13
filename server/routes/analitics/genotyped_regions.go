@@ -12,24 +12,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// type byRegionStatistics struct {
-// 	genotypedStatistics
-// 	RegionID uint
-// }
-
-// type byRegionKeys struct {
-// 	Name string
-// 	ID   uint
-// }
-
-// @Summary      Get list of years
+// RegionsPost
+// @Summary      Get analytics by region
 // @Description  Возращает словарь регион - количество живых коров, количество генотипированных
-// @Tags         Analitics
+// @Tags         Analytics(GeneticFilters)
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
 // @Produce      json
 // @Success      200  {array}   map[string]byRegionStatistics
-// @Failure      500  {object}  map[string]error
+// @Failure      500  {object}  string
+// @Failure      422  {object}  string
 // @Router       /analitics/genotyped/{year}/regions [post]
 func (g Genotyped) RegionsPost() func(*gin.Context) {
 	return func(c *gin.Context) {

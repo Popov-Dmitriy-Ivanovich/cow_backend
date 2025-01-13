@@ -7,15 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get list of Districts
-//	@Description  Возращает все районы. Разрешает отсутсвие фильтров
-//	@Tags         Districtts
-//	@Produce      json
-//	@Success      200  {array}   models.DailyMilk
-//	@Failure      500  {object}  map[string]error
-//	@Router       /districts [get]
+// Get
+// @Summary      Get list of Districts
+// @Description  Возращает все районы. Разрешает отсутсвие фильтров
+// @Tags         Districts
+// @Produce      json
+// @Success      200  {array}   models.DailyMilk
+// @Failure      422  {object}   string
+// @Failure      404  {object}   string
+// @Router       /districts [get]
 func (f *Districts) Get() func(*gin.Context) {
 	return routes.GenerateGetFunctionByFilters[models.District](true)
 }

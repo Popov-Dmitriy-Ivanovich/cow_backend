@@ -6,16 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get list of check milks
-//	@Description  Возращает генетическую информацию для коровы, null, если нет
-//	@Tags         Cows
-//	@Param        id   path      int  true  "ID коровы для которой ищется генетическая информация"
-//
+// Genetic
+// @Summary      Get list of check milks
+// @Description  Возращает генетическую информацию для коровы, null, если нет
+// @Tags         Cows
+// @Param        id   path      int  true  "ID коровы для которой ищется генетическая информация"
 // @Produce      json
 // @Success      200  {object}   models.Genetic
-// @Failure      500  {object}  map[string]error
+// @Failure      500  {object}   string
 // @Router       /cows/{id}/genetic [get]
 func (f *Cows) Genetic() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -28,7 +26,7 @@ func (f *Cows) Genetic() func(*gin.Context) {
 			Preload("Genetic.GeneticIllnessesData.Status").
 			Preload("Genetic.GeneticIllnessesData.Illness").
 			First(&cow, id).Error; err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 			return
 		}
 		c.JSON(200, cow.Genetic)

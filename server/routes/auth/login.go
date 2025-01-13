@@ -12,8 +12,8 @@ import (
 )
 
 type AuthData struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email"`    // почта
+	Password string `json:"password"` // пароль, не зашифрованный
 }
 
 type JwtClaims struct {
@@ -29,18 +29,18 @@ func CheckPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      LOGIN
-//	@Tags         LOGIN
-//	@Param        AuthData    body     AuthData  true  "applied filters"
-//	@Accept       json
-//	@Produce      json
-//	@Success      200  {array}   string
-//	@Failure      400  {object}  map[string]error
-//	@Failure      401  {object}  map[string]error
-//	@Failure      500  {object}  map[string]error
-//	@Router       /auth/login [post]
+// Login
+// @Summary      LOGIN
+// @Description  После успешного логина возвращает словарь с ключем "token" - access token. Обеспечивает логин по JWT
+// @Tags         LOGIN
+// @Param        AuthData    body     AuthData  true  "applied filters"
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  map[string]string
+// @Failure      400  {object}  map[string]error
+// @Failure      401  {object}  map[string]error
+// @Failure      500  {object}  map[string]error
+// @Router       /auth/login [post]
 func (s *Auth) Login() func(*gin.Context) {
 	return func(c *gin.Context) {
 		user := AuthData{}

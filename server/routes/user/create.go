@@ -12,15 +12,15 @@ import (
 )
 
 type userData struct {
-	NameSurnamePatronimic string
-	RoleId                uint
-	Email                 string
-	Phone                 string
-	Password              string
+	NameSurnamePatronimic string // ФИО
+	RoleId                uint   // ID роли с которой пользователь регистрируется
+	Email                 string // почта пользователя
+	Phone                 string // телефон пользователя
+	Password              string // пароль пользователя
 
 	HozNumber *uint // номер хоз-ва либо существующего, либо newHoz
 
-	RegionId uint
+	RegionId uint // ID региона в котором будет зарегистрирован пользователь
 }
 
 type hozData struct {
@@ -53,9 +53,9 @@ type holdData struct {
 }
 
 type createUserData struct {
-	NewUser models.UserRegisterRequest
-	NewHoz  *models.HozRegisterRequest
-	NewHold *models.HoldRegisterRequest
+	NewUser models.UserRegisterRequest  // данные пользователя для регистрации
+	NewHoz  *models.HozRegisterRequest  // не обрабатывается
+	NewHold *models.HoldRegisterRequest // не обрабатывается
 }
 
 type userClaims struct {
@@ -63,16 +63,17 @@ type userClaims struct {
 	UserData createUserData
 }
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get list of sexes
-//	@Description  Возращает список полов
-//	@Param        filter    body     createUserData true  "applied filters"
-//	@Tags         User
-//	@Produce      json
-//	@Success      200  {array}   createUserData
-//	@Failure      500  {object}  string
-//	@Router       /user/create [post]
+// Create
+// @Summary      User register request
+// @Description  Рут для создания запроса на регистрацию
+// @Param        userData    body     createUserData true  "applied filters"
+// @Tags         User
+// @Produce      json
+// @Success      200  {object}   string
+// @Failure      500  {object}  string
+// @Failure      422  {object}  string
+// @Failure      401  {object}  string
+// @Router       /user/create [post]
 func (u *User) Create() func(*gin.Context) {
 	return func(c *gin.Context) {
 		userData := createUserData{}
@@ -127,12 +128,11 @@ func (u *User) Create() func(*gin.Context) {
 	}
 }
 
+// VerifyEmail
 // @Summary      Get list of sexes
-// @Description  Запрос на валидацию имэйла
+// @Description  Ссылка должна приходить на почту пользователя автоматически, с фронтенда этот рут не фетчить
 // @Tags         User
-// @Produce      json
-// @Success      200  {array}   models.Sex
-// @Failure      500  {object}  map[string]error
+// @Produce      html
 // @Router       /user/verifyEmail [get]
 func (u *User) VerifyEmail() func(*gin.Context) {
 	return func(c *gin.Context) {

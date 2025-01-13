@@ -24,13 +24,14 @@ func (cm *CheckMilks) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.POST("/:year/byDistrict/:district/byHoz", cm.ByHoz())
 }
 
+// ByYear
 // @Summary      Get list of years
-// @Description  Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы
+// @Description  Возращает словарь год - истина. Ключи словаря - это годы по которым есть аналитика
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
-// @Tags         Analitics
+// @Tags         Analytics (Milk)
 // @Produce      json
-// @Success      200  {array}   map[int]bool
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   map[int]bool
+// @Failure      422  {object}   string
 // @Router       /analitics/checkMilks/years [post]
 func (cm CheckMilks) ByYear() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -94,22 +95,23 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 }
 
 type cmByRegionStatistics struct {
-	Milk     float64
-	Fat      float64
-	Protein  float64
-	CmCount  uint
-	CowCount uint
-	RegionId uint
+	Milk     float64 // надой на корову
+	Fat      float64 // жир на корову
+	Protein  float64 // белок на корову
+	CmCount  uint    // служебная штука (кол-во контрольных доений)
+	CowCount uint    // служебная штука (кол-во коров)
+	RegionId uint    // ID региона по которому собрана аналитика
 }
 
-// @Summary      Get list of years
-// @Description  Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы
+// ByRegion
+// @Summary      Get by region analytics
+// @Description  Возращает словарь название региона - статистика по региону
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
-// @Tags         Analitics
+// @Tags         Analytics (Milk)
 // @Produce      json
-// @Success      200  {array}   map[int]bool
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   map[string]cmByRegionStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/checkMilks/{year}/byRegion [post]
 func (cm CheckMilks) ByRegion() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -223,23 +225,24 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 }
 
 type cmByDistrictStatistics struct {
-	Milk       float64
-	Fat        float64
-	Protein    float64
-	CmCount    uint
-	CowCount   uint
-	DistrictId uint
+	Milk       float64 // удой на корову
+	Fat        float64 // жир на корову
+	Protein    float64 // белок на корову
+	CmCount    uint    // количество обработанных контрольных доений (служебная)
+	CowCount   uint    // количество обработанных коров (служебная)
+	DistrictId uint    // ID района
 }
 
-// @Summary      Get list of years
-// @Description  Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы
+// ByDistrict
+// @Summary      Get by district analytics
+// @Description  Возращает словарь название района - аналитика по району
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        region    path     int  true  "регион за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
-// @Tags         Analitics
+// @Tags         Analytics (Milk)
 // @Produce      json
-// @Success      200  {array}   map[int]bool
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   map[string]cmByDistrictStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/checkMilks/{year}/byRegion/{region}/byDistrict [post]
 func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 	return func(c *gin.Context) {
@@ -385,22 +388,23 @@ func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 }
 
 type cmByHozStatistics struct {
-	Milk     float64
-	Fat      float64
-	Protein  float64
-	CmCount  uint
-	CowCount uint
+	Milk     float64 // удой на корову
+	Fat      float64 // жир на корову
+	Protein  float64 // белок на корову
+	CmCount  uint    // служебная штука
+	CowCount uint    // служебная штука
 }
 
-// @Summary      Get list of years
-// @Description  Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы
+// ByHoz
+// @Summary      Получить аналитику по хозяйству
+// @Description  Возращает словарь название хозяйства - аналитика по хозяйству
 // @Param        year    path     int  true  "год за который собирается статистика"
 // @Param        district    path     int  true  "район за который собирается статистика"
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
-// @Tags         Analitics
+// @Tags         Analytics (Milk)
 // @Produce      json
-// @Success      200  {array}   map[int]bool
-// @Failure      500  {object}  map[string]error
+// @Success      200  {array}   map[string]cmByHozStatistics
+// @Failure      422  {object}  string
 // @Router       /analitics/checkMilks/{year}/byDistrict/{district}/byHoz [post]
 func (cm CheckMilks) ByHoz() func(*gin.Context) {
 	return func(c *gin.Context) {

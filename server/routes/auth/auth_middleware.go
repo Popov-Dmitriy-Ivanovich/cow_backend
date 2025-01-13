@@ -49,7 +49,7 @@ func AuthMiddleware(requiredRole ...RoleType) gin.HandlerFunc {
 		}
 
 		if !isAuthorized {
-			c.JSON(http.StatusForbidden, gin.H{"error": "У вас нет доступа к этому ресурсу"})
+			c.JSON(http.StatusForbidden, "У вас нет доступа к этому ресурсу")
 			c.Abort()
 			return
 		}

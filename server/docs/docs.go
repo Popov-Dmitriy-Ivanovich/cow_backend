@@ -26,12 +26,12 @@ const docTemplate = `{
     "paths": {
         "/analitics/checkMilks/years": {
             "post": {
-                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "description": "Возращает словарь год - истина. Ключи словаря - это годы по которым есть аналитика",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (Milk)"
                 ],
                 "summary": "Get list of years",
                 "parameters": [
@@ -49,20 +49,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "boolean"
-                                }
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -70,14 +66,14 @@ const docTemplate = `{
         },
         "/analitics/checkMilks/{year}/byDistrict/{district}/byHoz": {
             "post": {
-                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "description": "Возращает словарь название хозяйства - аналитика по хозяйству",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (Milk)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Получить аналитику по хозяйству",
                 "parameters": [
                     {
                         "type": "integer",
@@ -111,16 +107,15 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "type": "boolean"
+                                    "$ref": "#/definitions/analitics.cmByHozStatistics"
                                 }
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -128,14 +123,14 @@ const docTemplate = `{
         },
         "/analitics/checkMilks/{year}/byRegion": {
             "post": {
-                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "description": "Возращает словарь название региона - статистика по региону",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (Milk)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get by region analytics",
                 "parameters": [
                     {
                         "type": "integer",
@@ -162,16 +157,15 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "type": "boolean"
+                                    "$ref": "#/definitions/analitics.cmByRegionStatistics"
                                 }
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -179,14 +173,14 @@ const docTemplate = `{
         },
         "/analitics/checkMilks/{year}/byRegion/{region}/byDistrict": {
             "post": {
-                "description": "Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы",
+                "description": "Возращает словарь название района - аналитика по району",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (Milk)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get by district analytics",
                 "parameters": [
                     {
                         "type": "integer",
@@ -220,16 +214,15 @@ const docTemplate = `{
                             "items": {
                                 "type": "object",
                                 "additionalProperties": {
-                                    "type": "boolean"
+                                    "$ref": "#/definitions/analitics.cmByDistrictStatistics"
                                 }
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -242,27 +235,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (GeneticGET)"
                 ],
                 "summary": "Get list of years",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "type": "integer"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
                             "type": "object",
-                            "additionalProperties": {}
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
                         }
                     }
                 }
@@ -273,7 +256,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics(GeneticFilters)"
                 ],
                 "summary": "Get list of years",
                 "parameters": [
@@ -312,14 +295,14 @@ const docTemplate = `{
         },
         "/analitics/genotyped/{year}/byDistrict/{district}/hold": {
             "get": {
-                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных",
+                "description": "Возращает словарь хозяйство - количество живых коров, количество генотипированных\nПолучилась какая-то фигня, по-моему этот рут был просто переписан и не переименован, т.к. были непонятки с ТЗ",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (GeneticGET)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Получить аналитику по хозяйству",
                 "parameters": [
                     {
                         "type": "integer",
@@ -340,20 +323,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHoldStatistics"
-                                }
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/analitics.byHoldStatistics"
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -366,9 +345,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics(GeneticFilters)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get analytics by hoz",
                 "parameters": [
                     {
                         "type": "integer",
@@ -407,11 +386,22 @@ const docTemplate = `{
                             }
                         }
                     },
+                    "421": {
+                        "description": "Misdirected Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -424,7 +414,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (GeneticGET)"
                 ],
                 "summary": "Get list of years",
                 "parameters": [
@@ -447,20 +437,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byHoldStatistics"
-                                }
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/analitics.byHoldStatistics"
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -473,9 +459,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (GeneticGET)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get genetic analytics by districts",
                 "parameters": [
                     {
                         "type": "integer",
@@ -496,20 +482,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byDistrictStatistics"
-                                }
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/analitics.byDistrictStatistics"
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -520,9 +502,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics(GeneticFilters)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get analytics by districts",
                 "parameters": [
                     {
                         "type": "integer",
@@ -561,11 +543,22 @@ const docTemplate = `{
                             }
                         }
                     },
+                    "421": {
+                        "description": "Misdirected Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -578,9 +571,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics (GeneticGET)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get genetic analytics by region",
                 "parameters": [
                     {
                         "type": "integer",
@@ -594,20 +587,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": {
-                                    "$ref": "#/definitions/analitics.byRegionStatistics"
-                                }
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/analitics.byRegionStatistics"
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "422": {
+                        "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -618,9 +607,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Analitics"
+                    "Analytics(GeneticFilters)"
                 ],
-                "summary": "Get list of years",
+                "summary": "Get analytics by region",
                 "parameters": [
                     {
                         "type": "integer",
@@ -652,11 +641,16 @@ const docTemplate = `{
                             }
                         }
                     },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -673,7 +667,7 @@ const docTemplate = `{
                 "tags": [
                     "REGISTER"
                 ],
-                "summary": "CHECK EMAIL",
+                "summary": "CHECK EMAIL (USED FOR ADMIN PAGE)",
                 "parameters": [
                     {
                         "type": "string",
@@ -705,6 +699,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
+                "description": "После успешного логина возвращает словарь с ключем \"token\" - access token. Обеспечивает логин по JWT",
                 "consumes": [
                     "application/json"
                 ],
@@ -730,8 +725,8 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
+                            "type": "object",
+                            "additionalProperties": {
                                 "type": "string"
                             }
                         }
@@ -762,6 +757,7 @@ const docTemplate = `{
         },
         "/auth/register": {
             "post": {
+                "description": "Нужно для админки",
                 "consumes": [
                     "application/json"
                 ],
@@ -771,7 +767,7 @@ const docTemplate = `{
                 "tags": [
                     "REGISTER"
                 ],
-                "summary": "REGISTER",
+                "summary": "REGISTER (FOR ADMIN PAGE)",
                 "parameters": [
                     {
                         "description": "applied filters",
@@ -812,6 +808,7 @@ const docTemplate = `{
         },
         "/auth/roles": {
             "get": {
+                "description": "Возращает список ролей",
                 "produces": [
                     "application/json"
                 ],
@@ -832,22 +829,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -855,7 +849,7 @@ const docTemplate = `{
         },
         "/breeds": {
             "get": {
-                "description": "Возращает список всех пород. Разрешает отсутсвие фильтров",
+                "description": "Возращает список всех пород",
                 "produces": [
                     "application/json"
                 ],
@@ -873,11 +867,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -909,11 +908,16 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.Breed"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -921,7 +925,7 @@ const docTemplate = `{
         },
         "/checkMilks": {
             "get": {
-                "description": "Возращает список контрольных доек",
+                "description": "Возращает список контрольных доек. Без фильтра нельзя, т.к. слишком много контрольных доений",
                 "produces": [
                     "application/json"
                 ],
@@ -947,11 +951,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -982,11 +991,16 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.CheckMilk"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1017,14 +1031,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/cows.ReserealizedCow"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/cows.ReserealizedCow"
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1032,6 +1048,7 @@ const docTemplate = `{
         },
         "/cows/filter": {
             "post": {
+                "description": "Возращает словарь с двумя ключами \"N\", \"LST\". По ключу \"N\" - общее кол-во найденных коров,\nпо ключу \"LST\" массив объектов filterSerealizedCow (см. Models)",
                 "consumes": [
                     "application/json"
                 ],
@@ -1059,22 +1076,23 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/cows.FilterSerializedCow"
+                                "type": "object",
+                                "additionalProperties": {
+                                    "$ref": "#/definitions/cows.FilterSerializedCow"
+                                }
                             }
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1089,7 +1107,7 @@ const docTemplate = `{
                 "tags": [
                     "Cows"
                 ],
-                "summary": "Get list of cows",
+                "summary": "Get concrete cow",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1109,8 +1127,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1141,15 +1158,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.CheckMilk"
+                                "$ref": "#/definitions/cows.ReserealizedCheckMilk"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1180,15 +1196,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Lactation"
+                                "$ref": "#/definitions/cows.Children"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1196,18 +1211,18 @@ const docTemplate = `{
         },
         "/cows/{id}/documents": {
             "get": {
-                "description": "Возращает генетическую информацию для коровы, null, если нет",
+                "description": "Возвращает список документов коровы",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Cows"
                 ],
-                "summary": "Get list of check milks",
+                "summary": "Get list of documents",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "ID коровы для которой ищется генетическая информация",
+                        "description": "ID коровы для которой ищутся документы",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1226,8 +1241,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1262,8 +1276,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1298,8 +1311,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1307,14 +1319,14 @@ const docTemplate = `{
         },
         "/cows/{id}/grades": {
             "get": {
-                "description": "Возращает список всех оценок конкретной коровы.",
+                "description": "Возращает словарь с двумя ключам \"ByRegion\" - оценки по региону и \"ByHoz\" - оценки по хозяйству",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "Cows"
                 ],
-                "summary": "Get list of children",
+                "summary": "Get grades",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1337,8 +1349,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1376,8 +1387,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1415,8 +1425,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1424,7 +1433,7 @@ const docTemplate = `{
         },
         "/dailyMilks": {
             "get": {
-                "description": "Возвращает дойки удовлетворяющие фильтрам",
+                "description": "Возвращает дойки удовлетворяющие фильтрам. Без фильтра не работает, т.к. слишком много доений",
                 "produces": [
                     "application/json"
                 ],
@@ -1450,11 +1459,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1469,11 +1483,11 @@ const docTemplate = `{
                 "tags": [
                     "DailyMilks"
                 ],
-                "summary": "Get list of DailyMilks",
+                "summary": "Get dailyMilk",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id of farm to return",
+                        "description": "id of dailymilk",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1486,11 +1500,16 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.DailyMilk"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1503,7 +1522,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Districtts"
+                    "Districts"
                 ],
                 "summary": "Get list of Districts",
                 "responses": {
@@ -1516,11 +1535,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1539,7 +1563,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "object",
-                        "description": "ID более главной фермы, null для поиска хозяйств",
+                        "description": "ID более главной фермы, null для поиска холдингов",
                         "name": "parrent_id",
                         "in": "query"
                     }
@@ -1554,11 +1578,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1566,7 +1595,7 @@ const docTemplate = `{
         },
         "/farms/{id}": {
             "get": {
-                "description": "GВозращает конкретную ферму",
+                "description": "Возращает конкретную ферму (хозяйство, холдинг)",
                 "produces": [
                     "application/json"
                 ],
@@ -1590,11 +1619,16 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.Farm"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1602,7 +1636,7 @@ const docTemplate = `{
         },
         "/lactations/{id}": {
             "get": {
-                "description": "Возращает конкретную лактацию\nDOES NOT RETURN SUBOBJECTS",
+                "description": "Возращает конкретную лактацию",
                 "produces": [
                     "application/json"
                 ],
@@ -1626,11 +1660,16 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.Lactation"
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1656,11 +1695,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1686,11 +1730,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1719,8 +1768,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1735,7 +1783,7 @@ const docTemplate = `{
                 "tags": [
                     "Regions"
                 ],
-                "summary": "Get list of regions",
+                "summary": "Get concrete region",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1755,8 +1803,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1764,7 +1811,7 @@ const docTemplate = `{
         },
         "/regions/{id}/getFarms": {
             "get": {
-                "description": "Возращает все фермы в регионе",
+                "description": "Возращает все фермы в регионе (Данные представлены как словарь с единственным ключем \"farms\")",
                 "produces": [
                     "application/json"
                 ],
@@ -1785,14 +1832,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Farm"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Farm"
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1807,7 +1856,7 @@ const docTemplate = `{
                 "tags": [
                     "Regions"
                 ],
-                "summary": "Get list of regions",
+                "summary": "Get region's news",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1821,14 +1870,16 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.News"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.News"
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1854,11 +1905,16 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -1871,24 +1927,20 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Sexes"
+                    "Updates"
                 ],
                 "summary": "Get update date and ID",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Update"
-                            }
+                            "$ref": "#/definitions/models.Update"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
+                            "type": "string"
                         }
                     }
                 }
@@ -1896,18 +1948,18 @@ const docTemplate = `{
         },
         "/user/create": {
             "post": {
-                "description": "Возращает список полов",
+                "description": "Рут для создания запроса на регистрацию",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "User"
                 ],
-                "summary": "Get list of sexes",
+                "summary": "User register request",
                 "parameters": [
                     {
                         "description": "applied filters",
-                        "name": "filter",
+                        "name": "userData",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -1919,10 +1971,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/user_create.createUserData"
-                            }
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
                         }
                     },
                     "500": {
@@ -1936,32 +1997,15 @@ const docTemplate = `{
         },
         "/user/verifyEmail": {
             "get": {
-                "description": "Запрос на валидацию имэйла",
+                "description": "Ссылка должна приходить на почту пользователя автоматически, с фронтенда этот рут не фетчить",
                 "produces": [
-                    "application/json"
+                    "text/html"
                 ],
                 "tags": [
                     "User"
                 ],
                 "summary": "Get list of sexes",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/models.Sex"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {}
-                        }
-                    }
-                }
+                "responses": {}
             }
         }
     },
@@ -1970,15 +2014,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "alive": {
+                    "description": "количество живых коров",
                     "type": "integer"
                 },
                 "districtID": {
+                    "description": "ID района",
                     "type": "integer"
                 },
                 "genotyped": {
+                    "description": "количество генотипированных коров",
                     "type": "integer"
                 },
                 "ill": {
+                    "description": "количество больных коров",
                     "type": "integer"
                 }
             }
@@ -1987,15 +2035,19 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "alive": {
+                    "description": "количество живых коров",
                     "type": "integer"
                 },
                 "genotyped": {
+                    "description": "количество генотипированных коров",
                     "type": "integer"
                 },
                 "holdID": {
+                    "description": "ID хозяйства (что-то с этим не так, потому что статистика по холдингам не собирается)",
                     "type": "integer"
                 },
                 "ill": {
+                    "description": "количество больных коров",
                     "type": "integer"
                 }
             }
@@ -2004,12 +2056,15 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "alive": {
+                    "description": "количество живых коров",
                     "type": "integer"
                 },
                 "genotyped": {
+                    "description": "количество генотипированных коров",
                     "type": "integer"
                 },
                 "ill": {
+                    "description": "количество больных коров",
                     "type": "integer"
                 }
             }
@@ -2018,15 +2073,102 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "alive": {
+                    "description": "количество живых коров",
                     "type": "integer"
                 },
                 "genotyped": {
+                    "description": "количество генотипированных коров",
                     "type": "integer"
                 },
                 "ill": {
+                    "description": "количество больных коров",
                     "type": "integer"
                 },
                 "regionID": {
+                    "description": "ID региона",
+                    "type": "integer"
+                }
+            }
+        },
+        "analitics.cmByDistrictStatistics": {
+            "type": "object",
+            "properties": {
+                "cmCount": {
+                    "description": "количество обработанных контрольных доений (служебная)",
+                    "type": "integer"
+                },
+                "cowCount": {
+                    "description": "количество обработанных коров (служебная)",
+                    "type": "integer"
+                },
+                "districtId": {
+                    "description": "ID района",
+                    "type": "integer"
+                },
+                "fat": {
+                    "description": "жир на корову",
+                    "type": "number"
+                },
+                "milk": {
+                    "description": "удой на корову",
+                    "type": "number"
+                },
+                "protein": {
+                    "description": "белок на корову",
+                    "type": "number"
+                }
+            }
+        },
+        "analitics.cmByHozStatistics": {
+            "type": "object",
+            "properties": {
+                "cmCount": {
+                    "description": "служебная штука",
+                    "type": "integer"
+                },
+                "cowCount": {
+                    "description": "служебная штука",
+                    "type": "integer"
+                },
+                "fat": {
+                    "description": "жир на корову",
+                    "type": "number"
+                },
+                "milk": {
+                    "description": "удой на корову",
+                    "type": "number"
+                },
+                "protein": {
+                    "description": "белок на корову",
+                    "type": "number"
+                }
+            }
+        },
+        "analitics.cmByRegionStatistics": {
+            "type": "object",
+            "properties": {
+                "cmCount": {
+                    "description": "служебная штука (кол-во контрольных доений)",
+                    "type": "integer"
+                },
+                "cowCount": {
+                    "description": "служебная штука (кол-во коров)",
+                    "type": "integer"
+                },
+                "fat": {
+                    "description": "жир на корову",
+                    "type": "number"
+                },
+                "milk": {
+                    "description": "надой на корову",
+                    "type": "number"
+                },
+                "protein": {
+                    "description": "белок на корову",
+                    "type": "number"
+                },
+                "regionId": {
+                    "description": "ID региона по которому собрана аналитика",
                     "type": "integer"
                 }
             }
@@ -2035,9 +2177,11 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "email": {
+                    "description": "почта",
                     "type": "string"
                 },
                 "password": {
+                    "description": "пароль, не зашифрованный",
                     "type": "string"
                 }
             }
@@ -2068,6 +2212,22 @@ const docTemplate = `{
                 }
             }
         },
+        "cows.Children": {
+            "type": "object",
+            "properties": {
+                "breed_name": {
+                    "description": "Порода ребенка",
+                    "type": "string"
+                },
+                "child": {
+                    "$ref": "#/definitions/models.Cow"
+                },
+                "hoz_name": {
+                    "description": "Название хозяйства, в котором ребенок",
+                    "type": "string"
+                }
+            }
+        },
         "cows.FilterSerializedCow": {
             "type": "object",
             "required": [
@@ -2082,36 +2242,55 @@ const docTemplate = `{
             ],
             "properties": {
                 "approved": {
+                    "description": "Подтверждена ли админом",
                     "type": "boolean",
                     "example": true
                 },
                 "birkingDate": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата перебирковки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "birthDate": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата рождения коровы",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "breedName": {
+                    "description": "Название породы коровы",
                     "type": "string",
                     "example": "Какая-нибудь порода"
                 },
                 "calvingDate": {
+                    "description": "Дата отела",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.DateOnly"
                     }
                 },
                 "checkMilkDate": {
+                    "description": "Дата контрольного доения",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.DateOnly"
                     }
                 },
                 "createdAt": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата внесения информации о корове в БД",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "deathDate": {
-                    "description": "RegionId                  *uint                       ` + "`" + `json:\",omitempty\" validate:\"optional\"` + "`" + `",
+                    "description": "Дата смерти",
                     "allOf": [
                         {
                             "$ref": "#/definitions/models.DateOnly"
@@ -2119,84 +2298,171 @@ const docTemplate = `{
                     ]
                 },
                 "departDate": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата выбытия",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "events": {
+                    "description": "Вет события",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.Event"
                     }
                 },
                 "exteriorRating": {
+                    "description": "Оценка экстерьера",
                     "type": "number"
                 },
                 "farmGroupName": {
+                    "description": "Название хозяйства, в котором корова",
                     "type": "string",
                     "example": "ООО Аурус"
                 },
                 "genotyped": {
+                    "description": "Факт генотипирования коровы",
                     "type": "boolean",
                     "example": true
                 },
                 "genotypingDate": {
-                    "$ref": "#/definitions/models.DateOnly"
+                    "description": "Дата генотипирования",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
                 },
                 "hozName": {
+                    "description": "Название хозяйства",
                     "type": "string"
                 },
                 "id": {
+                    "description": "ID коровы",
                     "type": "integer",
                     "example": 123
                 },
                 "inbrindingCoeffByFamily": {
+                    "description": "Коэф. инбриндинга по родословной",
                     "type": "number",
                     "example": 3.14
                 },
                 "inbrindingCoeffByGenotype": {
+                    "description": "Коэф. инбриндинга по генотипу",
                     "type": "number",
                     "example": 3.14
                 },
                 "insemenationDate": {
+                    "description": "Дата осеменения",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.DateOnly"
                     }
                 },
                 "inventoryNumber": {
+                    "description": "Инвентарный номер коровы",
                     "type": "string",
                     "example": "321"
                 },
                 "isAborted": {
+                    "description": "Факт аборта",
                     "type": "boolean"
                 },
                 "isDead": {
+                    "description": "Факт смерти",
                     "type": "boolean"
                 },
                 "isGenotyped": {
+                    "description": "Факт генотипирования",
                     "type": "boolean"
                 },
                 "isStillBorn": {
+                    "description": "Факт мертворождения",
                     "type": "boolean"
                 },
                 "isTwins": {
+                    "description": "Факт рождения близнецов",
                     "type": "boolean"
                 },
                 "monogeneticIllneses": {
+                    "description": "моногенные заболевания",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/models.GeneticIllnessData"
                     }
                 },
                 "name": {
+                    "description": "Кличка коровы",
                     "type": "string",
                     "example": "Буренка"
                 },
                 "rshnnumber": {
+                    "description": "РСХН номер коровы",
                     "type": "string",
                     "example": "123"
                 },
                 "sexName": {
+                    "description": "Название породы",
                     "type": "string"
+                }
+            }
+        },
+        "cows.ReserealizedCheckMilk": {
+            "type": "object",
+            "properties": {
+                "checkDate": {
+                    "description": "Дата конрольной дойки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DateOnly"
+                        }
+                    ]
+                },
+                "dryMatter": {
+                    "description": "сухой материал",
+                    "type": "number"
+                },
+                "fat": {
+                    "description": "Параметр контрольной дойки, как я понимаю кол-во жира в молоке",
+                    "type": "number",
+                    "example": 1
+                },
+                "id": {
+                    "description": "ID контрольной дойки",
+                    "type": "integer",
+                    "example": 1
+                },
+                "lactationId": {
+                    "description": "ID лактации для которой выполнена контрольная дойка",
+                    "type": "integer",
+                    "example": 1
+                },
+                "lactationNumber": {
+                    "description": "Номер лактации",
+                    "type": "integer"
+                },
+                "milk": {
+                    "description": "Параметр контрольной дойки, как я понимаю кол-во молока",
+                    "type": "number",
+                    "example": 1
+                },
+                "milkingDays": {
+                    "description": "День доения относительно начала лактации",
+                    "type": "integer"
+                },
+                "probeNumber": {
+                    "description": "номер пробы",
+                    "type": "integer"
+                },
+                "protein": {
+                    "description": "Параметр контрольной дойки, как я понимаю кол-во белка в молоке",
+                    "type": "number",
+                    "example": 1
+                },
+                "somaticNucCount": {
+                    "description": "количество соматических клеток",
+                    "type": "number"
                 }
             }
         },
@@ -2280,7 +2546,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "father": {
-                    "$ref": "#/definitions/models.Cow"
+                    "description": "Отец",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Cow"
+                        }
+                    ]
                 },
                 "fatherSelecs": {
                     "description": "ID коровы отца коровы",
@@ -2330,7 +2601,12 @@ const docTemplate = `{
                     "example": "1213321"
                 },
                 "mother": {
-                    "$ref": "#/definitions/models.Cow"
+                    "description": "Мать",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Cow"
+                        }
+                    ]
                 },
                 "motherSelecs": {
                     "description": "ID коровы матери коровы",
@@ -3575,13 +3851,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "newHold": {
-                    "$ref": "#/definitions/models.HoldRegisterRequest"
+                    "description": "не обрабатывается",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.HoldRegisterRequest"
+                        }
+                    ]
                 },
                 "newHoz": {
-                    "$ref": "#/definitions/models.HozRegisterRequest"
+                    "description": "не обрабатывается",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.HozRegisterRequest"
+                        }
+                    ]
                 },
                 "newUser": {
-                    "$ref": "#/definitions/models.UserRegisterRequest"
+                    "description": "данные пользователя для регистрации",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.UserRegisterRequest"
+                        }
+                    ]
                 }
             }
         }
@@ -3604,7 +3895,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",
-	Description:      "This is a sample server celler server.",
+	Description:      "Сваггер сгенерирован из кода, поэтому может содержать неточности. По мере возможности они будут описаны далее\nВсе даты передаются как строки\nБольшая часть рутов не возвращает вложенные объекты",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

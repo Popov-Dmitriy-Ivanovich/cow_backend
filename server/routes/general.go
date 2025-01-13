@@ -2,7 +2,6 @@ package routes
 
 import (
 	"cow_backend/models"
-	"errors"
 	"regexp"
 
 	"github.com/gin-gonic/gin"
@@ -100,7 +99,7 @@ func GenerateReserealizingGetFunctionByID[DbModel any, R Reserealizable](value R
 		}
 		reserealizer := value.GetReserealizer()
 		if res, err := reserealizer.FromBaseModel(*obj); err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 		} else {
 			c.JSON(200, res)
 		}
@@ -140,10 +139,10 @@ func GenerateReserealizingGetFunctionByFilters[DbModel any, R Reserealizable](va
 
 		for _, obj := range objs {
 			if reserealized, err := reserealizer.FromBaseModel(obj); err != nil {
-				c.JSON(500, err)
+				c.JSON(500, err.Error())
 				return
 			} else if typed, ok := reserealized.(R); !ok {
-				c.JSON(500, errors.New("wrong type in reserealizer"))
+				c.JSON(500, "wrong type in reserealizer")
 				return
 			} else {
 				res = append(res, typed)

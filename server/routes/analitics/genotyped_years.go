@@ -8,10 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// YearsPost
 // @Summary      Get list of years
 // @Description  Возращает словарь год - количеств генотипированных коров, по ключу -1 генотипированные за все годы
 // @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
-// @Tags         Analitics
+// @Tags         Analytics(GeneticFilters)
 // @Produce      json
 // @Success      200  {array}   map[int]bool
 // @Failure      500  {object}  map[string]error

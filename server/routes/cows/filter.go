@@ -17,78 +17,36 @@ import (
 )
 
 type FilterSerializedCow struct {
-	ID                        uint                        `validate:"required" example:"123"`
-	RSHNNumber                *string                     `validate:"required" example:"123"`
-	InventoryNumber           *string                     `validate:"required" example:"321"`
-	Name                      string                      `validate:"required" example:"Буренка"`
-	FarmGroupName             string                      `validate:"required" example:"ООО Аурус"`
-	BirthDate                 models.DateOnly             `validate:"required"`
-	Genotyped                 bool                        `validate:"required" example:"true"`
-	Approved                  bool                        `validate:"required" example:"true"`
-	DepartDate                *models.DateOnly            `json:",omitempty" validate:"optional"`
-	BreedName                 *string                     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"`
-	CheckMilkDate             []models.DateOnly           `json:",omitempty" validate:"optional"`
-	InsemenationDate          []models.DateOnly           `json:",omitempty" validate:"optional"`
-	CalvingDate               []models.DateOnly           `json:",omitempty" validate:"optional"`
-	BirkingDate               *models.DateOnly            `json:",omitempty" validate:"optional"`
-	GenotypingDate            *models.DateOnly            `json:",omitempty" validate:"optional"`
-	InbrindingCoeffByFamily   *float64                    `json:",omitempty" validate:"optional" example:"3.14"`
-	InbrindingCoeffByGenotype *float64                    `json:",omitempty" validate:"optional" example:"3.14"`
-	MonogeneticIllneses       []models.GeneticIllnessData `json:",omitempty" validate:"optional"`
-	ExteriorRating            *float64                    `json:",omitempty" validate:"optional"`
-	SexName                   *string                     `json:",omitempty" validate:"optional"`
-	HozName                   *string                     `json:",omitempty" validate:"optional"`
-	// RegionId                  *uint                       `json:",omitempty" validate:"optional"`
-	DeathDate   *models.DateOnly `json:",omitempty" validate:"optional"`
-	IsDead      *bool            `json:",omitempty" validate:"optional"`
-	IsTwins     *bool            `json:",omitempty" validate:"optional"`
-	IsStillBorn *bool            `json:",omitempty" validate:"optional"`
-	IsAborted   *bool            `json:",omitempty" validate:"optional"`
-	Events      []models.Event   `json:",omitempty" validate:"optional"`
-	IsGenotyped *bool            `json:",omitempty" validate:"optional"`
-	CreatedAt   *models.DateOnly `json:",omitempty" validate:"optional"`
-}
+	ID                        uint                        `validate:"required" example:"123"`                                   // ID коровы
+	RSHNNumber                *string                     `validate:"required" example:"123"`                                   // РСХН номер коровы
+	InventoryNumber           *string                     `validate:"required" example:"321"`                                   // Инвентарный номер коровы
+	Name                      string                      `validate:"required" example:"Буренка"`                               // Кличка коровы
+	FarmGroupName             string                      `validate:"required" example:"ООО Аурус"`                             // Название хозяйства, в котором корова
+	BirthDate                 models.DateOnly             `validate:"required"`                                                 // Дата рождения коровы
+	Genotyped                 bool                        `validate:"required" example:"true"`                                  // Факт генотипирования коровы
+	Approved                  bool                        `validate:"required" example:"true"`                                  // Подтверждена ли админом
+	DepartDate                *models.DateOnly            `json:",omitempty" validate:"optional"`                               // Дата выбытия
+	BreedName                 *string                     `json:",omitempty" validate:"optional" example:"Какая-нибудь порода"` // Название породы коровы
+	CheckMilkDate             []models.DateOnly           `json:",omitempty" validate:"optional"`                               // Дата контрольного доения
+	InsemenationDate          []models.DateOnly           `json:",omitempty" validate:"optional"`                               // Дата осеменения
+	CalvingDate               []models.DateOnly           `json:",omitempty" validate:"optional"`                               // Дата отела
+	BirkingDate               *models.DateOnly            `json:",omitempty" validate:"optional"`                               // Дата перебирковки
+	GenotypingDate            *models.DateOnly            `json:",omitempty" validate:"optional"`                               // Дата генотипирования
+	InbrindingCoeffByFamily   *float64                    `json:",omitempty" validate:"optional" example:"3.14"`                // Коэф. инбриндинга по родословной
+	InbrindingCoeffByGenotype *float64                    `json:",omitempty" validate:"optional" example:"3.14"`                // Коэф. инбриндинга по генотипу
+	MonogeneticIllneses       []models.GeneticIllnessData `json:",omitempty" validate:"optional"`                               // моногенные заболевания
+	ExteriorRating            *float64                    `json:",omitempty" validate:"optional"`                               // Оценка экстерьера
+	SexName                   *string                     `json:",omitempty" validate:"optional"`                               // Название породы
+	HozName                   *string                     `json:",omitempty" validate:"optional"`                               // Название хозяйства
 
-var orderFunctionsMap = map[string]func(FilterSerializedCow, FilterSerializedCow) bool{
-	"RSHN": func(l FilterSerializedCow, r FilterSerializedCow) bool {
-		if l.RSHNNumber == nil {
-			return false
-		}
-		if r.RSHNNumber == nil {
-			return true
-		}
-		return *l.RSHNNumber < *r.RSHNNumber
-	},
-	"InventoryNumber": func(l FilterSerializedCow, r FilterSerializedCow) bool {
-		if l.InventoryNumber == nil {
-			return false
-		}
-		if r.InventoryNumber == nil {
-			return true
-		}
-		return *l.InventoryNumber < *r.InventoryNumber
-	},
-	"Name": func(l FilterSerializedCow, r FilterSerializedCow) bool {
-		if l.Name == "" {
-			return false
-		}
-		if r.Name == "" {
-			return true
-		}
-		return l.Name < r.Name
-	},
-	"HozName": func(l FilterSerializedCow, r FilterSerializedCow) bool {
-		if l.HozName == nil {
-			return false
-		}
-		if r.HozName == nil {
-			return true
-		}
-		return *l.HozName < *r.HozName
-	},
-	"BirthDate": func(l FilterSerializedCow, r FilterSerializedCow) bool {
-		return l.BirthDate.Before(r.BirthDate.Time)
-	},
+	DeathDate   *models.DateOnly `json:",omitempty" validate:"optional"` // Дата смерти
+	IsDead      *bool            `json:",omitempty" validate:"optional"` // Факт смерти
+	IsTwins     *bool            `json:",omitempty" validate:"optional"` // Факт рождения близнецов
+	IsStillBorn *bool            `json:",omitempty" validate:"optional"` // Факт мертворождения
+	IsAborted   *bool            `json:",omitempty" validate:"optional"` // Факт аборта
+	Events      []models.Event   `json:",omitempty" validate:"optional"` // Вет события
+	IsGenotyped *bool            `json:",omitempty" validate:"optional"` // Факт генотипирования
+	CreatedAt   *models.DateOnly `json:",omitempty" validate:"optional"` // Дата внесения информации о корове в БД
 }
 
 func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
@@ -110,10 +68,6 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 	if len(filter.BreedId) != 0 {
 		res.BreedName = &c.Breed.Name
 	}
-
-	// if filter.RegionId != nil {
-	// 	res.RegionId = &c.FarmGroup.District.RegionId
-	// }
 
 	if filter.InbrindingCoeffByFamilyFrom != nil || filter.InbrindingCoeffByFamilyTo != nil {
 		res.InbrindingCoeffByFamily = c.InbrindingCoeffByFamily
@@ -270,17 +224,18 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 	return res
 }
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get filtered list of cows
-//	@Tags         Cows
-//	@Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
-//	@Accept       json
-//	@Produce      json
-//	@Success      200  {array}   FilterSerializedCow
-//	@Failure      422  {object}  map[string]error
-//	@Failure      500  {object}  map[string]error
-//	@Router       /cows/filter [post]
+// Filter
+// @Summary      Get filtered list of cows
+// @Description  Возращает словарь с двумя ключами "N", "LST". По ключу "N" - общее кол-во найденных коров,
+// @Description  по ключу "LST" массив объектов filterSerealizedCow (см. Models)
+// @Tags         Cows
+// @Param        filter    body     cows_filter.CowsFilter  true  "applied filters"
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   map[string]FilterSerializedCow
+// @Failure      422  {object}  string
+// @Failure      500  {object}  string
+// @Router       /cows/filter [post]
 func (c *Cows) Filter() func(*gin.Context) {
 	return func(c *gin.Context) {
 
@@ -292,7 +247,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 
 		jsonData, err := io.ReadAll(c.Request.Body)
 		if err != nil {
-			c.JSON(500, gin.H{"error": err})
+			c.JSON(500, err.Error())
 			return
 		}
 
@@ -300,7 +255,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 		if len(jsonData) != 0 {
 			err = json.Unmarshal(jsonData, &bodyData)
 			if err != nil {
-				c.JSON(422, gin.H{"error": err})
+				c.JSON(422, err.Error())
 				return
 			}
 		}
@@ -364,14 +319,14 @@ func (c *Cows) Filter() func(*gin.Context) {
 		// ====================================================================================================
 		resCount := int64(0)
 		if err := query.Count(&resCount).Error; err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 			return
 		}
 
 		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1)).Order("inventory_number")
 		dbCows := []models.Cow{}
 		if err := query.Debug().Find(&dbCows).Error; err != nil {
-			c.JSON(500, gin.H{"error": err})
+			c.JSON(500, err.Error())
 			return
 		}
 

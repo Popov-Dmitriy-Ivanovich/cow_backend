@@ -44,7 +44,9 @@ func seq(start, end int) []int {
 
 // @title           GenMilk API
 // @version         1.0
-// @description     This is a sample server celler server.
+// @description     Сваггер сгенерирован из кода, поэтому может содержать неточности. По мере возможности они будут описаны далее
+// @description     Все даты передаются как строки
+// @description     Большая часть рутов не возвращает вложенные объекты
 // @termsOfService  http://swagger.io/terms/
 
 // @contact.name   API Support

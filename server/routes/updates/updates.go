@@ -9,12 +9,13 @@ import (
 type Update struct {
 }
 
+// WriteRoutes
 // @Summary      Get update date and ID
 // @Description  Возращает дату апдейта БД
-// @Tags         Sexes
+// @Tags         Updates
 // @Produce      json
-// @Success      200  {array}   models.Update
-// @Failure      500  {object}  map[string]error
+// @Success      200  {object}   models.Update
+// @Failure      500  {object}  string
 // @Router       /updates [get]
 func (u *Update) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup := rg.Group("/updates")

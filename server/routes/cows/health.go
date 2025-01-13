@@ -6,16 +6,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListAccounts lists all existing accounts
-//
-//	@Summary      Get list of health events
-//	@Description  Возращает список всех ветеренарных мероприятий для конкретной коровы.
-//	@Tags         Cows
-//	@Param        id   path      int  true  "ID коровы для которой ищутся вет мероприятия"
-//
+// Health
+// @Summary      Get list of health events
+// @Description  Возращает список всех ветеренарных мероприятий для конкретной коровы.
+// @Tags         Cows
+// @Param        id   path      int  true  "ID коровы для которой ищутся вет мероприятия"
 // @Produce      json
 // @Success      200  {array}   models.Event
-// @Failure      500  {object}  map[string]error
+// @Failure      500  {object}  string
 // @Router       /cows/{id}/health [get]
 func (f *Cows) Health() func(*gin.Context) {
 	return func(c *gin.Context) {
