@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+// DateOnly
+// Структура, сохраняющаяся в БД и представляющая дату без времени
 type DateOnly struct {
 	time.Time
 }

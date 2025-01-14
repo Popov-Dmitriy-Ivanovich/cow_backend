@@ -1,5 +1,9 @@
 package models
 
+import (
+	"gorm.io/gorm"
+)
+
 type DailyMilk struct {
 	ID             uint     `gorm:"primaryKey"`
 	LactationId    uint     `gorm:"index"` // ID лактации во время котороый была дойка `example:"1"`
@@ -16,4 +20,16 @@ type DailyMilk struct {
 	ProteinMorning *int     // Белок утром `example:"12"`
 	ProteinNoon    *int     // Белок днем `example:"12"`
 	ProteinEvening *int     // Белок вечером `example:"12"`
+}
+
+func (dm *DailyMilk) Validate() error {
+	return nil
+}
+
+func (dm *DailyMilk) BeforeCreate(tx *gorm.DB) error {
+	return dm.Validate()
+}
+
+func (dm *DailyMilk) BeforeUpdate(tx *gorm.DB) error {
+	return dm.Validate()
 }

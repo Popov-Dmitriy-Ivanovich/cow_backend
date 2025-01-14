@@ -1,5 +1,10 @@
 package models
 
+import (
+	"errors"
+	"gorm.io/gorm"
+)
+
 type Lactation struct {
 	ID uint `gorm:"primaryKey"`
 
@@ -24,5 +29,27 @@ type Lactation struct {
 	Fat305        *float64 // Суммарный жир за 305 дней
 	ProteinAll    *float64 // Суммарный белок
 	Protein305    *float64 // Суммарный белок за 305 дней
-	Days          *int     // количество дней, когда корова дает молоко
+	Days          *int     // Количество дней, когда корова дает молоко
+}
+
+func (l *Lactation) Validate() error {
+	if l.CalvingCount < 0 || l.CalvingCount > 2 {
+		return errors.New("calving count must be between 0 and 2")
+	}
+	db := dbConnection
+	cow := Cow{}
+	if err := db.First(&cow, l.CowId).Error; err != nil {
+		return errors.New("cow not found")
+	}
+	if cow.BirthDate.After(l.InsemenationDate.Time) {
+		return errors.New("корова не может родиться после осеменения")
+	}
+	if l.InsemenationDate.Time.After(l.CalvingDate.Time) {
+		return errors.New("отел не может произойти до осеменения")
+	}
+	return nil
+}
+
+func (l *Lactation) BeforeCreate(tx *gorm.DB) error {
+	return l.Validate()
 }

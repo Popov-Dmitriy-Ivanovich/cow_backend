@@ -2,7 +2,7 @@ package models
 
 type Region struct {
 	ID     uint   `gorm:"primaryKey" default:"1"`
-	Name   string `example:"Усть-Каменский"` // название региона
+	Name   string `example:"Усть-Каменский"` // Название региона
 	News   []News
-	RegNum uint // номер региона (Архангельская область = 29)
+	RegNum uint // Номер региона (Архангельская область = 29)
 }

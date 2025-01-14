@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"time"
 
 	"gorm.io/gorm"
@@ -11,12 +12,27 @@ type Genetic struct {
 	CowID                     uint      `gorm:"index"`      // ID коровы
 	ProbeNumber               string    // Номер пробы
 	BloodDate                 *DateOnly `gorm:"index"` // Дата взятия пробы крови
-	ResultDate                *DateOnly `gorm:"index"` // Дата получения  результата
+	ResultDate                *DateOnly `gorm:"index"` // Дата получения результата
 	InbrindingCoeffByGenotype *float64  `gorm:"index"` // Коэф. инбриндинга по генотипу
 
 	GeneticIllnessesData []GeneticIllnessData `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Список генетических заболеваний, пустой если нет
 
-	GtcFilePath *string // путь к gtc файлу относительно genmilk.ru/api/static/gtc
+	GtcFilePath *string // Путь к gtc файлу относительно genmilk.ru/api/static/gtc
+}
+
+func (g *Genetic) Validate() error {
+	db := dbConnection
+	cow := Cow{}
+	if err := db.First(&cow, g.CowID).Error; err != nil {
+		return errors.New("не найдена корова")
+	}
+	if cow.BirthDate.After(g.BloodDate.Time) {
+		return errors.New("корова должна родиться до сдачи крови")
+	}
+	if g.ResultDate.Before(g.BloodDate.Time) {
+		return errors.New("результат должен быть получен после сдачи крови")
+	}
+	return nil
 }
 
 type GeneticIllnessData struct {
@@ -47,5 +63,15 @@ func (g *Genetic) BeforeCreate(tx *gorm.DB) error {
 	if g.BloodDate == nil {
 		g.BloodDate = &DateOnly{Time: time.Now().UTC()}
 	}
-	return nil
+	return g.Validate()
+}
+
+func (g *Genetic) BeforeUpdate(tx *gorm.DB) error {
+	if g.ResultDate == nil {
+		g.ResultDate = &DateOnly{Time: time.Now().UTC()}
+	}
+	if g.BloodDate == nil {
+		g.BloodDate = &DateOnly{Time: time.Now().UTC()}
+	}
+	return g.Validate()
 }

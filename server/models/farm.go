@@ -1,11 +1,17 @@
 package models
 
+import (
+	"errors"
+	"gorm.io/gorm"
+	"regexp"
+)
+
 type Farm struct {
 	ID uint `gorm:"primaryKey"`
 
 	// Region   Region `json:"-"`
 	// RegionId uint
-	HozNumber  *string  `gorm:"index"` // номер хоз-ва
+	HozNumber  *string  `gorm:"index"` // Номер хоз-ва
 	District   District `json:"-"`
 	DistrictId uint     // ID района, в котором находится хозяйство
 	Parrent    *Farm    `json:"-"`
@@ -13,12 +19,42 @@ type Farm struct {
 
 	Type      uint    // Тип: хозяйство, ферма, холдинг
 	Name      string  // Название хозяйства
-	NameShort string  // Краткое название хозйства
+	NameShort string  // Краткое название хозяйства
 	Inn       *string // ИНН
 
 	Address     string  // Адрес
 	Phone       *string // телефон
-	Email       *string // эл. почта
+	Email       *string // Эл. почта
 	Description *string // описание
-	CowsCount   *uint   // количество коров
+	CowsCount   *uint   // Количество коров
+}
+
+func (f *Farm) Validate() error {
+	if f.Email != nil {
+		matched, err := regexp.MatchString(emailRegexp, *f.Email)
+		if err != nil {
+			return err
+		}
+		if !matched {
+			return errors.New("email address is invalid")
+		}
+	}
+	if f.Phone != nil {
+		matched, err := regexp.MatchString(phoneRegexp, *f.Phone)
+		if err != nil {
+			return err
+		}
+		if !matched {
+			return errors.New("phone number is invalid")
+		}
+	}
+	return nil
+}
+
+func (f *Farm) BeforeCreate(tx *gorm.DB) (err error) {
+	return f.Validate()
+}
+
+func (f *Farm) BeforeUpdate(tx *gorm.DB) (err error) {
+	return f.Validate()
 }

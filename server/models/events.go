@@ -1,5 +1,7 @@
 package models
 
+import "errors"
+
 type Event struct {
 	ID uint `gorm:"primaryKey"`
 
@@ -22,6 +24,18 @@ type Event struct {
 	Comment2 *string  // Комментарий 2
 }
 
+func (e *Event) Validate() error {
+	db := dbConnection
+	cow := Cow{}
+	if err := db.First(&cow, e.CowId).Error; err != nil {
+		return errors.New("не найдена корова, для которой добавляется вет. событие")
+	}
+	if cow.BirthDate.After(e.Date.Time) {
+		return errors.New("вет. событие не может случиться до рождения коровы")
+	}
+	return nil
+}
+
 type EventType struct { // бывший EventList
 	ID uint `gorm:"primaryKey"`
 
@@ -30,6 +44,6 @@ type EventType struct { // бывший EventList
 
 	Name string // Название группы/названия/разновидности события
 
-	Code uint // код группы или разновидности или названия события
+	Code uint // Код группы или разновидности или названия события
 	Type uint `gorm:"index"` // 1 - группа события, 2 - разновидность события, 3 - название события
 }

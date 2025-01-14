@@ -30,10 +30,10 @@ type Cow struct {
 	Events []Event `json:"-"`
 
 	GradeRegion   *Grade `json:"-"`
-	GradeRegionId *uint  `example:"1"` // оценка по региону
+	GradeRegionId *uint  `example:"1"` // Оценка по региону
 
 	GradeHoz   *Grade `json:"-"`
-	GradeHozId *uint  `example:"1"` // оценка по хозяйству
+	GradeHozId *uint  `example:"1"` // Оценка по хозяйству
 
 	FatherSelecs *uint64 // ID коровы отца коровы
 
@@ -46,7 +46,7 @@ type Cow struct {
 	Exterior  *Exterior
 	Lactation []Lactation `json:"-"`
 
-	IdentificationNumber *string `gorm:"index"`                      // он все-таки есть! это какой-то не российский номер коровы
+	IdentificationNumber *string `gorm:"index"`                      // Он все-таки есть! Это какой-то не российский номер коровы
 	InventoryNumber      *string `gorm:"index" example:"1213321"`    // Инвентарный номер коровы
 	SelecsNumber         *uint64 `gorm:"index" example:"98989"`      // Селекс номер коровы
 	RSHNNumber           *string `gorm:"index" example:"1323323232"` // РСХН номер коровы
@@ -66,17 +66,30 @@ type Cow struct {
 	PreviousHozId *uint   // ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится "новой коровой"
 	BirthHoz      *Farm   `json:"-"`
 	BirthHozId    *uint   // ID хозяйства рождения
-	BirthMethod   *string // способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
+	BirthMethod   *string // Способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 
 	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это предыдущий селекс коровы
 
-	Documents []Document `json:"-"` // документы коровы
+	Documents []Document `json:"-"` // Документы коровы
 }
 
 type Document struct {
 	ID    uint   // ID
 	CowID uint   `gorm:"index"` // ID коровы, для которой хранитя документ
-	Path  string // путь к документу относительно genmilk.ru/api/static/documents
+	Path  string // Путь к документу относительно genmilk.ru/api/static/documents
+}
+
+func (c *Cow) Validate() error {
+	if c.DepartDate != nil && c.DepartDate.Before(c.BirthDate.Time) {
+		return errors.New("дата выбытия не может быть меньше даты рождения")
+	}
+	if c.DeathDate != nil && c.DeathDate.Before(c.BirthDate.Time) {
+		return errors.New("дата смерти не может быть меньше даты рождения")
+	}
+	if c.BirkingDate != nil && c.BirkingDate.Before(c.BirthDate.Time) {
+		return errors.New("дата перебирковки не может быть меньше даты рождения")
+	}
+	return nil
 }
 
 func (c *Cow) BeforeCreate(tx *gorm.DB) error {
@@ -87,5 +100,13 @@ func (c *Cow) BeforeCreate(tx *gorm.DB) error {
 		}
 		*c.RSHNNumber = "!" + strconv.FormatUint(uint64(*c.SelecsNumber), 10)
 	}
-	return nil
+	return c.Validate()
+}
+
+func (c *Cow) BeforeUpdate(tx *gorm.DB) error {
+	if c.SelecsNumber != nil && c.RSHNNumber == nil {
+		c.RSHNNumber = new(string)
+		*c.RSHNNumber = "!" + strconv.FormatUint(uint64(*c.SelecsNumber), 10)
+	}
+	return c.Validate()
 }
