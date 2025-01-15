@@ -62,6 +62,21 @@ func iterateCows(cowIds []uint, year int, regionId *uint, districtId *uint,
 	}
 }
 
+func createDefaultCmCowsFilter(filterData cows_filter.CowsFilter) *cows_filter.CowFilteredModel {
+	filterData.ControlMilkingDateFrom = new(string)
+	filterData.ControlMilkingDateTo = new(string)
+
+	*filterData.ControlMilkingDateFrom = "0001-01-01"
+	*filterData.ControlMilkingDateTo = "4000-01-01"
+
+	filterData.IsDead = new(bool)
+	*filterData.IsDead = false
+
+	db := models.GetDb()
+	cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
+	return cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
+}
+
 // ByYear
 // @Summary      Get list of years
 // @Description  Возращает словарь год - истина. Ключи словаря - это годы по которым есть аналитика
@@ -77,17 +92,7 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
 		}
-		filterData.ControlMilkingDateFrom = new(string)
-		filterData.ControlMilkingDateTo = new(string)
-
-		*filterData.ControlMilkingDateFrom = "0001-01-01"
-		*filterData.ControlMilkingDateTo = "4000-01-01"
-		filterData.IsDead = new(bool)
-		*filterData.IsDead = false
-
-		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
-		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
+		cmCowFilter := createDefaultCmCowsFilter(filterData)
 		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -134,18 +139,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
 		}
-		filterData.ControlMilkingDateFrom = new(string)
-		filterData.ControlMilkingDateTo = new(string)
-
-		*filterData.ControlMilkingDateFrom = "0001-01-01"
-		*filterData.ControlMilkingDateTo = "4000-01-01"
-
-		filterData.IsDead = new(bool)
-		*filterData.IsDead = false
-
-		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
-		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
+		cmCowFilter := createDefaultCmCowsFilter(filterData)
 		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -238,18 +232,7 @@ func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
 		}
-		filterData.ControlMilkingDateFrom = new(string)
-		filterData.ControlMilkingDateTo = new(string)
-
-		*filterData.ControlMilkingDateFrom = "0001-01-01"
-		*filterData.ControlMilkingDateTo = "4000-01-01"
-
-		filterData.IsDead = new(bool)
-		*filterData.IsDead = false
-
-		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
-		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
+		cmCowFilter := createDefaultCmCowsFilter(filterData)
 		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -347,18 +330,8 @@ func (cm CheckMilks) ByHoz() func(*gin.Context) {
 		if err := c.ShouldBindJSON(&filterData); err != nil {
 			c.JSON(422, err.Error())
 		}
-		filterData.ControlMilkingDateFrom = new(string)
-		filterData.ControlMilkingDateTo = new(string)
 
-		*filterData.ControlMilkingDateFrom = "0001-01-01"
-		*filterData.ControlMilkingDateTo = "4000-01-01"
-
-		filterData.IsDead = new(bool)
-		*filterData.IsDead = false
-
-		db := models.GetDb()
-		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
-		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
+		cmCowFilter := createDefaultCmCowsFilter(filterData)
 		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
