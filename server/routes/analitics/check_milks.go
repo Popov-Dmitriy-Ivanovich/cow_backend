@@ -100,7 +100,7 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 		cowIds := []uint{}
 		cmCowFilter.GetQuery().Pluck("id", &cowIds)
 		result := map[int]bool{}
-
+		db := models.GetDb()
 		for _, id := range cowIds {
 			dbCow := models.Cow{}
 			db.Preload("Lactation").Preload("Lactation.CheckMilks").First(&dbCow, id)
