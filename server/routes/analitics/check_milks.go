@@ -5,7 +5,6 @@ import (
 	"cow_backend/filters/cows_filter"
 	"cow_backend/models"
 	"cow_backend/routes/auth"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -22,6 +21,45 @@ func (cm *CheckMilks) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.POST("/:year/byRegion", cm.ByRegion())
 	apiGroup.POST("/:year/byRegion/:region/byDistrict", cm.ByDistrict())
 	apiGroup.POST("/:year/byDistrict/:district/byHoz", cm.ByHoz())
+}
+
+func iterateCows(cowIds []uint, year int, regionId *uint, districtId *uint,
+	resultsWriter func(cow *models.Cow, cmCount uint, milk float64, fat float64, protein float64)) {
+	db := models.GetDb()
+	for _, id := range cowIds {
+		dbCow := models.Cow{}
+		db.Preload("Lactation").
+			Preload("Lactation.CheckMilks").
+			Preload("FarmGroup").
+			Preload("FarmGroup.District").
+			Preload("FarmGroup.District.Region").First(&dbCow, id)
+		cmCount := uint(0)
+		milk := float64(0)
+		fat := float64(0)
+		protein := float64(0)
+		if regionId != nil {
+			if dbCow.FarmGroup.District.RegionId != *regionId {
+				continue
+			}
+		}
+		if districtId != nil {
+			if dbCow.FarmGroup.DistrictId != *districtId {
+				continue
+			}
+		}
+		for _, lac := range dbCow.Lactation {
+			for _, cm := range lac.CheckMilks {
+				if cm.CheckDate.Year() != year {
+					continue
+				}
+				cmCount++
+				milk += cm.Milk
+				fat += cm.Fat
+				protein += cm.Protein
+			}
+		}
+		resultsWriter(&dbCow, cmCount, milk, fat, protein)
+	}
 }
 
 // ByYear
@@ -121,57 +159,30 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		cowCount := uint(0)
-		for _, id := range cowIds {
-			dbCow := models.Cow{}
-			db.Preload("Lactation").
-				Preload("Lactation.CheckMilks").
-				Preload("FarmGroup").
-				Preload("FarmGroup.District").
-				Preload("FarmGroup.District.Region").First(&dbCow, id)
-			cmCount := uint(0)
-			cowCountInc := uint(1)
-			milk := float64(0)
-			fat := float64(0)
-			protein := float64(0)
-
-			for _, lac := range dbCow.Lactation {
-				for _, cm := range lac.CheckMilks {
-					if cm.CheckDate.Year() != int(yearInt) {
-						continue
-					}
-					cowCount += cowCountInc
-					cowCountInc = 0
-					cmCount++
-					milk += cm.Milk
-					fat += cm.Fat
-					protein += cm.Protein
+		iterateCows(cowIds, int(yearInt), nil, nil,
+			func(dbCow *models.Cow, cmCount uint, milk float64, fat float64, protein float64) {
+				if val, ok := result[dbCow.FarmGroup.District.Region.Name]; ok && cmCount != 0 {
+					val.Milk += milk / float64(cmCount)
+					val.Fat += fat / float64(cmCount)
+					val.Protein += protein / float64(cmCount)
+					val.CowCount = 1
+					result[dbCow.FarmGroup.District.Region.Name] = val
+				} else if !ok && cmCount != 0 {
+					val := cmByRegionStatistics{}
+					val.Milk = milk / float64(cmCount)
+					val.Fat = fat / float64(cmCount)
+					val.Protein = protein / float64(cmCount)
+					val.CowCount += 1
+					val.RegionId = dbCow.FarmGroup.District.RegionId
+					result[dbCow.FarmGroup.District.Region.Name] = val
 				}
-			}
-			fmt.Println("milk = ", milk, "cmCount = ", cmCount)
-			if val, ok := result[dbCow.FarmGroup.District.Region.Name]; ok && cmCount != 0 {
-				val.Milk += milk / float64(cmCount)
-				val.Fat += fat / float64(cmCount)
-				val.Protein += protein / float64(cmCount)
-				val.CowCount = cowCount
-				result[dbCow.FarmGroup.District.Region.Name] = val
-			} else if !ok && cmCount != 0 {
-				val := cmByRegionStatistics{}
-				val.Milk = milk / float64(cmCount)
-				val.Fat = fat / float64(cmCount)
-				val.Protein = protein / float64(cmCount)
-				val.CowCount = cowCount
-				val.RegionId = dbCow.FarmGroup.District.RegionId
-				result[dbCow.FarmGroup.District.Region.Name] = val
-			}
-		}
-		if cowCount != 0 {
-			for key, val := range result {
-				val.Milk = val.Milk / float64(val.CowCount)
-				val.Fat = val.Fat / float64(val.CowCount)
-				val.Protein = val.Protein / float64(val.CowCount)
-				result[key] = val
-			}
+			})
+
+		for key, val := range result {
+			val.Milk = val.Milk / float64(val.CowCount)
+			val.Fat = val.Fat / float64(val.CowCount)
+			val.Protein = val.Protein / float64(val.CowCount)
+			result[key] = val
 		}
 
 		c.JSON(200, result)
@@ -258,60 +269,31 @@ func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		cowCount := uint(0)
-		for _, id := range cowIds {
-			dbCow := models.Cow{}
-			db.Preload("Lactation").
-				Preload("Lactation.CheckMilks").
-				Preload("FarmGroup").
-				Preload("FarmGroup.District").
-				Preload("FarmGroup.District.Region").First(&dbCow, id)
-			if dbCow.FarmGroup.District.RegionId != uint(regionIdInt) {
-				continue
-			}
-			cmCount := uint(0)
-			cowCountInc := uint(1)
-			milk := float64(0)
-			fat := float64(0)
-			protein := float64(0)
-
-			for _, lac := range dbCow.Lactation {
-				for _, cm := range lac.CheckMilks {
-					if cm.CheckDate.Year() != int(yearInt) {
-						continue
-					}
-					cowCount += cowCountInc
-					cowCountInc = 0
-					cmCount++
-					milk += cm.Milk
-					fat += cm.Fat
-					protein += cm.Protein
+		regIdUint := uint(regionIdInt)
+		iterateCows(cowIds, int(yearInt), &regIdUint, nil,
+			func(dbCow *models.Cow, cmCount uint, milk float64, fat float64, protein float64) {
+				if val, ok := result[dbCow.FarmGroup.District.Name]; ok && cmCount != 0 {
+					val.Milk += milk / float64(cmCount)
+					val.Fat += fat / float64(cmCount)
+					val.Protein += protein / float64(cmCount)
+					val.CowCount = 1
+					result[dbCow.FarmGroup.District.Name] = val
+				} else if !ok && cmCount != 0 {
+					val := cmByDistrictStatistics{}
+					val.Milk = milk / float64(cmCount)
+					val.Fat = fat / float64(cmCount)
+					val.Protein = protein / float64(cmCount)
+					val.CowCount += 1
+					val.DistrictId = dbCow.FarmGroup.District.ID
+					result[dbCow.FarmGroup.District.Name] = val
 				}
-			}
-			fmt.Println("milk = ", milk, "cmCount = ", cmCount)
-			if val, ok := result[dbCow.FarmGroup.District.Name]; ok && cmCount != 0 {
-				val.Milk += milk / float64(cmCount)
-				val.Fat += fat / float64(cmCount)
-				val.Protein += protein / float64(cmCount)
-				val.CowCount = cowCount
-				result[dbCow.FarmGroup.District.Name] = val
-			} else if !ok && cmCount != 0 {
-				val := cmByDistrictStatistics{}
-				val.Milk = milk / float64(cmCount)
-				val.Fat = fat / float64(cmCount)
-				val.Protein = protein / float64(cmCount)
-				val.CowCount = cowCount
-				val.DistrictId = dbCow.FarmGroup.District.ID
-				result[dbCow.FarmGroup.District.Name] = val
-			}
-		}
-		if cowCount != 0 {
-			for key, val := range result {
-				val.Milk = val.Milk / float64(val.CowCount)
-				val.Fat = val.Fat / float64(val.CowCount)
-				val.Protein = val.Protein / float64(val.CowCount)
-				result[key] = val
-			}
+			})
+
+		for key, val := range result {
+			val.Milk = val.Milk / float64(val.CowCount)
+			val.Fat = val.Fat / float64(val.CowCount)
+			val.Protein = val.Protein / float64(val.CowCount)
+			result[key] = val
 		}
 
 		c.JSON(200, result)
@@ -396,59 +378,30 @@ func (cm CheckMilks) ByHoz() func(*gin.Context) {
 			c.JSON(422, err.Error())
 			return
 		}
-		cowCount := uint(0)
-		for _, id := range cowIds {
-			dbCow := models.Cow{}
-			db.Preload("Lactation").
-				Preload("Lactation.CheckMilks").
-				Preload("FarmGroup").
-				Preload("FarmGroup.District").
-				Preload("FarmGroup.District.Region").First(&dbCow, id)
-			if dbCow.FarmGroup.District.ID != uint(districtIdInt) {
-				continue
-			}
-			cmCount := uint(0)
-			cowCountInc := uint(1)
-			milk := float64(0)
-			fat := float64(0)
-			protein := float64(0)
-
-			for _, lac := range dbCow.Lactation {
-				for _, cm := range lac.CheckMilks {
-					if cm.CheckDate.Year() != int(yearInt) {
-						continue
-					}
-					cowCount += cowCountInc
-					cowCountInc = 0
-					cmCount++
-					milk += cm.Milk
-					fat += cm.Fat
-					protein += cm.Protein
+		districtIdUint := uint(districtIdInt)
+		iterateCows(cowIds, int(yearInt), nil, &districtIdUint,
+			func(dbCow *models.Cow, cmCount uint, milk float64, fat float64, protein float64) {
+				if val, ok := result[dbCow.FarmGroup.Name]; ok && cmCount != 0 {
+					val.Milk += milk / float64(cmCount)
+					val.Fat += fat / float64(cmCount)
+					val.Protein += protein / float64(cmCount)
+					val.CowCount = 1
+					result[dbCow.FarmGroup.Name] = val
+				} else if !ok && cmCount != 0 {
+					val := cmByHozStatistics{}
+					val.Milk = milk / float64(cmCount)
+					val.Fat = fat / float64(cmCount)
+					val.Protein = protein / float64(cmCount)
+					val.CowCount += 1
+					result[dbCow.FarmGroup.Name] = val
 				}
-			}
-			fmt.Println("milk = ", milk, "cmCount = ", cmCount)
-			if val, ok := result[dbCow.FarmGroup.Name]; ok && cmCount != 0 {
-				val.Milk += milk / float64(cmCount)
-				val.Fat += fat / float64(cmCount)
-				val.Protein += protein / float64(cmCount)
-				val.CowCount = cowCount
-				result[dbCow.FarmGroup.Name] = val
-			} else if !ok && cmCount != 0 {
-				val := cmByHozStatistics{}
-				val.Milk = milk / float64(cmCount)
-				val.Fat = fat / float64(cmCount)
-				val.Protein = protein / float64(cmCount)
-				val.CowCount = cowCount
-				result[dbCow.FarmGroup.Name] = val
-			}
-		}
-		if cowCount != 0 {
-			for key, val := range result {
-				val.Milk = val.Milk / float64(val.CowCount)
-				val.Fat = val.Fat / float64(val.CowCount)
-				val.Protein = val.Protein / float64(val.CowCount)
-				result[key] = val
-			}
+			})
+
+		for key, val := range result {
+			val.Milk = val.Milk / float64(val.CowCount)
+			val.Fat = val.Fat / float64(val.CowCount)
+			val.Protein = val.Protein / float64(val.CowCount)
+			result[key] = val
 		}
 
 		c.JSON(200, result)
