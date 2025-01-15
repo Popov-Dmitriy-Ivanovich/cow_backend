@@ -165,14 +165,14 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 					val.Milk += milk / float64(cmCount)
 					val.Fat += fat / float64(cmCount)
 					val.Protein += protein / float64(cmCount)
-					val.CowCount = 1
+					val.CowCount += 1
 					result[dbCow.FarmGroup.District.Region.Name] = val
 				} else if !ok && cmCount != 0 {
 					val := cmByRegionStatistics{}
 					val.Milk = milk / float64(cmCount)
 					val.Fat = fat / float64(cmCount)
 					val.Protein = protein / float64(cmCount)
-					val.CowCount += 1
+					val.CowCount = 1
 					val.RegionId = dbCow.FarmGroup.District.RegionId
 					result[dbCow.FarmGroup.District.Region.Name] = val
 				}
@@ -276,14 +276,14 @@ func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 					val.Milk += milk / float64(cmCount)
 					val.Fat += fat / float64(cmCount)
 					val.Protein += protein / float64(cmCount)
-					val.CowCount = 1
+					val.CowCount += 1
 					result[dbCow.FarmGroup.District.Name] = val
 				} else if !ok && cmCount != 0 {
 					val := cmByDistrictStatistics{}
 					val.Milk = milk / float64(cmCount)
 					val.Fat = fat / float64(cmCount)
 					val.Protein = protein / float64(cmCount)
-					val.CowCount += 1
+					val.CowCount = 1
 					val.DistrictId = dbCow.FarmGroup.District.ID
 					result[dbCow.FarmGroup.District.Name] = val
 				}
@@ -385,14 +385,14 @@ func (cm CheckMilks) ByHoz() func(*gin.Context) {
 					val.Milk += milk / float64(cmCount)
 					val.Fat += fat / float64(cmCount)
 					val.Protein += protein / float64(cmCount)
-					val.CowCount = 1
+					val.CowCount += 1
 					result[dbCow.FarmGroup.Name] = val
 				} else if !ok && cmCount != 0 {
 					val := cmByHozStatistics{}
 					val.Milk = milk / float64(cmCount)
 					val.Fat = fat / float64(cmCount)
 					val.Protein = protein / float64(cmCount)
-					val.CowCount += 1
+					val.CowCount = 1
 					result[dbCow.FarmGroup.Name] = val
 				}
 			})
