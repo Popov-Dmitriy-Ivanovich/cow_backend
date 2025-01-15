@@ -1,6 +1,9 @@
 package models
 
-import "errors"
+import (
+	"errors"
+	"gorm.io/gorm"
+)
 
 type Event struct {
 	ID uint `gorm:"primaryKey"`
@@ -34,6 +37,14 @@ func (e *Event) Validate() error {
 		return errors.New("вет. событие не может случиться до рождения коровы")
 	}
 	return nil
+}
+
+func (e *Event) BeforeCreate(tx *gorm.DB) error {
+	return e.Validate()
+}
+
+func (e *Event) BeforeUpdate(tx *gorm.DB) error {
+	return e.Validate()
 }
 
 type EventType struct { // бывший EventList

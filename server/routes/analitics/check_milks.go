@@ -50,30 +50,7 @@ func (cm CheckMilks) ByYear() func(*gin.Context) {
 		db := models.GetDb()
 		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
-		if err := filters.ApplyFilters(cmCowFilter,
-			cows_filter.ByAbort{},
-			cows_filter.ByAnyIllneses{},
-			cows_filter.ByBirkingDate{},
-			cows_filter.ByBreed{},
-			cows_filter.ByBrithDate{},
-			cows_filter.ByCalvingDate{},
-			cows_filter.ByControlMilkingDate{},
-			cows_filter.ByCreatedAt{},
-			cows_filter.ByDeath{},
-			cows_filter.ByDepartDate{},
-			cows_filter.ByExterior{},
-			cows_filter.ByHoz{},
-			cows_filter.ByIllDate{},
-			cows_filter.ByInbrindingCoeffByFamily{},
-			cows_filter.ByInbrindingCoeffByGenotype{},
-			cows_filter.ByIsGenotyped{},
-			cows_filter.ByInsemenationDate{},
-			cows_filter.BySearchString{},
-			cows_filter.BySex{},
-			cows_filter.ByStillBorn{},
-			cows_filter.ByTwins{},
-			cows_filter.ByMonogeneticIllnesses{},
-		); err != nil {
+		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
@@ -131,30 +108,7 @@ func (cm CheckMilks) ByRegion() func(*gin.Context) {
 		db := models.GetDb()
 		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
-		if err := filters.ApplyFilters(cmCowFilter,
-			cows_filter.ByAbort{},
-			cows_filter.ByAnyIllneses{},
-			cows_filter.ByBirkingDate{},
-			cows_filter.ByBreed{},
-			cows_filter.ByBrithDate{},
-			cows_filter.ByCalvingDate{},
-			cows_filter.ByControlMilkingDate{},
-			cows_filter.ByCreatedAt{},
-			cows_filter.ByDeath{},
-			cows_filter.ByDepartDate{},
-			cows_filter.ByExterior{},
-			cows_filter.ByHoz{},
-			cows_filter.ByIllDate{},
-			cows_filter.ByInbrindingCoeffByFamily{},
-			cows_filter.ByInbrindingCoeffByGenotype{},
-			cows_filter.ByIsGenotyped{},
-			cows_filter.ByInsemenationDate{},
-			cows_filter.BySearchString{},
-			cows_filter.BySex{},
-			cows_filter.ByStillBorn{},
-			cows_filter.ByTwins{},
-			cows_filter.ByMonogeneticIllnesses{},
-		); err != nil {
+		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
@@ -285,30 +239,7 @@ func (cm CheckMilks) ByDistrict() func(*gin.Context) {
 		db := models.GetDb()
 		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
-		if err := filters.ApplyFilters(cmCowFilter,
-			cows_filter.ByAbort{},
-			cows_filter.ByAnyIllneses{},
-			cows_filter.ByBirkingDate{},
-			cows_filter.ByBreed{},
-			cows_filter.ByBrithDate{},
-			cows_filter.ByCalvingDate{},
-			cows_filter.ByControlMilkingDate{},
-			cows_filter.ByCreatedAt{},
-			cows_filter.ByDeath{},
-			cows_filter.ByDepartDate{},
-			cows_filter.ByExterior{},
-			cows_filter.ByHoz{},
-			cows_filter.ByIllDate{},
-			cows_filter.ByInbrindingCoeffByFamily{},
-			cows_filter.ByInbrindingCoeffByGenotype{},
-			cows_filter.ByIsGenotyped{},
-			cows_filter.ByInsemenationDate{},
-			cows_filter.BySearchString{},
-			cows_filter.BySex{},
-			cows_filter.ByStillBorn{},
-			cows_filter.ByTwins{},
-			cows_filter.ByMonogeneticIllnesses{},
-		); err != nil {
+		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
@@ -446,30 +377,7 @@ func (cm CheckMilks) ByHoz() func(*gin.Context) {
 		db := models.GetDb()
 		cmCowQuery := db.Model(models.Cow{}).Where("approved <> -1")
 		cmCowFilter := cows_filter.NewCowFilteredModel(filterData, cmCowQuery)
-		if err := filters.ApplyFilters(cmCowFilter,
-			cows_filter.ByAbort{},
-			cows_filter.ByAnyIllneses{},
-			cows_filter.ByBirkingDate{},
-			cows_filter.ByBreed{},
-			cows_filter.ByBrithDate{},
-			cows_filter.ByCalvingDate{},
-			cows_filter.ByControlMilkingDate{},
-			cows_filter.ByCreatedAt{},
-			cows_filter.ByDeath{},
-			cows_filter.ByDepartDate{},
-			cows_filter.ByExterior{},
-			cows_filter.ByHoz{},
-			cows_filter.ByIllDate{},
-			cows_filter.ByInbrindingCoeffByFamily{},
-			cows_filter.ByInbrindingCoeffByGenotype{},
-			cows_filter.ByIsGenotyped{},
-			cows_filter.ByInsemenationDate{},
-			cows_filter.BySearchString{},
-			cows_filter.BySex{},
-			cows_filter.ByStillBorn{},
-			cows_filter.ByTwins{},
-			cows_filter.ByMonogeneticIllnesses{},
-		); err != nil {
+		if err := filters.ApplyFilters(cmCowFilter, cows_filter.ALL_FILTERS...); err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
