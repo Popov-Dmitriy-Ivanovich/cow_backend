@@ -8,10 +8,10 @@ import (
 type Lactation struct {
 	ID uint `gorm:"primaryKey"`
 
-	CowId uint `gorm:"index"` // ID коровы, данные о лактации которой записаны
+	CowId uint `gorm:"index;"` // ID коровы, данные о лактации которой записаны
 
-	CheckMilks []CheckMilk `json:"-"`
-	DailyMilks []DailyMilk `json:"-"`
+	CheckMilks []CheckMilk `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	DailyMilks []DailyMilk `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 
 	Number uint // номер лактации
 

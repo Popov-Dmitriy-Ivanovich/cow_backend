@@ -7,7 +7,7 @@ import (
 
 type Exterior struct {
 	ID                    uint `gorm:"primaryKey"`
-	CowID                 uint `gorm:"index"`
+	CowID                 uint `gorm:"index;"`
 	Rating                float64
 	ChestWidth            *float64
 	PelvicWidth           *float64

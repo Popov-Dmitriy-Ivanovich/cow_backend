@@ -10,14 +10,14 @@ type Event struct {
 
 	CowId uint `gorm:"index"` // ID коровы
 
-	EventType   EventType
-	EventTypeId uint `gorm:"index"` // Стандартизированная группа события
+	EventType   EventType `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	EventTypeId uint      `gorm:"index"` // Стандартизированная группа события
 
-	EventType1   EventType
-	EventType1Id uint `gorm:"index"` // Стандартизированная название события
+	EventType1   EventType `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	EventType1Id uint      `gorm:"index"` // Стандартизированная название события
 
-	EventType2   *EventType
-	EventType2Id *uint `gorm:"index"` // Стандартизированное разновидность события
+	EventType2   *EventType `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
+	EventType2Id *uint      `gorm:"index"` // Стандартизированное разновидность события
 
 	DataResourse      *string // Источник данных
 	DaysFromLactation uint    // Дни от начала лактации
@@ -50,7 +50,7 @@ func (e *Event) BeforeUpdate(tx *gorm.DB) error {
 type EventType struct { // бывший EventList
 	ID uint `gorm:"primaryKey"`
 
-	Parent   *EventType `json:"-"`
+	Parent   *EventType `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT"`
 	ParentId *uint      // ID старшего в иерархии типов события типа (для разновидности события ID группы событий, которой эта разновидность принадлежит)
 
 	Name string // Название группы/названия/разновидности события

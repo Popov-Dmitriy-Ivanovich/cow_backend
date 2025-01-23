@@ -12,22 +12,22 @@ type Cow struct {
 	ID        uint      `gorm:"primaryKey" example:"1"` // ID коровы
 	CreatedAt time.Time `example:"2007-01-01"`          // Время создания коровы в базе данных
 
-	Farm   *Farm `json:"-"`
+	Farm   *Farm `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	FarmID *uint `gorm:"index" example:"1"` // ID фермы, которой корова принадлежит
 
-	FarmGroup   Farm `json:"-"`
+	FarmGroup   Farm `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	FarmGroupId uint `gorm:"index" example:"1"` // ID хозяйства, которому корова принадлежит
 
-	Holding   *Farm
+	Holding   *Farm `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	HoldingID *uint `gorm:"index"` // ID холдинга, которому принадлежит корова
 
-	Breed   Breed `json:"-"`
+	Breed   Breed `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	BreedId uint  `gorm:"index" example:"1"` // ID породы коровы
 
-	Sex   Sex  `json:"-"`
+	Sex   Sex  `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	SexId uint `gorm:"index" example:"1"` // ID пола коровы
 
-	Events []Event `json:"-"`
+	Events []Event `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 
 	GradeRegion   *Grade `json:"-"`
 	GradeRegionId *uint  `example:"1"` // Оценка по региону
@@ -42,9 +42,9 @@ type Cow struct {
 	// CreatedBy   *User `json:"-"` // пользователь, создавший корову
 	// CreatedByID *uint `example:"1"`
 
-	Genetic   *Genetic
-	Exterior  *Exterior
-	Lactation []Lactation `json:"-"`
+	Genetic   *Genetic    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Exterior  *Exterior   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Lactation []Lactation `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 
 	IdentificationNumber *string `gorm:"index"`                      // Он все-таки есть! Это какой-то не российский номер коровы
 	InventoryNumber      *string `gorm:"index" example:"1213321"`    // Инвентарный номер коровы
@@ -70,12 +70,12 @@ type Cow struct {
 
 	PreviousInventoryNumber *string `json:"-"` // Одна и та же реальная корова имеет разные инвент. номера, это предыдущий селекс коровы
 
-	Documents []Document `json:"-"` // Документы коровы
+	Documents []Document `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Документы коровы
 }
 
 type Document struct {
 	ID    uint   // ID
-	CowID uint   `gorm:"index"` // ID коровы, для которой хранитя документ
+	CowID uint   `gorm:"index;"` // ID коровы, для которой хранитя документ
 	Path  string // Путь к документу относительно genmilk.ru/api/static/documents
 }
 

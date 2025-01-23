@@ -9,7 +9,7 @@ import (
 
 type Genetic struct {
 	ID                        uint      `gorm:"primaryKey"` // ID записи о генотипировании
-	CowID                     uint      `gorm:"index"`      // ID коровы
+	CowID                     uint      `gorm:"index;"`     // ID коровы
 	ProbeNumber               string    // Номер пробы
 	BloodDate                 *DateOnly `gorm:"index"` // Дата взятия пробы крови
 	ResultDate                *DateOnly `gorm:"index"` // Дата получения результата

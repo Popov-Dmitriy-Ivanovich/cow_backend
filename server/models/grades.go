@@ -1,8 +1,8 @@
 package models
 
 type Grade struct {
-	ID uint `gorm:"primaryKey" example:"1"` // ID оценки
-	// CowID           uint
+	ID              uint     `gorm:"primaryKey" example:"1"` // ID оценки
+	CowID           uint     `gorm:"index;"`
 	GeneralValue    *float64 // Общая оценка по EBV
 	EbvMilk         *float64 // Оценка удоя по EBV
 	EbvFat          *float64 // Оценка жира по EBV

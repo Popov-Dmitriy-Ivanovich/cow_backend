@@ -12,9 +12,9 @@ type Farm struct {
 	// Region   Region `json:"-"`
 	// RegionId uint
 	HozNumber  *string  `gorm:"index"` // Номер хоз-ва
-	District   District `json:"-"`
+	District   District `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	DistrictId uint     // ID района, в котором находится хозяйство
-	Parrent    *Farm    `json:"-"`
+	Parrent    *Farm    `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	ParrentId  *uint    // ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)
 
 	Type      uint    // Тип: хозяйство, ферма, холдинг

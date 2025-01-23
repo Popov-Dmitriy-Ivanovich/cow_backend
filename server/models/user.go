@@ -9,14 +9,14 @@ import (
 type User struct {
 	ID                    uint   `gorm:"primaryKey"`
 	NameSurnamePatronimic string // ФИО
-	Role                  Role
+	Role                  Role   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	RoleId                int    // ID роли
 	Email                 string `gorm:"uniqueIndex"` // Почта
 	Phone                 string // телефон
 	Password              []byte `json:"-"`
-	Farm                  *Farm  `json:"-"`
+	Farm                  *Farm  `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	FarmId                *uint  // ID хозяйства
-	Region                Region `json:"-"`
+	Region                Region `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	RegionId              uint   `example:"1"` // ID региона
 }
 
