@@ -1,6 +1,7 @@
 version: "3.9"
 services:
-  postgres:
+  dev_postgres:
+    hostname: postgres
     container_name: dev_postgres_container1
     image: postgres:14.8-alpine3.18
     env_file: ./dockered_db/database.env
@@ -51,7 +52,8 @@ services:
     networks:
       - dev_postgres
 
-  pgadmin:
+  dev_pgadmin:
+    hostname: pgadmin
     container_name: dev_pgadmin_container1
     image: dpage/pgadmin4:7.2
     environment:
@@ -70,10 +72,11 @@ services:
           memory: 1G
     networks:
       - dev_postgres
-  cow_backend:
+  dev_cow_backend:
+      hostname: cow_backend
       container_name: dev_cow_backend1
       depends_on:
-        postgres:
+        dev_postgres:
           condition: service_healthy
           restart: true
       build: server
@@ -86,10 +89,11 @@ services:
         - "8081:8080"
       volumes:
         - dev_backend-static-data:/build/static
-  nginx:
+  dev_nginx:
+    hostname: nginx
     container_name: dev_nginx1
     depends_on:
-      - cow_backend
+      - dev_cow_backend
     build: frontend
     ports:
       - "8000:80"
