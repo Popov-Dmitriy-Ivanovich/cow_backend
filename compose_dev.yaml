@@ -1,0 +1,108 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: dev_postgres_container1
+    image: postgres:14.8-alpine3.18
+    env_file: ./dockered_db/database.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=50"
+      - "-c"
+      - "shared_buffers=1GB"
+      - "-c"
+      - "effective_cache_size=4GB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "maintenance_work_mem=512MB"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "temp_file_limit=10GB"
+      - "-c"
+      - "log_min_duration_statement=200ms"
+      - "-c"
+      - "idle_in_transaction_session_timeout=10s"
+      - "-c"
+      - "lock_timeout=1s"
+      - "-c"
+      - "statement_timeout=60s"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+      - "-c"
+      - "pg_stat_statements.max=10000"
+      - "-c"
+      - "pg_stat_statements.track=all"
+    
+    volumes:
+      - ./dockered_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - dev_habrdb-data:/var/lib/postgresql/data
+    # UNCOMMENT THIS ROWS TO HAVE POSTGRESQL AVALIABLE  FROM OUTSIDE DOCKER NETWORK
+    # ports:
+    #   - "5432:5432"
+    
+    networks:
+      - dev_postgres
+
+  pgadmin:
+    container_name: dev_pgadmin_container1
+    image: dpage/pgadmin4:7.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "habrpguser@habr.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadminpwd4habr"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5051:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - dev_postgres
+  cow_backend:
+      container_name: dev_cow_backend1
+      depends_on:
+        dev_postgres:
+          condition: service_healthy
+          restart: true
+      build: server
+      env_file:
+        - server/.env
+      networks:
+        - dev_postgres
+        - dev_cow_backend
+      ports:
+        - "8081:8080"
+      volumes:
+        - backend-static-data:/build/static
+  nginx:
+    container_name: dev_nginx1
+    depends_on:
+      - cow_backend
+    build: frontend
+    ports:
+      - "81:80"
+      - "444:443"
+    networks:
+      - dev_cow_backend
+
+volumes:
+  dev_habrdb-data:
+  dev_pgadmin-data:
+  dev_backend-static-data:
+networks:
+  dev_postgres:
+    driver: bridge
+  dev_cow_backend:
+    driver: bridge

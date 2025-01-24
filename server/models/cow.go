@@ -62,9 +62,9 @@ type Cow struct {
 	BirkingDate *DateOnly `gorm:"index"`             // Дата перебирковки
 
 	// Новые поля
-	PreviousHoz   *Farm   `json:"-"`
+	PreviousHoz   *Farm   `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	PreviousHozId *uint   // ID предыдущего хозяйства, когда корову продают, она переходит к новому владельцу и становится "новой коровой"
-	BirthHoz      *Farm   `json:"-"`
+	BirthHoz      *Farm   `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	BirthHozId    *uint   // ID хозяйства рождения
 	BirthMethod   *string // Способ зачатия: клон, эмбрион, искусственное осеменени, естественное осеменение
 
