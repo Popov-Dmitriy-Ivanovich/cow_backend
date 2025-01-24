@@ -46,32 +46,13 @@ services:
       - ./dockered_db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - dev_habrdb-data:/var/lib/postgresql/data
     # UNCOMMENT THIS ROWS TO HAVE POSTGRESQL AVALIABLE  FROM OUTSIDE DOCKER NETWORK
-    # ports:
-    #   - "5432:5432"
+    ports:
+      - "54320:5432"
     
     networks:
       - dev_postgres
 
-  dev_pgadmin:
-    hostname: pgadmin
-    container_name: dev_pgadmin_container1
-    image: dpage/pgadmin4:7.2
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "habrpguser@habr.com"
-      PGADMIN_DEFAULT_PASSWORD: "pgadminpwd4habr"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - dev_pgadmin-data:/var/lib/pgadmin
-    ports:
-      - "50500:80"
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 1G
-    networks:
-      - dev_postgres
+
   dev_cow_backend:
       hostname: cow_backend
       container_name: dev_cow_backend1
