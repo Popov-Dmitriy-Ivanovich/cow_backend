@@ -36,7 +36,7 @@ func (f *Farm) Validate() error {
 			return err
 		}
 		if !matched {
-			return errors.New("email address is invalid")
+			return errors.New("email address is invalid " + *f.Email)
 		}
 	}
 	if f.Phone != nil {
@@ -45,7 +45,7 @@ func (f *Farm) Validate() error {
 			return err
 		}
 		if !matched {
-			return errors.New("phone number is invalid")
+			return errors.New("phone number is invalid " + *f.Phone)
 		}
 	}
 	return nil
