@@ -59,7 +59,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: "pgadminpwd4habr"
       PGADMIN_CONFIG_SERVER_MODE: "False"
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - dev_pgadmin-data:/var/lib/pgadmin
     ports:
       - "5051:80"
     restart: unless-stopped
