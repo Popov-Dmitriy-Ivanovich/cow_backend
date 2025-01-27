@@ -350,12 +350,12 @@ func (l *Load) Lactation() func(*gin.Context) {
 		}
 		defer file.Close()
 		csvReader := csv.NewReader(file)
-		header, err := csvReader.Read()
+		//	header, err := csvReader.Read()
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
-		recordWithHeader, err := NewLactationRecord(header)
+		//recordWithHeader, err := NewLactationRecord(header)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
