@@ -362,7 +362,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 		loaderWg := sync.WaitGroup{}
 		loadChannel := make(chan loaderData)
 		MakeLoadingPool(loadChannel, LoadRecordToDb[models.Lactation])
-
+		log.Printf("[INFO] START PARSING CSV FILE")
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
 		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
@@ -380,7 +380,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 				WaitGroup: &loaderWg,
 			}
 		}
-		log.Printf("[INFO] LOADED ALL DATA FROM CSV TO CHANNEL")
+		log.Printf("[INFO] LOADED ALL DATA FROM CSV TO PROCESSING CHANNEL")
 		loaderWg.Wait()
 		close(loadChannel)
 		c.JSON(200, errors)
