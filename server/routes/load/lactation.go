@@ -367,7 +367,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 		MakeLoadingPool(loadChannel, LoadRecordToDb[models.Lactation])
 		log.Printf("[INFO] START PARSING CSV FILE")
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
-		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
+		for _, err := csvReader.Read(); err != io.EOF; _, err = csvReader.Read() {
 			if err != nil {
 				errorsMtx.Lock()
 				errors = append(errors, err.Error())
@@ -375,14 +375,14 @@ func (l *Load) Lactation() func(*gin.Context) {
 				errorsMtx.Unlock()
 				continue
 			}
-			loaderWg.Add(1)
+			/*loaderWg.Add(1)
 			loadChannel <- loaderData{
 				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,
 				WaitGroup: &loaderWg,
-			}
+			}*/
 		}
 		log.Printf("[INFO] LOADED ALL DATA FROM CSV TO PROCESSING CHANNEL")
 		loaderWg.Wait()
