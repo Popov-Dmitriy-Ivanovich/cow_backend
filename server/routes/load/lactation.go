@@ -274,7 +274,6 @@ func NewLactationRecord(header []string) (*lactationRecord, error) {
 }
 
 func (lr *lactationRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
-	return nil, errors.New("Парсер строки csv отключен")
 	for col, parser := range lactationRecordParsers {
 		if err := parser(lr, rec); err != nil {
 			return nil, errors.New("ошибка парсинга колонки " + col + " значения " + rec[lr.HeaderIndexes[col]] + ": " + err.Error())
