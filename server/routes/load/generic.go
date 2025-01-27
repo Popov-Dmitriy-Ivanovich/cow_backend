@@ -3,6 +3,7 @@ package load
 import (
 	"cow_backend/models"
 	"errors"
+	"log"
 	"sync"
 
 	"gorm.io/gorm"
@@ -18,11 +19,13 @@ type CsvToDbLoader interface {
 func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error {
 	parsed, errLoad := loader.FromCsvRecord(record)
 	if errLoad != nil {
+		log.Printf("Error loading record: %q", errLoad.Error())
 		return errLoad
 	}
 	db := models.GetDb()
 	untypedModel, errParse := parsed.ToDbModel(db)
 	if errParse != nil {
+		log.Printf("Error parsing record: %q", errParse.Error())
 		return errParse
 	}
 	typedModel, ok := untypedModel.(modelType)
@@ -30,6 +33,7 @@ func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error 
 		return errors.New("wrong type provided to load record to db")
 	}
 	if err := db.Debug().Create(&typedModel).Error; err != nil {
+		log.Printf("Error creating record: %q", err.Error())
 		return err
 	}
 

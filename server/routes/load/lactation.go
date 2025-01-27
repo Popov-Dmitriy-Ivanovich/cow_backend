@@ -287,6 +287,7 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	cow := models.Cow{}
 	db := models.GetDb()
 	if err := db.First(&cow, map[string]any{"selecs_number": lr.CowSelecs}).Error; err != nil {
+		log.Printf("ошибка поиска коровы: %q", err.Error())
 		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
 	}
 	lactationCount := int64(0)
