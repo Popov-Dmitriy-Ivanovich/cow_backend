@@ -368,6 +368,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 			if err != nil {
 				errorsMtx.Lock()
 				errors = append(errors, err.Error())
+				log.Printf("[ERROR] PARSING FILE %q", err.Error())
 				errorsMtx.Unlock()
 				continue
 			}
