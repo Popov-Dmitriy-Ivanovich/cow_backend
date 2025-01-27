@@ -283,13 +283,14 @@ func (lr *lactationRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 }
 
 func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
-	return nil, errors.New("преобразование в модель БД отключено")
+	//return nil, errors.New("преобразование в модель БД отключено")
 	cow := models.Cow{}
-	if err := tx.First(&cow, map[string]any{"selecs_number": lr.CowSelecs}).Error; err != nil {
+	db := models.GetDb()
+	if err := db.First(&cow, map[string]any{"selecs_number": lr.CowSelecs}).Error; err != nil {
 		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
 	}
 	lactationCount := int64(0)
-	if err := tx.Model(models.Lactation{}).Where(map[string]any{"cow_id": cow.ID, "number": lr.Number}).Count(&lactationCount).Error; err != nil {
+	if err := db.Model(models.Lactation{}).Where(map[string]any{"cow_id": cow.ID, "number": lr.Number}).Count(&lactationCount).Error; err != nil {
 		log.Printf("Произошла ошибка при поиске лактаций: %q", err.Error())
 		return nil, err
 	}
