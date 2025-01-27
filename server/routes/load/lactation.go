@@ -291,10 +291,10 @@ func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
 		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
 	}
 	lactationCount := int64(0)
-	if err := db.Model(models.Lactation{}).Where(map[string]any{"cow_id": cow.ID, "number": lr.Number}).Count(&lactationCount).Error; err != nil {
-		log.Printf("Произошла ошибка при поиске лактаций: %q", err.Error())
-		return nil, err
-	}
+	//if err := db.Model(models.Lactation{}).Where(map[string]any{"cow_id": cow.ID, "number": lr.Number}).Count(&lactationCount).Error; err != nil {
+	//	log.Printf("Произошла ошибка при поиске лактаций: %q", err.Error())
+	//	return nil, err
+	//}
 	if lactationCount != 0 {
 		return nil, errors.New("Лактация с номером " + strconv.FormatUint(uint64(lr.Number), 10) + " коровы с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10) + " уже существует")
 	}
