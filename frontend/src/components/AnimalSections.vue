@@ -8,6 +8,7 @@
         <li @click="changeSection('health')">Ветеринарные мероприятия</li>
         <li @click="changeSection('milking')">Контрольные доения и лактации</li>
         <li @click="changeSection('lineage')">Родословная</li>
+        <li @click="changeSection('matching')">Подбор пар</li>
         <li @click="changeSection('documents')">Документы</li> 
     </ul>
 </div>

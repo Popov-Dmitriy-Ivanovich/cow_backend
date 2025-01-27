@@ -16,11 +16,11 @@
             <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.departDateTo"></label>
         </div>
         <div class="filter-category" v-if="!fromAnal">
-            <div>Животное мертво</div>
+            <div>Статус</div>
             <select class="filter-input" v-model="filters.isDead">
                 <option :value="null">не важно</option>
-                <option :value="true">да</option>
-                <option :value="false">нет</option>
+                <option :value="true">выбыло</option>
+                <option :value="false">живое</option>
             </select>
         </div>
         <div class="filter-category">

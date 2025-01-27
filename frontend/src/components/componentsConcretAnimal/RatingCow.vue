@@ -1,7 +1,7 @@
 <template>
     <div class="rating-columns">
         <div>
-                <div class="rat-title">Оценка КРС по хозяйству</div>
+                <div class="rat-title">Оценка КРС по региону</div>
             <div class="rating-item">
                 <div class="rating-param">Общая индексная оценка:</div>
                 <div v-if="ratings_hoz">{{ ratings_hoz.GeneralValue || 'Нет информации'}}</div>
@@ -29,7 +29,7 @@
         </div>
 
         <div>
-            <div class="rat-title">Оценка КРС по региону</div>
+            <div class="rat-title">Оценка КРС по стране</div>
             <div class="rating-item">
                 <div class="rating-param">Общая индексная оценка:</div>
                 <div>{{ round(ratings_reg.GeneralValue) || 'Нет информации'}}</div>

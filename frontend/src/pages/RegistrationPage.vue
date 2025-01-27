@@ -10,26 +10,64 @@
         <br>
         <label>Хозяйство</label><br>
         <MultiselectHozRegister  class="hoz" @sendToMain="setIdHoz" v-bind:regionId="newUser.regionId"/> <br>
-        <!-- <div class="hoz-underline">Если нет нужного хозяйства, вы можете <span class="create-hoz">создать</span> его</div> -->
+        <div class="hoz-underline">Если нет нужного хозяйства, вы можете <span class="create-hoz" @click="showCreateHoz = true">создать</span> его</div>
         <label>Роль <span class="required">*</span></label>
-        <div class="role">
+        <!-- <div class="role">
             <input type="radio" name="role" :value="3" v-model="newUser.roleId">Федеральный чиновник<br>
             <input type="radio" name="role" :value="2" v-model="newUser.roleId">Региональный чиновник<br>
             <input type="radio" name="role" :value="1" v-model="newUser.roleId">Фермер<br>
-        </div>
+        </div> -->
+        <MultiselectRole class="hoz" @sendToMain="setIdRole"/><br>
         <label>ФИО <span class="required">*</span></label><br>
         <input type="text" placeholder="Иванов Иван Иванович" class="registration-field" @keyup="valid" id="fio" autocomplete="off" v-model="newUser.nameSurnamePatronimic"> <br>
 
 
-        <!-- <div class="modal-createhoz">
-            <div class="background-modal">
+        <div class="modal-createhoz" v-if="showCreateHoz" @click.stop="showCreateHoz = false">
+            <div class="background-modal" @click.stop>
                 <div class="registrate-title">Создание хозяйства</div>
                 <label>Холдинг</label><br>
                 <input type="text" class="registration-field"><br>
+                <div class="hoz-underline">Если нет нужного холдинга, вы можете <span class="create-hoz" @click="showCreateHold = true">создать</span> его</div>
                 <label>Номер хозяйства</label><br>
                 <input type="number" class="registration-field"><br>
+                <label>Регион (область)</label><br>
+                <MultiselectReg class="region"/><br>
+                <label>Район</label><br>
+                <input type="text" class="registration-field"><br>
+                <label>Адрес</label><br>
+                <input type="text" class="registration-field"><br>
+                <label>Электронная почта</label><br>
+                <input type="email" placeholder="example@email.com" class="registration-field"> <br>
+                <label>Телефон</label><br>
+                <input type="tel" 
+                pattern="^(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$" 
+                placeholder="8 999 999 99 99"
+                class="registration-field"> <br>
+                <button class="registr-btn">Подтвердить</button>
             </div>
-        </div> -->
+        </div>
+
+        <div class="modal-createhoz" v-if="showCreateHold" @click.stop="showCreateHold = false">
+            <div class="background-modal" @click.stop>
+                <div class="registrate-title">Создание холдинга</div>
+                <label>Номер холдинга</label><br>
+                <input type="number" class="registration-field"><br>
+                <label>Регион (область)</label><br>
+                <MultiselectReg class="region"/><br>
+                <label>Район</label><br>
+                <input type="text" class="registration-field"><br>
+                <label>Адрес</label><br>
+                <input type="text" class="registration-field"><br>
+                <label>Электронная почта</label><br>
+                <input type="email" placeholder="example@email.com" class="registration-field"> <br>
+                <label>Телефон</label><br>
+                <input type="tel" 
+                pattern="^(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$" 
+                placeholder="8 999 999 99 99"
+                class="registration-field"> <br>
+                <button class="registr-btn">Подтвердить</button>
+            </div>
+        </div>
 
         <label>Электронная почта <span class="required">*</span></label><br>
         <input type="email" placeholder="example@email.com" class="registration-field" v-model="newUser.email"> <br>
@@ -54,6 +92,7 @@
 
 <script>
 import MultiselectReg from '@/components/MultiselectReg.vue';
+import MultiselectRole from '@/components/MultiselectRole.vue';
 import MultiselectHozRegister from '@/MultiselectHozRegister.vue';
 
 export default {
@@ -71,15 +110,33 @@ export default {
             newHoz: null,
             newHold: null,
 
+            hoz: {
+                hozNumber: null,
+                districtId: null,
+                address: null,
+                email: null,
+                phone: null,
+            },
+            hold: {
+                hozNumber: null,
+                districtId: null,
+                address: null,
+                email: null,
+                phone: null,
+            },
+
             repeatPassword: null,
 
             notAllFields: false,
             notSamePasswords: false,
             success: false,
+
+            showCreateHoz: false,
+            showCreateHold: false,
         }
     },
     components: {
-        MultiselectReg, MultiselectHozRegister
+        MultiselectReg, MultiselectHozRegister, MultiselectRole
     },
     methods: {
         valid() {
@@ -111,6 +168,7 @@ export default {
             obj.newUser = this.newUser;
             obj.newHoz = this.newHoz;
             obj.newHold = this.newHold;
+
             let response = await fetch(`/api/user/create`, {
                 method: 'POST',
                 headers: {
@@ -122,7 +180,6 @@ export default {
             if(response.status == 200) {
                 this.success = true;
             }
-
         },
         setIdReg(new_val){
             if (new_val) {
@@ -138,6 +195,13 @@ export default {
                 this.newUser.hozNumber = null;
             }
         },
+        setIdRole(new_val){
+            if (new_val) {
+                this.newUser.roleId = new_val;
+            } else {
+                this.newUser.roleId = null;
+            }
+        }
 
     },
     mounted() {
@@ -264,6 +328,8 @@ export default {
         background-color: white;
         border-radius: 20px;
         padding: 50px 80px;
+        height: 80%;
+        overflow: auto;
     }
 
     .required {
@@ -281,5 +347,19 @@ export default {
         padding: 10px 0;
         color: green;
         max-width: 350px;
+    }
+
+    .background-modal::-webkit-scrollbar {
+    width: 12px;
+    }
+
+    .background-modal::-webkit-scrollbar-track {
+        background: rgb(241, 241, 241);
+    }
+
+    .background-modal::-webkit-scrollbar-thumb {
+        background-color: rgb(183, 183, 183);
+        border-radius: 20px;
+        border: 3px solid rgb(241, 241, 241);
     }
 </style>
