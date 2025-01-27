@@ -32,10 +32,12 @@ func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error 
 	if !ok {
 		return errors.New("wrong type provided to load record to db")
 	}
+	log.Printf("[INFO] starting record loading")
 	if err := db.Debug().Create(&typedModel).Error; err != nil {
 		log.Printf("Error creating record: %q", err.Error())
 		return err
 	}
+	log.Printf("[INFO] finishing record loading")
 
 	return nil
 }
