@@ -274,6 +274,7 @@ func NewLactationRecord(header []string) (*lactationRecord, error) {
 }
 
 func (lr *lactationRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
+	return nil, errors.New("Парсер строки csv отключен")
 	for col, parser := range lactationRecordParsers {
 		if err := parser(lr, rec); err != nil {
 			return nil, errors.New("ошибка парсинга колонки " + col + " значения " + rec[lr.HeaderIndexes[col]] + ": " + err.Error())
@@ -283,6 +284,7 @@ func (lr *lactationRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 }
 
 func (lr *lactationRecord) ToDbModel(tx *gorm.DB) (any, error) {
+	return nil, errors.New("преобразование в модель БД отключено")
 	cow := models.Cow{}
 	if err := tx.First(&cow, map[string]any{"selecs_number": lr.CowSelecs}).Error; err != nil {
 		return nil, errors.New("Не найдена корова с селексом " + strconv.FormatUint(uint64(lr.CowSelecs), 10))
@@ -350,12 +352,12 @@ func (l *Load) Lactation() func(*gin.Context) {
 		}
 		defer file.Close()
 		csvReader := csv.NewReader(file)
-		//	header, err := csvReader.Read()
+		header, err := csvReader.Read()
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
 		}
-		//recordWithHeader, err := NewLactationRecord(header)
+		recordWithHeader, err := NewLactationRecord(header)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
@@ -367,7 +369,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 		MakeLoadingPool(loadChannel, LoadRecordToDb[models.Lactation])
 		log.Printf("[INFO] START PARSING CSV FILE")
 		// do some database operations in the transaction (use 'tx' from this point, not 'db')
-		for _, err := csvReader.Read(); err != io.EOF; _, err = csvReader.Read() {
+		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
 			if err != nil {
 				errorsMtx.Lock()
 				errors = append(errors, err.Error())
@@ -375,14 +377,14 @@ func (l *Load) Lactation() func(*gin.Context) {
 				errorsMtx.Unlock()
 				continue
 			}
-			/*loaderWg.Add(1)
+			loaderWg.Add(1)
 			loadChannel <- loaderData{
 				Loader:    recordWithHeader.Copy(),
 				Record:    record,
 				Errors:    &errors,
 				ErrorsMtx: &errorsMtx,
 				WaitGroup: &loaderWg,
-			}*/
+			}
 		}
 		log.Printf("[INFO] LOADED ALL DATA FROM CSV TO PROCESSING CHANNEL")
 		loaderWg.Wait()
