@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"errors"
 	"io"
+	"log"
 	"os"
 	"strconv"
 	"sync"
@@ -379,6 +380,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 				WaitGroup: &loaderWg,
 			}
 		}
+		log.Printf("[INFO] LOADED ALL DATA FROM CSV TO CHANNEL")
 		loaderWg.Wait()
 		close(loadChannel)
 		c.JSON(200, errors)
