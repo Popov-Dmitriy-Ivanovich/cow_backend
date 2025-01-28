@@ -49,8 +49,8 @@ func GetDb() *gorm.DB {
 		}
 
 		// SetMaxOpenConns sets the maximum number of open connections to the database.
-		sqlDB.SetMaxOpenConns(10)
-		sqlDB.SetMaxIdleConns(2)
+		sqlDB.SetMaxOpenConns(20)
+		//sqlDB.SetMaxIdleConns(2)
 	}
 	return dbConnection
 }

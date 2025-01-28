@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const MAX_CONCURENT_LOADERS = 64
+const MAX_CONCURENT_LOADERS = 16
 
 type CsvToDbLoader interface {
 	FromCsvRecord(rec []string) (CsvToDbLoader, error)
@@ -33,9 +33,10 @@ func LoadRecordToDb[modelType any](loader CsvToDbLoader, record []string) error 
 		return errors.New("wrong type provided to load record to db")
 	}
 	log.Printf("[INFO] starting record loading")
-	if err := db.Debug().Create(&typedModel).Error; err != nil {
-		log.Printf("Error creating record: %q", err.Error())
-		return err
+	log.Printf("[INFO] TYPEDMODEL=%v", typedModel)
+	if createRes := db.Debug().Create(&typedModel); createRes.Error != nil {
+		log.Printf("Error creating record: %q", createRes.Error.Error())
+		return createRes.Error
 	}
 	log.Printf("[INFO] finishing record loading")
 
