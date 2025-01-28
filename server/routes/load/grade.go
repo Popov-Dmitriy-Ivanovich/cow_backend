@@ -1,5 +1,6 @@
 package load
 
+/*
 import (
 	"cow_backend/models"
 	"encoding/csv"
@@ -382,3 +383,4 @@ func (l *Load) Grade() func(*gin.Context) {
 		c.JSON(200, errors)
 	}
 }
+*/

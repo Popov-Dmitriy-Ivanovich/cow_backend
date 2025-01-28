@@ -31,8 +31,36 @@ func initDb() error {
 		panic(err)
 	}
 
-	db.AutoMigrate(&Cow{}, &Genetic{}, &GeneticIllnessStatus{}, &GeneticIllnessData{}, &GeneticIllness{}, &User{}, &Region{}, &News{}, &Partner{}, &Breed{}, &Farm{}, &Role{}, &Sex{}, &Event{}, &Grade{},
-		&EventType{}, &Lactation{}, &CheckMilk{}, &DailyMilk{}, &District{}, &Exterior{}, &Update{}, &Document{}, &UserRegisterRequest{}, &HozRegisterRequest{}, &HoldRegisterRequest{})
+	db.AutoMigrate(
+		&Cow{},
+		&Genetic{},
+		&GeneticIllnessStatus{},
+		&GeneticIllnessData{},
+		&GeneticIllness{},
+		&User{},
+		&Region{},
+		&News{},
+		&Partner{},
+		&Breed{},
+		&Farm{},
+		&Role{},
+		&Sex{},
+		&Event{},
+		&Grade{},
+		&GradeHoz{},
+		&GradeRegion{},
+		&GradeCountry{},
+		&EventType{},
+		&Lactation{},
+		&CheckMilk{},
+		&DailyMilk{},
+		&District{},
+		&Exterior{},
+		&Update{},
+		&Document{},
+		&UserRegisterRequest{},
+		&HozRegisterRequest{},
+		&HoldRegisterRequest{})
 	dbConnection = db
 	return nil
 }

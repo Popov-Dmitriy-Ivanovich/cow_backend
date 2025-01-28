@@ -29,11 +29,11 @@ type Cow struct {
 
 	Events []Event `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 
-	GradeRegion   *Grade `json:"-"`
-	GradeRegionId *uint  `example:"1"` // Оценка по региону
+	GradeRegion *GradeRegion `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 
-	GradeHoz   *Grade `json:"-"`
-	GradeHozId *uint  `example:"1"` // Оценка по хозяйству
+	GradeHoz *GradeHoz `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+
+	GradeCountry *GradeCountry `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 
 	FatherSelecs *uint64 // ID коровы отца коровы
 

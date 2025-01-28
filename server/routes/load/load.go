@@ -12,7 +12,7 @@ func (s *Load) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.POST("/checkMilk", s.CheckMilk())
 	apiGroup.POST("/event", s.Event())
 	apiGroup.POST("/genetic", s.Genetic())
-	apiGroup.POST("/grade", s.Grade())
+	//apiGroup.POST("/grade", s.Grade())
 	apiGroup.POST("/lactation", s.Lactation())
 	apiGroup.POST("/exterior", s.Exterior())
 	apiGroup.POST("/partner", s.Partner())
