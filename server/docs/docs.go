@@ -2648,16 +2648,6 @@ const docTemplate = `{
                 "genetic": {
                     "$ref": "#/definitions/models.Genetic"
                 },
-                "gradeHozId": {
-                    "description": "Оценка по хозяйству",
-                    "type": "integer",
-                    "example": 1
-                },
-                "gradeRegionId": {
-                    "description": "Оценка по региону",
-                    "type": "integer",
-                    "example": 1
-                },
                 "holding": {
                     "$ref": "#/definitions/models.Farm"
                 },
@@ -2910,7 +2900,7 @@ const docTemplate = `{
                     }
                 },
                 "orderBy": {
-                    "description": "Может принимать следующие и только следующие значения: null, \"RSHN\", \"InventoryNumber\", \"Name\", \"HozName\", \"BirthDate\"",
+                    "description": "Может принимать следующие и только следующие значения: null, \"RSHN\", \"InventoryNumber\", \"Name\", \"HozName\", \"BirthDate\", \"GeneralEbvRegion\"",
                     "type": "string"
                 },
                 "orderByDesc": {
@@ -3082,16 +3072,6 @@ const docTemplate = `{
                 },
                 "genetic": {
                     "$ref": "#/definitions/models.Genetic"
-                },
-                "gradeHozId": {
-                    "description": "Оценка по хозяйству",
-                    "type": "integer",
-                    "example": 1
-                },
-                "gradeRegionId": {
-                    "description": "Оценка по региону",
-                    "type": "integer",
-                    "example": 1
                 },
                 "holding": {
                     "$ref": "#/definitions/models.Farm"
@@ -3616,34 +3596,54 @@ const docTemplate = `{
                     "description": "Оценка жира по EBV",
                     "type": "number"
                 },
+                "ebvFatReliability": {
+                    "description": "Достоверность расчета оценки жира",
+                    "type": "number"
+                },
                 "ebvInsemenation": {
                     "description": "Оценка кратности осеменения по EBV",
+                    "type": "number"
+                },
+                "ebvInsemenationReliability": {
+                    "description": "Достоверность расчета оценки кратности осеменения",
                     "type": "number"
                 },
                 "ebvMilk": {
                     "description": "Оценка удоя по EBV",
                     "type": "number"
                 },
+                "ebvMilkReliability": {
+                    "description": "Достоверность расчета оценки удоя",
+                    "type": "number"
+                },
                 "ebvProtein": {
                     "description": "Оценка белка по EBV",
                     "type": "number"
                 },
-                "evbService": {
+                "ebvProteinReliability": {
+                    "description": "Достоверность расчета оценки белка",
+                    "type": "number"
+                },
+                "ebvService": {
                     "description": "Оценка длительности сервисного периода по EBV",
+                    "type": "number"
+                },
+                "ebvServiceReliability": {
+                    "description": "Достоверность расчета оценки сервисного периода",
                     "type": "number"
                 },
                 "generalValue": {
                     "description": "Общая оценка по EBV",
                     "type": "number"
                 },
+                "generalValueReliability": {
+                    "description": "Достоверность расчета общей оценки",
+                    "type": "number"
+                },
                 "id": {
                     "description": "ID оценки",
                     "type": "integer",
                     "example": 1
-                },
-                "reliabilityOfCalculation": {
-                    "description": "Достоверность расчета",
-                    "type": "number"
                 }
             }
         },

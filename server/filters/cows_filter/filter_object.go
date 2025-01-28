@@ -49,7 +49,7 @@ type CowsFilter struct { // Фильтр коров
 	CreatedAtFrom *string `validate:"optional"` // Фильтр по дате внесения записи в БД ОТ
 	CreatedAtTo   *string `validate:"optional"` // Фильтр по дате внесения записи в БД ДО
 
-	OrderBy     *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate"
+	OrderBy     *string // Может принимать следующие и только следующие значения: null, "RSHN", "InventoryNumber", "Name", "HozName", "BirthDate", "GeneralEbvRegion"
 	OrderByDesc *bool   // true - в порядке убывания, false - в порядке возрастания
 	RegionId    *uint   // по региону
 }
