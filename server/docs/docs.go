@@ -1594,6 +1594,93 @@ const docTemplate = `{
                 }
             }
         },
+        "/farms/farm": {
+            "get": {
+                "description": "Возвращает список всех ферм",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farms"
+                ],
+                "summary": "Get list of Farms",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Farm"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/farms/hold": {
+            "get": {
+                "description": "Возвращает список всех холдингов",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farms"
+                ],
+                "summary": "Get list of holdings",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Farm"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/farms/hoz": {
+            "get": {
+                "description": "Возвращает список всех хозяйств",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Farms"
+                ],
+                "summary": "Get list of Hoz",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Farm"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/farms/{id}": {
             "get": {
                 "description": "Возращает конкретную ферму (хозяйство, холдинг)",
@@ -3377,7 +3464,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "hozNumber": {
-                    "description": "Region   Region ` + "`" + `json:\"-\"` + "`" + `\nRegionId uint",
+                    "description": "Номер хоз-ва",
                     "type": "string"
                 },
                 "hozPercentageInBase": {
@@ -3400,7 +3487,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "parrentId": {
-                    "description": "ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)",
+                    "description": "ID управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)",
                     "type": "integer"
                 },
                 "phone": {
@@ -3553,6 +3640,10 @@ const docTemplate = `{
                     "description": "ID оценки",
                     "type": "integer",
                     "example": 1
+                },
+                "reliabilityOfCalculation": {
+                    "description": "Достоверность расчета",
+                    "type": "number"
                 }
             }
         },

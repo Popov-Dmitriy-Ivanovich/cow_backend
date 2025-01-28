@@ -81,3 +81,63 @@ func (f *Farms) GetByFilter() func(*gin.Context) {
 
 	// return routes.GenerateGetFunctionByFilters[models.Farm](true, "parrent_id")
 }
+
+// GetFarms
+// @Summary Get list of Farms
+// @Description Возвращает список всех ферм
+// @Tags Farms
+// @Produce json
+// @Success 200 {array} models.Farm
+// @Failure      500  {object}   string
+// @Router       /farms/farm [get]
+func (f *Farms) GetFarms() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db := models.GetDb()
+		farms := []models.Farm{}
+		if err := db.Find(&farms, map[string]any{"type": 3}).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		c.JSON(200, farms)
+	}
+}
+
+// GetHoz
+// @Summary Get list of Hoz
+// @Description Возвращает список всех хозяйств
+// @Tags Farms
+// @Produce json
+// @Success 200 {array} models.Farm
+// @Failure      500  {object}   string
+// @Router       /farms/hoz [get]
+func (f *Farms) GetHoz() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db := models.GetDb()
+		farms := []models.Farm{}
+		if err := db.Find(&farms, map[string]any{"type": 2}).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		c.JSON(200, farms)
+	}
+}
+
+// GetHoldings
+// @Summary Get list of holdings
+// @Description Возвращает список всех холдингов
+// @Tags Farms
+// @Produce json
+// @Success 200 {array} models.Farm
+// @Failure      500  {object}   string
+// @Router       /farms/hold [get]
+func (f *Farms) GetHoldings() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		db := models.GetDb()
+		farms := []models.Farm{}
+		if err := db.Find(&farms, map[string]any{"type": 1}).Error; err != nil {
+			c.JSON(500, err.Error())
+			return
+		}
+		c.JSON(200, farms)
+	}
+}

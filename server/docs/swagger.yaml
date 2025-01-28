@@ -999,9 +999,7 @@ definitions:
         description: Эл. почта
         type: string
       hozNumber:
-        description: |-
-          Region   Region `json:"-"`
-          RegionId uint
+        description: Номер хоз-ва
         type: string
       hozPercentageInBase:
         description: Процент хозяйств в базе
@@ -1018,8 +1016,8 @@ definitions:
         description: Краткое название хозяйства
         type: string
       parrentId:
-        description: ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы
-          - хозяйство)
+        description: ID управляющего хоз-ва (для хозяйства - холдинг, для фермы -
+          хозяйство)
         type: integer
       phone:
         description: телефон
@@ -1126,6 +1124,9 @@ definitions:
         description: ID оценки
         example: 1
         type: integer
+      reliabilityOfCalculation:
+        description: Достоверность расчета
+        type: number
     type: object
   models.HoldRegisterRequest:
     properties:
@@ -2443,6 +2444,63 @@ paths:
           schema:
             type: string
       summary: Get farm
+      tags:
+      - Farms
+  /farms/farm:
+    get:
+      description: Возвращает список всех ферм
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Farm'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get list of Farms
+      tags:
+      - Farms
+  /farms/hold:
+    get:
+      description: Возвращает список всех холдингов
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Farm'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get list of holdings
+      tags:
+      - Farms
+  /farms/hoz:
+    get:
+      description: Возвращает список всех хозяйств
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Farm'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get list of Hoz
       tags:
       - Farms
   /lactations/{id}:

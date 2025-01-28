@@ -9,13 +9,11 @@ import (
 type Farm struct {
 	ID uint `gorm:"primaryKey"`
 
-	// Region   Region `json:"-"`
-	// RegionId uint
 	HozNumber  *string  `gorm:"index"` // Номер хоз-ва
 	District   District `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	DistrictId uint     // ID района, в котором находится хозяйство
 	Parrent    *Farm    `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
-	ParrentId  *uint    // ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)
+	ParrentId  *uint    // ID управляющего хоз-ва (для хозяйства - холдинг, для фермы - хозяйство)
 
 	Type      uint    // Тип: хозяйство, ферма, холдинг
 	Name      string  // Название хозяйства
