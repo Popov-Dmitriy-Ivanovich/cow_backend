@@ -32,6 +32,7 @@ func initDb() error {
 	}
 
 	db.AutoMigrate(
+		&BlupStatistics{},
 		&Cow{},
 		&Genetic{},
 		&GeneticIllnessStatus{},
