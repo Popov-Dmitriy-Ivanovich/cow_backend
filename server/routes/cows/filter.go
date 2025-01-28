@@ -323,7 +323,7 @@ func (c *Cows) Filter() func(*gin.Context) {
 			return
 		}
 
-		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1)).Order("inventory_number")
+		query = query.Limit(int(recordsPerPage)).Offset(int(recordsPerPage) * int(pageNumber-1))
 		dbCows := []models.Cow{}
 		if err := query.Debug().Find(&dbCows).Error; err != nil {
 			c.JSON(500, err.Error())

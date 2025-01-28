@@ -3,7 +3,6 @@ package cows_filter
 import (
 	"cow_backend/filters"
 	"errors"
-	"gorm.io/gorm"
 )
 
 type OrderBy struct {
@@ -14,14 +13,14 @@ var orderingsDesc = map[string]string{
 	"InventoryNumber":  "inventory_number desc",
 	"Name":             "name desc",
 	"BirthDate":        "birth_date desc",
-	"GeneralEbvRegion": "grade_regions.general_value desc",
+	"GeneralEbvRegion": "\"GradeRegion\".general_value desc",
 }
 var orderingsAsc = map[string]string{
 	"RSHN":             "rshn_number asc",
 	"InventoryNumber":  "inventory_number asc",
 	"Name":             "name asc",
 	"BirthDate":        "birth_date asc",
-	"GeneralEbvRegion": "grade_regions.general_value asc",
+	"GeneralEbvRegion": "\"GradeRegion\".general_value asc",
 }
 
 func (f OrderBy) Apply(fm filters.FilteredModel) error {
@@ -45,9 +44,7 @@ func (f OrderBy) Apply(fm filters.FilteredModel) error {
 				return nil
 			}
 		}
-		query = query.Preload("GradeRegion", func(db *gorm.DB) *gorm.DB {
-			return db.Order(orderStr)
-		})
+		query = query.Joins("GradeRegion").Order(orderStr)
 	}
 
 	fm.SetQuery(query)
