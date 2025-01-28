@@ -31,4 +31,5 @@ var ALL_FILTERS = []filters.Filter{
 	LiveInDistrict{},
 	LiveInHolding{},
 	LiveInRegion{},
+	ByEbvRegionGeneralValue{},
 }
