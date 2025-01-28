@@ -3991,7 +3991,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "genmilk.ru",
+	Host:             "83.69.249.5",
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "GenMilk API",

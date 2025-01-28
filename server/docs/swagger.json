@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "genmilk.ru",
+    "host": "83.69.249.5",
     "basePath": "/api",
     "paths": {
         "/analitics/checkMilks/years": {

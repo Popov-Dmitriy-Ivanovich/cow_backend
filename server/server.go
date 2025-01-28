@@ -56,7 +56,7 @@ func seq(start, end int) []int {
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host      genmilk.ru
+// @host      83.69.249.5
 // @BasePath  /api
 
 // @securityDefinitions.basic  BasicAuth

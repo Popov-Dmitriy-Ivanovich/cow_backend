@@ -1351,7 +1351,7 @@ definitions:
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
-host: genmilk.ru
+host: 83.69.249.5
 info:
   contact:
     email: support@swagger.io
