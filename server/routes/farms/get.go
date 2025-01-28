@@ -25,6 +25,8 @@ func (f *Farms) GetByID() func(*gin.Context) {
 // GetByFilter
 // @Summary      Get list of farms
 // @Description  Возращает список ферм. Разрешает отсутсвие фильтров
+// @Deprecated   Рут является deprecated, никакие изменения в его работу вноситься не будут.
+// @Deprecated   Если появится необходимость как либо модифицировать его работу - лучше написать новый
 // @Tags         Farms
 // @Param        parrent_id    query     object  false  "ID более главной фермы, null для поиска холдингов"
 // @Produce      json

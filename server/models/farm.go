@@ -22,11 +22,12 @@ type Farm struct {
 	NameShort string  // Краткое название хозяйства
 	Inn       *string // ИНН
 
-	Address     string  // Адрес
-	Phone       *string // телефон
-	Email       *string // Эл. почта
-	Description *string // описание
-	CowsCount   *uint   // Количество коров
+	Address             string   // Адрес
+	Phone               *string  // телефон
+	Email               *string  // Эл. почта
+	Description         *string  // описание
+	CowsCount           *uint    // Количество коров в базе
+	HozPercentageInBase *float64 // Процент хозяйств в базе
 }
 
 func (f *Farm) Validate() error {

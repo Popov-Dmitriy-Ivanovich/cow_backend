@@ -11,7 +11,7 @@ import (
 //	@Summary      Get farm by region id
 //	@Description  Возращает все фермы в регионе (Данные представлены как словарь с единственным ключем "farms")
 //
-// @Tags         Regions
+// @Tags         zzDeprecated
 // @Param        id    path     int  true  "id of region"
 // @Produce      json
 // @Success      200  {array}   models.Farm

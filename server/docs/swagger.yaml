@@ -285,9 +285,9 @@ definitions:
       checkDate:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
-        description: Дата конрольной дойки
+        description: Дата контрольной дойки
       dryMatter:
-        description: сухой материал
+        description: Сухой материал
         type: number
       fat:
         description: Параметр контрольной дойки, как я понимаю кол-во жира в молоке
@@ -312,14 +312,14 @@ definitions:
         description: День доения относительно начала лактации
         type: integer
       probeNumber:
-        description: номер пробы
+        description: Номер пробы
         type: integer
       protein:
         description: Параметр контрольной дойки, как я понимаю кол-во белка в молоке
         example: 1
         type: number
       somaticNucCount:
-        description: количество соматических клеток
+        description: Количество соматических клеток
         type: number
     type: object
   cows.ReserealizedCow:
@@ -341,7 +341,7 @@ definitions:
         description: ID хозяйства рождения
         type: integer
       birthMethod:
-        description: 'способ зачатия: клон, эмбрион, искусственное осеменени, естественное
+        description: 'Способ зачатия: клон, эмбрион, искусственное осеменени, естественное
           осеменение'
         type: string
       breedId:
@@ -386,11 +386,11 @@ definitions:
       genetic:
         $ref: '#/definitions/models.Genetic'
       gradeHozId:
-        description: оценка по хозяйству
+        description: Оценка по хозяйству
         example: 1
         type: integer
       gradeRegionId:
-        description: оценка по региону
+        description: Оценка по региону
         example: 1
         type: integer
       holding:
@@ -406,7 +406,7 @@ definitions:
         example: 1
         type: integer
       identificationNumber:
-        description: он все-таки есть! это какой-то не российский номер коровы
+        description: Он все-таки есть! Это какой-то не российский номер коровы
         type: string
       inbrindingCoeffByFamily:
         description: Exterior                float64  `example:"3.14"` // Оценка экстерьера
@@ -644,9 +644,9 @@ definitions:
       checkDate:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
-        description: Дата конрольной дойки
+        description: Дата контрольной дойки
       dryMatter:
-        description: сухой материал
+        description: Сухой материал
         type: number
       fat:
         description: Параметр контрольной дойки, как я понимаю кол-во жира в молоке
@@ -665,14 +665,14 @@ definitions:
         example: 1
         type: number
       probeNumber:
-        description: номер пробы
+        description: Номер пробы
         type: integer
       protein:
         description: Параметр контрольной дойки, как я понимаю кол-во белка в молоке
         example: 1
         type: number
       somaticNucCount:
-        description: количество соматических клеток
+        description: Количество соматических клеток
         type: number
     type: object
   models.Cow:
@@ -694,7 +694,7 @@ definitions:
         description: ID хозяйства рождения
         type: integer
       birthMethod:
-        description: 'способ зачатия: клон, эмбрион, искусственное осеменени, естественное
+        description: 'Способ зачатия: клон, эмбрион, искусственное осеменени, естественное
           осеменение'
         type: string
       breedId:
@@ -729,11 +729,11 @@ definitions:
       genetic:
         $ref: '#/definitions/models.Genetic'
       gradeHozId:
-        description: оценка по хозяйству
+        description: Оценка по хозяйству
         example: 1
         type: integer
       gradeRegionId:
-        description: оценка по региону
+        description: Оценка по региону
         example: 1
         type: integer
       holding:
@@ -746,7 +746,7 @@ definitions:
         example: 1
         type: integer
       identificationNumber:
-        description: он все-таки есть! это какой-то не российский номер коровы
+        description: Он все-таки есть! Это какой-то не российский номер коровы
         type: string
       inbrindingCoeffByFamily:
         description: Exterior                float64  `example:"3.14"` // Оценка экстерьера
@@ -843,44 +843,44 @@ definitions:
         description: ID
         type: integer
       path:
-        description: путь к документу относительно genmilk.ru/api/static/documents
+        description: Путь к документу относительно genmilk.ru/api/static/documents
         type: string
     type: object
   models.Event:
     properties:
       comment1:
-        description: Коментарий 1 (по всей видиости сюда что-то пришет врач)
+        description: Комментарий 1 (по всей видимости сюда что-то пришит врач)
         type: string
       comment2:
-        description: Коментарий 2
+        description: Комментарий 2
         type: string
       cowId:
         description: ID коровы
         type: integer
       dataResourse:
-        description: источник данных
+        description: Источник данных
         type: string
       date:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
         description: Дата ветеринарного события
       daysFromLactation:
-        description: дни от начала лактации
+        description: Дни от начала лактации
         type: integer
       eventType:
         $ref: '#/definitions/models.EventType'
       eventType1:
         $ref: '#/definitions/models.EventType'
       eventType1Id:
-        description: стандартизированная название события
+        description: Стандартизированная название события
         type: integer
       eventType2:
         $ref: '#/definitions/models.EventType'
       eventType2Id:
-        description: стандартизированное разновидность события
+        description: Стандартизированное разновидность события
         type: integer
       eventTypeId:
-        description: стандартизированная группа события
+        description: Стандартизированная группа события
         type: integer
       id:
         type: integer
@@ -888,7 +888,7 @@ definitions:
   models.EventType:
     properties:
       code:
-        description: код группы или разновидности или названия события
+        description: Код группы или разновидности или названия события
         type: integer
       id:
         type: integer
@@ -954,6 +954,7 @@ definitions:
       limbs:
         type: number
       milkStrength:
+        description: 100 бальные
         type: number
       pelvicWidth:
         type: number
@@ -986,7 +987,7 @@ definitions:
         description: Адрес
         type: string
       cowsCount:
-        description: количество коров
+        description: Количество коров в базе
         type: integer
       description:
         description: описание
@@ -995,13 +996,16 @@ definitions:
         description: ID района, в котором находится хозяйство
         type: integer
       email:
-        description: эл. почта
+        description: Эл. почта
         type: string
       hozNumber:
         description: |-
           Region   Region `json:"-"`
           RegionId uint
         type: string
+      hozPercentageInBase:
+        description: Процент хозяйств в базе
+        type: number
       id:
         type: integer
       inn:
@@ -1011,7 +1015,7 @@ definitions:
         description: Название хозяйства
         type: string
       nameShort:
-        description: Краткое название хозйства
+        description: Краткое название хозяйства
         type: string
       parrentId:
         description: ID более управляющего хоз-ва (для хозяйства - холдинг, для фермы
@@ -1039,7 +1043,7 @@ definitions:
           $ref: '#/definitions/models.GeneticIllnessData'
         type: array
       gtcFilePath:
-        description: путь к gtc файлу относительно genmilk.ru/api/static/gtc
+        description: Путь к gtc файлу относительно genmilk.ru/api/static/gtc
         type: string
       id:
         description: ID записи о генотипировании
@@ -1053,7 +1057,7 @@ definitions:
       resultDate:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
-        description: Дата получения  результата
+        description: Дата получения результата
     type: object
   models.GeneticIllness:
     properties:
@@ -1098,6 +1102,8 @@ definitions:
     type: object
   models.Grade:
     properties:
+      cowID:
+        type: integer
       ebvFat:
         description: Оценка жира по EBV
         type: number
@@ -1114,7 +1120,7 @@ definitions:
         description: Оценка длительности сервисного периода по EBV
         type: number
       generalValue:
-        description: CowID           uint
+        description: Общая оценка по EBV
         type: number
       id:
         description: ID оценки
@@ -1187,7 +1193,7 @@ definitions:
         description: ID коровы, данные о лактации которой записаны
         type: integer
       days:
-        description: количество дней, когда корова дает молоко
+        description: Количество дней, когда корова дает молоко
         type: integer
       fat305:
         description: Суммарный жир за 305 дней
@@ -1247,15 +1253,15 @@ definitions:
         description: Адрес
         type: string
       description:
-        description: описание партнера
+        description: Описание партнера
         type: string
       email:
-        description: эл. почта
+        description: Эл. почта
         type: string
       id:
         type: integer
       logoPath:
-        description: путь к логотипу партнера относительно genmlik.ru/api/static/partners
+        description: Путь к логотипу партнера относительно genmlik.ru/api/static/partners
         type: string
       name:
         description: Название партнера
@@ -1270,7 +1276,7 @@ definitions:
         default: 1
         type: integer
       name:
-        description: название региона
+        description: Название региона
         example: Усть-Каменский
         type: string
       news:
@@ -1278,7 +1284,7 @@ definitions:
           $ref: '#/definitions/models.News'
         type: array
       regNum:
-        description: номер региона (Архангельская область = 29)
+        description: Номер региона (Архангельская область = 29)
         type: integer
     type: object
   models.Role:
@@ -1286,7 +1292,7 @@ definitions:
       id:
         type: integer
       name:
-        description: название роли
+        description: Название роли
         type: string
     type: object
   models.Sex:
@@ -1310,7 +1316,7 @@ definitions:
       email:
         type: string
       hozNumber:
-        description: 'номер хоз-ва к которому привязвыается пользователь: либо существует,
+        description: 'Номер хоз-ва к которому привязвыается пользователь: либо существует,
           либо newHoz'
         type: string
       id:
@@ -2385,6 +2391,7 @@ paths:
       - Districts
   /farms:
     get:
+      deprecated: true
       description: Возращает список ферм. Разрешает отсутсвие фильтров
       parameters:
       - description: ID более главной фермы, null для поиска холдингов
@@ -2578,7 +2585,7 @@ paths:
             type: string
       summary: Get farm by region id
       tags:
-      - Regions
+      - zzDeprecated
   /regions/{id}/news:
     get:
       description: Возращает новости региона
