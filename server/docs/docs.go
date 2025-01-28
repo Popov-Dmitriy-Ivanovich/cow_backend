@@ -2393,6 +2393,10 @@ const docTemplate = `{
                         }
                     ]
                 },
+                "ebvGeneralValueRegion": {
+                    "description": "Общая оценка EBV по региону",
+                    "type": "number"
+                },
                 "events": {
                     "description": "Вет события",
                     "type": "array",
@@ -2787,6 +2791,14 @@ const docTemplate = `{
                     "description": "Фильтр по дате открепления коровы ищет всех коров открепленных от коровника в эту дату или раньше",
                     "type": "string",
                     "example": "2800-01-21"
+                },
+                "ebvGeneralValueRegionFrom": {
+                    "type": "number",
+                    "example": 3.14
+                },
+                "ebvGeneralValueRegionTo": {
+                    "type": "number",
+                    "example": 3.14
                 },
                 "entitiesOnPage": {
                     "description": "Количество сущностей на странице",

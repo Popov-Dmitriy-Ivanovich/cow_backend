@@ -195,6 +195,9 @@ definitions:
         allOf:
         - $ref: '#/definitions/models.DateOnly'
         description: Дата выбытия
+      ebvGeneralValueRegion:
+        description: Общая оценка EBV по региону
+        type: number
       events:
         description: Вет события
         items:
@@ -504,6 +507,12 @@ definitions:
           от коровника в эту дату или раньше
         example: "2800-01-21"
         type: string
+      ebvGeneralValueRegionFrom:
+        example: 3.14
+        type: number
+      ebvGeneralValueRegionTo:
+        example: 3.14
+        type: number
       entitiesOnPage:
         default: 50
         description: Количество сущностей на странице
