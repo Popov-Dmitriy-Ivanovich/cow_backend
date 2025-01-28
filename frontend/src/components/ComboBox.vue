@@ -90,13 +90,11 @@ export default {
             this.list = new_val;
             console.log('change start value');
         },
-        async valueFromOutside(new_val) {
+        valueFromOutside(new_val) {
             if (new_val) {
                 this.selected_value = [];
                 this.selected_value.push(new_val);
-                console.log(this.start_value.length, this.start_value);
-                for (let val of this.start_value) {
-                    console.log('inside for');
+                for (let val of this.list) {
                     if (val.id === new_val) {
                         this.text1 = val.name;
                     }

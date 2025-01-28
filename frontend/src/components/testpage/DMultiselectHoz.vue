@@ -27,7 +27,7 @@ export default {
             this.$emit('sendToMain', newValue);
         }
     },
-    async created() {
+    async mounted() {
         this.options = [];
         const response = await fetch('/api/farms?parrent_id=null',
             {
@@ -37,6 +37,7 @@ export default {
             }
         );
         const hozs = await response.json();
+        console.log(hozs, hozs.length, 'hozs');
         for (let i = 0; i < hozs.length; i++) {
             let hoz = {name: hozs[i].Name, id: hozs[i].ID};
             this.options.push(hoz);

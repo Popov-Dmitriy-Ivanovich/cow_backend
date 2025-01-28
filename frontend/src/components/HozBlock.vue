@@ -25,9 +25,16 @@ export default {
     async created() {
         const response = await fetch('/api/farms/hoz');
         const res_farms = await response.json();
-        for (let i = 0; i < 3; i ++) {
-            this.farms.push(res_farms[i]);
+        if (res_farms.length > 3) {
+            for (let i = 0; i < 3; i ++) {
+                this.farms.push(res_farms[i]);
+            }
+        } else {
+            for (let i = 0; i < res_farms.length; i ++) {
+                this.farms.push(res_farms[i]);
+            }
         }
+
     }
 }
 </script>
@@ -47,7 +54,7 @@ export default {
 
 .hoz-blocks {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin: 20px;
 }
 

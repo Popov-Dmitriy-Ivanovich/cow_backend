@@ -288,19 +288,16 @@ export default {
             let ill = {name: illness[i].Name, id: illness[i].ID};
             this.options.push(ill);
         }
-    },
-    mounted() {
         if (!this.fromAnal && Object.keys(this.$store.getters.FILTERS_2).length !== 0) {
             for (let key in this.$store.getters.FILTERS_2) {
                 this.filters[key] = this.$store.getters.FILTERS_2[key];
             }
             if (this.$store.getters.FILTERS_2.hozId) {
-                this.hozIdFromOutside = this.$store.getters.FILTERS_2.hozId;
+                this.hozIdFromOutside = await this.$store.getters.FILTERS_2.hozId;
             }
             this.$emit('applyFilters', this.filters);
-            
         }
-    }
+    },
 }
 </script>
 

@@ -30,8 +30,8 @@ export default {
     async created() {
         const response = await fetch('/api/partners');
         const result = await response.json();
-        if(result.length > 4) {
-            for (let i = 0; i < 5; i++) {
+        if(result.length > 3) {
+            for (let i = 0; i < 3; i++) {
                 this.participants.push(result[i]);
             }
         } else {
@@ -63,7 +63,7 @@ export default {
 
     .part-blocks {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         margin: 20px;
     }
 
@@ -83,6 +83,6 @@ export default {
     }
 
     .part-block {
-        margin: 0 50px;
+        margin: 0 30px;
     }
 </style>
