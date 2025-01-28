@@ -3,7 +3,7 @@
         <div class="filter-title">Фильтры</div>
         <div class="filter-category">
             <div>Название хозяйства/фермы</div>
-            <MultiselectHoz @sendToMain="setIdHoz" v-bind:clearHoz="clearHoz"/>
+            <MultiselectHoz @sendToMain="setIdHoz" v-bind:clearHoz="clearHoz" v-bind:value-from-outside="hozIdFromOutside"/>
         </div>
         <div class="filter-category">
             <div>Дата рождения</div>
@@ -183,6 +183,8 @@ export default {
             clearHoz: false,
             clearIllness: false,
 
+            hozIdFromOutside: null,
+
             exterior: null,
             options: [],
 
@@ -201,8 +203,6 @@ export default {
             // let send_filters = this.filters;
             let send_filters = {};
             Object.assign(send_filters, this.filters);
-            console.log(send_filters, 'filers');
-            console.log(JSON.stringify(send_filters))
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },
@@ -288,6 +288,18 @@ export default {
             let ill = {name: illness[i].Name, id: illness[i].ID};
             this.options.push(ill);
         }
+    },
+    mounted() {
+        if (!this.fromAnal && Object.keys(this.$store.getters.FILTERS_2).length !== 0) {
+            for (let key in this.$store.getters.FILTERS_2) {
+                this.filters[key] = this.$store.getters.FILTERS_2[key];
+            }
+            if (this.$store.getters.FILTERS_2.hozId) {
+                this.hozIdFromOutside = this.$store.getters.FILTERS_2.hozId;
+            }
+            this.$emit('applyFilters', this.filters);
+            
+        }
     }
 }
 </script>
@@ -310,13 +322,13 @@ export default {
 .filter-title {
     margin-bottom: 10px;
     font-size: 140%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
 }
 
 .filter-category {
     margin-bottom: 15px;
     width: 100%;
-    border-bottom: 1px solid rgb(218, 217, 230);
+    border-bottom: 1px solid rgb(217, 230, 223);
 }
 
 .category-last {
@@ -331,13 +343,13 @@ export default {
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
-    border: 3px solid rgb(195, 200, 212);
+    border: 3px solid rgb(203, 227, 219);
     border-radius: 10px;
     transition: 0.3s;
 }
 
 .filter-input:hover {
-    border: 3px solid rgb(101, 102, 170);
+    border: 3px solid rgb(112, 189, 151);
 }
 
 .filter-date {
@@ -365,8 +377,8 @@ export default {
     font-size: 100%;
     margin: 15px 20px;
     padding: 7px 0;
-    background-color: rgb(101, 82, 183);
-    border: 1px solid rgb(101, 82, 183);
+    background-color: rgb(82, 183, 129);
+    border: 1px solid rgb(82, 183, 129);
 }
 
 .clear-filters {
@@ -374,16 +386,16 @@ export default {
     border: 1px solid white;
     margin: 5px 20px 20px 20px;
     padding: 7px 0;
-    color: rgb(101, 82, 183);
+    color: rgb(23, 138, 86);
 }
 
 .filters-apply:hover {
     background-color: white;
-    color: rgb(101, 82, 183);
+    color: rgb(23, 138, 86);
 }
 
 .clear-filters:hover {
-    background-color: rgb(231, 228, 245);
+    background-color: rgb(228, 245, 237);
 }
 
 .check {
@@ -398,7 +410,7 @@ export default {
     position: sticky;
     bottom: 0;
     background-color: white;
-    border-top: 1px solid rgb(218, 217, 230);
+    border-top: 1px solid rgb(217, 230, 225);
 }
 
 .ill-item {

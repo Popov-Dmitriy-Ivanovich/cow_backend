@@ -134,13 +134,13 @@ export default {
 }
 
 .mintext {
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
 }
 
 .help-title-text {
     font-size: 200%;
     padding: 10px 0 30px 0;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
 }
 
 .help-section {

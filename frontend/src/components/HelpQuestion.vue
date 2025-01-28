@@ -26,7 +26,7 @@ export default {
 
 .quest-title {
     font-size: 110%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     margin-bottom: 15px;
     cursor: pointer;
 }

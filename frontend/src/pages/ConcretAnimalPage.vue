@@ -75,14 +75,14 @@ export default {
 }
 
 .link-to-prev {
-    color:rgb(37, 0, 132);
+    color:rgb(10, 113, 75);
     padding-bottom: 20px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .link-to-prev:hover {
-    color: rgb(103, 63, 205);
+    color: rgb(58, 180, 121);
     padding-left: 10px;
     width: max-content;
 }

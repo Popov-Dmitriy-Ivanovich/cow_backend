@@ -46,7 +46,7 @@ input[type="file"] {
 }
 
 input[type="submit"] {
-    background-color: #6f42c1;  
+    background-color: #4cb388;  
     color: white;
     border: none;
     padding: 10px 15px;
@@ -58,13 +58,13 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #5a32a3;  
+    background-color: #308f5e;  
 }
 
 .back-button {
     position: relative;
     margin: 10px;
-    background-color: #e0c6f2;  
+    background-color: #c6f2d8;  
     color: #333;
     border: none;
     padding: 8px 12px;
@@ -74,6 +74,6 @@ input[type="submit"]:hover {
 }
 
 .back-button:hover {
-    background-color: #d1b7e3;  
+    background-color: #b7e3ce;  
 }
 </style>

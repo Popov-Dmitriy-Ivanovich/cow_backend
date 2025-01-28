@@ -76,7 +76,7 @@ export default {
 .page-number {
     margin: 5px 10px;
     padding: 5px 15px;
-    border: 2px solid rgb(195, 200, 212);
+    border: 2px solid rgb(195, 212, 207);
     border-radius: 8px;
     background-color: white;
     cursor: pointer;
@@ -84,7 +84,7 @@ export default {
 }
 
 .page-number:hover {
-    border: 2px solid rgb(101, 102, 170);
+    border: 2px solid rgb(22, 151, 104);
 }
 
 .page-dots {
@@ -93,6 +93,6 @@ export default {
 }
 
 .current-page-number {
-    background-color: rgb(239, 236, 248);
+    background-color: rgb(236, 248, 242);
 }
 </style>

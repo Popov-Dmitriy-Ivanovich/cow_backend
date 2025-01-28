@@ -1,10 +1,10 @@
 <template>
     <MainPageBackground/>
+    <MainStatistic/>
     <ParticipantsBlock/>
     <HozBlock/>
     <PurposesProect/>
     <NewsBlock/>
-    <MainStatistic/>
 </template>
 
 <script>

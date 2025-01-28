@@ -59,7 +59,7 @@ export default {
 <style scoped>
 .id-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 30px;
     width: max-content;
 }
@@ -89,7 +89,7 @@ export default {
 }
 
 .par-hover:hover {
-    background-color: rgb(236, 232, 245);
+    background-color: rgb(232, 245, 240);
     border-radius: 10px;
 }
 

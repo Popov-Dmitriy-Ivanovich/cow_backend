@@ -38,7 +38,7 @@ export default {
                 dataLabels: {
                     enabled: false
                 },
-                colors: ['#6e5add'],
+                colors: ['#63d9cb'],
                 tooltip: {
                     enabled: false,
                 }

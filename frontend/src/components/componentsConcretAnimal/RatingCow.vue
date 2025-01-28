@@ -91,7 +91,7 @@ export default {
 <style scoped>
 .rat-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding: 0 0 30px 0;
     width: max-content;
 }
@@ -105,7 +105,7 @@ export default {
     justify-content: space-between;
     align-items: end;
     margin-right: 30px;
-    border-bottom: 1px solid rgb(242, 237, 248);
+    border-bottom: 1px solid rgb(237, 248, 243);
     width: 370px;
 }
 

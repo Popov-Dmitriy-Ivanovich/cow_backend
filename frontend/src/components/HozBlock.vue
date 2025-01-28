@@ -37,7 +37,7 @@ export default {
     height: 600px;
     text-align: center;
     font-family: Open Sans, sans-serif;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
 }
 
 .hozblock-title {
@@ -57,6 +57,6 @@ export default {
 }
 
 .show-hoz:hover {
-    color:rgb(83, 101, 237);
+    color:rgb(49, 201, 145);
 }
 </style>

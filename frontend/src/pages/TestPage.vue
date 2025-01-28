@@ -119,7 +119,6 @@ export default {
         async searchCowsOrBulls() {
             try {
                 this.isLoading = true;
-                console.log(this.isLoading);
                 this.current_page = 1;
 
                 this.searching_animal = [];
@@ -141,7 +140,6 @@ export default {
                 this.current_filters = search_params;
                 this.animal_filters = search_params;
 
-                console.log(JSON.stringify(search_params), 'параметры для отправки');
 
                 const response = await fetch('/api/cows/filter', {
                     method: 'POST',
@@ -171,10 +169,10 @@ export default {
                 if(this.isChild) this.search_error_child = true;
             }
             this.isLoading = false;
-            console.log(this.isLoading);
         },
         async findAnimals(filters){
             try {
+                this.$store.commit('SET_FILTERS_2', filters);
                 this.isLoading = true;
                 this.current_page = 1;
                 this.search = true;
@@ -204,16 +202,12 @@ export default {
                     body: JSON.stringify(search_params),
                 });
                 let result = await response.json();
-                
-                console.log(result, 'что приходит');
 
                 this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
 
                 if(this.isCows) this.search_error_cows = false;
                 if(this.isBulls) this.search_error_bulls = false;
                 if(this.isChild) this.search_error_child = false;
-
-                console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
 
                 if(result.LST.length == 0 || result.N == 0) {
                     if(this.isCows) this.search_error_cows = true;
@@ -252,7 +246,6 @@ export default {
             this.total_pages = total;
         },
         bullsClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = false;
@@ -262,7 +255,6 @@ export default {
             // document.getElementById('search-animals').value = '';
         },
         cowsClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = true;
             this.isChild = false;
@@ -272,7 +264,6 @@ export default {
             // document.getElementById('search-animals').value = '';
         },
         childClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = true;
@@ -319,13 +310,13 @@ export default {
 .animal-title {
     font-size: 180%;
     font-family: Open Sans, sans-serif;
-    color:rgb(37, 0, 132);
+    color:rgb(10, 113, 75);
 }
 
 .cow-btn, .bull-btn {
     border: 1px solid white;
     background-color: white;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding: 15px 0;
     margin-top: 30px;
     width: 100px;
@@ -336,12 +327,12 @@ export default {
 }
 
 .cow-btn:hover, .bull-btn:hover {
-    border: 1px solid rgb(37, 0, 132);
+    border: 1px solid rgb(10, 113, 75);
 }
 
 .current-animal-btn {
-    border: 1px solid rgb(37, 0, 132);
-    background-color: rgb(232, 233, 248);
+    border: 1px solid rgb(10, 113, 75);
+    background-color: rgb(232, 248, 242);
 }
 
 .search-block {
@@ -361,23 +352,23 @@ export default {
     outline: none;
     border-radius: 10px;
     border: 2px solid white;
-    background-color: rgb(248, 247, 252);
+    background-color: rgb(247, 252, 250);
     transition: 0.3s;
 }
 
 .search-animals:focus {
-    border: 2px solid rgb(122, 123, 193);
+    border: 2px solid rgb(87, 157, 119);
 }
 
 .search-animals::placeholder {
     opacity: 0.5;
-    color:rgb(79, 60, 126);
+    color:rgb(60, 126, 112);
 }
 
 .search-btn {
     background-color: white;
-    border: 1px solid rgb(101, 102, 170);
-    color: rgb(101, 102, 170);
+    border: 1px solid rgb(87, 157, 119);
+    color: rgb(87, 157, 119);
     padding: 0 7px;
     height: 30px;
     border-radius: 10px;
@@ -388,7 +379,7 @@ export default {
 }
 
 .search-btn:hover {
-    background-color: rgb(101, 102, 170);
+    background-color: rgb(87, 157, 119);
     color: white;
 }
 
@@ -414,7 +405,7 @@ export default {
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
-    border: 3px solid rgb(195, 200, 212);
+    border: 3px solid rgb(195, 212, 208);
     border-radius: 10px;
     transition: 0.3s;
     margin-right: 10px;

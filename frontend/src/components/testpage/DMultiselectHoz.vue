@@ -1,5 +1,5 @@
 <template>
-    <ComboBox v-bind:start_value="options" @valueHasSelected="HasSelected" v-bind:clear="clearHoz"></ComboBox>
+    <ComboBox v-bind:start_value="options" @valueHasSelected="HasSelected" v-bind:clear="clearHoz" v-bind:valueFromOutside="valueFromOutside"></ComboBox>
 </template>
     
 <script>
@@ -9,13 +9,16 @@ export default {
     props: {
         clearHoz: {
             type: Boolean,
+        },
+        valueFromOutside: {
+            type: Number,
         }
     },
     components: {
        ComboBox
     },
     data() {
-         return {
+        return {
             options: [],
         }
     },

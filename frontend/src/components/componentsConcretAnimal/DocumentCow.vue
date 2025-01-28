@@ -53,7 +53,7 @@ export default {
 .doc-name {
     width: 70%;
     height: max-content;
-    background-color: rgb(241, 240, 246);
+    background-color: rgb(240, 246, 243);
     padding: 7px 0 7px 7px;
 }
 
@@ -63,7 +63,7 @@ export default {
 }
 
 .btn {
-    border: 1px solid rgb(207, 203, 217);
+    border: 1px solid rgb(203, 217, 211);
     padding: 7px;
     border-radius: 10px;
     margin-right: 10px;
@@ -72,16 +72,16 @@ export default {
 }
 
 .doc-download {
-    background-color: rgb(245, 244, 248);
+    background-color: rgb(244, 248, 246);
 }
 
 .doc-download:hover {
-    background-color: rgb(91, 84, 164);
+    background-color: rgb(84, 164, 119);
     color: white;
 }
 
 .doc-delete:hover {
-    background-color: rgb(230, 223, 248);
+    background-color: rgb(223, 248, 233);
 }
 
 .doc-link {
@@ -91,7 +91,7 @@ export default {
 
 .doc-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 10px;
 }
 </style>

@@ -32,7 +32,7 @@ export default {
 
 .animal-links {
     font-size: 110%;
-    color:rgb(37, 0, 132);
+    color:rgb(10, 113, 75);
     list-style: none;
 }
 
@@ -44,6 +44,6 @@ export default {
 }
 
 .animal-links li:hover {
-    color:rgb(103, 63, 205);
+    color:rgb(58, 188, 139);
 }
 </style>

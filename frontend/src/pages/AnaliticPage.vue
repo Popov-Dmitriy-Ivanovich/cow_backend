@@ -58,7 +58,7 @@ export default {
 .analytics-title {
     font-size: 200%;
     font-family: Open Sans, sans-serif;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     margin-top: 120px;
 }
 
@@ -70,7 +70,7 @@ export default {
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
-    border: 3px solid rgb(195, 200, 212);
+    border: 3px solid rgb(195, 212, 205);
     border-radius: 10px;
     transition: 0.3s;
 }

@@ -49,7 +49,7 @@ export default {
         height: 600px;
         text-align: center;
         font-family: Open Sans, sans-serif;
-        color: rgb(37, 0, 132);
+        color: rgb(10, 113, 75);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -73,7 +73,7 @@ export default {
     }
 
     .show-part:hover {
-        color:rgb(83, 101, 237);
+        color:rgb(49, 201, 145);
     }
 
     .part-text-low {

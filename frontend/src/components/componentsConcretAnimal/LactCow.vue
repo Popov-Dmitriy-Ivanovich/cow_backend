@@ -151,7 +151,7 @@ export default {
 <style scoped>
 .lac-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 30px;
     width: max-content;
 }
@@ -204,9 +204,9 @@ td {
 }
 
 .table-chart {
-    border: 1px solid rgb(37, 0, 132);
+    border: 1px solid rgb(10, 113, 75);
     background-color: white;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding: 10px 0;
     margin: 20px 0;
     width: 100px;
@@ -218,7 +218,7 @@ td {
 }
 
 .active-btn {
-    background-color: rgb(219, 214, 239);
+    background-color: rgb(214, 239, 230);
 }
 
 .chart-param {
@@ -237,7 +237,7 @@ td {
 
 .select-param {
     padding: 5px;
-    border: 1px solid rgb(37, 0, 132);
+    border: 1px solid rgb(23, 156, 107);
     border-radius: 3px;
 }
 </style>

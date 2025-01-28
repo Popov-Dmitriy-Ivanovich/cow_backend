@@ -3,7 +3,6 @@
         <!-- <div class="analytics-title">Статистика для сравнительного анализа хозяйств и регионов</div> -->
         <MainChart/>
     </div>
-
 </template>
 
 <script>
