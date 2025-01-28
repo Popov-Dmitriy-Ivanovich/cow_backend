@@ -350,7 +350,7 @@ export default {
 <style scoped>
 .lineage-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 30px;
     width: max-content;
 }
@@ -365,8 +365,8 @@ export default {
 .animal-block, .animal-block-noinfo {
     width: 160px;
     height: 100px;
-    background-color: rgb(236, 235, 244);
-    border: 1px solid rgb(236, 235, 244);
+    background-color: rgb(235, 244, 239);
+    border: 1px solid rgb(235, 244, 240);
     margin: 12px 15px;
     border-radius: 10px;
     font-size: 80%;
@@ -375,7 +375,7 @@ export default {
 }
 
 .animal-block-noinfo {
-    background-color: rgb(249, 248, 253);
+    background-color: rgb(248, 253, 250);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -391,8 +391,8 @@ export default {
 }
 
 .isParent:hover {
-    background-color: rgb(250, 250, 254);
-    border: 1px solid rgb(184, 180, 208);
+    background-color: rgb(250, 254, 252);
+    border: 1px solid rgb(180, 208, 195);
 }
 
 .animal-block div {
@@ -429,6 +429,6 @@ export default {
 
 .name-flex {
     display: flex;
-    border-bottom: 1px solid rgb(188, 185, 194);
+    border-bottom: 1px solid rgb(185, 194, 190);
 }
 </style>

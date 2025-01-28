@@ -69,7 +69,7 @@ export default {
 <style scoped>
 .id-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 30px;
     width: max-content;
 }

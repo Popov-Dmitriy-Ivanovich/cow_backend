@@ -187,7 +187,7 @@ export default {
 }
 
 .animal-line:hover {
-    background-color: rgb(235, 233, 245);
+    background-color: rgb(233, 245, 239);
 }
 
 .animal-line div {

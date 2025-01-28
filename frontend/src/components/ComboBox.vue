@@ -40,6 +40,10 @@ export default {
         },
         clear: {
             type: Boolean,
+        },
+        valueFromOutside: {
+            type: Number,
+            default: null,
         }
     },
     data() {
@@ -75,8 +79,8 @@ export default {
             this.isVisible = false;
         }
     },
-    mounted() {
-        this.list = this.start_value; 
+    created() {
+        this.list = this.start_value;
     },
     watch: {
         clear() {
@@ -84,6 +88,19 @@ export default {
         },
         start_value(new_val) {
             this.list = new_val;
+            console.log('change start value');
+        },
+        valueFromOutside(new_val) {
+            if (new_val) {
+                this.selected_value = [];
+                this.selected_value.push(new_val);
+                for (let val of this.list) {
+                    if (val.id === new_val) {
+                        this.text1 = val.name;
+                    }
+                }
+                this.isVisible = false;
+            }
         }
     }
 }
@@ -119,7 +136,7 @@ export default {
 }
 
 .combobox__clear-value:hover {
-    color: rgb(101, 102, 170);
+    color: rgb(101, 170, 144);
 }
 
 .combobox__list {
@@ -131,12 +148,12 @@ export default {
 }
 
 .combobox__list:hover {
-    background-color: rgb(240, 238, 245);
+    background-color: rgb(238, 245, 241);
 }
 
 .str-value {
     border-radius: 10px;
-    border: 3px solid rgb(195, 200, 212);
+    border: 3px solid rgb(203, 227, 219);
     background: #fff;
     font-size: 14px;
     padding: 5px 5px;
@@ -148,11 +165,11 @@ export default {
 }
 
 .str-value:focus {
-    border: 3px solid rgb(195, 200, 212);
+    border: 3px solid rgb(203, 227, 219);
 }
 
 .str-value:hover {
-    border: 3px solid rgb(101, 102, 170);
+    border: 3px solid rgb(112, 189, 151);
 }
 
 .str-value__click {

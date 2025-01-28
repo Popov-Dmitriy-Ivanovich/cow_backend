@@ -1,6 +1,6 @@
 <template>
     <div class="main-main">
-        <h1>Выбор действия</h1>
+        <h1>Загрузка данных</h1>
     
         <div class="UserChoise">
             <button class="UserChoiseButton" @click="$router.push(`/gui/downloadCow`)">Загрузка животных</button> 
@@ -39,7 +39,7 @@
 <style scoped>
 h1 {
     text-align: center;
-    color: #6f42c1;  
+    color: rgb(10, 113, 75);  
     margin-bottom: 20px;
 }
 
@@ -54,7 +54,7 @@ h1 {
 }
 
 .UserChoiseButton {
-    background-color: #6f42c1;  
+    background-color: #5ebe8e;  
     color: #ffffff;  
     border: none;
     border-radius: 5px;
@@ -67,7 +67,7 @@ h1 {
 }
 
 .UserChoiseButton:hover {
-    background-color: #5a32a1;  
+    background-color: #32a17a;  
 }
 
 .message {

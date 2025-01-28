@@ -111,12 +111,12 @@ export default {
 
     .date-update-mainstyle {
         color: rgb(96, 96, 96);
-        background-color: rgb(238, 236, 245);
+        background-color: rgb(236, 245, 239);
     }
 
     .topbar-main-style {
         background-color: white;
-        color: rgb(37, 0, 132);
+        color: rgb(10, 113, 75);
     }
 
     .flex-topbar {

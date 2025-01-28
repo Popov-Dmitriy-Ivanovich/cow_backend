@@ -191,7 +191,7 @@ export default {
 <style scoped>
 .cm-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 10px;
 }
 
@@ -244,9 +244,9 @@ td {
 }
 
 .table-chart {
-    border: 1px solid rgb(37, 0, 132);
+    border: 1px solid rgb(10, 113, 75);
     background-color: white;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding: 10px 0;
     margin: 20px 0;
     width: 100px;
@@ -258,7 +258,7 @@ td {
 }
 
 .active-btn {
-    background-color: rgb(219, 214, 239);
+    background-color: rgb(214, 239, 233);
 }
 
 .chart-nlact {
@@ -271,7 +271,7 @@ td {
 }
 
 .chart-nlact:hover {
-    color: rgb(92, 78, 145)
+    color: rgb(78, 145, 116)
 }
 
 .chart-param {
@@ -290,7 +290,7 @@ td {
 
 .select-param {
     padding: 5px;
-    border: 1px solid rgb(37, 0, 132);
+    border: 1px solid rgb(31, 174, 122);
     border-radius: 3px;
 }
 

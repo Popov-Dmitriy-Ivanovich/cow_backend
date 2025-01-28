@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .doc-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 10px;
 }
 .download-doc-form {

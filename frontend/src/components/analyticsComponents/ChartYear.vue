@@ -26,7 +26,7 @@ export default {
                 xaxis: {
                     categories: []
                 },
-                colors: ['#6e5add','#75a2e7','#63d9cb'],
+                colors: ['#63d9cb', '#6e5add','#75a2e7','#63d9cb'],
                 title: {
                     text: 'Регионы',
                     align: 'center',
@@ -75,6 +75,7 @@ export default {
                 body: JSON.stringify(this.changeFilters),
             });
             let result = await response.json();
+            console.log(result, 'analytic');
             if(result.error) {
                 this.err = true;
                 return 0;

@@ -35,7 +35,7 @@
 }
 
 .purpos-title {
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     font-size: 190%;
     padding: 40px 0 20px 0;
 }
@@ -61,7 +61,7 @@
 
 .card-title {
     font-size: 190%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     margin-bottom: 20px;
 }
 </style>

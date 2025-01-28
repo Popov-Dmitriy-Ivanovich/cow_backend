@@ -30,8 +30,8 @@ export default {
     async created() {
         const response = await fetch('/api/partners');
         const result = await response.json();
-        if(result.length > 4) {
-            for (let i = 0; i < 5; i++) {
+        if(result.length > 3) {
+            for (let i = 0; i < 3; i++) {
                 this.participants.push(result[i]);
             }
         } else {
@@ -49,7 +49,7 @@ export default {
         height: 600px;
         text-align: center;
         font-family: Open Sans, sans-serif;
-        color: rgb(37, 0, 132);
+        color: rgb(10, 113, 75);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -63,7 +63,7 @@ export default {
 
     .part-blocks {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         margin: 20px;
     }
 
@@ -73,7 +73,7 @@ export default {
     }
 
     .show-part:hover {
-        color:rgb(83, 101, 237);
+        color:rgb(49, 201, 145);
     }
 
     .part-text-low {
@@ -83,6 +83,6 @@ export default {
     }
 
     .part-block {
-        margin: 0 50px;
+        margin: 0 30px;
     }
 </style>

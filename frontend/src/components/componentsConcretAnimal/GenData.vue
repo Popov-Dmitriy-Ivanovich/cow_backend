@@ -65,7 +65,7 @@ export default {
 <style scoped>
 .datagen-title {
     font-size: 130%;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     padding-bottom: 30px;
     width: max-content;
 }
@@ -78,13 +78,13 @@ export default {
 .download-file {
     width: 70%;
     height: 25px;
-    background-color: rgb(241, 240, 246);
+    background-color: rgb(240, 246, 244);
     margin: 10px 20px 0 0;
     padding: 7px 0 0 7px;
 }
 
 .download-btn {
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     cursor: pointer;
 }
 
@@ -116,7 +116,7 @@ td {
 }
 
 .download-gtc {
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     text-decoration: none;
 }
 </style>

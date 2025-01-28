@@ -76,7 +76,7 @@ export default {
 }
 
 .cowname {
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     margin: 0 10px 5px 0;
     display: inline-block;
 }

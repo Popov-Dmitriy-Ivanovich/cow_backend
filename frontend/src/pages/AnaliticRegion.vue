@@ -25,14 +25,14 @@ export default {
     font-family: Open Sans, sans-serif;
     margin-top: 30px;
     margin-left: 20px;
-    color:rgb(37, 0, 132);
+    color:rgb(10, 113, 75);
     padding-bottom: 20px;
     cursor: pointer;
     transition: 0.3s;
 }
 
 .prev-chart:hover {
-    color: rgb(103, 63, 205);
+    color: rgb(63, 205, 120);
     padding-left: 10px;
     width: max-content;
 }

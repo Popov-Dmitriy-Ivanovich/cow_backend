@@ -103,7 +103,7 @@ export default {
         font-size: 120%;
         box-sizing: border-box;
         outline: none;
-        border: 3px solid rgb(195, 200, 212);
+        border: 3px solid rgb(203, 227, 219);
         border-radius: 10px;
         transition: 0.3s;
     }
@@ -125,7 +125,7 @@ export default {
     }
 
     .login-input:hover {
-        border: 3px solid rgb(101, 102, 170);
+        border: 3px solid rgb(112, 189, 151);
     }
 
     .btn {
@@ -139,14 +139,14 @@ export default {
         padding: 7px 0;
         width: 100%;
         color: white;
-        background-color: rgb(101, 82, 183);
+        background-color: rgb(82, 183, 129);
         border-radius: 10px;
         transition: 0.3s;
         cursor: pointer;
     }
 
     .login-btn:hover {
-        background-color: rgb(69, 27, 152);
+        background-color: rgb(23, 138, 86);
     }
 
     .login-btns {

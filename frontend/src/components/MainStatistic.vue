@@ -51,7 +51,7 @@ export default {
 .statistic-title {
     font-size: 190%;
     padding: 0 0 20px 0;
-    color: rgb(37, 0, 132);
+    color: rgb(0, 132, 55);
 }
 
 .statis-text {

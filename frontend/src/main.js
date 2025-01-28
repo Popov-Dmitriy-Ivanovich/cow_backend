@@ -8,6 +8,7 @@ const store = createStore({
     state(){
         return{
             filters: {},
+            filters_2: {},
             option: '',
             isLogged: Boolean(localStorage.getItem('jwt')),
         }
@@ -16,10 +17,16 @@ const store = createStore({
         FILTERS(state) {
             return state.filters;
         },
+        FILTERS_2(state) {
+            return state.filters_2;
+        }
     },
     mutations: {
         SET_FILTERS(state, payload) {
             state.filters = payload;
+        },
+        SET_FILTERS_2(state, payload) {
+            state.filters_2 = payload;
         },
         SET_OPTION(state, payload) {
             state.option = payload;

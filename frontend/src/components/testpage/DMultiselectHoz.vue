@@ -1,5 +1,5 @@
 <template>
-    <ComboBox v-bind:start_value="options" @valueHasSelected="HasSelected" v-bind:clear="clearHoz"></ComboBox>
+    <ComboBox v-bind:start_value="options" @valueHasSelected="HasSelected" v-bind:clear="clearHoz" v-bind:valueFromOutside="valueFromOutside"></ComboBox>
 </template>
     
 <script>
@@ -9,13 +9,16 @@ export default {
     props: {
         clearHoz: {
             type: Boolean,
+        },
+        valueFromOutside: {
+            type: Number,
         }
     },
     components: {
        ComboBox
     },
     data() {
-         return {
+        return {
             options: [],
         }
     },
@@ -24,7 +27,7 @@ export default {
             this.$emit('sendToMain', newValue);
         }
     },
-    async created() {
+    async mounted() {
         this.options = [];
         const response = await fetch('/api/farms?parrent_id=null',
             {
@@ -34,6 +37,7 @@ export default {
             }
         );
         const hozs = await response.json();
+        console.log(hozs, hozs.length, 'hozs');
         for (let i = 0; i < hozs.length; i++) {
             let hoz = {name: hozs[i].Name, id: hozs[i].ID};
             this.options.push(hoz);

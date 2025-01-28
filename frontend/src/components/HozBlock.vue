@@ -25,9 +25,16 @@ export default {
     async created() {
         const response = await fetch('/api/farms/hoz');
         const res_farms = await response.json();
-        for (let i = 0; i < 3; i ++) {
-            this.farms.push(res_farms[i]);
+        if (res_farms.length > 3) {
+            for (let i = 0; i < 3; i ++) {
+                this.farms.push(res_farms[i]);
+            }
+        } else {
+            for (let i = 0; i < res_farms.length; i ++) {
+                this.farms.push(res_farms[i]);
+            }
         }
+
     }
 }
 </script>
@@ -37,7 +44,7 @@ export default {
     height: 600px;
     text-align: center;
     font-family: Open Sans, sans-serif;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
 }
 
 .hozblock-title {
@@ -47,7 +54,7 @@ export default {
 
 .hoz-blocks {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin: 20px;
 }
 
@@ -57,6 +64,6 @@ export default {
 }
 
 .show-hoz:hover {
-    color:rgb(83, 101, 237);
+    color:rgb(49, 201, 145);
 }
 </style>
