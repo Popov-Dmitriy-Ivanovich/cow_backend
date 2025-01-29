@@ -64,6 +64,8 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 	}
 	if c.GradeRegion != nil {
 		res.EbvGeneralValueRegion = c.GradeRegion.GeneralValue
+	} else {
+		c.GradeRegion = nil
 	}
 	if filter.DepartDateTo != nil && *filter.DepartDateTo != "" ||
 		filter.DepartDateFrom != nil && *filter.DepartDateFrom != "" {
