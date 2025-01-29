@@ -45,21 +45,27 @@ func (c *Cows) Grades() func(*gin.Context) {
 		if cow.GradeRegion != nil {
 			percentageRegion = cow.GradeRegion.Grade
 			if cow.GradeRegion.EbvFat != nil {
+				percentageRegion.EbvFat = new(float64)
 				*percentageRegion.EbvFat = *cow.GradeRegion.EbvFat/blupStat.AverageEbvFatRegion*100 - 100
 			}
 			if cow.GradeRegion.EbvMilk != nil {
+				percentageRegion.EbvMilk = new(float64)
 				*percentageRegion.EbvMilk = *cow.GradeRegion.EbvMilk/blupStat.AverageEbvMilkRegion*100 - 100
 			}
 			if cow.GradeRegion.EbvProtein != nil {
+				percentageRegion.EbvProtein = new(float64)
 				*percentageRegion.EbvProtein = *cow.GradeRegion.EbvProtein/blupStat.AverageEbvProteinRegion*100 - 100
 			}
 			if cow.GradeRegion.EbvInsemenation != nil {
+				percentageRegion.EbvInsemenation = new(float64)
 				*percentageRegion.EbvInsemenation = *cow.GradeRegion.EbvInsemenation/blupStat.AverageEbvInsemenationRegion*100 - 100
 			}
 			if cow.GradeRegion.EbvService != nil {
+				percentageRegion.EbvService = new(float64)
 				*percentageRegion.EbvService = *cow.GradeRegion.EbvService/blupStat.AverageEbvServiceRegion*100 - 100
 			}
 			if cow.GradeRegion.GeneralValue != nil {
+				percentageRegion.GeneralValue = new(float64)
 				*percentageRegion.GeneralValue = *cow.GradeRegion.GeneralValue/blupStat.AverageEbvGeneralValueRegion*100 - 100
 			}
 		}
