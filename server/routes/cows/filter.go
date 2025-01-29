@@ -52,15 +52,18 @@ type FilterSerializedCow struct {
 
 func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
 	res := FilterSerializedCow{
-		ID:                    c.ID,
-		RSHNNumber:            c.RSHNNumber,
-		InventoryNumber:       c.InventoryNumber,
-		Name:                  c.Name,
-		FarmGroupName:         c.FarmGroup.Name,
-		BirthDate:             c.BirthDate,
-		Genotyped:             c.Genetic != nil,
-		Approved:              c.Approved != 0,
-		EbvGeneralValueRegion: c.GradeRegion.GeneralValue,
+		ID:              c.ID,
+		RSHNNumber:      c.RSHNNumber,
+		InventoryNumber: c.InventoryNumber,
+		Name:            c.Name,
+		FarmGroupName:   c.FarmGroup.Name,
+		BirthDate:       c.BirthDate,
+		Genotyped:       c.Genetic != nil,
+		Approved:        c.Approved != 0,
+		// EbvGeneralValueRegion: c.GradeRegion.GeneralValue,
+	}
+	if c.GradeRegion != nil {
+		res.EbvGeneralValueRegion = c.GradeRegion.GeneralValue
 	}
 	if filter.DepartDateTo != nil && *filter.DepartDateTo != "" ||
 		filter.DepartDateFrom != nil && *filter.DepartDateFrom != "" {
