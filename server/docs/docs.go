@@ -3408,6 +3408,9 @@ const docTemplate = `{
                         }
                     ]
                 },
+                "assessmentDate": {
+                    "$ref": "#/definitions/models.DateOnly"
+                },
                 "bodyDepth": {
                     "description": "Глубина туловища (9 баллов)",
                     "type": "number"
@@ -3545,7 +3548,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "sacrum": {
-                    "description": "Крестец (100 баллов)",
+                    "description": "Крестец (100 баллов) до 2025 года, эта оценка называется общий вид",
                     "type": "number"
                 },
                 "sacrumAngle": {

@@ -21,7 +21,7 @@ type eventRecord struct {
 	TypeId            uint
 	DataResourse      *string
 	DaysFromLactation uint
-	Date              models.DateOnly
+	Date              *models.DateOnly
 	Comment1          *string
 	Comment2          *string
 	HeaderIndexes     map[string]int
@@ -94,11 +94,14 @@ var eventRecordParsers = map[string]func(*eventRecord, []string) error{
 	},
 	EVENT_DATE_COL: func(evr *eventRecord, rec []string) error {
 		dateStr := rec[evr.HeaderIndexes[EVENT_DATE_COL]]
+		if dateStr == "" {
+			return nil
+		}
 		date, err := time.Parse(time.DateOnly, dateStr)
 		if err != nil {
 			return err
 		}
-		evr.Date = models.DateOnly{Time: date}
+		evr.Date = &models.DateOnly{Time: date}
 		return nil
 	},
 	EVENT_COM1_COL: func(evr *eventRecord, rec []string) error {

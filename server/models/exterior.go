@@ -14,6 +14,7 @@ type Exterior struct {
 	Measures       Measures        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:Cascade;"` // Замеры параметров экстерьера
 	DownSides      *DownSides      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Недостатки (пороки)
 	AdditionalInfo *AdditionalInfo `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Доп. признаки
+	AssessmentDate *DateOnly
 
 	BodyDepth    *float64 // Глубина туловища (9 баллов)
 	ChestWidth   *float64 // Ширина груди (9 баллов)
@@ -56,7 +57,7 @@ type Exterior struct {
 	BodyStructure *float64 // Туловище (100 баллов)
 	Limbs         *float64 // Конечности (100 баллов)
 	Udder         *float64 // Вымя (100 баллов)
-	Sacrum        *float64 // Крестец (100 баллов)
+	Sacrum        *float64 // Крестец (100 баллов) до 2025 года, эта оценка называется общий вид
 
 	PicturePath *string
 }

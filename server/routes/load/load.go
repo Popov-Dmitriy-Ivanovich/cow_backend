@@ -18,4 +18,5 @@ func (s *Load) WriteRoutes(rg *gin.RouterGroup) {
 	apiGroup.POST("/partner", s.Partner())
 	apiGroup.POST("/gtcFile", s.GtcFile())
 	apiGroup.POST("/document", s.Document())
+	apiGroup.POST("/exteriorData", s.ExteriorData())
 }

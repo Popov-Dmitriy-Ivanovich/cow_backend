@@ -962,6 +962,8 @@ definitions:
         allOf:
         - $ref: '#/definitions/models.AdditionalInfo'
         description: Доп. признаки
+      assessmentDate:
+        $ref: '#/definitions/models.DateOnly'
       bodyDepth:
         description: Глубина туловища (9 баллов)
         type: number
@@ -1060,7 +1062,8 @@ definitions:
         description: Угол наклона ребер (9 баллов)
         type: number
       sacrum:
-        description: Крестец (100 баллов)
+        description: Крестец (100 баллов) до 2025 года, эта оценка называется общий
+          вид
         type: number
       sacrumAngle:
         description: Угол наклона крестца (9 баллов)

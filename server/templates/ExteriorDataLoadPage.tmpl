@@ -1,0 +1,94 @@
+{{ define "ExteriorDataLoadPage.tmpl"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-example {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #6f42c1; /* Светло-фиолетовый цвет */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5a32a3; /* Темнее фиолетового при наведении */
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #e0c6f2; /* Светлый оттенок фиолетового */
+            color: #333;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #d1b7e3; /* Темнее фиолетового при наведении */
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.history.back();">Назад</button>
+    <div class="form-example">
+        <h1>Загрузка данных экстерьера</h1>
+        <form action="/api/load/exteriorData" method="post" enctype="multipart/form-data">
+            <label for="csv">Выберите файл:</label>
+            <input type="file" id="csv" name="csv" required>
+            <input type="submit" value="Загрузить">
+        </form>
+    </div>
+</body>
+</html>
+{{ end }}

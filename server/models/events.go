@@ -22,9 +22,9 @@ type Event struct {
 	DataResourse      *string // Источник данных
 	DaysFromLactation uint    // Дни от начала лактации
 
-	Date     DateOnly `gorm:"index"` // Дата ветеринарного события
-	Comment1 *string  // Комментарий 1 (по всей видимости сюда что-то пришит врач)
-	Comment2 *string  // Комментарий 2
+	Date     *DateOnly `gorm:"index"` // Дата ветеринарного события
+	Comment1 *string   // Комментарий 1 (по всей видимости сюда что-то пришит врач)
+	Comment2 *string   // Комментарий 2
 }
 
 func (e *Event) Validate() error {
@@ -33,8 +33,10 @@ func (e *Event) Validate() error {
 	if err := db.First(&cow, e.CowId).Error; err != nil {
 		return errors.New("не найдена корова, для которой добавляется вет. событие")
 	}
-	if cow.BirthDate.After(e.Date.Time) {
-		return errors.New("вет. событие не может случиться до рождения коровы")
+	if e.Date != nil {
+		if cow.BirthDate.After(e.Date.Time) {
+			return errors.New("вет. событие не может случиться до рождения коровы")
+		}
 	}
 	return nil
 }
