@@ -47,7 +47,7 @@ type FilterSerializedCow struct {
 	Events                []models.Event   `json:",omitempty" validate:"optional"` // Вет события
 	IsGenotyped           *bool            `json:",omitempty" validate:"optional"` // Факт генотипирования
 	CreatedAt             *models.DateOnly `json:",omitempty" validate:"optional"` // Дата внесения информации о корове в БД
-	EbvGeneralValueRegion *float64         `json:",omitempty" validate:"optional"` // Общая оценка EBV по региону
+	EbvGeneralValueRegion *float64         // Общая оценка EBV по региону
 }
 
 func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSerializedCow {
