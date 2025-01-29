@@ -2209,8 +2209,13 @@ paths:
       - Cows
   /cows/{id}/grades:
     get:
-      description: Возращает словарь с двумя ключам "ByRegion" - оценки по региону
-        и "ByHoz" - оценки по хозяйству
+      description: |-
+        Возращает словарь с ключами:
+        1. ByRegion - Значения оценок EBV по региону
+        2. ByHoz - Значения оценок EBV по хозяйству
+        3. ByCountry - Значения оценок EBV по стране
+        4. Average - Средние значения оценок EBV
+        5. PercentsRegion - Отклонение оценок от среднего значения для региона
       parameters:
       - description: ID коровы для которой ищутся оценки
         in: path

@@ -1319,7 +1319,7 @@ const docTemplate = `{
         },
         "/cows/{id}/grades": {
             "get": {
-                "description": "Возращает словарь с двумя ключам \"ByRegion\" - оценки по региону и \"ByHoz\" - оценки по хозяйству",
+                "description": "Возращает словарь с ключами:\n1. ByRegion - Значения оценок EBV по региону\n2. ByHoz - Значения оценок EBV по хозяйству\n3. ByCountry - Значения оценок EBV по стране\n4. Average - Средние значения оценок EBV\n5. PercentsRegion - Отклонение оценок от среднего значения для региона",
                 "produces": [
                     "application/json"
                 ],
