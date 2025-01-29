@@ -61,7 +61,11 @@ func initDb() error {
 		&Document{},
 		&UserRegisterRequest{},
 		&HozRegisterRequest{},
-		&HoldRegisterRequest{})
+		&HoldRegisterRequest{},
+		&AdditionalInfo{},
+		&DownSides{},
+		&Measures{},
+	)
 	dbConnection = db
 	return nil
 }
