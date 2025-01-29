@@ -2936,6 +2936,35 @@
                 }
             }
         },
+        "models.AdditionalInfo": {
+            "type": "object",
+            "properties": {
+                "additionalProperty1Measure": {
+                    "description": "Дополнительный параметр 1 (значение в единицах измерения)",
+                    "type": "string"
+                },
+                "additionalProperty1Name": {
+                    "description": "Дополнительный параметр 1 (название)",
+                    "type": "string"
+                },
+                "additionalProperty1Value": {
+                    "description": "Дополнительный параметр 1 (значение в баллах)",
+                    "type": "string"
+                },
+                "additionalProperty2Measure": {
+                    "description": "Дополнительный параметр 2 (значение в единицах измерения)",
+                    "type": "string"
+                },
+                "additionalProperty2Name": {
+                    "description": "Дополнительный параметр 2 (название)",
+                    "type": "string"
+                },
+                "additionalProperty2Value": {
+                    "description": "Дополнительный параметр 2 (значение в баллах)",
+                    "type": "string"
+                }
+            }
+        },
         "models.Breed": {
             "type": "object",
             "properties": {
@@ -3228,6 +3257,55 @@
                 }
             }
         },
+        "models.DownSides": {
+            "type": "object",
+            "properties": {
+                "bodyCount": {
+                    "description": "Туловище",
+                    "type": "number"
+                },
+                "bodyDescription": {
+                    "description": "Список недостатков туловища разделитель: \"/\"",
+                    "type": "string"
+                },
+                "limbsCount": {
+                    "description": "Конечности",
+                    "type": "number"
+                },
+                "limbsDescription": {
+                    "description": "Список недостатков конечностей разделитель: \"/\"",
+                    "type": "string"
+                },
+                "milkTypeCount": {
+                    "description": "Молочный тип",
+                    "type": "number"
+                },
+                "milkTypeDescription": {
+                    "description": "Список недостатков Молочного типа. Разделитель: \"/\"",
+                    "type": "string"
+                },
+                "sacrumCount": {
+                    "description": "Крестец",
+                    "type": "number"
+                },
+                "sacrumDescription": {
+                    "description": "Список недостатков крестца разделитель: \"/\"",
+                    "type": "string"
+                },
+                "summary": {
+                    "description": "Сводные данные о недостатках разделитель \"/\"",
+                    "type": "string"
+                },
+                "udderCount": {
+                    "description": "Вымя",
+                    "type": "number"
+                },
+                "udderDescription": {
+                    "description": "Список недостатков вымени разделитель: \"/\"",
+                    "type": "string"
+                }
+            }
+        },
         "models.Event": {
             "type": "object",
             "properties": {
@@ -3313,115 +3391,183 @@
             "type": "object",
             "properties": {
                 "acrumLength": {
+                    "description": "Длина крестца (9 баллов)",
                     "type": "number"
                 },
+                "additionalInfo": {
+                    "description": "Доп. признаки",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.AdditionalInfo"
+                        }
+                    ]
+                },
                 "bodyDepth": {
+                    "description": "Глубина туловища (9 баллов)",
                     "type": "number"
                 },
                 "bodyStructure": {
+                    "description": "Туловище (100 баллов)",
                     "type": "number"
                 },
                 "boneQHockJointRear": {
+                    "description": "Качество костяка (9 баллов)",
                     "type": "number"
                 },
                 "centerLigamentDepth": {
+                    "description": "Глубина центральной связки (9 баллов)",
                     "type": "number"
                 },
                 "chestWidth": {
+                    "description": "Ширина груди (9 баллов)",
                     "type": "number"
                 },
                 "conditioning": {
+                    "description": "Упитанность (9 баллов)",
                     "type": "number"
                 },
                 "cowID": {
                     "type": "integer"
                 },
+                "deceptions": {
+                    "description": "Обмускульность (9 баллов)",
+                    "type": "number"
+                },
+                "downSides": {
+                    "description": "Недостатки (пороки)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.DownSides"
+                        }
+                    ]
+                },
                 "exteriorType": {
+                    "description": "Тип телосложения (9 баллов)",
                     "type": "number"
                 },
                 "foreLegPosFront": {
+                    "description": "Постановка передних ног (9 баллов)",
                     "type": "number"
                 },
                 "foreTeatDiameter": {
+                    "description": "Диаметр передних сосков (9 баллов)",
                     "type": "number"
                 },
                 "foreTeatLendth": {
+                    "description": "Длина передних сосков (9 баллов)",
                     "type": "number"
                 },
                 "foreUdderAttach": {
+                    "description": "Прикрепление передних долей вымени (9 баллов)",
                     "type": "number"
                 },
                 "foreUdderPlcRear": {
+                    "description": "Расположение передних сосков (вид сзади) (9 баллов)",
                     "type": "number"
                 },
                 "foreUdderWidth": {
+                    "description": "Ширина передних долей вымени вид спереди (9 баллов)",
                     "type": "number"
                 },
                 "harmonyOfMovement": {
+                    "description": "Гармоничность движения (9 баллов)",
                     "type": "number"
                 },
                 "heightOfUdderAttach": {
+                    "description": "Высота прикрепления задних долей вымени (9 баллов)",
                     "type": "number"
                 },
                 "hindLegPosRead": {
+                    "description": "Постановка задних ног, вид сзади (9 баллов)",
                     "type": "number"
                 },
                 "hindLegPosSide": {
+                    "description": "Постановка задних ног, вид сбоку (9 баллов)",
                     "type": "number"
                 },
                 "hindTeatPlc": {
+                    "description": "Расположение задних сосков (вид сзади) \t(9 баллов)",
                     "type": "number"
                 },
                 "hindUdderWidth": {
+                    "description": "Ширина задних долей вымени (9 баллов)",
                     "type": "number"
                 },
                 "hoofAngle": {
+                    "description": "Угол наклона копытца (9 баллов)",
                     "type": "number"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "limbs": {
+                    "description": "Конечности (100 баллов)",
                     "type": "number"
                 },
+                "measures": {
+                    "description": "Замеры параметров экстерьера",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.Measures"
+                        }
+                    ]
+                },
                 "milkStrength": {
-                    "description": "100 бальные",
+                    "description": "Молочный тип (100 баллов)",
                     "type": "number"
                 },
                 "pelvicWidth": {
+                    "description": "Ширина таза (9 баллов)",
                     "type": "number"
                 },
                 "picturePath": {
                     "type": "string"
                 },
                 "prominenceOfMilkVeins": {
+                    "description": "Выраженность вен вымени (9 баллов)",
                     "type": "number"
                 },
                 "rating": {
                     "type": "number"
                 },
                 "rearTeatDiameter": {
+                    "description": "Диаметр задних сосков (9 баллов)",
                     "type": "number"
                 },
-                "rearTeatLength": {
+                "ribsAngle": {
+                    "description": "Угол наклона ребер (9 баллов)",
+                    "type": "number"
+                },
+                "sacrum": {
+                    "description": "Крестец (100 баллов)",
                     "type": "number"
                 },
                 "sacrumAngle": {
+                    "description": "Угол наклона крестца (9 баллов)",
                     "type": "number"
                 },
                 "sacrumHeight": {
+                    "description": "Высота в крестце (9 баллов)",
+                    "type": "number"
+                },
+                "sacrumWidth": {
+                    "description": "Ширина крестца (9 баллов)",
                     "type": "number"
                 },
                 "topLine": {
+                    "description": "Линия верха (9 баллов)",
                     "type": "number"
                 },
                 "udder": {
+                    "description": "Вымя (100 баллов)",
                     "type": "number"
                 },
                 "udderBalance": {
+                    "description": "Балланс вымени (9 баллов)",
                     "type": "number"
                 },
                 "udderDepth": {
+                    "description": "Глубина вымени (9 баллов)",
                     "type": "number"
                 }
             }
@@ -3800,6 +3946,71 @@
                 "servicePeriod": {
                     "description": "сервис период коровы: время от отела до осеменения",
                     "type": "integer"
+                }
+            }
+        },
+        "models.Measures": {
+            "type": "object",
+            "properties": {
+                "backNippleDiameter": {
+                    "description": "Диаметр задних сосков (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "backUdderSegmentsLocationHeight": {
+                    "description": "Высота прикрепления задних долей вымени (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "backUdderSegmentsWidth": {
+                    "description": "Ширина задних долей вымени (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "centralLigamentDepth": {
+                    "description": "Глубина центральной связки (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "chestWidth": {
+                    "description": "Ширина груди (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "frontNippleDiameter": {
+                    "description": "Диаметр передних сосков (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "frontNippleLength": {
+                    "description": "Длинна передних сосков (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "frontUdderSegmentsLocation": {
+                    "description": "Прикрепление передних долей вымени (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "hindLegWalkSideView": {
+                    "description": "Поступь задних ног сбоку (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "hoofAngle": {
+                    "description": "Угол копыта (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "sacrumAngle": {
+                    "description": "Угол наклона крестца (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "sacrumHeight": {
+                    "description": "высота в крестце (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "sacrumWidth": {
+                    "description": "ширина в крестце (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "udderBalance": {
+                    "description": "Баланс вымени (Сантиметры или градусы)",
+                    "type": "number"
+                },
+                "udderDepth": {
+                    "description": "Глубина вымени (Сантиметры или градусы)",
+                    "type": "number"
                 }
             }
         },

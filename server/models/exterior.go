@@ -11,9 +11,9 @@ type Exterior struct {
 	CowID  uint `gorm:"index;"`
 	Rating float64
 
-	Measures       Measures        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:Cascade;"`
-	DownSides      *DownSides      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	AdditionalInfo *AdditionalInfo `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Measures       Measures        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:Cascade;"` // Замеры параметров экстерьера
+	DownSides      *DownSides      `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Недостатки (пороки)
+	AdditionalInfo *AdditionalInfo `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"` // Доп. признаки
 
 	BodyDepth    *float64 // Глубина туловища (9 баллов)
 	ChestWidth   *float64 // Ширина груди (9 баллов)
