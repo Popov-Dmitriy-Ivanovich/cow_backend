@@ -14,30 +14,6 @@
         <div class="news-item">
             <div class="news-icon">✎</div>
             <div class="news-text">
-                <div class="piece-news-title">В Краснодарском крае в 2025 году на субсидии для производителей молока направят 1,3 млрд. рублей</div>
-                <div class="news-description"><span>Краснодарский край полностью обеспечивает молоком собственные потребности. Он выпускает больше 80% всей молочной продукции ЮФО. 
-                    Господдержка позволит сельхозпредприятиям в 2025 году произвести более 1,7 миллиона тонн молока, как и в прошлом году. </span></div>
-                <div class="news-description"><a href="https://msh.krasnodar.ru/news/common/s/common/e/373874">Источник</a></div>
-            </div>
-            <div class="news-date">10.01.2025</div>
-        </div>
-
-        <div class="news-item">
-            <div class="news-icon">✎</div>
-            <div class="news-text">
-                <div class="piece-news-title">В 2025 году объем производства сельхозпродукции в Краснодарском крае должен превысить 670 миллиардов рублей. </div>
-                <div class="news-description"><span>Также ожидается рост инвестиций, который составит почти 3,5 процента или 64 миллиарда 
-                    рублей в денежном выражении. Будут запущены животноводческие комплексы по 2 тысячи голов в Усть-Лабинском и Каневском 
-                    районах и виноградарско-винодельческий комплекс в Новороссийске. Начнет работу семеноводческий завод в Староминском 
-                    районе, масложировые комбинаты в Брюховецком и Курганинском районах. </span></div>
-                <div class="news-description"><a href="https://msh.krasnodar.ru/news/common/s/common/e/373626">Источник</a></div>
-            </div>
-            <div class="news-date">09.01.2025</div>
-        </div>
-
-        <div class="news-item">
-            <div class="news-icon">✎</div>
-            <div class="news-text">
                 <div class="piece-news-title">Оксана Лут: Минсельхоз изучает меры поддержки кооперации с холдингами малого агробизнеса</div>
                 <div class="news-description"><span>По словам министра, фермерское хозяйство как малое производство от кооперации с 
                     крупным холдингом сможет больше заработать, поэтому министерство изучает возможности отдельной поддержки для такой 
@@ -67,6 +43,30 @@
                 <div class="news-description"><a href="https://dairynews.ru/news/minselkhoz-rossii-zapustil-programmu-genotipirovan.html">Источник</a></div>
             </div>
             <div class="news-date">23.01.2025</div>
+        </div>
+
+        <div class="news-item">
+            <div class="news-icon">✎</div>
+            <div class="news-text">
+                <div class="piece-news-title">В Краснодарском крае в 2025 году на субсидии для производителей молока направят 1,3 млрд. рублей</div>
+                <div class="news-description"><span>Краснодарский край полностью обеспечивает молоком собственные потребности. Он выпускает больше 80% всей молочной продукции ЮФО. 
+                    Господдержка позволит сельхозпредприятиям в 2025 году произвести более 1,7 миллиона тонн молока, как и в прошлом году. </span></div>
+                <div class="news-description"><a href="https://msh.krasnodar.ru/news/common/s/common/e/373874">Источник</a></div>
+            </div>
+            <div class="news-date">10.01.2025</div>
+        </div>
+
+        <div class="news-item">
+            <div class="news-icon">✎</div>
+            <div class="news-text">
+                <div class="piece-news-title">В 2025 году объем производства сельхозпродукции в Краснодарском крае должен превысить 670 миллиардов рублей. </div>
+                <div class="news-description"><span>Также ожидается рост инвестиций, который составит почти 3,5 процента или 64 миллиарда 
+                    рублей в денежном выражении. Будут запущены животноводческие комплексы по 2 тысячи голов в Усть-Лабинском и Каневском 
+                    районах и виноградарско-винодельческий комплекс в Новороссийске. Начнет работу семеноводческий завод в Староминском 
+                    районе, масложировые комбинаты в Брюховецком и Курганинском районах. </span></div>
+                <div class="news-description"><a href="https://msh.krasnodar.ru/news/common/s/common/e/373626">Источник</a></div>
+            </div>
+            <div class="news-date">09.01.2025</div>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <template>
 <div class="hoz-page">
     <div @click="$router.push('/')" class="link-to-main">🠔 Главная</div>
-    <div class="hozpage-title">Хозяйства</div>
+    <div class="hozpage-title">Холдинги</div>
     <div class="list-hoz">
         <div v-for="farm in farms" :key="farm[0]">
             <HozItem v-bind:farm_item="farm" class="hoz-item"/>
@@ -24,7 +24,7 @@ export default {
         }
     },
     async created() {
-        const response = await fetch ('/api/farms/hoz');
+        const response = await fetch ('/api/farms/hold');
         const res_farms = await response.json();
         this.farms = res_farms;
     }
@@ -36,7 +36,7 @@ export default {
     margin-top: 110px;
     width: 100%;
     font-family: Open Sans, sans-serif;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,7 +50,7 @@ export default {
 }
 
 .link-to-main:hover {
-    color: rgb(103, 63, 205);
+    color: rgb(63, 205, 125);
     padding-left: 10px;
     width: max-content;
 }

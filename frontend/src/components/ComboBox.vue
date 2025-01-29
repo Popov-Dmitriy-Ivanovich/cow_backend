@@ -88,13 +88,13 @@ export default {
         },
         start_value(new_val) {
             this.list = new_val;
-            console.log('change start value');
         },
         valueFromOutside(new_val) {
             if (new_val) {
                 this.selected_value = [];
                 this.selected_value.push(new_val);
-                for (let val of this.list) {
+                console.log(this.start_value.length);
+                for (let val of this.start_value) {
                     if (val.id === new_val) {
                         this.text1 = val.name;
                     }

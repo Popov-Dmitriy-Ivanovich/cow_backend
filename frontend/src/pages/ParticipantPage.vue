@@ -36,7 +36,7 @@ export default {
     margin-top: 110px;
     width: 100%;
     font-family: Open Sans, sans-serif;
-    color: rgb(37, 0, 132);
+    color: rgb(10, 113, 75);
     display: flex;
     flex-direction: column;
     align-items: center;

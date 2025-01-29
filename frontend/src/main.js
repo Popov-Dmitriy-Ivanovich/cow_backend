@@ -11,6 +11,9 @@ const store = createStore({
             filters_2: {},
             option: '',
             isLogged: Boolean(localStorage.getItem('jwt')),
+            isCows: true,
+            isBulls: false,
+            isChild: false,
         }
     },
     getters: {
@@ -19,6 +22,15 @@ const store = createStore({
         },
         FILTERS_2(state) {
             return state.filters_2;
+        },
+        ISCOWS(state) {
+            return state.isCows;
+        },
+        ISBULLS(state) {
+            return state.isBulls;
+        },
+        ISCHILD(state) {
+            return state.isChild;
         }
     },
     mutations: {
@@ -33,7 +45,16 @@ const store = createStore({
         },
         SET_ISLOGGED(state, payload) {
             state.isLoad = payload;
-        }
+        },
+        SET_ISCOWS(state, payload) {
+            state.isCows = payload;
+        },
+        SET_ISBULLS(state, payload) {
+            state.isBulls = payload;
+        },
+        SET_ISCHILD(state, payload) {
+            state.isChild = payload;
+        },
     }
 })
 

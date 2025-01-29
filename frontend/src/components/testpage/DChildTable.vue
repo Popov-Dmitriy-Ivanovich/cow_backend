@@ -7,6 +7,7 @@
             <div class="animal-name">Кличка</div>
             <div class="animal-hoz">Хозяйство</div>
             <div class="animal-bdate">Дата рождения</div>
+            <div class="animal-inv">Индексная оценка</div>
             <div class="animal-genfact">Факт генотипирования</div>
 
             <div v-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout">Дата выбытия</div>
@@ -139,7 +140,7 @@ export default {
         search_params.pageNumber = 1;
         search_params.entitiesOnPage = 25;
         if(!search_params.orderBy) {
-            search_params.orderBy = 'RSHN';
+            search_params.orderBy = 'GeneralEbvRegion';
             search_params.orderByDesc = false;
         }
         const response = await fetch('/api/cows/filter', {            
@@ -156,8 +157,8 @@ export default {
         if(res_animals.LST.length == 0) this.errorr = true;
         //Передаю текущую первую страницу и кол-во страниц наверх
         this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/search_params.entitiesOnPage));
+        this.$emit('changeN', res_animals.N);
         this.isLoadingChild = false;
-        console.log(res_animals);
     },
     watch: {
         async cp(newValue) {
@@ -168,7 +169,7 @@ export default {
                 search_params.pageNumber = newValue;
                 search_params.entitiesOnPage = 25;
                 if(!search_params.orderBy) {
-                    search_params.orderBy = 'RSHN';
+                    search_params.orderBy = 'GeneralEbvRegion';
                     search_params.orderByDesc = false;
                 }
 
