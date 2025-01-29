@@ -7,6 +7,12 @@
         <div class="hoz-description">
             {{ farm_item.Description }}
         </div>
+        <div class="hoz-stat">
+            <div>
+                <div class="stat">{{ farm_item.CowsCount }} шт</div>
+                <div>животных в базе</div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -65,5 +71,17 @@ export default {
 .hoz-description {
     color: black;
     font-size: 90%;
+}
+
+.hoz-stat {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.stat {
+    font-size: 300%;
+    color: black;
 }
 </style>

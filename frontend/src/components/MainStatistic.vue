@@ -1,9 +1,26 @@
 <template>
 <div class="statistic">
     <div class="statistic-title">Статистика по генотипированию</div>
-    <div v-for="item in stat" :key="item.name" class="statis-text">
+    <!-- <div v-for="item in stat" :key="item.name" class="statis-text">
         <div>{{ item.name }}</div>
         <div>{{ item.value }} животных (~{{ item.regard }}% от общего количества)</div>
+    </div> -->
+
+    <div class="statis-text">
+        <div>Генотипированные животные</div>
+        <div>0</div>
+    </div>
+    <div class="statis-text">
+        <div>Молочные пробы</div>
+        <div>0</div>
+    </div>
+    <div class="statis-text">
+        <div>Оценки экстерьера</div>
+        <div>0</div>
+    </div>
+    <div class="statis-text">
+        <div>Собранные данные СУС</div>
+        <div>0</div>
     </div>
 </div>
 </template>
@@ -55,7 +72,7 @@ export default {
 }
 
 .statis-text {
-    width: 50%;
+    width: 30%;
     display: flex;
     justify-content: space-between;
 }

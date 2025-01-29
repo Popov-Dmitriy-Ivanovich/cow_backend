@@ -26,20 +26,25 @@
         <div class="filters-and-table">
             <DAnimalFilters @applyFilters="findAnimals"/>
             <div>
-                <div class="sort">
-                    <div>Сортировать: </div>
-                    <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
-                        <!-- <option :value="null">-нет-</option> -->
-                        <option :value="'Name'">кличке</option>
-                        <option :value="null">РСХН</option>
-                        <option :value="'BirthDate'">дате рождения</option>
-                        <option :value="'InventoryNumber'">инвентарному номеру</option>
-                        
-                    </select>
-                    <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
-                        <option :value="false">по возрастанию</option>
-                        <option :value="true">по убыванию</option>
-                    </select>
+                <div class="flex-params">
+                    <div class="sort">
+                        <div>Сортировать: </div>
+                        <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
+                            <!-- <option :value="null">-нет-</option> -->
+                            <option :value="'Name'">кличке</option>
+                            <option :value="'RSHN'">РСХН</option>
+                            <option :value="'BirthDate'">дате рождения</option>
+                            <option :value="'InventoryNumber'">инвентарному номеру</option>
+                            <option :value="null">индексу EBV по региону</option>
+                            
+                        </select>
+                        <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
+                            <option :value="false">по возрастанию</option>
+                            <option :value="true">по убыванию</option>
+                        </select>
+                    </div>
+
+                    <div class="nanimals">Животных в таблице: {{ number_of_animals }}</div>
                 </div>
 
                 <DCowsTable 
@@ -52,6 +57,7 @@
                 v-bind:filters="animal_filters"
                 @defPages="setPages"
                 @changePageButSearch="changePage"
+                @changeN="changeN"
                 v-bind:isLoading="isLoading"
                 /> 
                 
@@ -65,6 +71,7 @@
                 v-bind:filters="animal_filters"
                 @defPages="setPages"
                 @changePageButSearch="changePage"
+                @changeN="changeN"
                 v-bind:isLoading="isLoading"
                 />
 
@@ -78,6 +85,7 @@
                 v-bind:filters="animal_filters"
                 @defPages="setPages"
                 @changePageButSearch="changePage"
+                @changeN="changeN"
                 v-bind:isLoading="isLoading"
                 />
             </div>
@@ -109,6 +117,7 @@ export default {
             current_page: 1,
             total_pages: 1,
             animal_filters: {},
+            number_of_animals: 0,
 
             isLoading: false,
             sort: null,
@@ -133,7 +142,7 @@ export default {
                     search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
                 } else {
-                    search_params.orderBy = 'RSHN';
+                    search_params.orderBy = 'GeneralEbvRegion';
                     search_params.orderByDesc = this.order;
                 }
 
@@ -151,6 +160,7 @@ export default {
                 });
                 let result = await response.json();
                 this.searching_animal = result.LST;
+                this.number_of_animals = result.N;
                 this.search = true;
 
                 this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
@@ -188,7 +198,7 @@ export default {
                     search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
                 } else {
-                    search_params.orderBy = 'RSHN';
+                    search_params.orderBy = 'GeneralEbvRegion';
                     search_params.orderByDesc = this.order;
                 }
                 this.current_filters = search_params;
@@ -216,6 +226,7 @@ export default {
                 }
 
                 this.searching_animal = result.LST;
+                this.number_of_animals = result.N;
             } catch(err) {
                 if(this.isCows) this.search_error_cows = true;
                 if(this.isBulls) this.search_error_bulls = true;
@@ -247,30 +258,68 @@ export default {
         },
         bullsClick() {
             this.searching_animal = [];
+
             this.isCows = false;
             this.isChild = false;
             this.isBulls = true;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_bulls = false;
             // document.getElementById('search-animals').value = '';
         },
         cowsClick() {
             this.searching_animal = [];
+
             this.isCows = true;
             this.isChild = false;
             this.isBulls = false;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_cows = false;
             // document.getElementById('search-animals').value = '';
         },
         childClick() {
             this.searching_animal = [];
+
             this.isCows = false;
             this.isChild = true;
             this.isBulls = false;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
+        },
+        changeN(newN) {
+            this.number_of_animals = newN;
+        }
+    },
+    mounted() {
+        if (this.$store.getters.ISCOWS) {
+            this.isCows = true;
+            this.isChild = false;
+            this.isBulls = false;
+        }
+        if (this.$store.getters.ISBULLS) {
+            this.isCows = false;
+            this.isChild = false;
+            this.isBulls = true;
+        }
+        if (this.$store.getters.ISCHILD) {
+            this.isCows = false;
+            this.isChild = true;
+            this.isBulls = false;
         }
     }
 }
@@ -413,5 +462,18 @@ export default {
 
 .sort div {
     margin: 0 10px 0 15px;
+}
+
+.flex-params {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    align-items: flex-end;
+}
+
+.nanimals {
+    font-family: Open Sans, sans-serif;
+    margin-bottom: 15px;
+    font-size: 150%;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 <div class="hoz">
-    <div class="hozblock-title">Хозяйства</div>
+    <div class="hozblock-title">Холдинги</div>
     <div class="hoz-blocks">
         <div v-for="farm in farms" :key="farm[0]">
             <HozItem v-bind:farm_item="farm"/>
@@ -23,7 +23,7 @@ export default {
         }
     },
     async created() {
-        const response = await fetch('/api/farms/hoz');
+        const response = await fetch('/api/farms/hold');
         const res_farms = await response.json();
         if (res_farms.length > 3) {
             for (let i = 0; i < 3; i ++) {

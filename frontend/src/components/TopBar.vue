@@ -1,6 +1,7 @@
 <template>
     <div class="topbar flex-topbar" id="topbar" :class="{'topbar-main-style': this.$route.path != '/'}">
-        <a href="http://www.vsau.ru/"><img src="../img/logo.png" width="75" class="img-logo"></a><div class="logo" @click="$router.push('/')">GenMilk</div>
+        <!-- <a href="http://www.vsau.ru/"><img src="../img/logo.png" width="75" class="img-logo"></a> -->
+        <div class="logo" @click="$router.push('/')">GenMilk</div>
         <div class="topbar-links" id="topbar-links">
             <div class="point-of-bar" @click="$router.push('/animals')" v-if="token">Животные</div>
             <div class="point-of-bar" @click="$router.push('/analytics')" v-if="token">Аналитика</div>
@@ -91,7 +92,7 @@ export default {
     }
 
     .logo {
-        margin-left: 50px;
+        margin-left: 30px;
     }
 
     .date-update {
