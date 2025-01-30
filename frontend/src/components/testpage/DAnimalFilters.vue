@@ -24,11 +24,11 @@
             </div>
         </div>
         <div class="filter-category" v-if="!fromAnal">
-            <div @click="showFilters.isDead = !showFilters.isDead" class="ill-list-title">> Животное мертво</div>
+            <div @click="showFilters.isDead = !showFilters.isDead" class="ill-list-title">> Животное живо</div>
             <select class="filter-input" v-model="filters.isDead" v-if="showFilters.isDead">
                 <option :value="null">не важно</option>
-                <option :value="true">да</option>
-                <option :value="false">нет</option>
+                <option :value="true">нет</option>
+                <option :value="false">да</option>
             </select>
         </div>
         <div class="filter-category">
@@ -120,14 +120,14 @@
             </div>
         </div>
         <div class="filter-category">
-            <div @click="showFilters.inbrFamily = !showFilters.inbrFamily" class="ill-list-title">> Значения коэффициента инбридинга по родословной</div>
+            <div @click="showFilters.inbrFamily = !showFilters.inbrFamily" class="ill-list-title">> Коэффициент инбридинга по родословной</div>
             <div v-if="showFilters.inbrFamily">
                 <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFamilyFrom"></label><br>
                 <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByFamilyTo"></label>
             </div>
         </div>
         <div class="filter-category">
-            <div @click="showFilters.inbrGen = !showFilters.inbrGen" class="ill-list-title">> Значения коэффициента инбридинга по генотипу</div>
+            <div @click="showFilters.inbrGen = !showFilters.inbrGen" class="ill-list-title">> Коэффициент инбридинга по генотипу</div>
             <div v-if="showFilters.inbrGen">
                 <label class="range">От: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByGenotypeFrom"></label><br>
                 <label class="range">До: <input type='number' class="filter-input filter-num" v-model="filters.inbrindingCoeffByGenotypeTo"></label>
@@ -153,7 +153,7 @@
         <div class="filter-category category-last">
             <div @click="isVisibleIll = !isVisibleIll" class="ill-list-title">> Список заболеваний</div>
             <!-- <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/> -->
-            <div v-if="isVisibleIll">
+            <div v-if="showFilters.isVisibleIll">
                 <div v-for="ill in options" :key="ill.id" class="ill-item">
                     <label><input type="checkbox" :value="ill.id" v-model="filters.monogeneticIllneses"> {{ ill.name }}</label>
                 </div>
@@ -230,9 +230,10 @@ export default {
             checked_ill: [],
             list_ill_parameters: 0,
 
-            isVisibleIll: false,
+            
 
             showFilters: {
+                isVisibleIll: false,
                 hozName: false,
                 birthDate: false,
                 departDate: false,
@@ -264,6 +265,11 @@ export default {
             // let send_filters = this.filters;
             let send_filters = {};
             Object.assign(send_filters, this.filters);
+
+            let show = {};
+            Object.assign(show, this.showFilters);
+            this.$store.commit('SET_SHOWFILTERS', show);
+
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },
@@ -358,6 +364,9 @@ export default {
             }
             if (this.$store.getters.FILTERS_2.breedId) {
                 this.breedIdFromOutside = this.$store.getters.FILTERS_2.breedId[0];
+            }
+            if (this.$store.getters.SHOWFILTERS) {
+                this.showFilters = this.$store.getters.SHOWFILTERS;
             }
             this.$emit('applyFilters', this.filters);
         }

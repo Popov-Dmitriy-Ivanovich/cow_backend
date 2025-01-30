@@ -51,7 +51,7 @@
                     <thead>
                         <tr class="lac-header">
                             <th></th>
-                            <th></th>
+                            <th>Оценка</th>
                             <th>Достоверность</th>
                         </tr>
                     </thead>
@@ -79,7 +79,7 @@
                     </tbody>
                 </table>
 
-                <apexchart id="rating" width="350" type="rangeBar" :options="options" :series="series"></apexchart>
+                <apexchart id="rating" width="350" type="bar" :options="options" :series="series"></apexchart>
             </div>
             
 
@@ -106,7 +106,7 @@ export default {
 
             options: {
                 chart: {
-                    id: 'rating'
+                    id: 'rating',
                 },
                 xaxis: {
                     categories: []
@@ -115,9 +115,27 @@ export default {
                     bar: {
                         horizontal: true,
                     },
+                },
+                yaxis: {
+                    show: false,
+                },
+                tooltip: {
+                    enabled: false,
+                },
+                dataLabels: {
+                    enabled: false,
                 }
             },
-            series: [],
+            series: [
+                {
+                    data: [
+                        {x: '/', y: [0, 10]},
+                        {x: '//', y: -7},
+                        {x: '///', y: [0, 7]},
+                        {x: '////', y: [0, 12]},
+                    ]
+                }
+            ],
         }
     },
     async created() {
@@ -134,7 +152,7 @@ export default {
         }
         if(result.PercentsRegion) {
             this.percents = result.PercentsRegion;
-            this.getPercents();
+            //this.getPercents();
         }
 
     },
@@ -142,57 +160,57 @@ export default {
         round(num) {
             return Math.round(num*100)/100;
         },
-        getPercents() {
-            this.series = [];
-            let oneSerie = {
-                data: [],
-            }
-            if (this.percents.GeneralValue < 0) {
-                oneSerie.data.push({
-                    x: '1',
-                    y: [this.round(this.percents.GeneralValue), 0]
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '2',
-                    y: [0, this.round(this.percents.GeneralValue)]
-                })
-            }
-            if (this.percents.EbvMilk < 0) {
-                oneSerie.data.push({
-                    x: '3',
-                    y: [this.round(this.percents.EbvMilk), 0]
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '4',
-                    y: [0, this.round(this.percents.EbvMilk)]
-                })
-            }
-            if (this.percents.EbvFat < 0) {
-                oneSerie.data.push({
-                    x: '5',
-                    y: [this.round(this.percents.EbvFat), 0]
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '6',
-                    y: [0, this.round(this.percents.EbvFat)]
-                })
-            }
-            if (this.percents.EbvProtein < 0) {
-                oneSerie.data.push({
-                    x: '7',
-                    y: [this.round(this.percents.EbvProtein), 0]
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '8',
-                    y: [0, this.round(this.percents.EbvProtein)]
-                })
-            }
-            this.series.push(oneSerie);
-        }
+        // getPercents() {
+        //     this.series = [];
+        //     let oneSerie = {
+        //         data: [],
+        //     }
+        //     if (this.percents.GeneralValue < 0) {
+        //         oneSerie.data.push({
+        //             x: '1',
+        //             y: [this.round(this.percents.GeneralValue), 0]
+        //         })
+        //     } else {
+        //         oneSerie.data.push({
+        //             x: '2',
+        //             y: [0, this.round(this.percents.GeneralValue)]
+        //         })
+        //     }
+        //     if (this.percents.EbvMilk < 0) {
+        //         oneSerie.data.push({
+        //             x: '3',
+        //             y: [this.round(this.percents.EbvMilk), 0]
+        //         })
+        //     } else {
+        //         oneSerie.data.push({
+        //             x: '4',
+        //             y: [0, this.round(this.percents.EbvMilk)]
+        //         })
+        //     }
+        //     if (this.percents.EbvFat < 0) {
+        //         oneSerie.data.push({
+        //             x: '5',
+        //             y: [this.round(this.percents.EbvFat), 0]
+        //         })
+        //     } else {
+        //         oneSerie.data.push({
+        //             x: '6',
+        //             y: [0, this.round(this.percents.EbvFat)]
+        //         })
+        //     }
+        //     if (this.percents.EbvProtein < 0) {
+        //         oneSerie.data.push({
+        //             x: '7',
+        //             y: [this.round(this.percents.EbvProtein), 0]
+        //         })
+        //     } else {
+        //         oneSerie.data.push({
+        //             x: '8',
+        //             y: [0, this.round(this.percents.EbvProtein)]
+        //         })
+        //     }
+        //     this.series.push(oneSerie);
+        // }
     }
 }
 </script>
@@ -235,7 +253,6 @@ export default {
 
 .lac-header th {
     padding-right: 30px;
-    padding-bottom: 15px;
 }
 
 .lac-tablebody {
@@ -244,15 +261,21 @@ export default {
 
 th {
     font-weight: normal;
+    text-align: center;
 }
 
 td {
     width: auto;
     min-width: 80px;
     padding-right: 7px;
+    text-align: center;
 }
 
 .table-chart {
     display: flex;
+}
+
+#rating {
+    margin-top: 40px;
 }
 </style>

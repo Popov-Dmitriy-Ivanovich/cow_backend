@@ -3,13 +3,35 @@
         <div class="extrat-title">Оценка экстерьера</div>
         <div class="exterior-title">
             <div>Общая оценка экстерьера: {{ cow_info.Rating || 'Нет информации'}}</div>
-            <div class="krs-photo" v-if="cow_info.PicturePath">
+            <!-- <div class="krs-photo" v-if="cow_info.PicturePath">
                 <img width="100%" :src="logo">
             </div>
-            <div v-else class="krs-photo no-photo">Фото КРС</div>
+            <div v-else class="krs-photo no-photo">Фото КРС</div> -->
             
         </div>
-        <div>
+        <div class="column">
+                <div class="mark-with-num">
+                    <div class="ext-param">Молочная сила: </div>
+                    <div>{{ cow_info.MilkStrength || 'Нет информации'}}</div>
+                </div>
+                <div class="mark-with-num">
+                    <div class="ext-param">Телосложение: </div>
+                    <div>{{ cow_info.BodyStructure || 'Нет информации'}}</div>
+                </div>
+                <div class="mark-with-num">
+                    <div class="ext-param">Конечности: </div>
+                    <div>{{ cow_info.Limbs || 'Нет информации'}}</div>
+                </div>
+                <div class="mark-with-num">
+                    <div class="ext-param">Вымя: </div>
+                    <div>{{ cow_info.Udder || 'Нет информации'}}</div>
+                </div>
+                <div class="mark-with-num">
+                    <div class="ext-param">Общий вид: </div>
+                    <div>{{ cow_info.Sacrum || 'Нет информации'}}</div>
+                </div>
+            </div>
+        <!-- <div>
             <div class="ext-9mark-title" @click="show9Mark">> Признаки с 9-бальной оценкой</div>
             <div class="ext-9mark" :class="{'ext-hide': !isVisible9Mark}">
                 <div class="column">
@@ -153,8 +175,8 @@
                         <div>{{ cow_info.Udder || 'Нет информации'}}</div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> -->
+        <!-- </div> -->
     </div>
 </template>
     
@@ -225,6 +247,7 @@ export default {
     align-items: start;
     justify-content: space-between;
     padding-right: 50px;
+    width: 50%;
 }
 
 .krs-photo {
@@ -282,7 +305,9 @@ export default {
 }
 
 .column {
-    width: auto;
+    /* width: auto; */
+    width: 50%;
+    margin-top: 20px;
     height: max-content;
 }
 </style>
