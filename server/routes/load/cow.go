@@ -165,11 +165,12 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 			res.InbrindingCoeffByFamily = &icbf
 		}
 	}
-
-	if birthDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirthDate"]]); err != nil {
-		return nil, err
-	} else {
-		res.BirthDate = models.DateOnly{Time: birthDate}
+	if rec[cr.HeaderIndexes["BirthDate"]] != "" {
+		if birthDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirthDate"]]); err != nil {
+			return nil, err
+		} else {
+			res.BirthDate = models.DateOnly{Time: birthDate}
+		}
 	}
 
 	if rec[cr.HeaderIndexes["DepartDate"]] != "" {
