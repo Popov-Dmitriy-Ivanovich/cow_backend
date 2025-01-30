@@ -6,7 +6,7 @@
             <div class="animal-name">{{ animal_item.Name }}</div>
             <div class="animal-hoz">{{ animal_item.FarmGroupName }}</div>
             <div class="animal-bdate">{{ dateConverter(bdate(animal_item.BirthDate)) }}</div>
-            <div class="animal-inv">{{ animal_item.EbvGeneralValueRegion || '-' }}</div>
+            <div class="animal-inv">{{ round(animal_item.EbvGeneralValueRegion) || '-' }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.Genotyped) }}</div>
 
             <div v-if="animal_item.DepartDate" class="animal-dateout">{{ dateConverter(animal_item.DepartDate) }}</div>
@@ -102,6 +102,9 @@ export default {
         isGen(a) {
             if(a) return 'Да';
             else return 'Нет';
+        },
+        round(num) {
+            return Math.round(num*100)/100;
         },
         bdate(birth) {
             return birth.split('T')[0];

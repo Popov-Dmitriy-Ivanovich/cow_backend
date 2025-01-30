@@ -9,7 +9,7 @@
         </div>
         <div class="hoz-stat">
             <div>
-                <div class="stat">{{ farm_item.CowsCount }} шт</div>
+                <div class="stat">{{ farm_item.CowsCount }}</div>
                 <div>животных в базе</div>
             </div>
         </div>
@@ -82,6 +82,6 @@ export default {
 
 .stat {
     font-size: 300%;
-    color: black;
+    color: rgb(99, 99, 99);
 }
 </style>

@@ -14,6 +14,7 @@ const store = createStore({
             isCows: true,
             isBulls: false,
             isChild: false,
+            showFilters: {},
         }
     },
     getters: {
@@ -31,6 +32,9 @@ const store = createStore({
         },
         ISCHILD(state) {
             return state.isChild;
+        },
+        SHOWFILTERS(state) {
+            return state.showFilters;
         }
     },
     mutations: {
@@ -55,6 +59,9 @@ const store = createStore({
         SET_ISCHILD(state, payload) {
             state.isChild = payload;
         },
+        SET_SHOWFILTERS(state, payload) {
+            state.showFilters = payload;
+        }
     }
 })
 
