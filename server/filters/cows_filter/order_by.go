@@ -9,18 +9,18 @@ type OrderBy struct {
 }
 
 var orderingsDesc = map[string]string{
-	"RSHN":             "rshn_number desc",
-	"InventoryNumber":  "inventory_number desc",
-	"Name":             "name desc",
-	"BirthDate":        "birth_date desc",
-	"GeneralEbvRegion": "\"GradeRegion\".general_value desc",
+	"RSHN":             "rshn_number desc NULLS LAST",
+	"InventoryNumber":  "inventory_number desc NULLS LAST",
+	"Name":             "name desc NULLS LAST",
+	"BirthDate":        "birth_date desc NULLS LAST",
+	"GeneralEbvRegion": "\"GradeRegion\".general_value desc NULLS LAST",
 }
 var orderingsAsc = map[string]string{
-	"RSHN":             "rshn_number asc",
-	"InventoryNumber":  "inventory_number asc",
-	"Name":             "name asc",
-	"BirthDate":        "birth_date asc",
-	"GeneralEbvRegion": "\"GradeRegion\".general_value asc",
+	"RSHN":             "rshn_number asc NULLS LAST",
+	"InventoryNumber":  "inventory_number asc NULLS LAST",
+	"Name":             "name asc NULLS LAST",
+	"BirthDate":        "birth_date asc NULLS LAST",
+	"GeneralEbvRegion": "\"GradeRegion\".general_value asc NULLS LAST",
 }
 
 func (f OrderBy) Apply(fm filters.FilteredModel) error {
