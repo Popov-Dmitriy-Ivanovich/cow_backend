@@ -61,7 +61,7 @@ func (g *Genetic) BeforeCreate(tx *gorm.DB) error {
 		g.ResultDate = &DateOnly{Time: time.Now().UTC()}
 	}
 	if g.BloodDate == nil {
-		g.BloodDate = &DateOnly{Time: time.Now().UTC()}
+		g.BloodDate = &DateOnly{Time: time.Now().UTC().AddDate(0, 0, 1)}
 	}
 	return g.Validate()
 }
@@ -71,7 +71,7 @@ func (g *Genetic) BeforeUpdate(tx *gorm.DB) error {
 		g.ResultDate = &DateOnly{Time: time.Now().UTC()}
 	}
 	if g.BloodDate == nil {
-		g.BloodDate = &DateOnly{Time: time.Now().UTC()}
+		g.BloodDate = &DateOnly{Time: time.Now().UTC().AddDate(0, 0, 1)}
 	}
 	return g.Validate()
 }

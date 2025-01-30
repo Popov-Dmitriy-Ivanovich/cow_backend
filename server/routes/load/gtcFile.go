@@ -57,6 +57,7 @@ func (l *Load) GtcFile() func(*gin.Context) {
 				continue
 			}
 			genetic.GtcFilePath = &filePath
+
 			if err := db.Save(&genetic).Error; err != nil {
 				errors = append(errors, err.Error())
 				continue
