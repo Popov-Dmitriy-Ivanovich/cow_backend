@@ -2,14 +2,11 @@ package load
 
 import (
 	"cow_backend/models"
-	"encoding/csv"
-	"io"
-	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 const GTC_FILE_PATH = "./static/gtc/"
@@ -18,6 +15,7 @@ var gtcUniqueIndex uint64 = 0
 
 func (l *Load) GtcFile() func(*gin.Context) {
 	return func(c *gin.Context) {
+
 		form, err := c.MultipartForm()
 		if err != nil {
 			c.JSON(500, err.Error())
@@ -44,42 +42,22 @@ func (l *Load) GtcFile() func(*gin.Context) {
 			}
 		}
 
-		csvFile := form.File["csv"]
-		csvFilePath := "./csv/gtcCsv" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(gtcUniqueIndex, 16) + ".csv"
-		if err := c.SaveUploadedFile(csvFile[0], csvFilePath); err != nil {
-			c.JSON(500, err.Error())
-		}
-
-		file, err := os.Open(csvFilePath)
-		if err != nil {
-			c.JSON(500, "error opening file")
-			return
-		}
-		defer file.Close()
-		csvReader := csv.NewReader(file)
+		db := models.GetDb()
 		errors := []string{}
-		for record, err := csvReader.Read(); err != io.EOF; record, err = csvReader.Read() {
-			selecsStr := record[0]
-			fileName := record[1]
-			filePath, ok := filesNaming[fileName]
-			if !ok {
-				errors = append(errors, "не загружен файл "+fileName)
+		for fileName, filePath := range filesNaming {
+			cow := models.Cow{}
+			selecs := strings.Split(fileName, ".")[0]
+			if err := db.First(&cow, selecs).Error; err != nil {
+				errors = append(errors, err.Error())
 				continue
 			}
-			dbCow := models.Cow{}
-			db := models.GetDb()
-			if err := db.Preload("Genetic").First(&dbCow, map[string]any{"selecs_number": selecsStr}).Error; err != nil {
-				errors = append(errors, "не удалось найти корову с селексом "+selecsStr)
+			genetic := models.Genetic{}
+			if err := db.FirstOrCreate(&genetic, map[string]any{"cow_id": cow.ID}).Error; err != nil {
+				errors = append(errors, err.Error())
 				continue
 			}
-			if dbCow.Genetic == nil {
-				dbCow.Genetic = new(models.Genetic)
-				dbCow.Genetic.ResultDate = &models.DateOnly{Time: time.Now().UTC()}
-				dbCow.Genetic.BloodDate = &models.DateOnly{Time: time.Now().UTC()}
-			}
-			dbCow.Genetic.GtcFilePath = &filePath
-
-			if err := db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&dbCow).Error; err != nil {
+			genetic.GtcFilePath = &filePath
+			if err := db.Save(&genetic).Error; err != nil {
 				errors = append(errors, err.Error())
 				continue
 			}
