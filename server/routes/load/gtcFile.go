@@ -47,7 +47,7 @@ func (l *Load) GtcFile() func(*gin.Context) {
 		for fileName, filePath := range filesNaming {
 			cow := models.Cow{}
 			selecs := strings.Split(fileName, ".")[0]
-			if err := db.First(&cow, selecs).Error; err != nil {
+			if err := db.First(&cow, map[string]any{"selecs_number": selecs}).Error; err != nil {
 				errors = append(errors, err.Error())
 				continue
 			}
