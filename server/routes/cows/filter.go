@@ -22,7 +22,7 @@ type FilterSerializedCow struct {
 	InventoryNumber           *string                     `validate:"required" example:"321"`                                   // Инвентарный номер коровы
 	Name                      string                      `validate:"required" example:"Буренка"`                               // Кличка коровы
 	FarmGroupName             string                      `validate:"required" example:"ООО Аурус"`                             // Название хозяйства, в котором корова
-	BirthDate                 models.DateOnly             `validate:"required"`                                                 // Дата рождения коровы
+	BirthDate                 *models.DateOnly            `validate:"required"`                                                 // Дата рождения коровы
 	Genotyped                 bool                        `validate:"required" example:"true"`                                  // Факт генотипирования коровы
 	Approved                  bool                        `validate:"required" example:"true"`                                  // Подтверждена ли админом
 	DepartDate                *models.DateOnly            `json:",omitempty" validate:"optional"`                               // Дата выбытия

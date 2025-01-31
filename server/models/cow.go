@@ -56,7 +56,7 @@ type Cow struct {
 	InbrindingCoeffByFamily *float64 `gorm:"index" example:"3.14"` // Коэф. инбриндинга по роду
 
 	Approved    int       `gorm:"index" example:"1"` // Целое число, 0 - корова не подтверждена, 1 - корова подтверждена, -1 - корова отклонена
-	BirthDate   DateOnly  `gorm:"index"`             // День рождения
+	BirthDate   *DateOnly `gorm:"index"`             // День рождения
 	DepartDate  *DateOnly `gorm:"index"`             // День отбытия из коровника
 	DeathDate   *DateOnly `gorm:"index"`             // Дата смерти
 	BirkingDate *DateOnly `gorm:"index"`             // Дата перебирковки

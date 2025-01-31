@@ -36,7 +36,7 @@ type cowRecord struct {
 	Name                    string
 	InbrindingCoeffByFamily *float64
 
-	BirthDate   models.DateOnly
+	BirthDate   *models.DateOnly
 	DepartDate  *models.DateOnly
 	DeathDate   *models.DateOnly
 	BirkingDate *models.DateOnly
@@ -169,7 +169,7 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 		if birthDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirthDate"]]); err != nil {
 			return nil, err
 		} else {
-			res.BirthDate = models.DateOnly{Time: birthDate}
+			res.BirthDate = &models.DateOnly{Time: birthDate}
 		}
 	}
 
