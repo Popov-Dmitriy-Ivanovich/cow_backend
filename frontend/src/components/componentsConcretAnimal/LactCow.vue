@@ -1,6 +1,6 @@
 <template>
-<div>
-    <div class="lac-title">Лактации</div>
+<div class="lac-title">Лактации</div>    
+<div v-if="!isLoading">
     <button @click="isTable=true;isChart=false" 
     class="table-chart"
     :class="{'active-btn':isTable}">
@@ -17,7 +17,6 @@
                     <th>Номер лактации</th>
                     <th>Кратность осеменения</th>
                     <th>Дата осеменения</th>
-                    <th>Количество телят</th>
                     <th>Аборт</th>
                     <th>Дата отела</th>
                     <th>Суммарный удой, кг</th>
@@ -35,7 +34,6 @@
                     <td>{{ lact.Number || 'Нет информации'}}</td>
                     <td>{{ lact.InsemenationNum || 'Нет информации'}}</td>
                     <td v-if="lact.InsemenationDate">{{ dateConverter(lact.InsemenationDate) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.CalvingCount">{{ lact.CalvingCount || 'Нет информации'}}</td><td v-else>Нет информации</td>
                     <td v-if="lact.Abort===true || lact.Abort===false">{{ yesNo(lact.Abort) }}</td><td v-else>Нет информации</td>
                     <td v-if="lact.CalvingDate">{{ dateConverter(lact.CalvingDate) }}</td><td v-else>Нет информации</td>
                     <td v-if="lact.MilkAll">{{ Math.floor(lact.MilkAll) }}</td><td v-else>Нет информации</td>
@@ -72,6 +70,7 @@
         <apexchart id="ControlMilking" width="600" type="bar" :options="options" :series="series"></apexchart>
     </div>
 </div>
+<div v-if="isLoading">Идёт загрузка...</div>
 </template>
 
 <script>
@@ -94,9 +93,12 @@ export default {
             },
             series: [],
             param_milking: 'MilkAll',
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/lactations`);
@@ -114,6 +116,7 @@ export default {
             serie.data.push(this.cow_info[i].MilkAll);
         }
         this.series.push(serie);
+        this.isLoading = false;
     },
     methods: {
         addParam(obj, arr, param) {

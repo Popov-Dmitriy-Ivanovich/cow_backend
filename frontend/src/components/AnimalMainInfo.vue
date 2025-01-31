@@ -1,5 +1,5 @@
 <template>
-<div class="main-info">
+<div class="main-info" v-if="!isLoading">
     <div class="cowname">{{ cow_info.Name || 'Нет информации'}}</div>
     <div class="pol"> | {{ cow_info.SexName  || 'Нет информации' }}</div>
     <div class="cow-microinfo">
@@ -8,6 +8,7 @@
         <div class="pol">| {{ status }}</div>
     </div> 
 </div>
+<div class="main-info" v-if="isLoading">Идёт загрузка...</div>
 </template>
 
 <script>
@@ -16,6 +17,7 @@ export default {
         return {
             cow_info: {},
             status:"",
+            isLoading: false,
         }
     },
     async created() {
@@ -39,6 +41,7 @@ export default {
             return result;
         },
         async fetchInfo(param) {
+            this.isLoading = true;
             let response = await fetch(`/api/cows/${param}`);
             let result = await response.json();
             this.cow_info = result;
@@ -50,6 +53,7 @@ export default {
                 if(this.cow_info.SexId === 2 || this.cow_info.SexId === 4) this.status = 'Не выбыла'
                 else this.status = 'Не выбыл'
             }
+            this.isLoading = false;
         }
     },
     watch: {

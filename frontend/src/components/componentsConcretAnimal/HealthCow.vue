@@ -1,5 +1,5 @@
 <template>
-<div class="parent-table">
+<div class="parent-table" v-if="!isLoading">
     <table class="lac-table">
         <thead>
             <tr class="lac-header">
@@ -21,6 +21,7 @@
         </tbody>
     </table>
 </div>
+<div v-if="isLoading">Идёт загрузка...</div>
 </template>
 
 <script>
@@ -28,13 +29,16 @@ export default {
     data() {
         return {
             cow_info: {},
+            isLoading: false,
         }
     },
     async mounted() {
+        this.isLoading = true;
         let response = await fetch(`/api/cows/${this.$route.params.id}/health`);
         let result = await response.json();
         this.cow_info = result;
         console.log(this.cow_info);
+        this.isLoading = false;
     },
     methods: {
         dateConverter(date) {
@@ -67,7 +71,7 @@ th {
 td {
     width: auto;
     min-width: 130px;
-    padding-right: 15px;
+    padding: 6px 15px 6px 0;
 }
 
 .lac-header {

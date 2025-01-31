@@ -73,11 +73,14 @@ export default {
     width: max-content;
     margin: 0 25px 30px 0;
     padding: 7px;
+    width: 170px;
 }
 
 .id-min-title {
     color: grey;
     margin-bottom: 7px;
+    width: auto;
+    min-width: 50px;
 }
 
 .animal-parent {

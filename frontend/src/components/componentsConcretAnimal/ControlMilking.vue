@@ -1,6 +1,6 @@
 <template>
-<div>
-    <div class="cm-title">Контрольные доения</div>
+<div class="cm-title">Контрольные доения</div>
+<div v-if="!isLoading">
     <button @click="isTable=true;isChart=false" 
     class="table-chart"
     :class="{'active-btn':isTable}">
@@ -16,10 +16,8 @@
                 <tr class="cm-header">
                     <th>Номер лактации</th>
                     <th class="cm-date">Дата</th>
-                    <th class="cm-nprob">Номер пробы</th>
                     <th class="cm-milkday">Дойный день</th>
                     <th class="cm-milk">Удой, кг</th>
-                    <th class="cm-dry">Сухое вещество, %</th>
                     <th class="cm-zhir">Жир, %</th>
                     <th class="cm-belok">Белок, %</th>
                     <th>Жир, кг</th>
@@ -29,12 +27,10 @@
             </thead>
             <tbody class="cm-tablebody">
                 <tr v-for="milking in cow_info" :key="milking.CheckDate">
-                    <td>{{ milking.LactationNumber || 'Нет информации'}}</td>
                     <td>{{ dateConverter(milking.CheckDate) }}</td>
                     <td>{{ milking.ProbeNumber || 'Нет информации'}}</td>
                     <td>{{ milking.MilkingDays || 'Нет информации'}}</td>
-                    <td v-if="milking.Milk">{{ milking.Milk.toFixed(1) }}</td><td v-else>Нет информации</td>
-                    <td v-if="milking.DryMatter">{{ milking.DryMatter.toFixed(2) }}</td><td v-else>Нет информации</td>
+                    <td v-if="milking.Milk">{{ milking.Milk.toFixed(1) }}</td><td v-else>Нет информации</td>    
                     <td v-if="milking.Fat">{{ milking.Fat.toFixed(1) }}</td><td v-else>Нет информации</td>
                     <td v-if="milking.Protein">{{ milking.Protein.toFixed(1) }}</td><td v-else>Нет информации</td>
                     <td>{{ milking.FatRegard || 'Нет информации'}}</td>
@@ -75,6 +71,7 @@
         <apexchart ref="linechart" id="ControlMilking" width="600" type="line" :options="options" :series="series"></apexchart>
     </div>
 </div>
+<div v-if="isLoading">Идёт загрузка...</div>
 </template>
 
 <script>
@@ -97,9 +94,12 @@ export default {
             param_milking: 'Milk',
             check_lact: 1,
             isLact: false,
+
+            isLoading: false,
         }
     },
-    async created() {
+    async created() { 
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/checkMilks`);
@@ -126,9 +126,7 @@ export default {
         }
 
         this.addParam(this.cow_info, this.series, this.param_milking, this.check_lact)
-
-        console.log(this.count_lactations);
-        console.log(this.cow_info);
+        this.isLoading = false;
     },
     methods: {
         addInArr(obj, arr, param, nlact) {

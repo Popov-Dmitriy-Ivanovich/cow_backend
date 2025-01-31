@@ -31,11 +31,11 @@
                         <div>Сортировать: </div>
                         <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
                             <!-- <option :value="null">-нет-</option> -->
-                            <option :value="'Name'">кличке</option>
+                            <option :value="'Name'">Кличке</option>
                             <option :value="'RSHN'">РСХН</option>
-                            <option :value="'BirthDate'">дате рождения</option>
-                            <option :value="'InventoryNumber'">инвентарному номеру</option>
-                            <option :value="null">индексу EBV по региону</option>
+                            <option :value="'BirthDate'">Дате рождения</option>
+                            <option :value="'InventoryNumber'">Инвентарному номеру</option>
+                            <option :value="null">Индексной оценке</option>
                             
                         </select>
                         <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
