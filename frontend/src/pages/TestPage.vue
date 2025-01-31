@@ -2,19 +2,20 @@
     <div class="animals">
         <div class="flex-top">
             <div class="flex-logo">
-                <div class="animal-title">Животные</div>
+                <!-- <div class="animal-title">Животные</div> -->
                 <div class="cows-bulls">
                     <button class="cow-btn" :class="{'current-animal-btn': isCows}" @click="cowsClick">Коровы</button>
                     <button class="bull-btn" :class="{'current-animal-btn': isBulls}" @click="bullsClick">Быки</button>
                     <button class="cow-btn" :class="{'current-animal-btn': isChild}" @click="childClick">Молодняк</button>
+                    <button class="cow-btn" :class="{'current-animal-btn': isFiltersVisisble}" @click="filterClick">Фильтры</button>
                 </div>
             </div>
             <div class="search-block">
                 <div>
-                    <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div>
+                    <!-- <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div> -->
                     <input class="search-animals" 
                     type="text" 
-                    placeholder="Введите значение" 
+                    placeholder="кличка, инвентарный номер, сэлекс или РСХН" 
                     @keyup.enter="searchCowsOrBulls" 
                     
                     id="search-animals"
@@ -301,6 +302,20 @@ export default {
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
         },
+        filterClick() {
+            if (this.isFiltersVisisble === undefined) {
+                this.isFiltersVisisble = false
+            }
+            console.log(this.isFiltersVisisble)
+            
+            if (this.isFiltersVisisble) {
+                document.getElementById("FILTERS").style.display = "none"
+                this.isFiltersVisisble = false
+            } else {
+                document.getElementById("FILTERS").style.display = "flex"
+                this.isFiltersVisisble = true
+            }
+        },
         changeN(newN) {
             this.number_of_animals = newN;
         }
@@ -367,7 +382,8 @@ export default {
     background-color: white;
     color: rgb(10, 113, 75);
     padding: 15px 0;
-    margin-top: 30px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     width: 100px;
     border-radius: 10px;
     transition: 0.3s;
@@ -380,6 +396,8 @@ export default {
 }
 
 .current-animal-btn {
+    margin-top: 15px;
+    margin-bottom: 15px;
     border: 1px solid rgb(10, 113, 75);
     background-color: rgb(232, 248, 242);
 }
@@ -391,6 +409,7 @@ export default {
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     display: flex;
     align-items: flex-end;
+    margin-top: 15px;
 }
 
 .search-animals {
@@ -403,6 +422,8 @@ export default {
     border: 2px solid white;
     background-color: rgb(247, 252, 250);
     transition: 0.3s;
+    margin-top: 15px;
+    border-radius: 15px;
 }
 
 .search-animals:focus {

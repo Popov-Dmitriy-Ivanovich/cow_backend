@@ -206,7 +206,8 @@ export default {
 }
 
 .animals-table {
-    width: 930px;
+    width: 1200px;
+    border-radius: 15px;
     height: max-content;
     min-height: 500px;
     background-color: white;

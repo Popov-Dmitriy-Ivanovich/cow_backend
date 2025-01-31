@@ -1,5 +1,5 @@
 <template>
-    <div class="filters">
+    <div class="filters" id="FILTERS">
         <div class="filter-title">Фильтры</div>
         <div class="filter-category">
             <div @click="showFilters.hozName = !showFilters.hozName" class="ill-list-title">> Название хозяйства/фермы</div>
@@ -384,7 +384,7 @@ export default {
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     padding: 10px 20px;
     font-family: Open Sans, sans-serif;
-    display: flex;
+    display: none;
     flex-direction: column;
 
 }
