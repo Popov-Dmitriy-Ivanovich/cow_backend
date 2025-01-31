@@ -1,6 +1,6 @@
 <template>
 <div class="statistic">
-    <div class="statistic-title">Статистика по генотипированию</div>
+    <div class="statistic-title">Статистика по проекту</div>
     <!-- <div v-for="item in stat" :key="item.name" class="statis-text">
         <div>{{ item.name }}</div>
         <div>{{ item.value }} животных (~{{ item.regard }}% от общего количества)</div>
