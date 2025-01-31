@@ -8,19 +8,19 @@
 
     <div class="statis-text">
         <div>Генотипированные животные</div>
-        <div>0</div>
+        <div>42 303</div>
     </div>
     <div class="statis-text">
         <div>Молочные пробы</div>
-        <div>0</div>
+        <div>112 347</div>
     </div>
     <div class="statis-text">
         <div>Оценки экстерьера</div>
-        <div>0</div>
+        <div>285</div>
     </div>
     <div class="statis-text">
         <div>Собранные данные СУС</div>
-        <div>0</div>
+        <div>56 085</div>
     </div>
 </div>
 </template>
