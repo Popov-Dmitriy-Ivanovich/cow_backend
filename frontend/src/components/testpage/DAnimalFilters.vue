@@ -151,7 +151,7 @@
             </select>
         </div>    
         <div class="filter-category category-last">
-            <div @click="isVisibleIll = !isVisibleIll" class="ill-list-title">> Список заболеваний</div>
+            <div @click="showFilters.isVisibleIll = !showFilters.isVisibleIll" class="ill-list-title">> Список заболеваний</div>
             <!-- <MultiselectIllness @sendToMain="setIdIllness" v-bind:clearIll="clearIllness" class="illness"/> -->
             <div v-if="showFilters.isVisibleIll">
                 <div v-for="ill in options" :key="ill.id" class="ill-item">
@@ -356,6 +356,7 @@ export default {
             this.options.push(ill);
         }
         if (!this.fromAnal && Object.keys(this.$store.getters.FILTERS_2).length !== 0) {
+            console.log(this.$store.getters.FILTERS_2, 'vuex');
             for (let key in this.$store.getters.FILTERS_2) {
                 this.filters[key] = this.$store.getters.FILTERS_2[key];
             }
@@ -365,6 +366,40 @@ export default {
             if (this.$store.getters.FILTERS_2.breedId) {
                 this.breedIdFromOutside = this.$store.getters.FILTERS_2.breedId[0];
             }
+
+            if (this.$store.getters.FILTERS_2.exteriorFrom && this.$store.getters.FILTERS_2.exteriorTo) {
+                if (this.$store.getters.FILTERS_2.exteriorFrom == 50 && this.$store.getters.FILTERS_2.exteriorTo == 64) {
+                    this.exterior = 'низкая';
+                }
+                if (this.$store.getters.FILTERS_2.exteriorFrom == 65 && this.$store.getters.FILTERS_2.exteriorTo == 74) {
+                    this.exterior = 'средняя';
+                }
+                if (this.$store.getters.FILTERS_2.exteriorFrom == 75 && this.$store.getters.FILTERS_2.exteriorTo == 79) {
+                    this.exterior = 'хорошая';
+                }
+                if (this.$store.getters.FILTERS_2.exteriorFrom == 80 && this.$store.getters.FILTERS_2.exteriorTo == 84) {
+                    this.exterior = 'хорошая+';
+                }
+                if (this.$store.getters.FILTERS_2.exteriorFrom == 85 && this.$store.getters.FILTERS_2.exteriorTo == 89) {
+                    this.exterior = 'очень хорошая';
+                }
+                if (this.$store.getters.FILTERS_2.exteriorFrom == 90 && this.$store.getters.FILTERS_2.exteriorTo == 100) {
+                    this.exterior = 'отличная';
+                }
+            }
+
+            if (this.$store.getters.FILTERS_2.isIll === null && this.$store.getters.FILTERS_2.hasAnyIllnes === null) {
+                this.list_ill_parameters = 0;
+            } else if (this.$store.getters.FILTERS_2.isIll === null && this.$store.getters.FILTERS_2.hasAnyIllnes === true) {
+                this.list_ill_parameters = 1;
+            } else if (this.$store.getters.FILTERS_2.isIll === null && this.$store.getters.FILTERS_2.hasAnyIllnes === false) {
+                this.list_ill_parameters = 2;
+            } else if (this.$store.getters.FILTERS_2.isIll === true && this.$store.getters.FILTERS_2.hasAnyIllnes === null) {
+                this.list_ill_parameters = 3;
+            } else if (this.$store.getters.FILTERS_2.isIll === false && this.$store.getters.FILTERS_2.hasAnyIllnes === null) {
+                this.list_ill_parameters = 4;
+            }
+
             if (this.$store.getters.SHOWFILTERS) {
                 this.showFilters = this.$store.getters.SHOWFILTERS;
             }

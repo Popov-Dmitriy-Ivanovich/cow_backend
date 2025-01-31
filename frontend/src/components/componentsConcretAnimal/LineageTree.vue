@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="lineage-title">Родословное дерево</div>
+    <div class="lineage-title">Родословное дерево</div>
+    <div v-if="!isLoading">   
         <div class="parent-lineagetree">
             <div class="column">
                 <div class="main-cow animal-block">
@@ -174,6 +174,7 @@
             </div>
         </div>
     </div>
+    <div v-if="isLoading">Идёт загрузка...</div>
 </template>
     
 <script>
@@ -199,13 +200,16 @@ export default {
             father_grandfather_mother: {},
             mother_grandfather_father: {},
             father_grandfather_father: {},
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         await this.fetchInfo(cow_id);
-        console.log(this.father_grandfather_father, 'in created');
+        this.isLoading = false;
     },
     methods: {
         dateConverter(date) {

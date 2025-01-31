@@ -1,6 +1,6 @@
 <template>
+<div class="doc-title">Загрузка документов</div>    
 <div>
-    <div class="doc-title">Загрузка документов</div>
     <form class="download-doc-form" id="form-document">
         <input type="file" id="Document" name="Document">
         <input type="text" id="CowID" name="CowID" required="" :value="$route.params.id">

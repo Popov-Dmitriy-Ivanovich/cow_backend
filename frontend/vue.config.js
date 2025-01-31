@@ -9,7 +9,7 @@ module.exports = defineConfig({
     devServer: {
       webSocketServer: false,
       // proxy: 'http://localhost:8080/'
-      proxy: 'https://83.69.249.5/'
+      proxy: 'http://83.69.249.5:8000/'
       
       // {
       //   '^/api': {

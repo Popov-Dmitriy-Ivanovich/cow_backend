@@ -1,6 +1,6 @@
 <template>
     <div class="id-title">Перемещения</div>
-    <div class="mov-flex">
+    <div class="mov-flex" v-if="!isLoading">
         <div class="item-block">
             <div class="id-min-title">Хозяйство предыдущего пребывания</div>
             <div v-if="hozPrev">{{ hozPrev.Name || 'Нет информации' }}</div>
@@ -12,8 +12,7 @@
             <div v-else>Нет информации</div>
         </div>
     </div>
-
-
+    <div v-if="isLoading">Идёт загрузка</div>
 </template>
 
 <script>
@@ -27,9 +26,11 @@ export default {
         return {
             hozBirth: null,
             hozPrev: null,
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         if(this.cow_info.BirthHozId) {
             let response = await fetch(`/api/farms/${this.cow_info.BirthHozId}`);
             let result = await response.json();
@@ -40,9 +41,11 @@ export default {
             let result1 = await response1.json();
             this.hozPrev = result1;
         }
+        this.isLoading = false;
     },
     watch: {
         async cow_info(new_val) {
+            this.isLoading = true;
             if(new_val.BirthHozId) {
                 let response = await fetch(`/api/farms/${new_val.BirthHozId}`);
                 let result = await response.json();
@@ -53,6 +56,7 @@ export default {
                 let result1 = await response1.json();
                 this.hozPrev = result1;
             }
+            this.isLoading = false;
         }
     }
 }

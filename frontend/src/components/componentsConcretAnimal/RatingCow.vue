@@ -1,5 +1,5 @@
 <template>
-    <div class="rating-columns">
+    <div class="rating-columns" v-if="!isLoading">
         <!-- <div>
                 <div class="rat-title">Оценка КРС по хозяйству</div>
             <div class="rating-item">
@@ -59,7 +59,7 @@
                         <tr>
                             <td>Общая индексная оценка:</td>
                             <td>{{ round(ratings_reg.GeneralValue) || 'Нет информации'}}</td>
-                            <td>{{ round(ratings_reg.GeneralValueReliability) || 'Нет информации'}}</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>EBV по среднему удою за 305 дней:</td>
@@ -79,7 +79,7 @@
                     </tbody>
                 </table>
 
-                <apexchart id="rating" width="350" type="bar" :options="options" :series="series"></apexchart>
+                <apexchart id="rating" width="390" type="bar" :options="options" :series="series" ref="rating"></apexchart>
             </div>
             
 
@@ -92,8 +92,8 @@
                 <div>{{ round(ratings_reg.EvbService) || 'Нет информации'}}</div>
             </div> -->
         </div>
-        
     </div>
+    <div v-if="isLoading">Идёт загрузка...</div>
 </template>
 
 <script>
@@ -136,9 +136,12 @@ export default {
                     ]
                 }
             ],
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/grades`)
@@ -152,65 +155,65 @@ export default {
         }
         if(result.PercentsRegion) {
             this.percents = result.PercentsRegion;
-            //this.getPercents();
+            this.getPercents();
         }
-
+        this.isLoading = false;
     },
     methods: {
         round(num) {
             return Math.round(num*100)/100;
         },
-        // getPercents() {
-        //     this.series = [];
-        //     let oneSerie = {
-        //         data: [],
-        //     }
-        //     if (this.percents.GeneralValue < 0) {
-        //         oneSerie.data.push({
-        //             x: '1',
-        //             y: [this.round(this.percents.GeneralValue), 0]
-        //         })
-        //     } else {
-        //         oneSerie.data.push({
-        //             x: '2',
-        //             y: [0, this.round(this.percents.GeneralValue)]
-        //         })
-        //     }
-        //     if (this.percents.EbvMilk < 0) {
-        //         oneSerie.data.push({
-        //             x: '3',
-        //             y: [this.round(this.percents.EbvMilk), 0]
-        //         })
-        //     } else {
-        //         oneSerie.data.push({
-        //             x: '4',
-        //             y: [0, this.round(this.percents.EbvMilk)]
-        //         })
-        //     }
-        //     if (this.percents.EbvFat < 0) {
-        //         oneSerie.data.push({
-        //             x: '5',
-        //             y: [this.round(this.percents.EbvFat), 0]
-        //         })
-        //     } else {
-        //         oneSerie.data.push({
-        //             x: '6',
-        //             y: [0, this.round(this.percents.EbvFat)]
-        //         })
-        //     }
-        //     if (this.percents.EbvProtein < 0) {
-        //         oneSerie.data.push({
-        //             x: '7',
-        //             y: [this.round(this.percents.EbvProtein), 0]
-        //         })
-        //     } else {
-        //         oneSerie.data.push({
-        //             x: '8',
-        //             y: [0, this.round(this.percents.EbvProtein)]
-        //         })
-        //     }
-        //     this.series.push(oneSerie);
-        // }
+        getPercents() {
+            this.series = [];
+            let oneSerie = {
+                data: [],
+            }
+            if (this.percents.GeneralValue < 0) {
+                oneSerie.data.push({
+                    x: '1',
+                    y: this.round(this.percents.GeneralValue)
+                })
+            } else {
+                oneSerie.data.push({
+                    x: '2',
+                    y: [0, this.round(this.percents.GeneralValue)]
+                })
+            }
+            if (this.percents.EbvMilk < 0) {
+                oneSerie.data.push({
+                    x: '3',
+                    y: this.round(this.percents.EbvMilk)
+                })
+            } else {
+                oneSerie.data.push({
+                    x: '4',
+                    y: [0, this.round(this.percents.EbvMilk)]
+                })
+            }
+            if (this.percents.EbvFat < 0) {
+                oneSerie.data.push({
+                    x: '5',
+                    y: this.round(this.percents.EbvFat)
+                })
+            } else {
+                oneSerie.data.push({
+                    x: '6',
+                    y: [0, this.round(this.percents.EbvFat)]
+                })
+            }
+            if (this.percents.EbvProtein < 0) {
+                oneSerie.data.push({
+                    x: '7',
+                    y: this.round(this.percents.EbvProtein)
+                })
+            } else {
+                oneSerie.data.push({
+                    x: '8',
+                    y: [0, this.round(this.percents.EbvProtein)]
+                })
+            }
+            this.series = [oneSerie];
+        }
     }
 }
 </script>
@@ -251,12 +254,12 @@ export default {
     color: grey;
 }
 
-.lac-header th {
-    padding-right: 30px;
-}
-
 .lac-tablebody {
     text-align: left;
+}
+
+table {
+    border-collapse: collapse;
 }
 
 th {
@@ -269,13 +272,11 @@ td {
     min-width: 80px;
     padding-right: 7px;
     text-align: center;
+    height: 50px;
 }
 
 .table-chart {
     display: flex;
-}
-
-#rating {
-    margin-top: 40px;
+    align-items: flex-start;
 }
 </style>

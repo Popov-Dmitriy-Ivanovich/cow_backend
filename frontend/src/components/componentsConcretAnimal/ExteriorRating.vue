@@ -1,8 +1,10 @@
 <template>
-    <div>
-        <div class="extrat-title">Оценка экстерьера</div>
+    <div class="extrat-title">Оценка экстерьера</div>
+    <div v-if="!isLoading">
         <div class="exterior-title">
-            <div>Общая оценка экстерьера: {{ cow_info.Rating || 'Нет информации'}}</div>
+            <div>Общая оценка экстерьера: </div>
+            <div>{{ cow_info.Rating || 'Нет информации'}}</div>
+            <div>{{ checkRating(cow_info.Rating) }}</div>
             <!-- <div class="krs-photo" v-if="cow_info.PicturePath">
                 <img width="100%" :src="logo">
             </div>
@@ -178,6 +180,7 @@
             </div> -->
         <!-- </div> -->
     </div>
+    <div v-if="isLoading">Идёт загрузка...</div>
 </template>
     
 <script>
@@ -188,9 +191,11 @@ export default {
             isVisible100Mark: false,
             cow_info: {},
             img: '',
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/exterior`);
@@ -203,7 +208,7 @@ export default {
                 //this.setImg(this.img);
             }
         }
-
+        this.isLoading = false;
     },
     methods: {
         show9Mark () {
@@ -224,7 +229,20 @@ export default {
             console.log(path);
             let block = document.getElementsByClassName('krs-photo');
             block.style.backgroundImage = `url('/api/static/exterior/${path}')`;
-        }
+        },
+        checkRating(rating) {
+            if (rating) {
+                if (rating <= 64) return 'Низкая';
+                if (rating > 64 && rating <= 74) return 'Средняя';
+                if (rating > 74 && rating <= 79) return 'Хорошая';
+                if (rating > 79 && rating <= 84) return 'Хорошая+';
+                if (rating > 84 && rating <= 89) return 'Очень хорошая';
+                if (rating > 89) return 'Отличная';
+            } else {
+                return 'Нет информации';
+            }
+
+        },
     },
     computed: {
         logo() {
@@ -306,7 +324,7 @@ export default {
 
 .column {
     /* width: auto; */
-    width: 50%;
+    width: 53%;
     margin-top: 20px;
     height: max-content;
 }

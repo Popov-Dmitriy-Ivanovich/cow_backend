@@ -1,6 +1,6 @@
 <template>
     <div class="common-title">Общая информация</div>
-    <div class="general-info">
+    <div class="general-info" v-if="!isLoading">
         <ID v-bind:cow_info="cow_info"/>
         <hr class="com-sep">
         <GenBreed v-bind:cow_info="cow_info" v-bind:genetic="genetic"/>
@@ -9,6 +9,7 @@
         <hr class="com-sep">
         <MovementCow v-bind:cow_info="cow_info"></MovementCow>
     </div>
+    <div class="general-info" v-if="isLoading">Идёт загрузка...</div>
 </template>
 
 <script>
@@ -28,6 +29,8 @@ export default {
             mother: {},
             genetic: {},
             koeff: 0,
+
+            isLoading: false,
         }
     },
     async mounted() {
@@ -37,6 +40,7 @@ export default {
     },
     methods: {
         async fetchInfo(param) {
+            this.isLoading = true;
             let response = await fetch(`/api/cows/${param}`);
             let result = await response.json();
             this.cow_info = result;
@@ -58,6 +62,7 @@ export default {
                 this.father = {};
             }
             this.koeff = this.cow_info.InbrindingCoeffByFamily;
+            this.isLoading = false;
         }
     },
     watch: {

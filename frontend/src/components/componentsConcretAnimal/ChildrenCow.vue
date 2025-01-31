@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="child-title">Потомки</div>
+    <div class="child-title">Потомки</div>
+    <div v-if="!isLoading">
         <div class="n-children">Количество потомков: {{ nChildren }}</div>
         <div class="parent-table">
             <table class="child-table">
@@ -27,6 +27,7 @@
             </table>
         </div>
     </div>
+    <div v-if="isLoading">Идёт загрузка...</div>
 </template>
     
 <script>
@@ -36,12 +37,15 @@ export default {
             children: [],
             farm: {},
             namefarm: '',
+            isLoading: false,
         }
     },
     async created() {
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
+        this.isLoading = true;
         this.fetchInfo(cow_id);
+        this.isLoading = false;
     },
     methods: {
         clickChild(id) {
