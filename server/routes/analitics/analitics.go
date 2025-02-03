@@ -15,5 +15,5 @@ func (b *Analitics) WriteRoutes(rg *gin.RouterGroup) {
 	total := Total{}
 	totalGr.GET("/:region_id/regionalStatistics/", total.RegionalStatistics())
 	totalGr.GET("/:region_id/regionStatistics/", total.RegionStatistics())
-	totalGr.GET("/:region_id/farmStatistics/", total.FarmStatistics())
+	totalGr.GET("/:farm_id/farmStatistics/", total.FarmStatistics())
 }
