@@ -60,7 +60,7 @@ func (t Total) RegionalStatistics() gin.HandlerFunc {
 // @Produce      json
 // @Success      200  {object}   RegionalResponse
 // @Failure      422  {object}   string
-// @Router       /analitics/total/{region_id}/regionStatistics [get]
+// @Router       /analitics/total/region/{region_id} [get]
 func (t Total) RegionStatistics() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := models.GetDb()
@@ -82,7 +82,7 @@ func (t Total) RegionStatistics() gin.HandlerFunc {
 // @Produce      json
 // @Success      200  {object}   RegionalResponse
 // @Failure      422  {object}   string
-// @Router       /analitics/total/{farm_id}/farmStatistics [get]
+// @Router       /analitics/total/farm/{farm_id} [get]
 func (t Total) FarmStatistics() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		db := models.GetDb()
