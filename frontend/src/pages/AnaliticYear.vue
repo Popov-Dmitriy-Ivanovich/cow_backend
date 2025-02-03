@@ -1,16 +1,28 @@
 <template>
     <div>
         <div class="prev-chart" @click="toPrev">🠔 Назад</div>
-        <ChartYear/>
+        <!-- <ChartYear/> -->
+        <div class="row">
+            <apexchart id="analit_click" width="500" type="bar" :options="optionsClick" :series="seriesClick" ref="analit" @dataPointSelection="clickHandler"></apexchart>
+            <apexchart id="analit" width="500" type="bar" :options="options" :series="series"></apexchart>
+        </div>
+        <div class="row">
+            <apexchart id="analit1" width="500" type="bar" :options="options1" :series="series1"></apexchart>
+            <apexchart id="analit2" width="500" type="bar" :options="options2" :series="series2"></apexchart>
+        </div>
+        <div class="row">
+            <apexchart id="analit3" width="500" type="bar" :options="options3" :series="series3"></apexchart>
+            <apexchart id="analit4" width="500" type="bar" :options="options4" :series="series4"></apexchart>
+        </div>
     </div>
 </template>
 
 <script>
-import ChartYear from '@/components/analyticsComponents/ChartYear.vue';
+// import ChartYear from '@/components/analyticsComponents/ChartYear.vue';
 
 export default {
     components: {
-        ChartYear
+        // ChartYear
     },
     methods: {
         toPrev() {
