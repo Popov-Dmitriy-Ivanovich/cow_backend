@@ -15,7 +15,7 @@ const store = createStore({
             isBulls: false,
             isChild: false,
             showFilters: {},
-            currentHoz: {},
+            currentAnimals: [],
         }
     },
     getters: {
@@ -37,8 +37,8 @@ const store = createStore({
         SHOWFILTERS(state) {
             return state.showFilters;
         },
-        CURRENTHOZ(state) {
-            return state.currentHoz;
+        CURRENTANIMALS(state) {
+            return state.currentAnimals;
         }
     },
     mutations: {
@@ -66,8 +66,8 @@ const store = createStore({
         SET_SHOWFILTERS(state, payload) {
             state.showFilters = payload;
         },
-        SET_CURRENTHOZ(state, payload) {
-            state.currentHoz = payload;
+        SET_CURRENTANIMALS(state, payload) {
+            state.currentAnimals = payload;
         }
     }
 })
