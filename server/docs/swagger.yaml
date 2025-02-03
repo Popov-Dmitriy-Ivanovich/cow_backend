@@ -2017,7 +2017,32 @@ paths:
       summary: Get list of years
       tags:
       - Analytics(GeneticFilters)
-  /analitics/total/{farm_id}/farmStatistics:
+  /analitics/total/{region_id}/regionalStatistics:
+    get:
+      description: Еще не придумал что возвращает
+      parameters:
+      - description: регион по которому собиается статистика
+        in: path
+        name: region_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/analitics.RegionalResponse'
+            type: array
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+      summary: Get statistics for region
+      tags:
+      - NEW_ANALITICS
+  /analitics/total/farm/{farm_id}:
     get:
       description: Еще не придумал что возвращает
       parameters:
@@ -2040,7 +2065,7 @@ paths:
       summary: Get statistics for region
       tags:
       - NEW_ANALITICS
-  /analitics/total/{region_id}/regionStatistics:
+  /analitics/total/region/{region_id}:
     get:
       description: Еще не придумал что возвращает
       parameters:
@@ -2056,31 +2081,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/analitics.RegionalResponse'
-        "422":
-          description: Unprocessable Entity
-          schema:
-            type: string
-      summary: Get statistics for region
-      tags:
-      - NEW_ANALITICS
-  /analitics/total/{region_id}/regionalStatistics:
-    get:
-      description: Еще не придумал что возвращает
-      parameters:
-      - description: регион по которому собиается статистика
-        in: path
-        name: region_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/analitics.RegionalResponse'
-            type: array
         "422":
           description: Unprocessable Entity
           schema:

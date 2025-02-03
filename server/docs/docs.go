@@ -656,7 +656,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/analitics/total/{farm_id}/farmStatistics": {
+        "/analitics/total/farm/{farm_id}": {
             "get": {
                 "description": "Еще не придумал что возвращает",
                 "produces": [
@@ -691,7 +691,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/analitics/total/{region_id}/regionStatistics": {
+        "/analitics/total/region/{region_id}": {
             "get": {
                 "description": "Еще не придумал что возвращает",
                 "produces": [
