@@ -55,4 +55,6 @@ type CowsFilter struct { // Фильтр коров
 
 	EbvGeneralValueRegionFrom *float64 `example:"3.14" validate:"optional"`
 	EbvGeneralValueRegionTo   *float64 `example:"3.14" validate:"optional"`
+
+	IncludeOnly []uint // ID коров, которые могут быть в выдаче фильтра. Пустой = ВСЕ коровы
 }

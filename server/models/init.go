@@ -65,6 +65,7 @@ func initDb() error {
 		&AdditionalInfo{},
 		&DownSides{},
 		&Measures{},
+		&GaussianStatistics{},
 	)
 	dbConnection = db
 	return nil

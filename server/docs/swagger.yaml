@@ -1,5 +1,38 @@
 basePath: /api
 definitions:
+  analitics.RegionalResponse:
+    properties:
+      avgCount:
+        description: Количество коров с минимальным индексом
+        type: integer
+      avgIndex:
+        description: Значение среднего индекса
+        type: number
+      farm:
+        $ref: '#/definitions/models.Farm'
+      farmID:
+        description: не null, если статистика собрана по холдингу или хозяйству
+        type: integer
+      id:
+        type: integer
+      maxCount:
+        description: Количество коров с максимальным индексом
+        type: integer
+      maxIndex:
+        description: Значение максимального индекса
+        type: number
+      minCount:
+        description: Количество коров с минимальным индексом
+        type: integer
+      minIndex:
+        description: Значение минимального индекса
+        type: number
+      region:
+        $ref: '#/definitions/models.Region'
+      regionID:
+        description: не null, если статистика собрана по региону
+        type: integer
+    type: object
   analitics.byDistrictStatistics:
     properties:
       alive:
@@ -566,6 +599,11 @@ definitions:
         default: 3.14
         description: фильтр по коэф. инбриндинга по генотипу ДО
         type: number
+      includeOnly:
+        description: ID коров, которые могут быть в выдаче фильтра. Пустой = ВСЕ коровы
+        items:
+          type: integer
+        type: array
       inseminationDateFrom:
         description: Exterior             *float64 `default:"3.14" validate:"optional"`       //
           Фильтр по оценке экстерьера коровы, будет переработан
@@ -1964,6 +2002,31 @@ paths:
       summary: Get list of years
       tags:
       - Analytics(GeneticFilters)
+  /analitics/total/{region_id}/regionalStatistics:
+    get:
+      description: Еще не придумал что возвращает
+      parameters:
+      - description: регион по которому собиается статистика
+        in: path
+        name: region_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/analitics.RegionalResponse'
+            type: object
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+      summary: Get statistics for region
+      tags:
+      - NEW_ANALITICS
   /auth/checkEmail:
     get:
       consumes:

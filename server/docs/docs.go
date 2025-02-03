@@ -656,6 +656,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/analitics/total/{region_id}/regionalStatistics": {
+            "get": {
+                "description": "Еще не придумал что возвращает",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "NEW_ANALITICS"
+                ],
+                "summary": "Get statistics for region",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "регион по которому собиается статистика",
+                        "name": "region_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "$ref": "#/definitions/analitics.RegionalResponse"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/checkEmail": {
             "get": {
                 "consumes": [
@@ -2098,6 +2136,52 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "analitics.RegionalResponse": {
+            "type": "object",
+            "properties": {
+                "avgCount": {
+                    "description": "Количество коров с минимальным индексом",
+                    "type": "integer"
+                },
+                "avgIndex": {
+                    "description": "Значение среднего индекса",
+                    "type": "number"
+                },
+                "farm": {
+                    "$ref": "#/definitions/models.Farm"
+                },
+                "farmID": {
+                    "description": "не null, если статистика собрана по холдингу или хозяйству",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "maxCount": {
+                    "description": "Количество коров с максимальным индексом",
+                    "type": "integer"
+                },
+                "maxIndex": {
+                    "description": "Значение максимального индекса",
+                    "type": "number"
+                },
+                "minCount": {
+                    "description": "Количество коров с минимальным индексом",
+                    "type": "integer"
+                },
+                "minIndex": {
+                    "description": "Значение минимального индекса",
+                    "type": "number"
+                },
+                "region": {
+                    "$ref": "#/definitions/models.Region"
+                },
+                "regionID": {
+                    "description": "не null, если статистика собрана по региону",
+                    "type": "integer"
+                }
+            }
+        },
         "analitics.byDistrictStatistics": {
             "type": "object",
             "properties": {
@@ -2864,6 +2948,13 @@ const docTemplate = `{
                     "description": "фильтр по коэф. инбриндинга по генотипу ДО",
                     "type": "number",
                     "default": 3.14
+                },
+                "includeOnly": {
+                    "description": "ID коров, которые могут быть в выдаче фильтра. Пустой = ВСЕ коровы",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "inseminationDateFrom": {
                     "description": "Exterior             *float64 ` + "`" + `default:\"3.14\" validate:\"optional\"` + "`" + `       // Фильтр по оценке экстерьера коровы, будет переработан",

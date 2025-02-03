@@ -11,4 +11,7 @@ func (b *Analitics) WriteRoutes(rg *gin.RouterGroup) {
 	checkMilksWriter := CheckMilks{}
 	checkMilksWriter.WriteRoutes(apiGroup)
 	genotypedWriter.WriteRoutes(apiGroup)
+	totalGr := apiGroup.Group("/total")
+	total := Total{}
+	totalGr.GET("/:region_id/regionalStatistics/", total.RegionalStatistics())
 }
