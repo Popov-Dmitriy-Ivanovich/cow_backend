@@ -32,4 +32,5 @@ var ALL_FILTERS = []filters.Filter{
 	LiveInHolding{},
 	LiveInRegion{},
 	ByEbvRegionGeneralValue{},
+	ByIncludeOnlyFilter{},
 }
