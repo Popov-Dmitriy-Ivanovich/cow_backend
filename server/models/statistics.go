@@ -13,13 +13,13 @@ type GaussianStatistics struct {
 
 	MinIndex  float64       // Значение минимального индекса
 	MinCount  uint          // Количество коров с минимальным индексом
-	MinCowIds pq.Int64Array `gorm:"type:bigint[]"` // ID коров с минимальным значением индекса
+	MinCowIds pq.Int64Array `gorm:"type:bigint[]" swaggertype:"array,number"` // ID коров с минимальным значением индекса
 
 	AvgIndex  float64       // Значение среднего индекса
 	AvgCount  uint          // Количество коров с минимальным индексом
-	AvgCowIds pq.Int64Array `gorm:"type:bigint[]"` // ID коров с средним значением индекса
+	AvgCowIds pq.Int64Array `gorm:"type:bigint[]" swaggertype:"array,number"` // ID коров с средним значением индекса
 
 	MaxIndex  float64       // Значение максимального индекса
 	MaxCount  uint          // Количество коров с максимальным индексом
-	MaxCowIds pq.Int64Array `gorm:"type:bigint[]"` // ID коров с максимальным значением индекса
+	MaxCowIds pq.Int64Array `gorm:"type:bigint[]" swaggertype:"array,number"` // ID коров с максимальным значением индекса
 }

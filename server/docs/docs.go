@@ -656,6 +656,76 @@ const docTemplate = `{
                 }
             }
         },
+        "/analitics/total/{farm_id}/farmStatistics": {
+            "get": {
+                "description": "Еще не придумал что возвращает",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "NEW_ANALITICS"
+                ],
+                "summary": "Get statistics for region",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "холдинг/хозяйство по которому собиается статистика",
+                        "name": "farm_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/analitics.RegionalResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/analitics/total/{region_id}/regionStatistics": {
+            "get": {
+                "description": "Еще не придумал что возвращает",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "NEW_ANALITICS"
+                ],
+                "summary": "Get statistics for region",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "регион по которому собиается статистика",
+                        "name": "region_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/analitics.RegionalResponse"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/analitics/total/{region_id}/regionalStatistics": {
             "get": {
                 "description": "Еще не придумал что возвращает",
@@ -679,8 +749,8 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
+                            "type": "array",
+                            "items": {
                                 "$ref": "#/definitions/analitics.RegionalResponse"
                             }
                         }
@@ -2143,6 +2213,13 @@ const docTemplate = `{
                     "description": "Количество коров с минимальным индексом",
                     "type": "integer"
                 },
+                "avgCowIds": {
+                    "description": "ID коров с средним значением индекса",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
                 "avgIndex": {
                     "description": "Значение среднего индекса",
                     "type": "number"
@@ -2161,6 +2238,13 @@ const docTemplate = `{
                     "description": "Количество коров с максимальным индексом",
                     "type": "integer"
                 },
+                "maxCowIds": {
+                    "description": "ID коров с максимальным значением индекса",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
                 "maxIndex": {
                     "description": "Значение максимального индекса",
                     "type": "number"
@@ -2168,6 +2252,13 @@ const docTemplate = `{
                 "minCount": {
                     "description": "Количество коров с минимальным индексом",
                     "type": "integer"
+                },
+                "minCowIds": {
+                    "description": "ID коров с минимальным значением индекса",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
                 },
                 "minIndex": {
                     "description": "Значение минимального индекса",

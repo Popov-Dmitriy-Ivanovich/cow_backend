@@ -5,6 +5,11 @@ definitions:
       avgCount:
         description: Количество коров с минимальным индексом
         type: integer
+      avgCowIds:
+        description: ID коров с средним значением индекса
+        items:
+          type: number
+        type: array
       avgIndex:
         description: Значение среднего индекса
         type: number
@@ -18,12 +23,22 @@ definitions:
       maxCount:
         description: Количество коров с максимальным индексом
         type: integer
+      maxCowIds:
+        description: ID коров с максимальным значением индекса
+        items:
+          type: number
+        type: array
       maxIndex:
         description: Значение максимального индекса
         type: number
       minCount:
         description: Количество коров с минимальным индексом
         type: integer
+      minCowIds:
+        description: ID коров с минимальным значением индекса
+        items:
+          type: number
+        type: array
       minIndex:
         description: Значение минимального индекса
         type: number
@@ -2002,6 +2017,52 @@ paths:
       summary: Get list of years
       tags:
       - Analytics(GeneticFilters)
+  /analitics/total/{farm_id}/farmStatistics:
+    get:
+      description: Еще не придумал что возвращает
+      parameters:
+      - description: холдинг/хозяйство по которому собиается статистика
+        in: path
+        name: farm_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/analitics.RegionalResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+      summary: Get statistics for region
+      tags:
+      - NEW_ANALITICS
+  /analitics/total/{region_id}/regionStatistics:
+    get:
+      description: Еще не придумал что возвращает
+      parameters:
+      - description: регион по которому собиается статистика
+        in: path
+        name: region_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/analitics.RegionalResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            type: string
+      summary: Get statistics for region
+      tags:
+      - NEW_ANALITICS
   /analitics/total/{region_id}/regionalStatistics:
     get:
       description: Еще не придумал что возвращает
@@ -2017,9 +2078,9 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
+            items:
               $ref: '#/definitions/analitics.RegionalResponse'
-            type: object
+            type: array
         "422":
           description: Unprocessable Entity
           schema:
