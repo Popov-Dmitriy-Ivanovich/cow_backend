@@ -18,7 +18,7 @@ func (f ByIncludeOnlyFilter) Apply(fm filters.FilteredModel) error {
 		return nil
 	}
 
-	query = query.Where(map[string]any{"id": filterData.IncludeOnly})
+	query = query.Where(map[string]any{"cows.id": filterData.IncludeOnly})
 
 	fm.SetQuery(query)
 	return nil
