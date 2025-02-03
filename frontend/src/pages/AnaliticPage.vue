@@ -305,12 +305,18 @@ export default {
         this.result = await response.json();
         this.newX = []; 
         let newY = {data: []};
+        let index;
         for (let i = 0; i < this.result.length; i++) {
             if (this.result[i].Farm) {
                 this.newX.push(this.result[i].Farm.Name);
                 newY.data.push(this.result[i].MaxIndex);
+            } else {
+                index = i;
             }
         }
+        this.newX.push('Весь регион');
+        newY.data.push(this.result[index].MaxIndex);
+        
         this.seriesClick.push(newY);
         console.log(this.series, this.newX);
         this.$refs.analit.updateOptions({
@@ -330,13 +336,24 @@ export default {
 
         //     }
         // }
-        // clickHandler(event, chartContext, config) {
-        //     for (let i = 0; i < this.result.length; i++) {
-        //         if(this.result[i].Farm) {
-
-        //         }
-        //     }
-        // }
+        clickHandler(event, chartContext, config) {
+            let hoz = {};
+            console.log(this.newX[config.dataPointIndex]);
+            for (let i = 0; i < this.result.length; i++) {
+                if(this.result[i].Farm) {
+                    if(this.result[i].Farm.Name == this.newX[config.dataPointIndex]) {
+                        hoz = this.result[i];
+                    }
+                } else {
+                    if (this.newX[config.dataPointIndex] == 'Весь регион') {
+                        hoz = this.result[i];
+                    }
+                }
+            }
+            console.log(hoz);
+            this.$store.commit('SET_CURRENTHOZ', hoz);
+            this.$router.push(`/analytics/${hoz.ID}`);
+        }
     },
     watch: {
         opt(new_val) {

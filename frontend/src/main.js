@@ -15,6 +15,7 @@ const store = createStore({
             isBulls: false,
             isChild: false,
             showFilters: {},
+            currentHoz: {},
         }
     },
     getters: {
@@ -35,6 +36,9 @@ const store = createStore({
         },
         SHOWFILTERS(state) {
             return state.showFilters;
+        },
+        CURRENTHOZ(state) {
+            return state.currentHoz;
         }
     },
     mutations: {
@@ -61,6 +65,9 @@ const store = createStore({
         },
         SET_SHOWFILTERS(state, payload) {
             state.showFilters = payload;
+        },
+        SET_CURRENTHOZ(state, payload) {
+            state.currentHoz = payload;
         }
     }
 })
