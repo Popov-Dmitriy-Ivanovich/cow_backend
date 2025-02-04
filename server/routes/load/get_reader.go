@@ -15,7 +15,9 @@ type autoCsv struct {
 
 func GetCsvReader(file *os.File) (reader *csv.Reader, header []string, err error) {
 	for _, rn := range separator {
-
+		if _, err := file.Seek(0, 0); err != nil {
+			return nil, nil, err
+		}
 		reader := csv.NewReader(file)
 		reader.Comma = rn
 		header, err = reader.Read()
