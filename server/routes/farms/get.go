@@ -49,7 +49,8 @@ func (f *Farms) GetByFilter() func(*gin.Context) {
 				c.JSON(http.StatusInternalServerError, "FarmId не найден в контексте")
 				return
 			}
-			qres := db.Where("EXISTS (SELECT 1 FROM COWS WHERE cows.farm_group_id = farms.id) AND id = ?", farmId).Find(&farms)
+			//qres := db.Where("EXISTS (SELECT 1 FROM COWS WHERE cows.farm_group_id = farms.id) AND id = ?", farmId).Find(&farms)
+			qres := db.Where(map[string]any{"parrent_id": nil, "id": farmId}).Find(&farms)
 			if qres.Error != nil {
 				c.JSON(500, qres.Error)
 			}
@@ -64,14 +65,14 @@ func (f *Farms) GetByFilter() func(*gin.Context) {
 			qres := db.
 				Joins("JOIN districts AS d ON farms.district_id = d.id").
 				Joins("JOIN regions AS r ON r.id = d.region_id").
-				Where("EXISTS (SELECT 1 FROM COWS WHERE cows.farm_group_id = farms.id) AND r.id = ?", regionId).
+				Where("(parrent_id is NULL) AND r.id = ?", regionId).
 				Find(&farms)
 			if qres.Error != nil {
 				c.JSON(500, qres.Error)
 			}
 			c.JSON(200, farms)
 		} else {
-			qres := db.Where("EXISTS (SELECT 1 FROM COWS WHERE cows.farm_group_id = farms.id)").Find(&farms)
+			qres := db.Where("parrent_id is NULL").Find(&farms)
 			if qres.Error != nil {
 				c.JSON(500, qres.Error)
 			}
