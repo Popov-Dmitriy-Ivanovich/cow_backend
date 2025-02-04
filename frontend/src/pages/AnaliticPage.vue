@@ -10,7 +10,7 @@
             </select> -->
             <!-- <router-view></router-view> -->
             <div class="row">
-                <apexchart id="analit_click" width="500" type="bar" :options="optionsClick" :series="seriesClick" ref="analit" @dataPointSelection="clickHandler"></apexchart>
+                <router-view></router-view>
                 <apexchart id="analit" width="500" type="bar" :options="options" :series="series"></apexchart>
             </div>
             <div class="row">
@@ -37,45 +37,6 @@ export default {
         return{
             opt: '',
             forFilters: true,
-
-            optionsClick: {
-                chart: {
-                    id: 'analit_click',
-                    stacked: true,
-                    zoom: {
-                        enabled: false,
-                    }
-                },
-                xaxis: {
-                    categories: [],
-                    dataLabels: {
-                        enabled: true,
-                        style: {
-                            fontSize: '5px',
-                        }
-                    },
-                    labels: {
-                        style: {
-                            fontSize: '8px',
-                        },
-                        hideOverlappingLabels: true,
-                        trim: true,
-                    }
-                },
-
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
-                title: {
-                    text: 'Лучший селекционный индекс',
-                    align: 'center',
-                    style: {
-                        fontSize:  '15px',
-                    },
-                },
-                tooltip: {
-                    enabled: false,
-                }
-            },
-            seriesClick: [],
 
             options: {
                 chart: {
@@ -110,7 +71,7 @@ export default {
                     text: 'Средний удой на одну голову за 2024 г',
                     align: 'center',
                     style: {
-                        fontSize:  '15px',
+                        fontSize:  '12px',
                     },
                 },
                 tooltip: {
@@ -156,7 +117,7 @@ export default {
                     text: 'Выход телят',
                     align: 'center',
                     style: {
-                        fontSize:  '15px',
+                        fontSize:  '12px',
                     },
                 },
                 tooltip: {
@@ -201,7 +162,7 @@ export default {
                     text: 'Валовый объём молока',
                     align: 'center',
                     style: {
-                        fontSize:  '15px',
+                        fontSize:  '12px',
                     },
                 },
                 tooltip: {
@@ -240,7 +201,7 @@ export default {
                     text: 'Показатель 1 от Плотникова',
                     align: 'center',
                     style: {
-                        fontSize:  '15px',
+                        fontSize:  '12px',
                     },
                 },
                 tooltip: {
@@ -279,7 +240,7 @@ export default {
                     text: 'Показатель 2 от Плотникова',
                     align: 'center',
                     style: {
-                        fontSize:  '15px',
+                        fontSize:  '12px',
                     },
                 },
                 tooltip: {
@@ -291,39 +252,10 @@ export default {
                     data: [190,203,175,230,250,180,212,214],
                 }
             ],
-
-            newX: [],
-            result: [],
         }
     },
     created() {
         this.$store.commit('SET_OPTION', this.opt);
-    },
-    async mounted() {
-        this.seriesClick = [];
-        let response = await fetch('/api/analitics/total/23/regionalStatistics/');
-        this.result = await response.json();
-        this.newX = []; 
-        let newY = {data: []};
-        let index;
-        for (let i = 0; i < this.result.length; i++) {
-            if (this.result[i].Farm) {
-                this.newX.push(this.result[i].Farm.Name);
-                newY.data.push(this.result[i].MaxIndex);
-            } else {
-                index = i;
-            }
-        }
-        this.newX.push('Весь регион');
-        newY.data.push(this.result[index].MaxIndex);
-        
-        this.seriesClick.push(newY);
-        console.log(this.series, this.newX);
-        this.$refs.analit.updateOptions({
-            xaxis: {
-                categories: this.newX,
-            }
-        });
     },
     methods: {
         async fetchAnalyticsFilters(filters){
@@ -336,24 +268,6 @@ export default {
 
         //     }
         // }
-        clickHandler(event, chartContext, config) {
-            let hoz = {};
-            console.log(this.newX[config.dataPointIndex]);
-            for (let i = 0; i < this.result.length; i++) {
-                if(this.result[i].Farm) {
-                    if(this.result[i].Farm.Name == this.newX[config.dataPointIndex]) {
-                        hoz = this.result[i];
-                    }
-                } else {
-                    if (this.newX[config.dataPointIndex] == 'Весь регион') {
-                        hoz = this.result[i];
-                    }
-                }
-            }
-            console.log(hoz);
-            this.$store.commit('SET_CURRENTHOZ', hoz);
-            this.$router.push(`/analytics/${hoz.ID}`);
-        }
     },
     watch: {
         opt(new_val) {

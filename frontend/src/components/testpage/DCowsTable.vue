@@ -138,7 +138,13 @@ export default {
     async mounted() {
         this.isLoadingCows = true;
         this.errorr = false;
-        let search_params = this.filters;
+        let search_params = {};
+        if (this.$store.getters.CURRENTANIMALS.length) {
+            console.log(this.$store.getters.CURRENTANIMALS);
+            search_params.includeOnly = this.$store.getters.CURRENTANIMALS;
+        } else {
+            search_params = this.filters;
+        }
         search_params.sex = [4];
         search_params.pageNumber = 1;
         search_params.entitiesOnPage = 25;

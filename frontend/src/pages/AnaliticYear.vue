@@ -1,19 +1,9 @@
 <template>
     <div>
-        <div class="prev-chart" @click="toPrev">🠔 Назад</div>
+        <!-- <div class="prev-chart" @click="toPrev">🠔 Назад</div> -->
         <!-- <ChartYear/> -->
-        <div class="row">
-            <apexchart id="analit_click" width="500" type="bar" :options="optionsClick" :series="seriesClick" ref="analit" @dataPointSelection="clickHandler"></apexchart>
-            <apexchart id="analit" width="500" type="bar" :options="options" :series="series"></apexchart>
-        </div>
-        <div class="row">
-            <apexchart id="analit1" width="500" type="bar" :options="options1" :series="series1"></apexchart>
-            <apexchart id="analit2" width="500" type="bar" :options="options2" :series="series2"></apexchart>
-        </div>
-        <div class="row">
-            <apexchart id="analit3" width="500" type="bar" :options="options3" :series="series3"></apexchart>
-            <apexchart id="analit4" width="500" type="bar" :options="options4" :series="series4"></apexchart>
-        </div>
+        <apexchart id="analit_click" width="500" type="bar" :options="optionsClick" :series="seriesClick" ref="analit" @dataPointSelection="clickHandler"></apexchart>
+
     </div>
 </template>
 
@@ -29,6 +19,65 @@ export default {
             this.$router.push(`/analytics`);
         },
     },
+    data() {
+        return {
+            optionsClick: {
+                chart: {
+                    id: 'analit_click',
+                    stacked: true,
+                    zoom: {
+                        enabled: false,
+                    }
+                },
+                xaxis: {
+                    categories: ['Минимальный индекс', 'Средний индекс', 'Максимальный индекс'],
+                    dataLabels: {
+                        enabled: true,
+                        style: {
+                            fontSize: '5px',
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                        },
+                        hideOverlappingLabels: true,
+                        trim: true,
+                    }
+                },
+
+                colors: ['#63d9cb','#6e5add','#75a2e7'],
+                title: {
+                    text: `Число голов в `,
+                    align: 'center',
+                    style: {
+                        fontSize:  '12px',
+                    },
+                },
+                tooltip: {
+                    enabled: false,
+                }
+            },
+            seriesClick: [{
+                data: [JSON.parse(localStorage.getItem('currentHoz')).MinCount, JSON.parse(localStorage.getItem('currentHoz')).AvgCount, JSON.parse(localStorage.getItem('currentHoz')).MaxCount]
+            }],
+            
+            newX: [],
+            result: [],
+        }
+    },
+    mounted() {
+        this.optionsClick.xaxis.categories = [];
+
+        let name = '';
+        if (JSON.parse(localStorage.getItem('currentHoz')).Farm) name = ['Число голов в', JSON.parse(localStorage.getItem('currentHoz')).Farm.Name];
+        else name = 'Число голов во всем регионе';
+        this.optionsClick.title.text = name;
+        
+        this.optionsClick.xaxis.categories.push('Минимальный индекс ' + JSON.parse(localStorage.getItem('currentHoz')).MinIndex);
+        this.optionsClick.xaxis.categories.push('Средний индекс ' + JSON.parse(localStorage.getItem('currentHoz')).AvgIndex);
+        this.optionsClick.xaxis.categories.push('Максимальный индекс ' + JSON.parse(localStorage.getItem('currentHoz')).MaxIndex);
+    }
 }
 </script>
 

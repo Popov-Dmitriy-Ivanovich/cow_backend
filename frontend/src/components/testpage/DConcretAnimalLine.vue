@@ -5,7 +5,7 @@
             <div class="animal-inv">{{ animal_item.InventoryNumber }}</div>
             <div class="animal-name">{{ animal_item.Name }}</div>
             <div class="animal-hoz">{{ animal_item.FarmGroupName }}</div>
-            <div class="animal-bdate">{{ dateConverter(bdate(animal_item.BirthDate)) || '-'}}</div>
+            <div class="animal-bdate" v-if="animal_item.BirthDate">{{ dateConverter(bdate(animal_item.BirthDate))}}</div><div v-else class="animal-bdate">-</div>
             <div class="animal-inv">{{ round(animal_item.EbvGeneralValueRegion) || '-' }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.Genotyped) }}</div>
 

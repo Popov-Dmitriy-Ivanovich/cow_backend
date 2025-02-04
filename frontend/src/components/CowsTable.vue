@@ -83,9 +83,17 @@ export default {
     },
     async mounted() {
         this.errorr = false;
-        let search_params = this.filters;
-        search_params.POL = 'cows';
-        search_params.npage = 1;
+        let search_params;
+        if (this.$store.getters.CURRENTANIMALS.length) {
+            search_params.npage = 1;
+            search_params.includeOnly = this.$store.getters.CURRENTANIMALS;
+            search_params.POL = 'cows';
+        } else {
+            search_params = this.filters;
+            search_params.POL = 'cows';
+            search_params.npage = 1;
+        }
+
         const response = await fetch('https://genmilk.ru:9050/api/find_in_cows_post', {
             method: 'POST',
             headers: {
