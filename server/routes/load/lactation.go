@@ -2,7 +2,6 @@ package load
 
 import (
 	"cow_backend/models"
-	"encoding/csv"
 	"errors"
 	"io"
 	"log"
@@ -352,8 +351,7 @@ func (l *Load) Lactation() func(*gin.Context) {
 			return
 		}
 		defer file.Close()
-		csvReader := csv.NewReader(file)
-		header, err := csvReader.Read()
+		csvReader, header, err := GetCsvReader(file)
 		if err != nil {
 			c.JSON(422, err.Error())
 			return
