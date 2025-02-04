@@ -25,19 +25,22 @@ func (f ByControlMilkingDate) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date BETWEEN ? AND ?))", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date BETWEEN ? AND ?))", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date BETWEEN ? AND ?))", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC())
 	} else if bodyData.ControlMilkingDateFrom != nil && *bodyData.ControlMilkingDateFrom != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateFrom)
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date >= ?))", bdFrom.UTC())
 	} else if bodyData.ControlMilkingDateTo != nil && *bodyData.ControlMilkingDateTo != "" {
 		bdTo, err := time.Parse(time.DateOnly, *bodyData.ControlMilkingDateTo)
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date <= ?))", bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date <= ?))", bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation").Preload("Lactation.CheckMilks")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND EXISTS (SELECT 1 FROM check_milks WHERE check_milks.lactation_id = lactations.id AND check_milks.check_date <= ?))", bdTo.AddDate(0, 0, 1).UTC())
 	}
 	fm.SetQuery(query)
 	return nil

@@ -15,10 +15,12 @@ func (f ByAbort) Apply(fm filters.FilteredModel) error {
 		return errors.New("wrong object provided in filter filed object")
 	}
 	if bodyData.IsAborted != nil && *bodyData.IsAborted { // abort is marked by flag for some reason
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true)
 	}
 	if bodyData.IsAborted != nil && !*bodyData.IsAborted { // abort is marked by flag for some reason
-		query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
+		//query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true).Preload("Lactation")
+		query = query.Where("NOT EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.abort = ?)", true)
 	}
 	fm.SetQuery(query)
 	return nil

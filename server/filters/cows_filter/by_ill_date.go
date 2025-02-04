@@ -26,21 +26,27 @@ func (f ByIllDate) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
+		//query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date BETWEEN ? AND ? )",
+		//	bdFrom.UTC(),
+		//	bdTo.AddDate(0, 0, 1).UTC()).Preload("Events")
 		query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date BETWEEN ? AND ? )",
 			bdFrom.UTC(),
-			bdTo.AddDate(0, 0, 1).UTC()).Preload("Events")
+			bdTo.AddDate(0, 0, 1).UTC())
 	} else if bodyData.IllDateFrom != nil && *bodyData.IllDateFrom != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.IllDateFrom)
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date >= ? )", bdFrom.UTC()).Preload("Events")
+		//query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date >= ? )", bdFrom.UTC()).Preload("Events")
+		query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date >= ? )", bdFrom.UTC())
 	} else if bodyData.IllDateTo != nil && *bodyData.IllDateTo != "" {
 		bdTo, err := time.Parse(time.DateOnly, *bodyData.IllDateTo)
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date <= ?)", bdTo.UTC()).Preload("Events")
+		//query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date <= ?)", bdTo.UTC()).Preload("Events")
+		query = query.Where("EXISTS( SELECT 1 FROM events where events.cow_id = cows.id AND events.event_type_id in (1, 2, 3, 4) AND events.date <= ?)", bdTo.UTC())
+
 	}
 	fm.SetQuery(query)
 	return nil

@@ -25,19 +25,23 @@ func (f ByCalvingDate) Apply(fm filters.FilteredModel) error {
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date BETWEEN ? AND ?)", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date BETWEEN ? AND ?)", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date BETWEEN ? AND ?)", bdFrom.UTC(), bdTo.AddDate(0, 0, 1).UTC())
+
 	} else if bodyData.CalvingDateFrom != nil && *bodyData.CalvingDateFrom != "" {
 		bdFrom, err := time.Parse(time.DateOnly, *bodyData.CalvingDateFrom)
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC()).Preload("Lactation")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC()).Preload("Lactation")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date >= ?)", bdFrom.UTC())
 	} else if bodyData.CalvingDateTo != nil && *bodyData.CalvingDateTo != "" {
 		bdTo, err := time.Parse(time.DateOnly, *bodyData.CalvingDateTo)
 		if err != nil {
 			return err
 		}
-		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date <= ?)", bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation")
+		//query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date <= ?)", bdTo.AddDate(0, 0, 1).UTC()).Preload("Lactation")
+		query = query.Where("EXISTS (SELECT 1 FROM lactations WHERE lactations.cow_id = cows.id AND lactations.calving_date <= ?)", bdTo.AddDate(0, 0, 1).UTC())
 	}
 	fm.SetQuery(query)
 	return nil

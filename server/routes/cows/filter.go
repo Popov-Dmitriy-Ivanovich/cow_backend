@@ -7,9 +7,6 @@ import (
 	"net/http"
 	"strconv"
 
-	// "sort"
-	"time"
-
 	// "fmt"
 	"io"
 
@@ -67,7 +64,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 	} else {
 		c.GradeRegion = nil
 	}
-	if filter.DepartDateTo != nil && *filter.DepartDateTo != "" ||
+	/*if filter.DepartDateTo != nil && *filter.DepartDateTo != "" ||
 		filter.DepartDateFrom != nil && *filter.DepartDateFrom != "" {
 		res.DepartDate = c.DepartDate
 	}
@@ -231,7 +228,7 @@ func serializeByFilter(c *models.Cow, filter *cows_filter.CowsFilter) FilterSeri
 
 	if filter.EbvGeneralValueRegionFrom != nil || filter.EbvGeneralValueRegionTo != nil {
 		res.EbvGeneralValueRegion = c.GradeRegion.GeneralValue
-	}
+	}*/
 	return res
 }
 

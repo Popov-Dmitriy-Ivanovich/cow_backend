@@ -15,7 +15,8 @@ func (f ByHoz) Apply(fm filters.FilteredModel) error {
 		return errors.New("wrong object provided in filter filed object")
 	}
 	if bodyData.HozId != nil {
-		query = query.Where("farm_group_id = ?", bodyData.HozId).Preload("Farm")
+		//query = query.Where("farm_group_id = ?", bodyData.HozId).Preload("Farm")
+		query = query.Where("farm_group_id = ?", bodyData.HozId)
 	}
 	fm.SetQuery(query)
 	return nil

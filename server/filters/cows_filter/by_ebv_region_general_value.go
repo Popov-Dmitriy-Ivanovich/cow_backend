@@ -15,13 +15,18 @@ func (f ByEbvRegionGeneralValue) Apply(fm filters.FilteredModel) error {
 		return errors.New("wrong object provided in filter filed object")
 	}
 	if bodyData.EbvGeneralValueRegionTo != nil && bodyData.EbvGeneralValueRegionFrom != nil {
+		//query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value BETWEEN ? AND ?)",
+		//	*bodyData.EbvGeneralValueRegionFrom,
+		//	*bodyData.EbvGeneralValueRegionTo).Preload("GradeRegion")
 		query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value BETWEEN ? AND ?)",
 			*bodyData.EbvGeneralValueRegionFrom,
-			*bodyData.EbvGeneralValueRegionTo).Preload("GradeRegion")
+			*bodyData.EbvGeneralValueRegionTo)
 	} else if bodyData.EbvGeneralValueRegionTo != nil {
-		query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value <= ?)", *bodyData.EbvGeneralValueRegionTo).Preload("GradeRegion")
+		//query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value <= ?)", *bodyData.EbvGeneralValueRegionTo).Preload("GradeRegion")
+		query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value <= ?)", *bodyData.EbvGeneralValueRegionTo)
 	} else if bodyData.EbvGeneralValueRegionFrom != nil {
-		query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value >= ?)", *bodyData.EbvGeneralValueRegionFrom).Preload("GradeRegion")
+		//query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value >= ?)", *bodyData.EbvGeneralValueRegionFrom).Preload("GradeRegion")
+		query = query.Where("EXISTS (SELECT 1 from grade_regions where cow_id = cows.id AND general_value >= ?)", *bodyData.EbvGeneralValueRegionFrom)
 	}
 	fm.SetQuery(query)
 	return nil

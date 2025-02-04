@@ -15,7 +15,8 @@ func (f BySex) Apply(fm filters.FilteredModel) error {
 		return errors.New("wrong object provided in filter filed object")
 	}
 	if len(bodyData.Sex) != 0 {
-		query = query.Where("sex_id IN ?", bodyData.Sex).Preload("Sex")
+		//query = query.Where("sex_id IN ?", bodyData.Sex).Preload("Sex")
+		query = query.Where("sex_id IN ?", bodyData.Sex)
 	}
 	fm.SetQuery(query)
 	return nil
