@@ -145,6 +145,7 @@ export default {
         } else {
             search_params = this.filters;
         }
+        this.$store.commit('SET_CURRENTANIMALS', []);
         search_params.sex = [4];
         search_params.pageNumber = 1;
         search_params.entitiesOnPage = 25;

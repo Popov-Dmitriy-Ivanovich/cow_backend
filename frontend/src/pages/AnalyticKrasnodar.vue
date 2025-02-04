@@ -4,12 +4,12 @@
             <div class="analytics-title">Аналитика</div>
             <div class="prev-chart" @click="toPrev">🠔 Назад</div>
             <div class="row">
-                <apexchart id="analit1" width="540" type="bar" :options="options1" :series="series1"></apexchart>
-                <apexchart id="analit2" width="540" type="bar" :options="options2" :series="series2"></apexchart>
+                <apexchart id="analit1" width="570" type="bar" :options="options1" :series="series1"></apexchart>
+                <apexchart id="analit2" width="570" type="bar" :options="options2" :series="series2"></apexchart>
             </div>
             <div class="row">
-                <apexchart id="analit3" width="540" type="bar" :options="options3" :series="series3"></apexchart>
-                <apexchart id="analit4" width="540" type="bar" :options="options4" :series="series4"></apexchart>
+                <apexchart id="analit3" width="570" type="bar" :options="options3" :series="series3"></apexchart>
+                <apexchart id="analit4" width="570" type="bar" :options="options4" :series="series4"></apexchart>
             </div>
         </div>
 
@@ -273,7 +273,7 @@ export default {
 .row {
     display: flex;
     margin-top: 30px;
-    width: 70vw;
+    width: 75vw;
 }
 
 .prev-chart {

@@ -2,6 +2,7 @@
     <div>
         <!-- <div class="analytics-title">Статистика для сравнительного анализа хозяйств и регионов</div> -->
         <!-- <MainChart/> -->
+        <div class="prev-chart" @click="toPrev" v-if="clickToPrev">🠔 Назад</div>
         <apexchart 
         id="analit_click" 
         width="1000" 
@@ -64,6 +65,7 @@ export default {
             
             newX: [],
             result: [],
+            clickToPrev: false,
         }
     },
     async mounted() {
@@ -73,6 +75,9 @@ export default {
         this.chooseChart();
     },
     methods: {
+        toPrev() {
+            this.$router.back();
+        },
         async clickHandler(event, chartContext, config) {
             let hoz = {};
             for (let i = 0; i < this.result.length; i++) {
@@ -102,6 +107,7 @@ export default {
             if (q.hoz) {
                 for (let i = 0; i < this.result.length; i++) {
                     if (this.result[i].ID == q.hoz) {
+                        this.clickToPrev = true;
                         this.seriesClick = [{data: []}];
                         let currentHoz = this.result[i];
                         this.seriesClick[0].data.push(
@@ -133,6 +139,7 @@ export default {
                     }
                 }
             } else {
+                this.clickToPrev = false;
                 this.seriesClick = [];
                 this.newX = []; 
                 let newY = {data: []};
@@ -170,10 +177,27 @@ export default {
         $route() {
             this.chooseChart();
         }
-    }
+    },
+
 }
 </script>
 
 <style scoped>
+.prev-chart {
+    font-family: Open Sans, sans-serif;
+    margin-top: 30px;
+    margin-left: 20px;
+    color:rgb(10, 113, 75);
+    padding-bottom: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    justify-self: flex-start;
+    align-self: flex-start;
+}
 
+.prev-chart:hover {
+    color: rgb(63, 205, 120);
+    padding-left: 10px;
+    width: max-content;
+}
 </style>

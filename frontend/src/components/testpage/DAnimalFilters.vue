@@ -403,7 +403,10 @@ export default {
             if (this.$store.getters.SHOWFILTERS) {
                 this.showFilters = this.$store.getters.SHOWFILTERS;
             }
-            this.$emit('applyFilters', this.filters);
+            if (!this.$store.getters.CURRENTANIMALS.length) {
+                this.$emit('applyFilters', this.filters);
+            }
+            
         }
     },
 }
