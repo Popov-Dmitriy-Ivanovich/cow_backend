@@ -6,6 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func getPercents(x float64, min float64, max float64) float64 {
+	return ((x-min)/(max-min) - 0.5) * 100
+}
+
 // Grades
 // @Summary      Get grades
 // @Description  Возращает словарь с ключами:
@@ -46,27 +50,27 @@ func (c *Cows) Grades() func(*gin.Context) {
 			percentageRegion = cow.GradeRegion.Grade
 			if cow.GradeRegion.EbvFat != nil {
 				percentageRegion.EbvFat = new(float64)
-				*percentageRegion.EbvFat = *cow.GradeRegion.EbvFat/blupStat.AverageEbvFatRegion*100 - 100
+				*percentageRegion.EbvFat = getPercents(*cow.GradeRegion.EbvFat, blupStat.MinEbvFatRegion, blupStat.MaxEbvFatRegion)
 			}
 			if cow.GradeRegion.EbvMilk != nil {
 				percentageRegion.EbvMilk = new(float64)
-				*percentageRegion.EbvMilk = *cow.GradeRegion.EbvMilk/blupStat.AverageEbvMilkRegion*100 - 100
+				*percentageRegion.EbvMilk = getPercents(*cow.GradeRegion.EbvMilk, blupStat.MinEbvMilkRegion, blupStat.MaxEbvMilkRegion)
 			}
 			if cow.GradeRegion.EbvProtein != nil {
 				percentageRegion.EbvProtein = new(float64)
-				*percentageRegion.EbvProtein = *cow.GradeRegion.EbvProtein/blupStat.AverageEbvProteinRegion*100 - 100
+				*percentageRegion.EbvProtein = getPercents(*cow.GradeRegion.EbvProtein, blupStat.MinEbvProteinRegion, blupStat.MaxEbvProteinRegion)
 			}
 			if cow.GradeRegion.EbvInsemenation != nil {
 				percentageRegion.EbvInsemenation = new(float64)
-				*percentageRegion.EbvInsemenation = *cow.GradeRegion.EbvInsemenation/blupStat.AverageEbvInsemenationRegion*100 - 100
+				*percentageRegion.EbvInsemenation = getPercents(*cow.GradeRegion.EbvInsemenation, blupStat.MinEbvInsemenationRegion, blupStat.MaxEbvInsemenationRegion)
 			}
 			if cow.GradeRegion.EbvService != nil {
 				percentageRegion.EbvService = new(float64)
-				*percentageRegion.EbvService = *cow.GradeRegion.EbvService/blupStat.AverageEbvServiceRegion*100 - 100
+				*percentageRegion.EbvService = getPercents(*cow.GradeRegion.EbvService, blupStat.MinEbvServiceRegion, blupStat.MaxEbvServiceRegion)
 			}
 			if cow.GradeRegion.GeneralValue != nil {
 				percentageRegion.GeneralValue = new(float64)
-				*percentageRegion.GeneralValue = *cow.GradeRegion.GeneralValue/blupStat.AverageEbvGeneralValueRegion*100 - 100
+				*percentageRegion.GeneralValue = getPercents(*cow.GradeRegion.GeneralValue, blupStat.MinEbvGeneralValueRegion, blupStat.MaxEbvGeneralValueRegion)
 			}
 		}
 
