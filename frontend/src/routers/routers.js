@@ -24,6 +24,7 @@ import LactDownload from '@/components/gui/LactDownload.vue';
 import ExteriorDownload from '@/components/gui/ExteriorDownload.vue';
 import GtcDownload from '@/components/gui/GtcDownload.vue';
 import ExteriorMainDownload from '@/components/gui/ExteriorMainDownload.vue'
+import AnalyticKrasnodar from '@/pages/AnalyticKrasnodar.vue';
 
 const routes = [
     {
@@ -85,6 +86,10 @@ const routes = [
                 component: AnaliticDistrict
             }
         ]
+    },
+    {
+        path: '/analytics/general',
+        component: AnalyticKrasnodar
     },
     {
         path: '/gui',

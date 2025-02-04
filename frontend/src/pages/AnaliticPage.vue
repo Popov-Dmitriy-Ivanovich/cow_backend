@@ -1,25 +1,39 @@
 <template>
     <div class="analytics-flex">
-        <DAnimalFilters class="analytics-filters" @applyFilters="fetchAnalyticsFilters" v-bind:fromAnal="forFilters"/>
+        <!-- <DAnimalFilters class="analytics-filters" @applyFilters="fetchAnalyticsFilters" v-bind:fromAnal="forFilters"/> -->
+        
         <div class="chart-block">
-            <div class="analytics-title">Статистика для сравнительного анализа хозяйств и регионов</div>
+            <div class="analytics-title">Аналитика</div>
             <!-- <select v-model="opt" class="filter-input">
                 <option :value="''">генотипирование</option>
                 <option :value="'lact'">средние показатели удоя</option>
                 <option :value="'ill'">моногенные заболевания</option>
             </select> -->
             <!-- <router-view></router-view> -->
-            <div class="row">
+            <div class="analyt-btns">
+                <button
+                class="btn"
+                :class="{'active-btn':isRegion}"
+                @click="isRegion = true; isSelex = false"
+                >Статистика по региону</button>
+
+                <button
+                class="btn"
+                :class="{'active-btn':isSelex}"
+                @click="isRegion = false; isSelex = true"
+                >Селекционный индекс</button>
+            </div>
+            
+            <div class="row" v-if="isSelex">
                 <router-view></router-view>
-                <apexchart id="analit" width="500" type="bar" :options="options" :series="series"></apexchart>
             </div>
-            <div class="row">
-                <apexchart id="analit1" width="500" type="bar" :options="options1" :series="series1"></apexchart>
-                <apexchart id="analit2" width="500" type="bar" :options="options2" :series="series2"></apexchart>
+            <div class="row" v-if="isRegion">
+                <apexchart id="analit1" width="500" type="bar" :options="options1" :series="series1" @dataPointSelection="clickHandler"></apexchart>
+                <apexchart id="analit2" width="500" type="bar" :options="options2" :series="series2" @dataPointSelection="clickHandler"></apexchart>
             </div>
-            <div class="row">
-                <apexchart id="analit3" width="500" type="bar" :options="options3" :series="series3"></apexchart>
-                <apexchart id="analit4" width="500" type="bar" :options="options4" :series="series4"></apexchart>
+            <div class="row" v-if="isRegion">
+                <apexchart id="analit3" width="500" type="bar" :options="options3" :series="series3" @dataPointSelection="clickHandler"></apexchart>
+                <apexchart id="analit4" width="500" type="bar" :options="options4" :series="series4" @dataPointSelection="clickHandler"></apexchart>
             </div>
         </div>
 
@@ -27,67 +41,20 @@
 </template>
 
 <script>
-import DAnimalFilters from '@/components/testpage/DAnimalFilters.vue';
+// import DAnimalFilters from '@/components/testpage/DAnimalFilters.vue';
 
 export default {
     components: {
-        DAnimalFilters
+        // DAnimalFilters
     },
     data() {
         return{
             opt: '',
             forFilters: true,
 
-            options: {
-                chart: {
-                    id: 'analit',
-                    stacked: true,
-                    zoom: {
-                        enabled: false,
-                    }
-                },
-                xaxis: {
-                //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
-                // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
-                categories: ['ООО Агрокомплекс Павловский','АО Рассвет', 'АО Родина',  'АО фирма Агрокомплекс им. Н.И. Ткачева', 'ОАО Племзавод Воля', 
-                'АО Виктория – Агро', 'ФГБОУ ВО Кубанский ГАУ УОХ Краснодарское', 'ООО Агрокомплекс Новокубанский ОСП Ленинский путь'],
-                    dataLabels: {
-                        enabled: true,
-                        style: {
-                            fontSize: '5px',
-                        }
-                    },
-                    labels: {
-                        style: {
-                            fontSize: '8px',
-                        },
-                        hideOverlappingLabels: true,
-                        trim: true,
-                    }
-                },
-
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
-                title: {
-                    text: 'Средний удой на одну голову за 2024 г',
-                    align: 'center',
-                    style: {
-                        fontSize:  '12px',
-                    },
-                },
-                tooltip: {
-                    enabled: false,
-                }
-            },
-            series: [
-                {
-                    data: [8315,10883,15734,9277,11033,11264,15378,11810],
-                }
-            ],
-
             options1: {
                 chart: {
                     id: 'analit1',
-                    stacked: true,
                     zoom: {
                         enabled: false,
                     }
@@ -95,57 +62,10 @@ export default {
                 xaxis: {
                 //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
                 // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
-                categories: ['ООО Агрокомплекс Павловский','АО Рассвет', 'АО Родина',  'АО фирма Агрокомплекс им. Н.И. Ткачева', 'ОАО Племзавод Воля', 
-                'АО Виктория – Агро', 'ФГБОУ ВО Кубанский ГАУ УОХ Краснодарское', 'ООО Агрокомплекс Новокубанский ОСП Ленинский путь'],
-                    dataLabels: {
-                        enabled: true,
-                        style: {
-                            fontSize: '5px',
-                        }
-                    },
+                categories: ['2021', '2022', '2023', '2024'],
                     labels: {
                         style: {
-                            fontSize: '8px',
-                        },
-                        hideOverlappingLabels: true,
-                        trim: true,
-                    }
-                },
-
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
-                title: {
-                    text: 'Выход телят',
-                    align: 'center',
-                    style: {
-                        fontSize:  '12px',
-                    },
-                },
-                tooltip: {
-                    enabled: false,
-                }
-            },
-            series1: [
-                {
-                    data: [77,60,85,93,62,99,72,43],
-                }
-            ],
-
-            options2: {
-                chart: {
-                    id: 'analit2',
-                    stacked: true,
-                    zoom: {
-                        enabled: false,
-                    }
-                },
-                xaxis: {
-                //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
-                // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
-                categories: ['ООО Агрокомплекс Павловский','АО Рассвет', 'АО Родина',  'АО фирма Агрокомплекс им. Н.И. Ткачева', 'ОАО Племзавод Воля', 
-                'АО Виктория – Агро', 'ФГБОУ ВО Кубанский ГАУ УОХ Краснодарское', 'ООО Агрокомплекс Новокубанский ОСП Ленинский путь'],
-                    labels: {
-                        style: {
-                            fontSize: '8px',
+                            fontSize: '12px',
                         },
                         hideOverlappingLabels: true,
                         trim: true,
@@ -157,28 +77,73 @@ export default {
                         fontSize: '9px',
                     }
                 },
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
-                    text: 'Валовый объём молока',
+                    text: ['Соотношение общего числа голов', 'к числу голов охваченных проектом'],
                     align: 'center',
                     style: {
-                        fontSize:  '12px',
+                        fontSize:  '15px',
                     },
                 },
-                tooltip: {
-                    enabled: false,
+            },
+            series1: [
+                {
+                    name: 'Число всех голов',
+                    data: [36712, 44039, 45569, 49435],
+                },
+                {
+                    name: 'Число голов в проекте',
+                    data: [0, 9732.1, 21422.1, 29612.1],
                 }
+            ],
+
+            options2: {
+                chart: {
+                    id: 'analit2',
+                    zoom: {
+                        enabled: false,
+                    }
+                },
+                xaxis: {
+                //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
+                // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
+                categories: ['2021', '2022', '2023', '2024'],
+                    labels: {
+                        style: {
+                            fontSize: '12px',
+                        },
+                        hideOverlappingLabels: true,
+                        trim: true,
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
+                title: {
+                    text: 'Средний удой, кг',
+                    align: 'center',
+                    style: {
+                        fontSize:  '15px',
+                    },
+                },
             },
             series2: [
                 {
-                    data: [120000,430000,280000,355000,175000,490000,315000,260000],
+                    name: 'Средний удой',
+                    data: [9733.84, 10353.29, 10665, 11742],
                 }
             ],
 
             options3: {
                 chart: {
                     id: 'analit3',
-                    stacked: true,
                     zoom: {
                         enabled: false,
                     }
@@ -186,38 +151,46 @@ export default {
                 xaxis: {
                 //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
                 // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
-                categories: ['ООО Агрокомплекс Павловский','АО Рассвет', 'АО Родина',  'АО фирма Агрокомплекс им. Н.И. Ткачева', 'ОАО Племзавод Воля', 
-                'АО Виктория – Агро', 'ФГБОУ ВО Кубанский ГАУ УОХ Краснодарское', 'ООО Агрокомплекс Новокубанский ОСП Ленинский путь'],
+                    categories: ['2021', '2022', '2023', '2024'],
                     labels: {
                         style: {
-                            fontSize: '8px',
+                            fontSize: '12px',
                         },
                         hideOverlappingLabels: true,
                         trim: true,
                     }
                 },
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
+                dataLabels: {
+                    enabled: true,
+                    offsetY: 730,
+                },
+                yaxis: {
+                    stepSize: 0.1,
+                    min: 3.4,
+                    max: 3.9,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
-                    text: 'Показатель 1 от Плотникова',
+                    text: 'Средний жир, %',
                     align: 'center',
                     style: {
-                        fontSize:  '12px',
+                        fontSize:  '15px',
                     },
                 },
-                tooltip: {
-                    enabled: false,
-                }
             },
             series3: [
                 {
-                    data: [10,14,12,8,20,22,6,25],
+                    name: 'Средний жир, %',
+                    data: [3.80, 3.78, 3.73, 3.69],
                 }
             ],
 
             options4: {
                 chart: {
-                    id: 'analit4',
-                    stacked: true,
+                    id: 'analit3',
                     zoom: {
                         enabled: false,
                     }
@@ -225,33 +198,45 @@ export default {
                 xaxis: {
                 //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
                 // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
-                categories: ['ООО Агрокомплекс Павловский','АО Рассвет', 'АО Родина',  'АО фирма Агрокомплекс им. Н.И. Ткачева', 'ОАО Племзавод Воля', 
-                'АО Виктория – Агро', 'ФГБОУ ВО Кубанский ГАУ УОХ Краснодарское', 'ООО Агрокомплекс Новокубанский ОСП Ленинский путь'],
+                    categories: ['2021', '2022', '2023', '2024'],
                     labels: {
                         style: {
-                            fontSize: '8px',
+                            fontSize: '12px',
                         },
                         hideOverlappingLabels: true,
                         trim: true,
                     }
                 },
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
+                yaxis: {
+                    stepSize: 0.05,
+                    min: 3.15,
+                    max: 3.3,
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetY: 2270,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
-                    text: 'Показатель 2 от Плотникова',
+                    text: 'Средний белок, %',
                     align: 'center',
                     style: {
-                        fontSize:  '12px',
+                        fontSize:  '15px',
                     },
                 },
-                tooltip: {
-                    enabled: false,
-                }
             },
             series4: [
                 {
-                    data: [190,203,175,230,250,180,212,214],
+                    name: 'Средний белок, %',
+                    data: [3.2677, 3.27, 3.26, 3.27],
                 }
             ],
+
+            isRegion: true,
+            isSelex: false,
         }
     },
     created() {
@@ -262,12 +247,9 @@ export default {
             this.$store.commit('SET_FILTERS', filters);
             console.log(this.$store.getters.FILTERS, 'in store');
         },
-        // splitString(str) {
-        //     let arr = srt.split(' ');
-        //     if (arr.length > 2) {
-
-        //     }
-        // }
+        clickHandler() {
+            this.$router.push('/analytics/general');
+        }
     },
     watch: {
         opt(new_val) {
@@ -280,12 +262,21 @@ export default {
 <style scoped>
 .analytics-flex {
     display: flex;
-    justify-content: space-around;
-    width: 90vw;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
 }
 
 .analytics-filters {
     margin-top: 130px;
+}
+
+.chart-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: max-content;
 }
 
 .analytics-title {
@@ -293,6 +284,7 @@ export default {
     font-family: Open Sans, sans-serif;
     color: rgb(10, 113, 75);
     margin-top: 120px;
+    margin-bottom: 20px;
 }
 
 .filter-input {
@@ -314,7 +306,30 @@ export default {
 
 .row {
     display: flex;
-    width: 880px;
     margin-top: 30px;
+    width: 65vw;
+}
+
+.analyt-btns {
+    align-self: flex-start;
+    margin-left: 30px;
+}
+
+.btn {
+    border: 1px solid rgb(10, 113, 75);
+    background-color: white;
+    color: rgb(10, 113, 75);
+    padding: 10px 0;
+    margin: 20px 0;
+    width: 200px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    margin-right: 15px;
+    transition: 0.3s;
+}
+
+.active-btn {
+    background-color: rgb(214, 239, 233);
 }
 </style>

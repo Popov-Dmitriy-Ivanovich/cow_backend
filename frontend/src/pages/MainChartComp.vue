@@ -4,7 +4,7 @@
         <!-- <MainChart/> -->
         <apexchart 
         id="analit_click" 
-        width="500" 
+        width="1000" 
         type="bar" 
         :options="optionsClick" 
         :series="seriesClick" 
@@ -36,24 +36,24 @@ export default {
                     dataLabels: {
                         enabled: true,
                         style: {
-                            fontSize: '5px',
+                            fontSize: '10px',
                         }
                     },
                     labels: {
                         style: {
-                            fontSize: '8px',
+                            fontSize: '10px',
                         },
                         hideOverlappingLabels: true,
                         trim: true,
                     }
                 },
 
-                colors: ['#63d9cb','#6e5add','#75a2e7'],
+                colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
                     text: 'Лучший селекционный индекс',
                     align: 'center',
                     style: {
-                        fontSize:  '12px',
+                        fontSize:  '15px',
                     },
                 },
                 tooltip: {
