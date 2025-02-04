@@ -93,7 +93,7 @@ var eventRecordParsers = map[string]func(*eventRecord, []string) error{
 	},
 	EVENT_DATE_COL: func(evr *eventRecord, rec []string) error {
 		dateStr := rec[evr.HeaderIndexes[EVENT_DATE_COL]]
-		date, err := time.Parse(time.DateOnly, dateStr)
+		date, err := ParseTime(dateStr)
 		if err != nil {
 			return err
 		}

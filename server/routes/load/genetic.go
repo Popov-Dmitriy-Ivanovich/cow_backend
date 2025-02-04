@@ -194,7 +194,7 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	gr.ProbeNumber = rec[gr.HeaderIndexes[PROBE_NUMBER_COLUMN]]
 
 	if dateStr := rec[gr.HeaderIndexes[BLOOD_DATE_COLUMN]]; dateStr != "" {
-		if date, err := time.Parse(time.DateOnly, dateStr); err == nil {
+		if date, err := ParseTime(dateStr); err == nil {
 			gr.BloodDate = &models.DateOnly{Time: date}
 		} else {
 			return nil, errors.New("Не удалось распарсить дату " + dateStr)
@@ -202,7 +202,7 @@ func (gr *geneticRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	}
 
 	if dateStr := rec[gr.HeaderIndexes[RESULT_DATE_COLUMN]]; dateStr != "" {
-		if date, err := time.Parse(time.DateOnly, dateStr); err == nil {
+		if date, err := ParseTime(dateStr); err == nil {
 			gr.ResultDate = &models.DateOnly{Time: date}
 		} else {
 			return nil, errors.New("Не удалось распарсить дату " + dateStr)

@@ -49,7 +49,7 @@ var cmRecordParsers = map[string]func(*cmRecord, []string) error{
 
 	CM_LACTATION_DATE_COL: func(cmr *cmRecord, record []string) error {
 		dateStr := record[cmr.HeaderIndexes[CM_LACTATION_DATE_COL]]
-		date, err := time.Parse(time.DateOnly, dateStr)
+		date, err := ParseTime(dateStr)
 		if err != nil {
 			return err
 		}
@@ -142,7 +142,7 @@ var cmRecordParsers = map[string]func(*cmRecord, []string) error{
 	},
 	CM_CHECK_DATE_COL: func(cmr *cmRecord, record []string) error {
 		dateStr := record[cmr.HeaderIndexes[CM_CHECK_DATE_COL]]
-		date, err := time.Parse(time.DateOnly, dateStr)
+		date, err := ParseTime(dateStr)
 		if err != nil {
 			return err
 		}

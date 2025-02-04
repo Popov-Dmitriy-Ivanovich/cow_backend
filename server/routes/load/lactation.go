@@ -86,7 +86,7 @@ var lactationRecordParsers = map[string]func(*lactationRecord, []string) error{
 
 	INSEMENATION_DATE_COL: func(lr *lactationRecord, record []string) error {
 		dateStr := record[lr.HeaderIndexes[INSEMENATION_DATE_COL]]
-		date, err := time.Parse(time.DateOnly, dateStr)
+		date, err := ParseTime(dateStr)
 		if err != nil {
 			return err
 		}
@@ -108,7 +108,7 @@ var lactationRecordParsers = map[string]func(*lactationRecord, []string) error{
 
 	CALVING_DATE_COL: func(lr *lactationRecord, record []string) error {
 		dateStr := record[lr.HeaderIndexes[CALVING_DATE_COL]]
-		date, err := time.Parse(time.DateOnly, dateStr)
+		date, err := ParseTime(dateStr)
 		if err != nil {
 			return err
 		}

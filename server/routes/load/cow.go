@@ -165,21 +165,21 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 		}
 	}
 
-	if birthDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirthDate"]]); err != nil {
+	if birthDate, err := ParseTime(rec[cr.HeaderIndexes["BirthDate"]]); err != nil {
 		return nil, err
 	} else {
 		res.BirthDate = models.DateOnly{Time: birthDate}
 	}
 
 	if rec[cr.HeaderIndexes["DepartDate"]] != "" {
-		if depDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["DepartDate"]]); err != nil {
+		if depDate, err := ParseTime(rec[cr.HeaderIndexes["DepartDate"]]); err != nil {
 			return nil, err
 		} else {
 			res.DepartDate = &models.DateOnly{Time: depDate}
 		}
 	}
 	if rec[cr.HeaderIndexes["DeathDate"]] != "" {
-		if deathDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["DeathDate"]]); err != nil {
+		if deathDate, err := ParseTime(rec[cr.HeaderIndexes["DeathDate"]]); err != nil {
 			return nil, err
 		} else {
 			res.DepartDate = &models.DateOnly{Time: deathDate}
@@ -191,7 +191,7 @@ func (cr *cowRecord) FromCsvRecord(rec []string) (CsvToDbLoader, error) {
 	}
 
 	if rec[cr.HeaderIndexes["BirkingDate"]] != "" {
-		if birkingDate, err := time.Parse(time.DateOnly, rec[cr.HeaderIndexes["BirkingDate"]]); err != nil {
+		if birkingDate, err := ParseTime(rec[cr.HeaderIndexes["BirkingDate"]]); err != nil {
 			return nil, err
 		} else {
 			res.BirkingDate = &models.DateOnly{Time: birkingDate}
