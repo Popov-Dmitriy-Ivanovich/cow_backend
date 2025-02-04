@@ -2,6 +2,7 @@ package cows_filter
 
 import (
 	"cow_backend/filters"
+	"cow_backend/models"
 	"errors"
 )
 
@@ -15,7 +16,16 @@ func (f ByHoz) Apply(fm filters.FilteredModel) error {
 		return errors.New("wrong object provided in filter filed object")
 	}
 	if bodyData.HozId != nil {
-		query = query.Where("farm_group_id = ?", bodyData.HozId).Preload("Farm")
+		hoz := []uint{}
+		db := models.GetDb()
+		if err := db.Model(&models.Farm{}).Where(map[string]any{
+			"parrent_id": bodyData.HozId,
+			"type":       []uint{1, 2},
+		}).Pluck("id", &hoz).Error; err != nil {
+			return err
+		}
+		hoz = append(hoz, *bodyData.HozId)
+		query = query.Where(map[string]any{"farm_group_id": hoz}).Preload("Farm")
 	}
 	fm.SetQuery(query)
 	return nil
