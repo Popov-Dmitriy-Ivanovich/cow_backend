@@ -109,7 +109,10 @@ export default {
                     id: 'rating',
                 },
                 xaxis: {
-                    categories: []
+                    stepSize: 10,
+                    categories: [],
+                    min: -50,
+                    max: 50,
                 },
                 plotOptions: {
                     bar: {
