@@ -1,0 +1,3 @@
+[submodule "genmilk_backend"]
+	path = genmilk_backend
+	url = https://github.com/Popov-Dmitriy-Ivanovich/genmilk_backend.git
