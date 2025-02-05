@@ -13,7 +13,7 @@ import (
 // @Success      200  {object}   string
 // @Failure      500  {object}  string
 // @Failure      401  {object}  string
-// @Router       /user/whoami [post]
+// @Router       /user/whoami [get]
 func (u *User) Whoami() func(*gin.Context) {
 	return func(c *gin.Context) {
 		userId, ok := c.Get("UserId")

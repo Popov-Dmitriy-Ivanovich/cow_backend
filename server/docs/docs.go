@@ -2205,7 +2205,7 @@ const docTemplate = `{
             }
         },
         "/user/whoami": {
-            "post": {
+            "get": {
                 "description": "Рут вернет данные о пользователе из БД",
                 "produces": [
                     "application/json"
