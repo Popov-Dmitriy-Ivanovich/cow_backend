@@ -23,7 +23,7 @@ func (u *User) Whoami() func(*gin.Context) {
 		}
 		db := models.GetDb()
 		user := models.User{}
-		if err := db.First(&user, userId).Error; err != nil {
+		if err := db.Preload("Role").First(&user, userId).Error; err != nil {
 			c.JSON(500, err.Error())
 			return
 		}
