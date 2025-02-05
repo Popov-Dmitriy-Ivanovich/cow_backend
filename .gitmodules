@@ -1,3 +1,6 @@
 [submodule "genmilk_backend"]
 	path = genmilk_backend
 	url = https://github.com/Popov-Dmitriy-Ivanovich/genmilk_backend.git
+[submodule "genmilk_dataloader"]
+	path = genmilk_dataloader
+	url = https://github.com/Popov-Dmitriy-Ivanovich/genmilk_dataloader.git
