@@ -155,7 +155,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });
@@ -208,7 +208,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });
@@ -245,7 +245,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(this.current_filters),
                 });
@@ -304,6 +304,15 @@ export default {
         },
         changeN(newN) {
             this.number_of_animals = newN;
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     },
     mounted() {

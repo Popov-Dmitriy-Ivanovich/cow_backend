@@ -22,8 +22,13 @@
 export default {
     computed: {
         token(){
-            console.log(localStorage.getItem('jwt'));
-            return this.$store.state.isLogged || localStorage.getItem('jwt');
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

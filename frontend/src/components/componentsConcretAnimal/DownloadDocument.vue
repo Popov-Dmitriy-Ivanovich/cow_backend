@@ -32,7 +32,7 @@ export default {
             let response = await fetch('/api/load/document', {
                 method: 'POST',
                 headers: {
-                    'Authorization': localStorage.getItem('jwt')
+                    'Authorization': this.getJwt()
                 },
                 body: formData
             })
@@ -42,6 +42,15 @@ export default {
                 this.uspeh = true;
                 this.$emit('changeUspeh', this.uspeh);
             }
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     }
 }
