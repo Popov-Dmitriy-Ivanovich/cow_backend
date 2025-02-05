@@ -20,22 +20,22 @@
                     <th class="cm-milk">Удой, кг</th>
                     <th class="cm-zhir">Жир, %</th>
                     <th class="cm-belok">Белок, %</th>
-                    <th>Жир, кг</th>
+                    <!-- <th>Жир, кг</th>
                     <th>Белок, кг</th>
-                    <th>Количество соматических клеток</th>
+                    <th>Количество соматических клеток</th> -->
                 </tr>
             </thead>
             <tbody class="cm-tablebody">
                 <tr v-for="milking in cow_info" :key="milking.CheckDate">
-                    <td>{{ dateConverter(milking.CheckDate) }}</td>
-                    <td>{{ milking.ProbeNumber || 'Нет информации'}}</td>
+                    <td>{{ milking.LactationNumber }}</td>
+                    <td>{{dateConverter(milking.CheckDate)}}</td>
                     <td>{{ milking.MilkingDays || 'Нет информации'}}</td>
                     <td v-if="milking.Milk">{{ milking.Milk.toFixed(1) }}</td><td v-else>Нет информации</td>    
                     <td v-if="milking.Fat">{{ milking.Fat.toFixed(1) }}</td><td v-else>Нет информации</td>
                     <td v-if="milking.Protein">{{ milking.Protein.toFixed(1) }}</td><td v-else>Нет информации</td>
-                    <td>{{ milking.FatRegard || 'Нет информации'}}</td>
+                    <!-- <td>{{ milking.FatRegard || 'Нет информации'}}</td>
                     <td>{{ milking.ProteinRegard || 'Нет информации'}}</td>
-                    <td>{{ milking.SomaticNucCount || 'Нет информации'}}</td>
+                    <td>{{ milking.SomaticNucCount || 'Нет информации'}}</td> -->
                 </tr>
             </tbody>
         </table>
@@ -121,6 +121,7 @@ export default {
                     this.count_lactations.push(this.cow_info[i]['LactationNumber']);
                 }
             }
+            this.check_lact = this.count_lactations[0];
         } catch(err) {
             console.log(err);
         }

@@ -2,7 +2,7 @@
     <div class="child-title">Потомки</div>
     <div v-if="!isLoading">
         <div class="n-children">Количество потомков: {{ nChildren }}</div>
-        <div class="parent-table">
+        <!-- <div class="parent-table">
             <table class="child-table">
                 <thead>
                     <tr class="child-header">
@@ -25,7 +25,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> -->
     </div>
     <div v-if="isLoading">Идёт загрузка...</div>
 </template>

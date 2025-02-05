@@ -14,7 +14,7 @@ import MainFooter from '@/components/MainFooter.vue'
 export default {
     components: {
         TopBar, MainFooter
-    }
+    },
 }
 </script>
 

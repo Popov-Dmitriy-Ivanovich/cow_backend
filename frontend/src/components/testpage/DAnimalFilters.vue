@@ -54,13 +54,13 @@
                 <option :value="false">нет</option>
             </select>
         </div>
-        <div class="filter-category">
+        <!-- <div class="filter-category">
             <div @click="showFilters.milking = !showFilters.milking" class="ill-list-title">> Контрольная дойка</div>
             <div v-if="showFilters.milking">
                 <label class="range">От: <input type='date' class="filter-input filter-date" v-model="filters.controlMilkingDateFrom"></label><br>
                 <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.controlMilkingDateTo"></label>
             </div>
-        </div>
+        </div> -->
         <div class="filter-category">
             <div @click="showFilters.exterior = !showFilters.exterior" class="ill-list-title">> Оценка экстерьера</div>
             <!-- <input type='number' class="filter-input filter-num" v-model="filters.exterior"> -->
@@ -88,7 +88,7 @@
                 <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.calvingDateTo"></label>
             </div>
         </div>
-        <div class="filter-category">
+        <!-- <div class="filter-category">
             <div @click="showFilters.twin = !showFilters.twin" class="ill-list-title">> Двойня</div>
             <select class="filter-input" v-model="filters.isTwins" v-if="showFilters.twin">
                 <option :value="null">не важно</option>
@@ -103,7 +103,7 @@
                 <option :value="true">да</option>
                 <option :value="false">нет</option>
             </select>
-        </div>
+        </div> -->
         <div class="filter-category">
             <div @click="showFilters.abort = !showFilters.abort" class="ill-list-title">> Аборт</div>
             <select class="filter-input" v-model="filters.isAborted" v-if="showFilters.abort">

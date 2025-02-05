@@ -24,7 +24,7 @@
             <div v-if="animal_item.CreatedAt" class="animal-contrmilk">{{ dateConverter(animal_item.CreatedAt) }}</div>
             <div v-else-if="filters.createdAtFrom || filters.createdAtTo" class="animal-krod"> - </div>
 
-            <div v-if="animal_item.Exterior" class="animal-exterior">{{ animal_item.Exterior }}</div>
+            <div v-if="animal_item.ExteriorRating" class="animal-exterior">{{ animal_item.ExteriorRating }}</div>
             <div v-else-if="filters.exteriorFrom || filters.exteriorTo" class="animal-exterior"> - </div>
 
             <div v-if="animal_item.InsemenationDate" class="animal-dateosem">{{ dateConverter(insemination) }}</div>
