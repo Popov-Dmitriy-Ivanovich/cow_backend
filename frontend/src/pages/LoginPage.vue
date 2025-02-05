@@ -47,9 +47,8 @@ export default {
             });
             let result = await response.json();
             if(result.token) {
-                localStorage.setItem('jwt', result.token);
-
-                console.log(localStorage.getItem('jwt'), 'jwt');
+                // localStorage.setItem('jwt', result.token);
+                document.cookie = "jwt=" + result.token + "; path=/; max-age=18000; secure";
 
                 location.reload();
             } else {

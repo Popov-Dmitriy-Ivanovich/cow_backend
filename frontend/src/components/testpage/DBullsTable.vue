@@ -132,6 +132,15 @@ export default {
     methods: {
         changePage(new_value) {
             this.$emit('defPages', new_value, this.tp);
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     },
     async mounted() {
@@ -150,7 +159,7 @@ export default {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': localStorage.getItem('jwt')
+                'Authorization': this.getJwt()
             },
             body: JSON.stringify(search_params),
         });
@@ -179,7 +188,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });

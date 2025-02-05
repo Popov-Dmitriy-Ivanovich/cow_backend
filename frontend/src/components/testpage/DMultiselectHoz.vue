@@ -28,11 +28,10 @@ export default {
             this.$emit('sendToMain', newValue);
         },
         async getHoz() {
-
             const response = await fetch('/api/farms?parrent_id=null',
                 {
                     headers: {
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     }
                 }
             );
@@ -42,6 +41,15 @@ export default {
                 let hoz = {name: hozs[i].Name, id: hozs[i].ID};
                 this.options.push(hoz);
             }
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     },
     async mounted() {
