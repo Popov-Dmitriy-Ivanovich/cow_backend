@@ -2203,6 +2203,38 @@ const docTemplate = `{
                 "summary": "Get list of sexes",
                 "responses": {}
             }
+        },
+        "/user/whoami": {
+            "post": {
+                "description": "Рут вернет данные о пользователе из БД",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получить информацию о пользователе",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

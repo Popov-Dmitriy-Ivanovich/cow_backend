@@ -3049,6 +3049,27 @@ paths:
       summary: Get list of sexes
       tags:
       - User
+  /user/whoami:
+    post:
+      description: Рут вернет данные о пользователе из БД
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Получить информацию о пользователе
+      tags:
+      - User
 securityDefinitions:
   BasicAuth:
     type: basic
