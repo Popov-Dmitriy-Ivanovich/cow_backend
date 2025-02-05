@@ -6,8 +6,8 @@
         <GenBreed v-bind:cow_info="cow_info" v-bind:genetic="genetic"/>
         <hr class="com-sep">
         <ParentsCow v-bind:father="father" v-bind:mother="mother" v-bind:genetic="genetic" v-bind:coeff-by-family="koeff"></ParentsCow>
-        <hr class="com-sep">
-        <MovementCow v-bind:cow_info="cow_info"></MovementCow>
+        <!-- <hr class="com-sep">
+        <MovementCow v-bind:cow_info="cow_info"></MovementCow> -->
     </div>
     <div class="general-info" v-if="isLoading">Идёт загрузка...</div>
 </template>
@@ -16,11 +16,11 @@
 import ID from '@/components/componentsConcretAnimal/ID.vue';
 import GenBreed from '@/components/componentsConcretAnimal/GenBreed.vue';
 import ParentsCow from '@/components/componentsConcretAnimal/ParentsCow.vue';
-import MovementCow from './componentsConcretAnimal/MovementCow.vue';
+// import MovementCow from './componentsConcretAnimal/MovementCow.vue';
 
 export default {
     components: {
-        ID, GenBreed, ParentsCow, MovementCow
+        ID, GenBreed, ParentsCow, //MovementCow
     },
     data() {
         return {

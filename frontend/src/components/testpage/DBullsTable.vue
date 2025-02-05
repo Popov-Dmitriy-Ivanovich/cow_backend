@@ -173,7 +173,7 @@ export default {
                 search_params.entitiesOnPage = 25;
                 if(!search_params.orderBy) {
                     search_params.orderBy = 'GeneralEbvRegion';
-                    search_params.orderByDesc = false;
+                    search_params.orderByDesc = true;
                 }
                 const response = await fetch('/api/cows/filter', {
                     method: 'POST',

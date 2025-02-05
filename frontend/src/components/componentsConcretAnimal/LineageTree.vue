@@ -254,11 +254,11 @@ export default {
                 let result3 = await response3.json();
                 this.grandmother_mother.BreedName = result3.BreedName;
 
-                if(result3.Mother.ID) {
+                if(result3.Mother && result3.Mother.ID) {
                     this.mother_grandmother_mother = result3.Mother;
                     await this.fetchBreed(this.mother_grandmother_mother.BreedId, this.mother_grandmother_mother);
                 }
-                if(result3.Father.ID) {
+                if(result3.Father && result3.Father.ID) {
                     this.mother_grandmother_father = result3.Father;
                     await this.fetchBreed(this.mother_grandmother_father.BreedId, this.mother_grandmother_father)
                 }
@@ -268,11 +268,11 @@ export default {
                 let result4 = await response4.json();
                 this.grandmother_father.BreedName = result4.BreedName;
 
-                if(result4.Mother.ID) {
+                if(result4.Mother && result4.Mother.ID) {
                     this.father_grandmother_mother = result4.Mother;
                     await this.fetchBreed(this.father_grandmother_mother.BreedId, this.father_grandmother_mother);
                 }
-                if(result4.Father.ID) {
+                if(result4.Father && result4.Father.ID) {
                     this.father_grandmother_father = result4.Father;
                     await this.fetchBreed(this.father_grandmother_father.BreedId, this.father_grandmother_father);
                 }
@@ -283,11 +283,11 @@ export default {
                 let result5 = await response5.json();
                 this.grandfather_mother.BreedName = result5.BreedName;
 
-                if(result5.Mother.ID) {
+                if(result5.Mother && result5.Mother.ID) {
                     this.mother_grandfather_mother = result5.Mother;
                     await this.fetchBreed(this.mother_grandfather_mother.BreedId, this.mother_grandfather_mother);
                 }
-                if(result5.Father.ID) {
+                if(result5.Father && result5.Father.ID) {
                     this.father_grandfather_mother = result5.Father;
                     await this.fetchBreed(this.father_grandfather_mother.BreedId, this.father_grandfather_mother);
                 }
@@ -298,11 +298,11 @@ export default {
                 let result6 = await response6.json();
                 this.grandfather_father.BreedName = result6.BreedName;
 
-                if(result6.Mother.ID) {
+                if(result6.Mother && result6.Mother.ID) {
                     this.mother_grandfather_father = result6.Mother;
                     await this.fetchBreed(this.mother_grandfather_father.BreedId, this.mother_grandfather_father);
                 }
-                if(result6.Father.ID) {
+                if(result6.Father && result6.Father.ID) {
                     this.father_grandfather_father = result6.Father;
                     await this.fetchBreed(this.father_grandfather_father.BreedId, this.father_grandfather_father);
                 }
@@ -315,8 +315,8 @@ export default {
                 let response1 = await fetch(`/api/cows/${this.mother.ID}`);
                 let result1 = await response1.json();
                 this.mother.BreedName = result1.BreedName;
-                if(result1.Father.ID) this.grandfather_mother = result1.Father;
-                if(result1.Mother.ID) this.grandmother_mother = result1.Mother;
+                if(result1.FAther && result1.Father.ID) this.grandfather_mother = result1.Father;
+                if(result1.Mother && result1.Mother.ID) this.grandmother_mother = result1.Mother;
             }
         },
         async fetchFather() {
@@ -327,8 +327,8 @@ export default {
                 let result2 = await response2.json();
                 console.log(result2, 'otec');
                 this.father.BreedName = result2.BreedName;
-                if(result2.Father.ID) this.grandfather_father = result2.Father;
-                if (result2.Mother.ID) this.grandmother_father = result2.Mother;
+                if(result2.Father && result2.Father.ID) this.grandfather_father = result2.Father;
+                if (result2.Father && result2.Mother.ID) this.grandmother_father = result2.Mother;
                 console.log(this.grandmother_father, 'inside function');
             }
         },

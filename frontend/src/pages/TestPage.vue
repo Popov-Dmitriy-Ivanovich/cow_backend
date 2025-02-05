@@ -28,7 +28,7 @@
             <div>
                 <div class="flex-params">
                     <div class="sort">
-                        <div>Сортировать: </div>
+                        <div>Сортировать по: </div>
                         <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
                             <!-- <option :value="null">-нет-</option> -->
                             <option :value="'Name'">Кличке</option>
@@ -121,7 +121,8 @@ export default {
 
             isLoading: false,
             sort: null,
-            order: false,
+            order: true,
+            orderFalse: false,
         }
     },
     methods: {
@@ -475,5 +476,6 @@ export default {
     font-family: Open Sans, sans-serif;
     margin-bottom: 15px;
     font-size: 150%;
+    color: rgb(106, 106, 106);
 }
 </style>

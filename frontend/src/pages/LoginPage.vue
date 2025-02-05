@@ -49,7 +49,6 @@ export default {
             if(result.token) {
                 localStorage.setItem('jwt', result.token);
 
-                this.$store.commit('SET_ISLOGGED', Boolean(localStorage.getItem('jwt')));
                 console.log(localStorage.getItem('jwt'), 'jwt');
 
                 location.reload();
