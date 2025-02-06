@@ -2,9 +2,10 @@ package analitics
 
 import (
 	"cow_backend/models"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Total struct{}
@@ -43,7 +44,7 @@ func (t Total) RegionalStatistics() gin.HandlerFunc {
 			c.JSON(422, err.Error())
 			return
 		}
-		if err := db.Where("farm_id in ? or region_id = ?", farmIds, regIdUint).Preload("Farm").Preload("Region").Find(&statistics).Error; err != nil {
+		if err := db.Where("farm_id in ? or region_id = ?", farmIds, regIdUint).Preload("Farm").Preload("Region").Order("id").Find(&statistics).Error; err != nil {
 			c.JSON(500, err.Error())
 			return
 		}
