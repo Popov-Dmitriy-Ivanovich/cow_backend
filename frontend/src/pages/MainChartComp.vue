@@ -17,8 +17,7 @@
             Чем ниже получившаяся разница - тем более однородное стадо
         </div>
         <div v-else class="description">
-            Вертикальная ось - количество голов КРС<br>
-            Горизонтальная ось - селекционный индекс разбитый на 3 диапазона по 33% (худшие, средние, лучшие)
+            График демонстрирует число голов для трех диапазонов селекционного индекса по 33%, соответствующий группам для худших, средних и лучших животных
         </div>
     </div>
 </template>
@@ -121,11 +120,21 @@ export default {
                         this.seriesClick[0].data.push(
                             currentHoz.MinCount, currentHoz.AvgCount, currentHoz.MaxCount
                         );
+                        console.log(this.seriesClick);
                         
                         this.$refs.analit.updateOptions({
                             xaxis: {
+                                categories: [0, 1, 2],
                                 labels: {
                                     show: false,
+                                },
+                                title: {
+                                    text: 'Селекционный индекс',
+                                }
+                            },
+                            yaxis: {
+                                title: {
+                                    text: 'Количество голов КРС',
                                 }
                             }
                         });
@@ -166,6 +175,14 @@ export default {
                 this.$refs.analit.updateOptions({
                     xaxis: {
                         categories: this.newX,
+                        title: {
+                            text: ' ',
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: ' ',
+                        }
                     }
                 });
 
