@@ -1,5 +1,14 @@
 version: "3.9"
 services:
+  redis:
+    image: redis:latest
+    hostname: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - redis-network
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
@@ -77,13 +86,14 @@ services:
       depends_on:
         dev_postgres:
           condition: service_healthy
-      build: server
+      build: genmilk_backend
       env_file:
-        - server/.env
+        - genmilk_backend/.env
       networks:
         - dev_postgres
         - dev_cow_backend
         - kafka-network
+        - redis-network
       ports:
         - "8081:8080"
       volumes:
@@ -97,13 +107,14 @@ services:
     depends_on:
       dev_postgres:
         condition: service_healthy
-    build: data_loader
+    build: genmilk_dataloader
     env_file:
-      - data_loader/.env
+      - genmilk_dataloader/.env
     networks:
       - dev_postgres
       - dev_cow_backend
       - kafka-network
+      - redis-network
     ports:
       - "8082:8080"
     volumes:
@@ -132,4 +143,6 @@ networks:
   dev_cow_backend:
     driver: bridge
   kafka-network:
+    driver: bridge
+  redis-network:
     driver: bridge
