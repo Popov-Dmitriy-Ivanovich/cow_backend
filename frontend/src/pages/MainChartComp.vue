@@ -12,6 +12,10 @@
         ref="analit"
         @dataPointSelection="clickHandler"
         ></apexchart>
+        <div v-if="!clickToPrev" class="description">
+            График показывает разницу между индексным значением лучшей коровы (лучшая из лучших) и худшей коровы (худшая из худших) для данного хозяйства. Аналогично, выводится разница для коровы, замыкающей первую пятерку (худшей из лучших), и коровы, возглавляющей последнюю пятерку (лучшая из худших).
+            Чем ниже получившаяся разница - тем более однородное стадо
+        </div>
     </div>
 </template>
 
@@ -27,7 +31,7 @@ export default {
             optionsClick: {
                 chart: {
                     id: 'analit_click',
-                    stacked: true,
+                    stacked: false,
                     zoom: {
                         enabled: false,
                     },
@@ -57,9 +61,9 @@ export default {
                         fontSize:  '15px',
                     },
                 },
-                tooltip: {
-                    enabled: false,
-                }
+                // tooltip: {
+                //     enabled: false,
+                // }
             },
             seriesClick: [],
             
@@ -142,20 +146,21 @@ export default {
                 this.clickToPrev = false;
                 this.seriesClick = [];
                 this.newX = []; 
-                let newY = {data: []};
-                let index;
+                let newY = {name: 'Разница между лучшей из лучших и худшей из худших', data: []};
+                // let index;
                 for (let i = 0; i < this.result.length; i++) {
                     if (this.result[i].Farm) {
                         this.newX.push(this.result[i].Farm.Name);
                         newY.data.push(this.result[i].MaxIndex);
                     } else {
-                        index = i;
+                        // index = i;
                     }
                 }
-                this.newX.push('Весь регион');
-                newY.data.push(this.result[index].MaxIndex);
-                
+                // this.newX.push('Весь регион');
+                // newY.data.push(this.result[index].MaxIndex);
                 this.seriesClick.push(newY);
+                this.seriesClick.push( {name: 'Разница между худшей из лучших и лучшей из худших',data: [418.41, 245.57, 375.19, 307.85, 406.50, 273.36, 292.52]});
+
                 this.$refs.analit.updateOptions({
                     xaxis: {
                         categories: this.newX,
@@ -199,5 +204,12 @@ export default {
     color: rgb(63, 205, 120);
     padding-left: 10px;
     width: max-content;
+}
+
+.description {
+    font-family: Open Sans, sans-serif;
+    margin-top: 10px;
+    text-align: center;
+    color: rgb(90, 90, 90);
 }
 </style>
