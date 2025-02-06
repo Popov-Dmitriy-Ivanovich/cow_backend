@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="chartmain">
         <!-- <div class="analytics-title">Статистика для сравнительного анализа хозяйств и регионов</div> -->
         <!-- <MainChart/> -->
         <div class="prev-chart" @click="toPrev" v-if="clickToPrev">🠔 Назад</div>
         <apexchart 
         id="analit_click" 
-        width="1000" 
+        width="860px"
         type="bar" 
         :options="optionsClick" 
         :series="seriesClick" 
@@ -73,6 +73,7 @@ export default {
             newX: [],
             result: [],
             clickToPrev: false,
+            currHoz: {},
         }
     },
     async mounted() {
@@ -80,32 +81,33 @@ export default {
         let response = await fetch('/api/analitics/total/23/regionalStatistics/');
         this.result = await response.json();
         this.chooseChart();
+        console.log(this.newX, 'mounted')
     },
     methods: {
         toPrev() {
             this.$router.back();
         },
         async clickHandler(event, chartContext, config) {
-            let hoz = {};
-            for (let i = 0; i < this.result.length; i++) {
-                if(this.result[i].Farm) {
-                    if(this.result[i].Farm.Name == this.newX[config.dataPointIndex]) {
-                        hoz = this.result[i];
-                    }
-                } else {
-                    if (this.newX[config.dataPointIndex] == 'Весь регион') {
-                        hoz = this.result[i];
-                    }
-                }
-            }
             if (this.$route.query.hoz) {
                 let currAnim = [];
-                if (config.dataPointIndex === 0) currAnim = hoz.MinCowIds;
-                else if (config.dataPointIndex === 1) currAnim = hoz.AvgCowIds;
-                else if (config.dataPointIndex == 2) currAnim = hoz.MaxCowIds;
+                if (config.dataPointIndex === 0) currAnim = this.currHoz.MinCowIds;
+                else if (config.dataPointIndex === 1) currAnim = this.currHoz.AvgCowIds;
+                else if (config.dataPointIndex == 2) currAnim = this.currHoz.MaxCowIds;
                 this.$store.commit('SET_CURRENTANIMALS', currAnim);
                 this.$router.push('/animals');
             } else {
+                let hoz = {};
+                for (let i = 0; i < this.result.length; i++) {
+                    if(this.result[i].Farm) {
+                        if(this.result[i].Farm.Name == this.newX[config.dataPointIndex]) {
+                            hoz = this.result[i];
+                        }
+                    } else {
+                        if (this.newX[config.dataPointIndex] == 'Весь регион') {
+                            hoz = this.result[i];
+                        }
+                    }
+                }
                 await this.$router.push({query: {hoz: hoz.ID.toString()}});
             }
         },
@@ -117,10 +119,10 @@ export default {
                         this.clickToPrev = true;
                         this.seriesClick = [{data: []}];
                         let currentHoz = this.result[i];
+                        this.currHoz = this.result[i];
                         this.seriesClick[0].data.push(
                             currentHoz.MinCount, currentHoz.AvgCount, currentHoz.MaxCount
                         );
-                        console.log(this.seriesClick);
                         
                         this.$refs.analit.updateOptions({
                             xaxis: {
@@ -175,6 +177,9 @@ export default {
                 this.$refs.analit.updateOptions({
                     xaxis: {
                         categories: this.newX,
+                        labels: {
+                            show: true,
+                        },
                         title: {
                             text: ' ',
                         }
@@ -193,9 +198,6 @@ export default {
                 });
             }
         },
-        clickToAnimals(event, chartContext, config) {
-            console.log(config);
-        }
     },
     watch: {
         $route() {
@@ -230,5 +232,13 @@ export default {
     margin-top: 10px;
     text-align: center;
     color: rgb(90, 90, 90);
+}
+
+.chartmain {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
 }
 </style>

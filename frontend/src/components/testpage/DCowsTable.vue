@@ -149,13 +149,12 @@ export default {
         this.errorr = false;
         let search_params = {};
         if (this.$store.getters.CURRENTANIMALS.length) {
-            console.log(this.$store.getters.CURRENTANIMALS);
             search_params.includeOnly = this.$store.getters.CURRENTANIMALS;
         } else {
             search_params = this.filters;
+            search_params.sex = [4];
         }
-        this.$store.commit('SET_CURRENTANIMALS', []);
-        search_params.sex = [4];
+        
         search_params.pageNumber = 1;
         search_params.entitiesOnPage = 25;
         if(!search_params.orderBy) {
@@ -179,6 +178,9 @@ export default {
         this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/search_params.entitiesOnPage));
         this.$emit('changeN', res_animals.N);
         this.isLoadingCows = false;
+    },
+    unmounted() {
+        this.$store.commit('SET_CURRENTANIMALS', []);
     },
     watch: {
         async cp(newValue) {
