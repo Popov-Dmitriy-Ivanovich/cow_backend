@@ -3,6 +3,7 @@ package load
 import (
 	"cow_backend/models"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -16,40 +17,47 @@ func (l *Load) Document() func(*gin.Context) {
 	return func(c *gin.Context) {
 		form, err := c.MultipartForm()
 		if err != nil {
-			c.JSON(500, err)
+			c.JSON(500, err.Error())
 			return
 		}
-		document, ok := form.File["Document"]
-		if !ok || len(document) == 0 {
-			c.JSON(500, "not found field csv")
+		doc, ok := form.File["Document"]
+		if !ok {
+			c.JSON(500, "not found field Document")
 			return
 		}
 
 		now := time.Now()
-		fileName := "doc" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(documentUniqueIndex, 16) + document[0].Filename
-		uploadedName := DOCUMENT_PATH + fileName
+		filename := "doc_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(documentUniqueIndex, 16)
+		uploadFolder := DOCUMENT_PATH + filename
 
-		if err := c.SaveUploadedFile(document[0], uploadedName); err != nil {
-			c.JSON(500, err)
-			return
-		}
-		documentUniqueIndex++
+		filesNaming := map[string]string{}
 
-		cowId, err := strconv.ParseUint(form.Value["CowID"][0], 10, 64)
-		if err != nil {
-			c.JSON(422, err.Error())
-			return
+		for _, file := range doc {
+			uploadPath := uploadFolder + "/" + file.Filename
+			filesNaming[file.Filename] = filename + "/" + file.Filename
+			if err := c.SaveUploadedFile(file, uploadPath); err != nil {
+				c.JSON(500, err.Error())
+				return
+			}
 		}
-		dbCow := models.Cow{}
+
 		db := models.GetDb()
-		if err := db.Preload("Documents").First(&dbCow, cowId).Error; err != nil {
-			c.JSON(422, err.Error())
-			return
+		errors := []string{}
+		for fileName, filePath := range filesNaming {
+			cow := models.Cow{}
+			selecs := strings.Split(fileName, ".")[0]
+			if err := db.First(&cow, map[string]any{"selecs_number": selecs}).Error; err != nil {
+				errors = append(errors, err.Error())
+				continue
+			}
+			dbDoc := models.Document{
+				CowID: cow.ID,
+				Path:  filePath,
+			}
+			if err := db.Create(&dbDoc).Error; err != nil {
+				errors = append(errors, err.Error())
+			}
 		}
-		if err := db.Model(&dbCow).Association("Documents").Append(&models.Document{Path: fileName}); err != nil {
-			c.JSON(500, err.Error())
-			return
-		}
-		c.JSON(200, "ok")
+		c.JSON(200, errors)
 	}
 }

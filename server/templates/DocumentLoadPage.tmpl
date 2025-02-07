@@ -84,11 +84,8 @@
     <div class="form-example">
         <h1>Загрузка коровы</h1>
         <form action="/api/load/document" method="post" enctype="multipart/form-data">
-            <label for="Document">Выберите файл:</label>
-            <input type="file" id="Document" name="Document" required>
-
-            <label for="CowID">ID коровы:</label>
-            <input type="text" id="CowID" name="CowID" required>
+            <label for="Document">Выберите файлы:</label>
+            <input type="file" id="Document" name="Document" multiple required>
 
             <input type="submit" value="Загрузить">
         </form>
