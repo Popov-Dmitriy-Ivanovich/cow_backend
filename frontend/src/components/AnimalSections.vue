@@ -6,8 +6,9 @@
         <li @click="changeSection('genetic')" :class="{'selected': this.section.genetic}">Генетика</li>
         <li @click="changeSection('exterior')" :class="{'selected': this.section.exterior}">Экстерьер</li>
         <li @click="changeSection('health')" :class="{'selected': this.section.health}">Ветеринарные мероприятия</li>
-        <li @click="changeSection('milking')" :class="{'selected': this.section.milking}">Контрольные доения и лактации</li>
+        <li @click="changeSection('milking')" :class="{'selected': this.section.milking}">Контрольные дойки и лактации</li>
         <li @click="changeSection('lineage')" :class="{'selected': this.section.lineage}">Родословная</li>
+        <li @click="changeSection('matching')" :class="{'selected': this.section.matching}">Подбор пар</li>
         <li @click="changeSection('documents')" :class="{'selected': this.section.documents}">Документы</li> 
     </ul>
 </div>
@@ -25,6 +26,7 @@ export default {
                 health: false,
                 milking: false,
                 lineage: false,
+                matching: false,
                 documents: false,
             }
         }

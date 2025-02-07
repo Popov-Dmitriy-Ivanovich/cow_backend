@@ -14,6 +14,7 @@
             <AnimalMilking v-if="section.milking"/>
             <AnimalDocuments v-if="section.documents"/>
             <AnimalLineage v-if="section.lineage"/>
+            <AnimalMatching v-if="section.matching"/>
         </div>
     </div>
 </template>
@@ -29,11 +30,12 @@ import AnimalMilking from '@/components/AnimalMilking.vue';
 import AnimalDocuments from '@/components/AnimalDocuments.vue';
 import AnimalLineage from '@/components/AnimalLineage.vue';
 import AnimalMainInfo from '@/components/AnimalMainInfo.vue';
+import AnimalMatching from '@/components/AnimalMatching.vue'
 
 export default {
     components: {
         AnimalSection, AnimalCommon, AnimalRating, AnimalGenetic, AnimalExterior, AnimalHealth, AnimalMilking, 
-        AnimalDocuments, AnimalLineage, AnimalMainInfo
+        AnimalDocuments, AnimalLineage, AnimalMainInfo, AnimalMatching
     },
     data() {
         return {
@@ -46,6 +48,7 @@ export default {
                 milking: false,
                 documents: false,
                 lineage: false,
+                matching: false,
             }
         }
     },

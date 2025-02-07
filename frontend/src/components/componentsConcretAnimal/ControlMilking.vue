@@ -1,5 +1,5 @@
 <template>
-<div class="cm-title">Контрольные доения</div>
+<div class="cm-title">Контрольные дойки</div>
 <div v-if="!isLoading">
     <button @click="isTable=true;isChart=false" 
     class="table-chart"

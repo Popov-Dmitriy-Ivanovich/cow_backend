@@ -3,8 +3,10 @@
     <div v-if="!isLoading">
         <div class="exterior-title">
             <div>Общая оценка экстерьера: </div>
-            <div>{{ cow_info.Rating || 'Нет информации'}}</div>
-            <div>{{ checkRating(cow_info.Rating) }}</div>
+            <div class="general-rating">
+                <div>{{ cow_info.Rating || 'Нет информации'}}</div>
+                <div>{{ checkRating(cow_info.Rating) }}</div>
+            </div>
             <!-- <div class="krs-photo" v-if="cow_info.PicturePath">
                 <img width="100%" :src="logo">
             </div>
@@ -265,7 +267,7 @@ export default {
     align-items: start;
     justify-content: space-between;
     padding-right: 50px;
-    width: 50%;
+    width: 463px;
 }
 
 .krs-photo {
@@ -324,8 +326,13 @@ export default {
 
 .column {
     /* width: auto; */
-    width: 53%;
+    width: 370px;
     margin-top: 20px;
     height: max-content;
+}
+.general-rating {
+    display: flex;
+    width: 140px;
+    justify-content: space-between;
 }
 </style>

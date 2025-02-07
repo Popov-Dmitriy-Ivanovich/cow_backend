@@ -1,5 +1,5 @@
 <template>
-    <div class="milking-title">Контрольные доения и лактации</div>
+    <div class="milking-title">Контрольные дойки и лактации</div>
     <div class="milking-info">
         <ControlMilking/>
         <hr class="milking-sep">
