@@ -29,10 +29,23 @@ const GR_EBV_FAT_REG_COL = "evb_fatReg"
 const GR_EBV_PROTEIN_REG_COL = "ebv_proteinReg"
 const GR_EBV_INSEMENATION_REG_COL = "ebv_insemenationReg"
 const GR_EBV_SERVICE_REG_COL = "ebv_serviceReg"
+const GR_EBV_SOMATIC_NUC_REG_COL = "ebv_somaticNucReg"
+const GR_EBV_PRODUCTIVE_LONGLIVITY_COL = "ebv_productiveLongLivityReg"
+const GR_EBV_MASTIT_COL = "ebv_mastitReg"
+const GR_EBV_PROTEIN_PERCENTS_COL = "ebv_proteinPercentsReg"
+const GR_EBV_FAT_PERCENTS_COL = "ebv_fatPercentsReg"
 
+const GR_GENERAL_VALUE_REG_REL_COL = "GeneralValueReg_rel"
 const GR_EBV_MILK_REG_REL_COL = "ebv_milkReg_rel"
 const GR_EBV_FAT_REG_REL_COL = "ebv_fatReg_rel"
 const GR_EBV_PROTEIN_REG_REL_COL = "ebv_proteinReg_rel"
+const GR_EBV_INSEMENATION_REG_REL_COL = "ebv_insemenationReg_rel"
+const GR_EBV_SERVICE_REG_REL_COL = "ebv_serviceReg_rel"
+const GR_EBV_SOMATIC_NUC_REG_REL_COL = "ebv_somaticNucReg_rel"
+const GR_EBV_PRODUCTIVE_LONGLIVITY_REG_REL_COL = "ebv_productiveLongLivityReg_rel"
+const GR_EBV_MASTIT_REG_REL_COL = "ebv_mastitReg_rel"
+const GR_EBV_PROTEIN_PERCENTS_REG_REL_COL = "ebv_proteinPercentsReg_rel"
+const GR_EBV_FAT_PERCENTS_REG_REL_COL = "ebv_fatPercentsReg_rel"
 
 type gradeRecord struct {
 	CowSelecs uint
@@ -46,19 +59,34 @@ type gradeRecord struct {
 	EbvProteinHoz *float64
 	EbvProteinReg *float64
 
-	EbvInsemenationHoz *float64
-	EbvInsemenationReg *float64
+	EbvInsemenationHoz    *float64
+	EbvInsemenationReg    *float64
+	EbvInsemenationRegRel *float64
 
-	EbvServiceHoz *float64
-	EbvServiceReg *float64
+	EbvServiceHoz    *float64
+	EbvServiceReg    *float64
+	EbvServiceRegRel *float64
 
 	GeneralValueHoz *float64
 	GeneralValueReg *float64
 	HeaderIndexes   map[string]int
 
-	EbvMilkRegRel    *float64
-	EbvFatRegRel     *float64
-	EbvProteinRegRel *float64
+	EbvSomaticNucsReg         *float64
+	EbvProductiveLongevityReg *float64
+	EbvMastitReg              *float64
+	EbvProteinPercentsReg     *float64
+	EbvFatPercentsReg         *float64
+
+	EbvSomaticNucsRegRel         *float64
+	EbvProductiveLongevityRegRel *float64
+	EbvMastitRegRel              *float64
+	EbvProteinPercentsRegRel     *float64
+	EbvFatPercentsRegRel         *float64
+
+	GeneralValueRegRel *float64
+	EbvMilkRegRel      *float64
+	EbvFatRegRel       *float64
+	EbvProteinRegRel   *float64
 }
 
 var gradeRecordParsers = map[string]func(*gradeRecord, []string) error{
@@ -273,6 +301,186 @@ var gradeRecordParsers = map[string]func(*gradeRecord, []string) error{
 		gr.EbvProteinRegRel = &proteinRelFloat
 		return nil
 	},
+
+	GR_GENERAL_VALUE_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_GENERAL_VALUE_REG_REL_COL]]
+		if strVal == "" {
+			gr.GeneralValueRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_GENERAL_VALUE_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.GeneralValueRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_SOMATIC_NUC_REG_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_SOMATIC_NUC_REG_COL]]
+		if strVal == "" {
+			gr.EbvSomaticNucsReg = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_SOMATIC_NUC_REG_COL + "значение: " + strVal)
+		}
+		gr.EbvSomaticNucsReg = &floatVal
+		return nil
+	},
+
+	GR_EBV_SOMATIC_NUC_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_SOMATIC_NUC_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvSomaticNucsRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_SOMATIC_NUC_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvSomaticNucsRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_PRODUCTIVE_LONGLIVITY_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_PRODUCTIVE_LONGLIVITY_COL]]
+		if strVal == "" {
+			gr.EbvProductiveLongevityReg = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_PRODUCTIVE_LONGLIVITY_COL + "значение: " + strVal)
+		}
+		gr.EbvProductiveLongevityReg = &floatVal
+		return nil
+	},
+
+	GR_EBV_PRODUCTIVE_LONGLIVITY_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_PRODUCTIVE_LONGLIVITY_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvProductiveLongevityRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_PRODUCTIVE_LONGLIVITY_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvProductiveLongevityRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_MASTIT_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_MASTIT_COL]]
+		if strVal == "" {
+			gr.EbvMastitReg = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_MASTIT_COL + "значение: " + strVal)
+		}
+		gr.EbvMastitReg = &floatVal
+		return nil
+	},
+
+	GR_EBV_MASTIT_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_MASTIT_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvMastitRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_MASTIT_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvMastitRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_SERVICE_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_SERVICE_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvServiceRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_SERVICE_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvServiceRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_INSEMENATION_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_INSEMENATION_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvInsemenationRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_INSEMENATION_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvInsemenationRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_PROTEIN_PERCENTS_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_PROTEIN_PERCENTS_COL]]
+		if strVal == "" {
+			gr.EbvProteinPercentsReg = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_PROTEIN_PERCENTS_COL + "значение: " + strVal)
+		}
+		gr.EbvProteinPercentsReg = &floatVal
+		return nil
+	},
+	GR_EBV_PROTEIN_PERCENTS_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_PROTEIN_PERCENTS_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvProteinPercentsRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_PROTEIN_PERCENTS_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvProteinPercentsRegRel = &floatVal
+		return nil
+	},
+
+	GR_EBV_FAT_PERCENTS_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_FAT_PERCENTS_COL]]
+		if strVal == "" {
+			gr.EbvFatPercentsReg = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_FAT_PERCENTS_COL + "значение: " + strVal)
+		}
+		gr.EbvFatPercentsReg = &floatVal
+		return nil
+	},
+	GR_EBV_FAT_PERCENTS_REG_REL_COL: func(gr *gradeRecord, rec []string) error {
+		strVal := rec[gr.HeaderIndexes[GR_EBV_FAT_PERCENTS_REG_REL_COL]]
+		if strVal == "" {
+			gr.EbvFatPercentsRegRel = nil
+			return nil
+		}
+		floatVal, err := strconv.ParseFloat(strVal, 64)
+		if err != nil {
+			return errors.New("не удалось распарсить колонку " + GR_EBV_FAT_PERCENTS_REG_REL_COL + "значение: " + strVal)
+		}
+		gr.EbvFatPercentsRegRel = &floatVal
+		return nil
+	},
 }
 
 func NewGradeRecord(header []string) (*gradeRecord, error) {
@@ -293,9 +501,23 @@ func NewGradeRecord(header []string) (*gradeRecord, error) {
 		GR_EBV_PROTEIN_REG_COL,
 		GR_EBV_INSEMENATION_REG_COL,
 		GR_EBV_SERVICE_REG_COL,
+		GR_EBV_SOMATIC_NUC_REG_COL,
+		GR_EBV_PRODUCTIVE_LONGLIVITY_COL,
+		GR_EBV_MASTIT_COL,
+		GR_EBV_PROTEIN_PERCENTS_COL,
+		GR_EBV_FAT_PERCENTS_COL,
+
+		GR_GENERAL_VALUE_REG_REL_COL,
 		GR_EBV_MILK_REG_REL_COL,
 		GR_EBV_FAT_REG_REL_COL,
 		GR_EBV_PROTEIN_REG_REL_COL,
+		GR_EBV_INSEMENATION_REG_REL_COL,
+		GR_EBV_SERVICE_REG_REL_COL,
+		GR_EBV_SOMATIC_NUC_REG_REL_COL,
+		GR_EBV_PRODUCTIVE_LONGLIVITY_REG_REL_COL,
+		GR_EBV_MASTIT_REG_REL_COL,
+		GR_EBV_PROTEIN_PERCENTS_REG_REL_COL,
+		GR_EBV_FAT_PERCENTS_REG_REL_COL,
 	}
 	gr.HeaderIndexes = make(map[string]int)
 	for idx, col := range header {
@@ -338,26 +560,35 @@ func (gr *gradeRecord) ToDbModel(tx *gorm.DB) (any, error) {
 	grCow.GradeCountry = new(models.GradeCountry)
 
 	grCow.GradeHoz.EbvFat = gr.EbvFatHoz
-	grCow.GradeRegion.EbvFat = gr.EbvFatReg
-
 	grCow.GradeHoz.EbvInsemenation = gr.EbvInsemenationHoz
-	grCow.GradeRegion.EbvInsemenation = gr.EbvInsemenationReg
-
 	grCow.GradeHoz.EbvMilk = gr.EbvMilkHoz
-	grCow.GradeRegion.EbvMilk = gr.EbvMilkReg
-
 	grCow.GradeHoz.EbvProtein = gr.EbvProteinHoz
-	grCow.GradeRegion.EbvProtein = gr.EbvProteinReg
-
 	grCow.GradeHoz.EbvService = gr.EbvServiceHoz
-	grCow.GradeRegion.EbvService = gr.EbvServiceReg
-
 	grCow.GradeHoz.GeneralValue = gr.GeneralValueHoz
-	grCow.GradeRegion.GeneralValue = gr.GeneralValueReg
 
+	grCow.GradeRegion.GeneralValueReliability = gr.GeneralValueRegRel
 	grCow.GradeRegion.EbvFatReliability = gr.EbvFatRegRel
 	grCow.GradeRegion.EbvMilkReliability = gr.EbvMilkRegRel
 	grCow.GradeRegion.EbvProteinReliability = gr.EbvProteinRegRel
+	grCow.GradeRegion.EbvSomaticNucsReliability = gr.EbvSomaticNucsRegRel
+	grCow.GradeRegion.EbvProductiveLongevityReliability = gr.EbvProductiveLongevityRegRel
+	grCow.GradeRegion.EbvMastitReliability = gr.EbvMastitRegRel
+	grCow.GradeRegion.EbvServiceReliability = gr.EbvServiceRegRel
+	grCow.GradeRegion.EbvInsemenationReliability = gr.EbvInsemenationRegRel
+	grCow.GradeRegion.EbvProteinPercentsReliability = gr.EbvProteinPercentsRegRel
+	grCow.GradeRegion.EbvFatPercentsReliability = gr.EbvFatPercentsRegRel
+
+	grCow.GradeRegion.GeneralValue = gr.GeneralValueReg
+	grCow.GradeRegion.EbvService = gr.EbvServiceReg
+	grCow.GradeRegion.EbvProductiveLongevity = gr.EbvProductiveLongevityReg
+	grCow.GradeRegion.EbvFat = gr.EbvFatReg
+	grCow.GradeRegion.EbvInsemenation = gr.EbvInsemenationReg
+	grCow.GradeRegion.EbvMilk = gr.EbvMilkReg
+	grCow.GradeRegion.EbvProtein = gr.EbvProteinReg
+	grCow.GradeRegion.EbvSomaticNucs = gr.EbvSomaticNucsReg
+	grCow.GradeRegion.EbvMastit = gr.EbvMastitReg
+	grCow.GradeRegion.EbvProteinPercents = gr.EbvProteinPercentsReg
+	grCow.GradeRegion.EbvFatPercents = gr.EbvFatPercentsReg
 
 	return grCow, nil
 }

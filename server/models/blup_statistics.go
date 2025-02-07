@@ -26,4 +26,22 @@ type BlupStatistics struct {
 	MaxEbvProteinRegion      float64 // максимальная Оценка белка по EBV
 	MaxEbvInsemenationRegion float64 // максимальная Оценка кратности осеменения по EBV
 	MaxEbvServiceRegion      float64 // максимальная Оценка длительности сервисного периода по EBV
+
+	MinEbvMastit              float64 // макс. оценка мастита
+	MinEbvFatPercents         float64
+	MinEbvProteinPercents     float64
+	MinEbvSomaticNucs         float64
+	MinEbvProductiveLongevity float64
+
+	MaxEbvMastit              float64
+	MaxEbvFatPercents         float64
+	MaxEbvProteinPercents     float64
+	MaxEbvSomaticNucs         float64
+	MaxEbvProductiveLongevity float64
+
+	AverageEbvMastit              float64
+	AverageEbvFatPercents         float64
+	AverageEbvProteinPercents     float64
+	AverageEbvSomaticNucs         float64
+	AverageEbvProductiveLongevity float64
 }

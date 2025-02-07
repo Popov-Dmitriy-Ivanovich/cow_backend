@@ -21,6 +21,21 @@ type Grade struct {
 
 	EbvServiceReliability *float64 // Достоверность расчета оценки сервисного периода
 	EbvService            *float64 // Оценка длительности сервисного периода по EBV
+
+	EbvMastit            *float64 // оценка мастита
+	EbvMastitReliability *float64 // достоверность мастита
+
+	EbvFatPercents            *float64 // оценка жира в %
+	EbvFatPercentsReliability *float64 // достоверность оценки жира в процентах
+
+	EbvProteinPercents            *float64 // оценка белка в процентах
+	EbvProteinPercentsReliability *float64 // достоверность оценки белка в процентах
+
+	EbvSomaticNucs            *float64 // оценка числа соматических клеток
+	EbvSomaticNucsReliability *float64 // достоверность оценки числа соматических клеток
+
+	EbvProductiveLongevity            *float64 // оценка продуктивного долголетия
+	EbvProductiveLongevityReliability *float64 // достоверность оценки продуктивного долголетия
 }
 
 type GradeRegion struct {

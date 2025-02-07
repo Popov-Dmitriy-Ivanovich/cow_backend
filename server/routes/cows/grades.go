@@ -72,6 +72,26 @@ func (c *Cows) Grades() func(*gin.Context) {
 				percentageRegion.GeneralValue = new(float64)
 				*percentageRegion.GeneralValue = getPercents(*cow.GradeRegion.GeneralValue, blupStat.MinEbvGeneralValueRegion, blupStat.MaxEbvGeneralValueRegion)
 			}
+			if cow.GradeRegion.EbvSomaticNucs != nil {
+				percentageRegion.EbvSomaticNucs = new(float64)
+				*percentageRegion.EbvSomaticNucs = getPercents(*cow.GradeRegion.EbvSomaticNucs, blupStat.MinEbvSomaticNucs, blupStat.MaxEbvSomaticNucs)
+			}
+			if cow.GradeRegion.EbvProductiveLongevity != nil {
+				percentageRegion.EbvProductiveLongevity = new(float64)
+				*percentageRegion.EbvProductiveLongevity = getPercents(*cow.GradeRegion.EbvProductiveLongevity, blupStat.MinEbvProductiveLongevity, blupStat.MaxEbvProductiveLongevity)
+			}
+			if cow.GradeRegion.EbvMastit != nil {
+				percentageRegion.EbvMastit = new(float64)
+				*percentageRegion.EbvMastit = getPercents(*cow.GradeRegion.EbvMastit, blupStat.MinEbvMastit, blupStat.MaxEbvMastit)
+			}
+			if cow.GradeRegion.EbvFatPercents != nil {
+				percentageRegion.EbvFatPercents = new(float64)
+				*percentageRegion.EbvFatPercents = getPercents(*cow.GradeRegion.EbvFatPercents, blupStat.MinEbvFatPercents, blupStat.MaxEbvFatPercents)
+			}
+			if cow.GradeRegion.EbvProteinPercents != nil {
+				percentageRegion.EbvProteinPercents = new(float64)
+				*percentageRegion.EbvProteinPercents = getPercents(*cow.GradeRegion.EbvProteinPercents, blupStat.MinEbvProteinPercents, blupStat.MaxEbvProteinPercents)
+			}
 		}
 
 		c.JSON(200, gin.H{
