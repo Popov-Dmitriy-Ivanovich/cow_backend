@@ -328,7 +328,7 @@ export default {
                 console.log(result2, 'otec');
                 this.father.BreedName = result2.BreedName;
                 if(result2.Father && result2.Father.ID) this.grandfather_father = result2.Father;
-                if (result2.Father && result2.Mother.ID) this.grandmother_father = result2.Mother;
+                if (result2.Mother && result2.Mother.ID) this.grandmother_father = result2.Mother;
                 console.log(this.grandmother_father, 'inside function');
             }
         },
