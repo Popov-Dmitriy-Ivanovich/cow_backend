@@ -57,29 +57,64 @@
                     </thead>
                     <tbody class="lac-tablebody">
                         <tr>
-                            <td>Общая индексная оценка:</td>
-                            <td>{{ round(ratings_reg.GeneralValue) || 'Нет информации'}}</td>
+                            <td>Селекционный индекс:</td>
+                            <td>{{ round(ratings_reg.GeneralValue) || '-'}}</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>EBV по среднему удою за 305 дней:</td>
-                            <td>{{ round(ratings_reg.EbvMilk) || 'Нет информации'}}</td>
-                            <td>{{ round(ratings_reg.EbvMilkReliability) || 'Нет информации'}}</td>
+                            <td>EBV по среднему удою за 305 дней, кг:</td>
+                            <td>{{ round(ratings_reg.EbvMilk) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvMilkReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по среднему жиру за 305 дней:</td>
-                            <td>{{ round(ratings_reg.EbvFat) || 'Нет информации'}}</td>
-                            <td>{{ round(ratings_reg.EbvFatReliability) || 'Нет информации'}}</td>
+                            <td>EBV по среднему жиру за 305 дней, кг:</td>
+                            <td>{{ round(ratings_reg.EbvFat) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvFatReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по среднему белку за 305 дней:</td>
-                            <td>{{ round(ratings_reg.EbvProtein) || 'Нет информации'}}</td>
-                            <td>{{ round(ratings_reg.EbvProteinReliability) || 'Нет информации'}}</td>
+                            <td>EBV по среднему белку за 305 дней, кг:</td>
+                            <td>{{ round(ratings_reg.EbvProtein) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvProteinReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по содержанию жира, %:</td>
+                            <td>{{ round(ratings_reg.EbvFatPercents) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvFatPercentsReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по содержанию белка, %:</td>
+                            <td>{{ round(ratings_reg.EbvProteinPercents) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvProteinPercentsReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по кратности осеменения, ед:</td>
+                            <td>{{ round(ratings_reg.EbvInsemenation) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvInsemenationReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по сервис-периоду, дни:</td>
+                            <td>{{ round(ratings_reg.EbvService) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvServiceReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по маститу, число случаев:</td>
+                            <td>{{ round(ratings_reg.EbvMastit) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvMastitReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по продуктивному долголетию, число лактаций:</td>
+                            <td>{{ round(ratings_reg.EbvProductiveLongevity) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvProductiveLongevityReliability) || '-'}}</td>
+                        </tr>
+                        <tr>
+                            <td>EBV по соматическим клеткам, тыс. соматических клеток:</td>
+                            <td>{{ round(ratings_reg.EbvSomaticNucs) || '-'}}</td>
+                            <td>{{ round(ratings_reg.EbvSomaticNucsReliability) || '-'}}</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <apexchart id="rating" width="390" type="bar" :options="options" :series="series" ref="rating"></apexchart>
+                <apexchart id="rating" width="400" height="632" type="bar" :options="options" :series="series" ref="rating"></apexchart>
             </div>
             
 
@@ -127,6 +162,15 @@ export default {
                 },
                 dataLabels: {
                     enabled: false,
+                },
+                title: {
+                    text: ['Показатель животного относительно', 'среднего по региону, %'],
+                    align: 'center',
+                    offsetY: -4,
+                    style: {
+                        fontWeight: 'normal',
+                        color: 'grey',
+                    }
                 }
             },
             series: [
@@ -171,50 +215,51 @@ export default {
             let oneSerie = {
                 data: [],
             }
-            if (this.percents.GeneralValue < 0) {
-                oneSerie.data.push({
-                    x: '1',
-                    y: this.round(this.percents.GeneralValue)
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '2',
-                    y: [0, this.round(this.percents.GeneralValue)]
-                })
-            }
-            if (this.percents.EbvMilk < 0) {
-                oneSerie.data.push({
-                    x: '3',
-                    y: this.round(this.percents.EbvMilk)
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '4',
-                    y: [0, this.round(this.percents.EbvMilk)]
-                })
-            }
-            if (this.percents.EbvFat < 0) {
-                oneSerie.data.push({
-                    x: '5',
-                    y: this.round(this.percents.EbvFat)
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '6',
-                    y: [0, this.round(this.percents.EbvFat)]
-                })
-            }
-            if (this.percents.EbvProtein < 0) {
-                oneSerie.data.push({
-                    x: '7',
-                    y: this.round(this.percents.EbvProtein)
-                })
-            } else {
-                oneSerie.data.push({
-                    x: '8',
-                    y: [0, this.round(this.percents.EbvProtein)]
-                })
-            }
+            oneSerie.data.push({
+                x: '1',
+                y: this.round(Number(this.percents.GeneralValue))
+            })
+            oneSerie.data.push({
+                x: '2',
+                y: this.round(Number(this.percents.EbvMilk))
+            })
+            oneSerie.data.push({
+                x: '3',
+                y: this.round(Number(this.percents.EbvFat))
+            })
+            oneSerie.data.push({
+                x: '4',
+                y: this.round(Number(this.percents.EbvProtein))
+            })
+            oneSerie.data.push({
+                x: '5',
+                y: this.round(Number(this.percents.EbvFatPercents))
+            })
+            oneSerie.data.push({
+                x: '6',
+                y: this.round(Number(this.percents.EbvProteinPercents))
+            })
+            oneSerie.data.push({
+                x: '7',
+                y: this.round(Number(this.percents.EbvInsemenation))
+            })
+            oneSerie.data.push({
+                x: '8',
+                y: this.round(Number(this.percents.EbvService))
+            })
+            oneSerie.data.push({
+                x: '9',
+                y: this.round(Number(this.percents.EbvMastit))
+            })
+            oneSerie.data.push({
+                x: '9',
+                y: this.round(Number(this.percents.EbvProductiveLongevity))
+            })
+            oneSerie.data.push({
+                x: '9',
+                y: this.round(Number(this.percents.EbvSomaticNucs))
+            })
+
             this.series = [oneSerie];
         }
     }
@@ -263,19 +308,20 @@ export default {
 
 table {
     border-collapse: collapse;
+    margin-top: 8px;
 }
 
 th {
     font-weight: normal;
     text-align: center;
+    padding-bottom: 35px;
 }
 
 td {
     width: auto;
     min-width: 80px;
-    padding-right: 7px;
     text-align: center;
-    height: 50px;
+    height: 49px;
 }
 
 .table-chart {

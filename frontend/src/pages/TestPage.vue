@@ -316,20 +316,22 @@ export default {
         }
     },
     mounted() {
-        if (this.$store.getters.ISCOWS) {
-            this.isCows = true;
-            this.isChild = false;
-            this.isBulls = false;
-        }
-        if (this.$store.getters.ISBULLS) {
-            this.isCows = false;
-            this.isChild = false;
-            this.isBulls = true;
-        }
-        if (this.$store.getters.ISCHILD) {
-            this.isCows = false;
-            this.isChild = true;
-            this.isBulls = false;
+        if (!this.$store.getters.CURRENTANIMALS.length) {
+            if (this.$store.getters.ISCOWS) {
+                this.isCows = true;
+                this.isChild = false;
+                this.isBulls = false;
+            }
+            if (this.$store.getters.ISBULLS) {
+                this.isCows = false;
+                this.isChild = false;
+                this.isBulls = true;
+            }
+            if (this.$store.getters.ISCHILD) {
+                this.isCows = false;
+                this.isChild = true;
+                this.isBulls = false;
+            }
         }
     }
 }

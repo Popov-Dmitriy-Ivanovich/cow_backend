@@ -13,15 +13,15 @@
             <div class="analyt-btns">
                 <button
                 class="btn"
-                :class="{'active-btn':isSelex}"
-                @click="isRegion = false; isSelex = true"
-                >Селекционный индекс</button>
-
-                <button
-                class="btn"
                 :class="{'active-btn':isRegion}"
                 @click="isRegion = true; isSelex = false"
                 >Статистика по региону</button>
+
+                <button
+                class="btn"
+                :class="{'active-btn':isSelex}"
+                @click="isRegion = false; isSelex = true"
+                >Селекционный индекс</button>
             </div>
             
             <div class="row" v-if="isSelex">
@@ -92,11 +92,11 @@ export default {
             series1: [
                 {
                     name: 'Число всех голов',
-                    data: [36712, 44039, 45569, 49435],
+                    data: [100711, 110017, 126471, 130273],
                 },
                 {
                     name: 'Число голов в проекте',
-                    data: [0, 9732, 21422, 29612],
+                    data: [0, 13903, 30603, 42303],
                 }
             ],
 
@@ -235,8 +235,8 @@ export default {
                 }
             ],
 
-            isRegion: false,
-            isSelex: true,
+            isRegion: true,
+            isSelex: false,
         }
     },
     created() {
