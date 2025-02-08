@@ -10,20 +10,20 @@ import (
 )
 
 // Путь к файлу
-const PathToExcelFile = "./static/excel/filtered_data_"
+const PathToExcelFile = "../frontend/static/excel/filtered_data_"
 
 var (
-	cell     string
+	cellName string
 	ListName = "List1"
 )
 
 func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 	f := excelize.NewFile()
-	defer f.Close()
+
 	// Создаем новый лист
 	index, err := f.NewSheet("List1")
 	if err != nil {
-		return "", err
+		return "a", err
 	}
 
 	// Устанавливаем активный лист
@@ -52,7 +52,7 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 			if err != nil {
 				return err
 			}
-			err = f.SetCellValue("List1", cell, "Отсутсвуют обязательные данные")
+			err = f.SetCellValue(ListName, cell, "Отсутсвуют обязательные данные")
 			if err != nil {
 				return err
 			}
@@ -60,7 +60,7 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 		}
 		// Функция инкрементирования ячейки
 		Incr := func() {
-			cell, err = excelize.CoordinatesToCellName(colNum, row+2)
+			cellName, err = excelize.CoordinatesToCellName(colNum, row+2)
 			colNum++
 		}
 		// Проверим обязательные поля
@@ -99,140 +99,260 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 			}
 			continue
 		}
+
 		// Поля Genotyped и Approved будут существовать в любом случае
 		// ===== //
 		// Записываем данные
-		if err = f.SetCellValue(ListName, cell, *data.RSHNNumber); err != nil {
+		Incr()
+		if err = f.SetCellValue(ListName, cellName, *data.RSHNNumber); err != nil {
 			return "", err
 		} else {
 			Incr()
 		}
-		if err = f.SetCellValue(ListName, cell, *data.InventoryNumber); err != nil {
+		if err = f.SetCellValue(ListName, cellName, *data.InventoryNumber); err != nil {
+			return "b", err
+		} else {
+			Incr()
+		}
+		if err = f.SetCellValue(ListName, cellName, data.Name); err != nil {
 			return "", err
 		} else {
 			Incr()
 		}
-		if err = f.SetCellValue(ListName, cell, data.Name); err != nil {
+		if err = f.SetCellValue(ListName, cellName, data.FarmGroupName); err != nil {
 			return "", err
 		} else {
 			Incr()
 		}
-		if err = f.SetCellValue(ListName, cell, data.FarmGroupName); err != nil {
+		if err = f.SetCellValue(ListName, cellName, data.BirthDate.Time); err != nil {
 			return "", err
 		} else {
 			Incr()
 		}
-		if err = f.SetCellValue(ListName, cell, data.BirthDate.Time); err != nil {
+		if err = f.SetCellValue(ListName, cellName, data.Genotyped); err != nil {
 			return "", err
 		} else {
 			Incr()
 		}
-		if err = f.SetCellValue(ListName, cell, data.Genotyped); err != nil {
+		if err = f.SetCellValue(ListName, cellName, data.Approved); err != nil {
 			return "", err
 		} else {
 			Incr()
 		}
-		if err = f.SetCellValue(ListName, cell, data.Approved); err != nil {
-			return "", err
+		if data.DepartDate != nil {
+			if err = f.SetCellValue(ListName, cellName, data.DepartDate.Time); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, data.DepartDate.Time); err != nil {
-			return "", err
+		if data.BreedName != nil { // Проверка на пустой указатель
+			if err = f.SetCellValue(ListName, cellName, *data.BreedName); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.BreedName); err != nil {
-			return "", err
+		if data.BirkingDate != nil {
+			if err = f.SetCellValue(ListName, cellName, data.BirkingDate.Time); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, data.BirkingDate.Time); err != nil {
-			return "", err
+		if data.GenotypingDate != nil {
+			if err = f.SetCellValue(ListName, cellName, data.GenotypingDate.Time); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, data.GenotypingDate.Time); err != nil {
-			return "", err
+		if data.InbrindingCoeffByFamily != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.InbrindingCoeffByFamily); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.InbrindingCoeffByFamily); err != nil {
-			return "", err
+		if data.InbrindingCoeffByGenotype != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.InbrindingCoeffByGenotype); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.InbrindingCoeffByGenotype); err != nil {
-			return "", err
+		if data.ExteriorRating != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.ExteriorRating); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.InbrindingCoeffByFamily); err != nil {
-			return "", err
+		if data.SexName != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.SexName); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.ExteriorRating); err != nil {
-			return "", err
+		if data.HozName != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.HozName); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.ExteriorRating); err != nil {
-			return "", err
+		if data.DeathDate != nil {
+			if err = f.SetCellValue(ListName, cellName, data.DeathDate.Time); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.SexName); err != nil {
-			return "", err
+		if data.IsDead != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.IsDead); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.HozName); err != nil {
-			return "", err
+		if data.IsTwins != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.IsTwins); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, data.DeathDate.Time); err != nil {
-			return "", err
+		if data.IsStillBorn != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.IsStillBorn); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.IsDead); err != nil {
-			return "", err
+		if data.IsAborted != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.IsAborted); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.IsTwins); err != nil {
-			return "", err
+		if data.IsGenotyped != nil {
+			if err = f.SetCellValue(ListName, cellName, *data.IsGenotyped); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cell, *data.IsStillBorn); err != nil {
-			return "", err
+		if data.CreatedAt != nil {
+			if err = f.SetCellValue(ListName, cellName, data.CreatedAt.Time); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		} else {
-			Incr()
-		}
-		if err = f.SetCellValue(ListName, cell, *data.IsAborted); err != nil {
-			return "", err
-		} else {
-			Incr()
-		}
-		if err = f.SetCellValue(ListName, cell, *data.IsGenotyped); err != nil {
-			return "", err
-		} else {
-			Incr()
-		}
-		if err = f.SetCellValue(ListName, cell, data.CreatedAt.Time); err != nil {
-			return "", err
-		} else {
-			Incr()
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
 
 	}
 
 	// Сохраняем файл в cow_backend\frontend\static
 	now := time.Now()
-	fullPath := PathToExcelFile + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(uint64(len(fsc)), 16) + ".xslx"
+	fullPath := PathToExcelFile + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(uint64(len(fsc)), 16) + ".xlsx"
 	if err := f.SaveAs(fullPath); err != nil {
 		return "", fmt.Errorf("Ошибка создания Excel файла Error: %v", err)
 	} else {
@@ -241,17 +361,13 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 
 }
 
-func isSlice(i int, data *FilterSerializedCow) bool {
-	fl := reflect.ValueOf(data)
-	return fl.Field(i).Kind() == reflect.Slice
-}
-
 func getHeaders() []string { // Получаем заголовки таблицы
 	var headers []string
 	t := reflect.TypeOf(FilterSerializedCow{})
+	v := reflect.ValueOf(FilterSerializedCow{})
 
 	for i := 1; i < t.NumField(); i++ { // Не берем поле id
-		if isSlice(i, &FilterSerializedCow{}) { // Пропускаем списки на стадии поиска заголовков
+		if v.Field(i).Kind() == reflect.Slice {
 			continue
 		}
 		field := t.Field(i)
