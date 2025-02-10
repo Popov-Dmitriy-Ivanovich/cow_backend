@@ -10,6 +10,7 @@ import (
 func TestToExcelOld(t *testing.T) {
 	// Тестовый путь
 	testPathToExcelFile := "../frontend/static/excel/"
+	forDeleteTestPath := "../frontend/"
 
 	Name := "Буренка"
 	farm := "ООО Аурус"
@@ -124,7 +125,7 @@ func TestToExcelOld(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Ошибка создания директории: %v", err)
 	}
-	defer os.RemoveAll(testPathToExcelFile)
+	defer os.RemoveAll(forDeleteTestPath)
 
 	// Формируем путь к тестовому файлу
 
