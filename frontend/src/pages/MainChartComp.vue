@@ -92,9 +92,9 @@ export default {
         async clickHandler(event, chartContext, config) {
             if (this.$route.query.hoz) {
                 let currAnim = [];
-                if (config.dataPointIndex === 0) currAnim = this.currHoz.MinCowIds;
-                else if (config.dataPointIndex === 1) currAnim = this.currHoz.AvgCowIds;
-                else if (config.dataPointIndex == 2) currAnim = this.currHoz.MaxCowIds;
+                if (config.seriesIndex === 0) currAnim = this.currHoz.MinCowIds;
+                else if (config.seriesIndex === 1) currAnim = this.currHoz.AvgCowIds;
+                else if (config.seriesIndex == 2) currAnim = this.currHoz.MaxCowIds;
                 this.$store.commit('SET_CURRENTANIMALS', currAnim);
                 this.$router.push('/animals');
             } else {
@@ -169,12 +169,12 @@ export default {
             } else {
                 this.clickToPrev = false;
                 this.seriesClick = [];
-                this.newX = ['АО «Родина»', ['ФГБОУ ВО ','«КубГАУ им. ','И.Т. Трубилина»'],['АО «Агрокомплекс',' «Павловский»'],['АО «Племзавод',' «Воля»'], ['АО фирма ','«Агрокомплекс»','им.Н.И. Ткачева'],['АО «Виктория ','Агро»'],'АО «Рассвет»']; 
+                this.newX = []; 
                 let newY = {name: 'Разница между лучшей из лучших и худшей из худших', data: []};
                 // let index;
                 for (let i = 0; i < this.result.length; i++) {
                     if (this.result[i].Farm) {
-                        // this.newX.push(this.result[i].Farm.Name);
+                        this.newX.push(this.result[i].Farm.Name);
                         newY.data.push(this.result[i].MaxIndex);
                     } else {
                         // index = i;
@@ -187,7 +187,7 @@ export default {
 
                 this.$refs.analit.updateOptions({
                     xaxis: {
-                        categories: this.newX,
+                        categories: ['АО «Родина»', ['ФГБОУ ВО ','«КубГАУ им. ','И.Т. Трубилина»'],['АО «Агрокомплекс',' «Павловский»'],['АО «Племзавод',' «Воля»'], ['АО фирма ','«Агрокомплекс»','им.Н.И. Ткачева'],['АО «Виктория ','Агро»'],'АО «Рассвет»'],
                         labels: {
                             show: true,
                         },
