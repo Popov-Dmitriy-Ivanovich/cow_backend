@@ -62,52 +62,52 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td>EBV по среднему удою за 305 дней, кг:</td>
+                            <td>Оценка по удою за 305 дней, кг:</td>
                             <td>{{ round(ratings_reg.EbvMilk) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvMilkReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по среднему жиру за 305 дней, кг:</td>
+                            <td>Оценка по выходу жира за 305 дней, кг:</td>
                             <td>{{ round(ratings_reg.EbvFat) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvFatReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по среднему белку за 305 дней, кг:</td>
+                            <td>Оценка по выходу белка за 305 дней, кг:</td>
                             <td>{{ round(ratings_reg.EbvProtein) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvProteinReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по содержанию жира, %:</td>
+                            <td>Оценка по содержанию жира, %:</td>
                             <td>{{ round(ratings_reg.EbvFatPercents) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvFatPercentsReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по содержанию белка, %:</td>
+                            <td>Оценка по содержанию белка, %:</td>
                             <td>{{ round(ratings_reg.EbvProteinPercents) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvProteinPercentsReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по кратности осеменения, ед:</td>
+                            <td>Оценка по кратности осеменения, ед:</td>
                             <td>{{ round(ratings_reg.EbvInsemenation) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvInsemenationReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по сервис-периоду, дни:</td>
+                            <td>Оценка по сервис-периоду, дней:</td>
                             <td>{{ round(ratings_reg.EbvService) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvServiceReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по маститу, число случаев:</td>
+                            <td>Оценка по маститу, число случаев:</td>
                             <td>{{ round(ratings_reg.EbvMastit) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvMastitReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по продуктивному долголетию, число лактаций:</td>
+                            <td>Оценка по продуктивному долголетию, число лактаций:</td>
                             <td>{{ round(ratings_reg.EbvProductiveLongevity) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvProductiveLongevityReliability) || '-'}}</td>
                         </tr>
                         <tr>
-                            <td>EBV по соматическим клеткам, тыс. соматических клеток:</td>
+                            <td>Оценка по соматическим клеткам, тыс. соматических клеток:</td>
                             <td>{{ round(ratings_reg.EbvSomaticNucs) || '-'}}</td>
                             <td>{{ round(ratings_reg.EbvSomaticNucsReliability) || '-'}}</td>
                         </tr>
@@ -313,14 +313,14 @@ table {
 
 th {
     font-weight: normal;
-    text-align: center;
+    text-align: left;
     padding-bottom: 35px;
 }
 
 td {
     width: auto;
     min-width: 80px;
-    text-align: center;
+    text-align: left;
     height: 49px;
 }
 

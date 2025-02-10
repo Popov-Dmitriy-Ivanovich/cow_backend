@@ -44,7 +44,8 @@
                         </select>
                     </div>
 
-                    <div class="nanimals">Животных в таблице: {{ number_of_animals }}</div>
+                    <div class="nanimals" v-if="!isBulls">Животных в таблице: {{ number_of_animals }}</div>
+                    <div class="nanimals" v-else>Животных в таблице: 9 458</div>
                 </div>
 
                 <DCowsTable 

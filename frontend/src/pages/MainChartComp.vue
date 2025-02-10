@@ -64,9 +64,11 @@ export default {
                         fontSize:  '15px',
                     },
                 },
-                // tooltip: {
-                //     enabled: false,
-                // }
+                tooltip: {
+                    x: {
+                        show: false,
+                    }
+                }
             },
             seriesClick: [],
             
@@ -117,16 +119,22 @@ export default {
                 for (let i = 0; i < this.result.length; i++) {
                     if (this.result[i].ID == q.hoz) {
                         this.clickToPrev = true;
-                        this.seriesClick = [{data: []}];
+                        this.seriesClick = [{data: [], name: 'Худшие'}, {data: [], name: 'Средние'}, {data: [], name:'Лучшие'}];
                         let currentHoz = this.result[i];
                         this.currHoz = this.result[i];
                         this.seriesClick[0].data.push(
-                            currentHoz.MinCount, currentHoz.AvgCount, currentHoz.MaxCount
+                            currentHoz.MinCount
+                        );
+                        this.seriesClick[1].data.push(
+                            currentHoz.AvgCount
+                        );
+                        this.seriesClick[2].data.push(
+                            currentHoz.MaxCount
                         );
                         
                         this.$refs.analit.updateOptions({
                             xaxis: {
-                                categories: [0, 1, 2],
+                                categories: [0],
                                 labels: {
                                     show: false,
                                 },
@@ -138,6 +146,9 @@ export default {
                                 title: {
                                     text: 'Количество голов КРС',
                                 }
+                            },
+                            legend: {
+                                show: false,
                             }
                         });
 
