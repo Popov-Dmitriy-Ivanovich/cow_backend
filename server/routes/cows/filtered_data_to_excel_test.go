@@ -2,18 +2,23 @@ package cows
 
 import (
 	"cow_backend/models"
+	"os"
 	"testing"
 	"time"
 )
 
 func TestToExcelOld(t *testing.T) {
+	// Тестовый путь
+	testPathToExcelFile := "../frontend/static/excel/"
+
 	Name := "Буренка"
 	farm := "ООО Аурус"
 	number := "123"
 	invNumber := "321"
 	breed := "Какая-нибудь порода"
 	sex := "Корова"
-	date := models.DateOnly{Time: time.Now()}
+	now := time.Now()
+	date := models.DateOnly{Time: time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)}
 	coef := 3.14
 	isTrue := true
 
@@ -115,13 +120,27 @@ func TestToExcelOld(t *testing.T) {
 			CreatedAt:   nil,
 		},
 	}
+	err := os.MkdirAll(testPathToExcelFile, 0777)
+	if err != nil {
+		t.Fatalf("Ошибка создания директории: %v", err)
+	}
+	defer os.RemoveAll(testPathToExcelFile)
+
+	// Формируем путь к тестовому файлу
 
 	t.Run("test", func(t *testing.T) {
-		_, err := ToExcelOld(tests)
+		filepath, err := ToExcelOld(tests)
 		if (err != nil) == true {
-			t.Errorf("in if: %v", err)
+			t.Errorf("ошибка: %v", err)
 		}
-		t.Log("OK")
+		t.Log("OK, функция выполнена")
+
+		// Окончательная проверка что файл существует
+		if _, err := os.Stat(filepath); os.IsNotExist(err) {
+			t.Errorf("Файл не был создан: %v", err)
+		} else {
+			t.Log("Файл создан")
+		}
 
 	})
 

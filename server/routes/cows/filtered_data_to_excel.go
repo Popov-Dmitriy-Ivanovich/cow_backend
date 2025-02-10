@@ -9,8 +9,9 @@ import (
 	"github.com/xuri/excelize/v2"
 )
 
+// Переменные функции
 // Путь к файлу
-const PathToExcelFile = "../frontend/static/excel/filtered_data_"
+const PathToExcelFile = "../frontend/static/excel/"
 
 var (
 	cellName string
@@ -64,14 +65,14 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 			colNum++
 		}
 		// Проверим обязательные поля
-		if *data.RSHNNumber == "" {
+		if data.RSHNNumber == nil || *data.RSHNNumber == "" {
 			err = writeErrorRequiredData()
 			if err != nil {
 				return "", err
 			}
 			continue
 		}
-		if *data.InventoryNumber == "" {
+		if data.InventoryNumber == nil || *data.InventoryNumber == "" {
 			err = writeErrorRequiredData()
 			if err != nil {
 				return "", err
@@ -352,7 +353,7 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 
 	// Сохраняем файл в cow_backend\frontend\static
 	now := time.Now()
-	fullPath := PathToExcelFile + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(uint64(len(fsc)), 16) + ".xlsx"
+	fullPath := PathToExcelFile + "filtered_data_" + strconv.FormatInt(now.Unix(), 16) + "_" + strconv.FormatUint(uint64(len(fsc)), 16) + ".xlsx"
 	if err := f.SaveAs(fullPath); err != nil {
 		return "", fmt.Errorf("Ошибка создания Excel файла Error: %v", err)
 	} else {
