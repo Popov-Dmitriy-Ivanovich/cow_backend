@@ -35,6 +35,12 @@
                 <apexchart id="analit3" width="500" type="bar" :options="options3" :series="series3" @dataPointSelection="clickHandler"></apexchart>
                 <apexchart id="analit4" width="500" type="bar" :options="options4" :series="series4" @dataPointSelection="clickHandler"></apexchart>
             </div>
+            <div class="row" v-if="isRegion">
+                <apexchart id="analit5" width="500" type="bar" :options="options5" :series="series5" @dataPointSelection="clickHandler"></apexchart>
+                <apexchart id="analit6" width="500" type="bar" :options="options6" :series="series6" @dataPointSelection="clickHandler"></apexchart>
+            </div>
+            <div class="row" v-if="isRegion">
+                <apexchart id="analit7" width="500" type="bar" :options="options7" :series="series7" @dataPointSelection="clickHandler"></apexchart>            </div>
         </div>
 
     </div>
@@ -108,9 +114,7 @@ export default {
                     }
                 },
                 xaxis: {
-                //     categories: [['ООО Агрокомплекс',' Павловский'],'АО Рассвет', 'АО Родина',  ['АО фирма Агрокомплекс', 'им. Н.И. Ткачева'], 'ОАО Племзавод Воля', 
-                // 'АО Виктория – Агро', ['ФГБОУ ВО Кубанский', 'ГАУ УОХ Краснодарское'], ['ООО Агрокомплекс', 'Новокубанский', 'ОСП Ленинский путь']],
-                categories: ['2021', '2022', '2023', '2024'],
+                    categories: ['2021', '2022', '2023', '2024'],
                     labels: {
                         style: {
                             fontSize: '12px',
@@ -119,15 +123,19 @@ export default {
                         trim: true,
                     }
                 },
+                yaxis: {
+                    min: 530000,
+                },
                 dataLabels: {
                     enabled: true,
+                    offsetY: 1740,
                 },
                 legend: {
                     show: false,
                 },
                 colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
-                    text: 'Средний удой, кг',
+                    text: ['Поголовье КРС в','сельхозорганизациях, голов'],
                     align: 'center',
                     style: {
                         fontSize:  '15px',
@@ -136,8 +144,8 @@ export default {
             },
             series2: [
                 {
-                    name: 'Средний удой',
-                    data: [9733.84, 10353.29, 10665, 11742],
+                    name: 'Поголовье КРС в сельхозорганизациях',
+                    data: [552100, 558000, 559835, 550293],
                 }
             ],
 
@@ -162,19 +170,19 @@ export default {
                 },
                 dataLabels: {
                     enabled: true,
-                    offsetY: 730,
+                    // offsetY: 730,
                 },
                 yaxis: {
-                    stepSize: 0.1,
-                    min: 3.4,
-                    max: 3.9,
+                    // stepSize: 0.1,
+                    // min: 3.4,
+                    // max: 3.9,
                 },
                 legend: {
                     show: false,
                 },
                 colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
-                    text: 'Средний жир, %',
+                    text: ['Надоено на 1 корову в',' сельхозорганизациях, кг'],
                     align: 'center',
                     style: {
                         fontSize:  '15px',
@@ -183,8 +191,8 @@ export default {
             },
             series3: [
                 {
-                    name: 'Средний жир, %',
-                    data: [3.80, 3.78, 3.73, 3.69],
+                    name: 'Надоено на 1 корову в сельхозорганизациях',
+                    data: [8748, 9370, 9854, 10416],
                 }
             ],
 
@@ -208,20 +216,20 @@ export default {
                     }
                 },
                 yaxis: {
-                    stepSize: 0.05,
-                    min: 3.15,
-                    max: 3.3,
+                    // stepSize: 0.05,
+                    min: 3.6,
+                    // max: 3.3,
                 },
                 dataLabels: {
                     enabled: true,
-                    offsetY: 2270,
+                    offsetY: 1420,
                 },
                 legend: {
                     show: false,
                 },
                 colors: ['#78DABC','#6e5add','#75a2e7'],
                 title: {
-                    text: 'Средний белок, %',
+                    text: ['Средний выход жира за лактацию',' в племенных хозяйствах, %'],
                     align: 'center',
                     style: {
                         fontSize:  '15px',
@@ -230,8 +238,143 @@ export default {
             },
             series4: [
                 {
-                    name: 'Средний белок, %',
-                    data: [3.2677, 3.27, 3.26, 3.27],
+                    name: 'Средний выход жира за лактацию в племенных хозяйствах',
+                    data: [3.8, 3.84, 3.8, 3.76],
+                }
+            ],
+
+            options5: {
+                chart: {
+                    id: 'analit3',
+                    zoom: {
+                        enabled: false,
+                    }
+                },
+                xaxis: {
+                    categories: ['2021', '2022', '2023', '2024'],
+                    labels: {
+                        style: {
+                            fontSize: '12px',
+                        },
+                        hideOverlappingLabels: true,
+                        trim: true,
+                    }
+                },
+                yaxis: {
+                    // stepSize: 0.05,
+                    min: 3.1,
+                    // max: 3.3,
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetY: 1550,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
+                title: {
+                    text: ['Средний выход белка за лактацию',' в племенных хозяйствах, %'],
+                    align: 'center',
+                    style: {
+                        fontSize:  '15px',
+                    },
+                },
+            },
+            series5: [
+                {
+                    name: 'Средний выход белка за лактацию в племенных хозяйствах',
+                    data: [3.26, 3.29, 3.29, 3.27],
+                }
+            ],
+
+            options6: {
+                chart: {
+                    id: 'analit3',
+                    zoom: {
+                        enabled: false,
+                    }
+                },
+                xaxis: {
+                    categories: ['2021', '2022', '2023', '2024'],
+                    labels: {
+                        style: {
+                            fontSize: '12px',
+                        },
+                        hideOverlappingLabels: true,
+                        trim: true,
+                    }
+                },
+                yaxis: {
+                    // stepSize: 0.05,
+                    // min: 3.15,
+                    // max: 3.3,
+                },
+                dataLabels: {
+                    enabled: true,
+                    // offsetY: 2270,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
+                title: {
+                    text: ['Выход живых телят на 100 коров',' в племенных хозяйствах, голов'],
+                    align: 'center',
+                    style: {
+                        fontSize:  '15px',
+                    },
+                },
+            },
+            series6: [
+                {
+                    name: 'Выход живых телят на 100 коров в племенных хозяйствах',
+                    data: [77, 71, 71, 77],
+                }
+            ],
+
+            options7: {
+                chart: {
+                    id: 'analit3',
+                    zoom: {
+                        enabled: false,
+                    }
+                },
+                xaxis: {
+                    categories: ['2021', '2022', '2023', '2024'],
+                    labels: {
+                        style: {
+                            fontSize: '12px',
+                        },
+                        hideOverlappingLabels: true,
+                        trim: true,
+                    }
+                },
+                yaxis: {
+                    // stepSize: 0.05,
+                    // min: 3.15,
+                    // max: 3.3,
+                },
+                dataLabels: {
+                    enabled: true,
+                    // offsetY: 2270,
+                },
+                legend: {
+                    show: false,
+                },
+                colors: ['#78DABC','#6e5add','#75a2e7'],
+                title: {
+                    text: ['Средний возраст выбывших коров в ','отелах в племенных хозяйствах, ед.'],
+                    align: 'center',
+                    style: {
+                        fontSize:  '15px',
+                    },
+                },
+            },
+            series7: [
+                {
+                    name: 'Средний возраст выбывших коров в отелах в племенных хозяйствах',
+                    data: [3, 3, 2.8, 2.7],
                 }
             ],
 
