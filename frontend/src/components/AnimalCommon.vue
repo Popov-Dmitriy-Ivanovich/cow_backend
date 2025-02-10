@@ -1,6 +1,6 @@
 <template>
     <div class="common-title">Общая информация</div>
-    <div class="general-info">
+    <div class="general-info" v-if="!isLoading">
         <ID v-bind:cow_info="cow_info"/>
         <hr class="com-sep">
         <GenBreed v-bind:cow_info="cow_info" v-bind:genetic="genetic"/>
@@ -9,6 +9,7 @@
         <hr class="com-sep">
         <MovementCow v-bind:cow_info="cow_info"></MovementCow>
     </div>
+    <div class="general-info" v-else>Идёт загрузка...</div>
 </template>
 
 <script>
@@ -28,12 +29,16 @@ export default {
             mother: {},
             genetic: {},
             koeff: 0,
+
+            isLoading: false,
         }
     },
     async mounted() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         await this.fetchInfo(cow_id);
+        this.isLoading = false;
     },
     methods: {
         async fetchInfo(param) {

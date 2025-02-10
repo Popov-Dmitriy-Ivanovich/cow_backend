@@ -201,8 +201,6 @@ export default {
             // let send_filters = this.filters;
             let send_filters = {};
             Object.assign(send_filters, this.filters);
-            console.log(send_filters, 'filers');
-            console.log(JSON.stringify(send_filters))
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },

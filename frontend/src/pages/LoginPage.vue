@@ -48,9 +48,7 @@ export default {
             let result = await response.json();
             if(result.token) {
                 localStorage.setItem('jwt', result.token);
-
-                this.$store.commit('SET_ISLOGGED', Boolean(localStorage.getItem('jwt')));
-                console.log(localStorage.getItem('jwt'), 'jwt');
+                document.cookie = "jwt=" + result.token + "; path=/; max-age=18000; secure";
 
                 location.reload();
             } else {

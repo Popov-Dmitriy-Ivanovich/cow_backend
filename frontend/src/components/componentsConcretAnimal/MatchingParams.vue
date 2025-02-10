@@ -68,6 +68,30 @@
             </div>
         </div>
     </div>
+    <div class="match-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>РСХН</th>
+                    <th>Селекс</th>
+                    <th>Инвентарный номер</th>
+                    <th>Кличка</th>
+                    <th>Дата рождения</th>
+                    <th>Удой</th>
+                    <th>Жир</th>
+                    <th>Белок</th>
+                    <th>Долголетие</th>
+                    <th>Фертильность</th>
+                    <th>Экстерьер</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -144,5 +168,19 @@ export default {
 .range-label {
     text-align: center;
     margin: 10px 0;
+}
+
+.match-table {
+    margin-top: 40px;
+    overflow: auto;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th {
+    font-weight: normal;
+    padding-left: 8px;
 }
 </style>

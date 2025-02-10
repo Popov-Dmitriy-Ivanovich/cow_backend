@@ -1,7 +1,7 @@
 <template>
-    <div class="rating-columns">
+    <div class="rating-columns" v-if="!isLoading">
         <div>
-                <div class="rat-title">Оценка КРС по региону</div>
+            <div class="rat-title">Оценка КРС по региону</div>
             <div class="rating-item">
                 <div class="rating-param">Общая индексная оценка:</div>
                 <div v-if="ratings_hoz">{{ ratings_hoz.GeneralValue || 'Нет информации'}}</div>
@@ -57,6 +57,7 @@
         </div>
         
     </div>
+    <div v-else>Идёт загрузка...</div>
 </template>
 
 <script>
@@ -65,20 +66,23 @@ export default {
         return{ 
             ratings_hoz: {},
             ratings_reg: {},
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/grades`)
         let result = await response.json();
-        console.log(result);
         if(result.ByHoz) {
             this.ratings_hoz = result.ByHoz;
         }
         if(result.ByRegion) {
             this.ratings_reg = result.ByRegion;
         }
+        this.isLoading = false;
     },
     methods: {
         round(num) {

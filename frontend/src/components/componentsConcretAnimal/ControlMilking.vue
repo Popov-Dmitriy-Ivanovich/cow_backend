@@ -1,6 +1,6 @@
 <template>
-<div>
-    <div class="cm-title">Контрольные доения</div>
+<div class="cm-title">Контрольные доения</div>    
+<div v-if="!isLoading">
     <button @click="isTable=true;isChart=false" 
     class="table-chart"
     :class="{'active-btn':isTable}">
@@ -75,6 +75,7 @@
         <apexchart ref="linechart" id="ControlMilking" width="600" type="line" :options="options" :series="series"></apexchart>
     </div>
 </div>
+<div v-else>Идёт загрузка...</div>
 </template>
 
 <script>
@@ -95,24 +96,19 @@ export default {
             series: [],
             count_lactations:[],
             param_milking: 'Milk',
-            check_lact: 1,
+            check_lact: 0,
             isLact: false,
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/checkMilks`);
         let result = await response.json();
         this.cow_info = result;
-        
-        for (let i = 0; i < this.cow_info.length; i++) {
-            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat * this.cow_info[i].Milk)/100).toFixed(1);
-            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein * this.cow_info[i].Milk)/100).toFixed(1);
-            if (this.cow_info[i].LactationNumber == this.check_lact) {
-                this.options.xaxis.categories.push(this.dateConverter(this.cow_info[i].CheckDate));
-            }
-        }
 
         try {
             this.count_lactations.push(this.cow_info[0]['LactationNumber']);
@@ -121,14 +117,21 @@ export default {
                     this.count_lactations.push(this.cow_info[i]['LactationNumber']);
                 }
             }
+            this.check_lact = this.count_lactations[0];
         } catch(err) {
             console.log(err);
         }
+                
+        for (let i = 0; i < this.cow_info.length; i++) {
+            this.cow_info[i].FatRegard = ((this.cow_info[i].Fat * this.cow_info[i].Milk)/100).toFixed(1);
+            this.cow_info[i].ProteinRegard = ((this.cow_info[i].Protein * this.cow_info[i].Milk)/100).toFixed(1);
+            if (this.cow_info[i].LactationNumber == this.check_lact) {
+                this.options.xaxis.categories.push(this.dateConverter(this.cow_info[i].CheckDate));
+            }
+        }
 
         this.addParam(this.cow_info, this.series, this.param_milking, this.check_lact)
-
-        console.log(this.count_lactations);
-        console.log(this.cow_info);
+        this.isLoading = false;
     },
     methods: {
         addInArr(obj, arr, param, nlact) {
@@ -167,21 +170,24 @@ export default {
             this.addParam(this.cow_info, this.series, new_value, this.check_lact)
             console.log(this.series, 'данные для столбцов');
         },
-        check_lact(new_value) {
-            this.series = [];
-            this.addParam(this.cow_info, this.series, this.param_milking, new_value);
-            let newX = [];
-            for (let i = 0; i < this.cow_info.length; i++) {
-                if (this.cow_info[i].LactationNumber == new_value) {
-                    newX.push(this.dateConverter(this.cow_info[i].CheckDate));
+        check_lact(new_value, old_value) {
+            if (old_value) {
+                this.series = [];
+                this.addParam(this.cow_info, this.series, this.param_milking, new_value);
+                let newX = [];
+                for (let i = 0; i < this.cow_info.length; i++) {
+                    if (this.cow_info[i].LactationNumber == new_value) {
+                        newX.push(this.dateConverter(this.cow_info[i].CheckDate));
+                    }
                 }
+                this.$refs.linechart.updateOptions({
+                    xaxis: {
+                        categories: newX,
+                    }
+                });
+                console.log(this.options.xaxis.categories);
             }
-            this.$refs.linechart.updateOptions({
-                xaxis: {
-                    categories: newX,
-                }
-            });
-            console.log(this.options.xaxis.categories);
+
         }
 
     }

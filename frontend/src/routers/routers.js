@@ -145,9 +145,19 @@ const router = createRouter({
     // scrollBehavior
 });
 
+function isLogged(cookie) {
+    let arr = cookie.split(';');
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].split('=')[0] == 'jwt') {
+            return true;
+        }
+    }
+    return false;
+}
+
 router.beforeEach((to) => {
-    if(to.meta.requiresAuth && !(localStorage.getItem('jwt'))) return '/';
-    if(to.meta.noAuth && (localStorage.getItem('jwt'))) return '/';
+    if(to.meta.requiresAuth && !(isLogged(document.cookie))) return '/';
+    if(to.meta.noAuth && (isLogged(document.cookie))) return '/';
 })
 
 export default router;

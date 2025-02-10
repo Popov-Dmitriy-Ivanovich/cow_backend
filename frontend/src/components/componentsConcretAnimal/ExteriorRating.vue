@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="extrat-title">Оценка экстерьера</div>
+    <div class="extrat-title">Оценка экстерьера</div>
+    <div v-if="!isLoading">
         <div class="exterior-title">
             <div>Общая оценка экстерьера: {{ cow_info.Rating || 'Нет информации'}}</div>
             <div class="krs-photo" v-if="cow_info.PicturePath">
@@ -156,6 +156,7 @@
             </div>
         </div>
     </div>
+    <div v-else>Идёт загрузка...</div>
 </template>
     
 <script>
@@ -166,9 +167,12 @@ export default {
             isVisible100Mark: false,
             cow_info: {},
             img: '',
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/exterior`);
@@ -181,7 +185,7 @@ export default {
                 //this.setImg(this.img);
             }
         }
-
+        this.isLoading = false;
     },
     methods: {
         show9Mark () {

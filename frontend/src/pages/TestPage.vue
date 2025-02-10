@@ -147,7 +147,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });
@@ -199,21 +199,17 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });
                 let result = await response.json();
-                
-                console.log(result, 'что приходит');
 
                 this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
 
                 if(this.isCows) this.search_error_cows = false;
                 if(this.isBulls) this.search_error_bulls = false;
                 if(this.isChild) this.search_error_child = false;
-
-                console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
 
                 if(result.LST.length == 0 || result.N == 0) {
                     if(this.isCows) this.search_error_cows = true;
@@ -239,7 +235,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(this.current_filters),
                 });
@@ -280,6 +276,15 @@ export default {
             this.search = false;
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     }
 }

@@ -59,7 +59,7 @@ export default {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': localStorage.getItem('jwt'),
+                    'Authorization': this.getJwt(),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
@@ -104,7 +104,7 @@ export default {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': localStorage.getItem('jwt'),
+                    'Authorization': this.getJwt(),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
@@ -135,6 +135,15 @@ export default {
                 }
             });
         },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
+        }
     },
     watch: {
         async changeFilters() {

@@ -44,7 +44,6 @@ export default {
                 this.news[i].Text = arr;
             }
         }
-        console.log(this.news, 'Раздельные/nстроки'.includes('/n'));
     }
 }
 </script>

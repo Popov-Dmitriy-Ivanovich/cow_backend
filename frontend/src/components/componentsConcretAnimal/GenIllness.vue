@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="vet-title">Моногенные заболевания</div>
+    <div class="vet-title">Моногенные заболевания</div>
+    <div v-if="!isLoading">
         <div class="parent-table">
             <table class="vet-table">
                 <thead>
@@ -27,6 +27,7 @@
             </table>
         </div>
     </div>
+    <div v-else>Идёт загрузка...</div>
 </template>
     
 <script>
@@ -35,9 +36,11 @@ export default {
         return {
             illnesses: {},
             cow_info: [],
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/monogenetic_illnesses`);
@@ -65,6 +68,7 @@ export default {
             }
             this.cow_info.push(obj);
         }
+        this.isLoading = false;
     },
 }    
 </script>
