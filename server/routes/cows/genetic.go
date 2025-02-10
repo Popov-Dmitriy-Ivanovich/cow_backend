@@ -31,7 +31,7 @@ func (f *Cows) Genetic() func(*gin.Context) {
 			c.JSON(500, err.Error())
 			return
 		}
-		if cow.Genetic.GtcFilePath == nil && cow.SelecsNumber != nil{
+		if cow.Genetic != nil && cow.Genetic.GtcFilePath == nil && cow.SelecsNumber != nil{
 			if err := os.Link("./static/gtc/sample.gtc", "./static/gtc/"+strconv.FormatUint(*cow.SelecsNumber, 10)+".gtc"); err != nil && !os.IsExist(err) {
 				c.JSON(500, err.Error())
 				return
