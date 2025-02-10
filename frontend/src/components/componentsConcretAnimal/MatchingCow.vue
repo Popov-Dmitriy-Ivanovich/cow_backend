@@ -1,11 +1,11 @@
 <template>
-    <div v-if="!isLoading">
+    <div v-if="!isLoading && !isError">
         <table>
             <thead>
                 <tr>
                     <th></th>
                     <th colspan="3" class="main-head">Основные</th>
-                    <th colspan="3" class="main-head">Резервые</th>
+                    <th colspan="3" class="main-head">Резервные</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -49,6 +49,7 @@
         </table>
     </div>
     <div v-if="isLoading">Идёт загрузка...</div>
+    <div v-if="isError">У животного отсутствуют оценки, подбор пар невозможен.</div>
 </template>
 
 <script>
@@ -66,6 +67,7 @@ export default {
             cowInbriding: 0,
 
             isLoading: false,
+            isError: false,
         }
     },
     methods: {
@@ -93,7 +95,11 @@ export default {
             let id = this.$route.path.split('/')[2];
             let response = await fetch(`/api/cows/${id}/grades`);
             let result = await response.json();
-            this.cowRating = Math.round(result.ByRegion.GeneralValue*100)/100;
+            if (result.ByRegion) {
+                this.cowRating = Math.round(result.ByRegion.GeneralValue*100)/100;
+            } else {
+                this.isError = true;
+            }
         },
         calcRating(bull) {
             return Math.round((this.cowRating + this.cowRating*(0.025 + 1.2*(bull.number)/100))*100)/100;
