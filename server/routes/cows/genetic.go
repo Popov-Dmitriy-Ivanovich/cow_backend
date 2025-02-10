@@ -32,9 +32,12 @@ func (f *Cows) Genetic() func(*gin.Context) {
 			return
 		}
 		if cow.Genetic.GtcFilePath == nil && cow.SelecsNumber != nil{
-			os.Link("./static/gtc/sample.gtc", "./static/gtc/"+strconv.FormatUint(*cow.SelecsNumber, 10)+".gtc")
+			if err := os.Link("./static/gtc/sample.gtc", "./static/gtc/"+strconv.FormatUint(*cow.SelecsNumber, 10)+".gtc"); err != nil {
+				c.JSON(500, err.Error())
+				return
+			}
 			cow.Genetic.GtcFilePath = new(string)
-			*cow.Genetic.GtcFilePath = "./static/gtc/"+strconv.FormatUint(*cow.SelecsNumber, 10)+".gtc"
+			*cow.Genetic.GtcFilePath = strconv.FormatUint(*cow.SelecsNumber, 10)+".gtc"
 		}
 		c.JSON(200, cow.Genetic)
 	}
