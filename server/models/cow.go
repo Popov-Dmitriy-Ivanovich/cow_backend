@@ -80,13 +80,13 @@ type Document struct {
 }
 
 func (c *Cow) Validate() error {
-	if c.DepartDate != nil && c.DepartDate.Before(c.BirthDate.Time) {
+	if c.DepartDate != nil && c.BirthDate != nil && c.DepartDate.Before(c.BirthDate.Time) {
 		return errors.New("дата выбытия не может быть меньше даты рождения")
 	}
-	if c.DeathDate != nil && c.DeathDate.Before(c.BirthDate.Time) {
+	if c.DeathDate != nil && c.BirthDate != nil && c.DeathDate.Before(c.BirthDate.Time) {
 		return errors.New("дата смерти не может быть меньше даты рождения")
 	}
-	if c.BirkingDate != nil && c.BirkingDate.Before(c.BirthDate.Time) {
+	if c.BirkingDate != nil && c.BirthDate != nil && c.BirkingDate.Before(c.BirthDate.Time) {
 		return errors.New("дата перебирковки не может быть меньше даты рождения")
 	}
 	return nil
