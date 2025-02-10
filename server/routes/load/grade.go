@@ -223,7 +223,7 @@ var gradeRecordParsers = map[string]func(*gradeRecord, []string) error{
 		return nil
 	},
 	GR_EBV_INSEMENATION_REG_COL: func(gr *gradeRecord, rec []string) error {
-		ebvValue := rec[gr.HeaderIndexes[GR_EBV_PROTEIN_REG_COL]]
+		ebvValue := rec[gr.HeaderIndexes[GR_EBV_INSEMENATION_REG_COL]]
 		if ebvValue == "" {
 			gr.EbvInsemenationReg = nil
 			return nil
