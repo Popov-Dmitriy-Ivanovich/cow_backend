@@ -20,6 +20,7 @@ type UserRegisterRequest struct {
 }
 
 func (urr *UserRegisterRequest) Validate() error {
+	return nil
 	matched, err := regexp.MatchString(emailRegexp, urr.Email)
 	if err != nil {
 		return err

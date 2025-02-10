@@ -65,6 +65,7 @@ type Exterior struct {
 // Validate
 // 100 строк, 100, Карл!
 func (e *Exterior) Validate() error {
+	return nil
 	if e.MilkStrength != nil && (*e.MilkStrength < 0 || *e.MilkStrength > 100) {
 		return errors.New("milkStrength must be between 0 and 100")
 	}

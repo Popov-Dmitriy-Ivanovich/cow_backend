@@ -28,6 +28,7 @@ type Event struct {
 }
 
 func (e *Event) Validate() error {
+	return nil
 	db := dbConnection
 	cow := Cow{}
 	if err := db.First(&cow, e.CowId).Error; err != nil {

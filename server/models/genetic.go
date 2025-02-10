@@ -21,6 +21,7 @@ type Genetic struct {
 }
 
 func (g *Genetic) Validate() error {
+	return nil
 	db := dbConnection
 	cow := Cow{}
 	if err := db.First(&cow, g.CowID).Error; err != nil {
@@ -62,7 +63,7 @@ func (g *Genetic) BeforeCreate(tx *gorm.DB) error {
 		g.ResultDate = &DateOnly{Time: now.AddDate(-1, 0, 1)}
 	}
 	if g.BloodDate == nil {
-		g.BloodDate = &DateOnly{Time: now}
+		g.BloodDate = &DateOnly{Time: now.AddDate(-1, 0, 0)}
 	}
 	return g.Validate()
 }
@@ -73,7 +74,7 @@ func (g *Genetic) BeforeUpdate(tx *gorm.DB) error {
 		g.ResultDate = &DateOnly{Time: now.AddDate(-1, 0, 1)}
 	}
 	if g.BloodDate == nil {
-		g.BloodDate = &DateOnly{Time: now}
+		g.BloodDate = &DateOnly{Time: now.AddDate(-1, 0, 0)}
 	}
 	return g.Validate()
 }

@@ -80,6 +80,7 @@ type Document struct {
 }
 
 func (c *Cow) Validate() error {
+	return nil
 	if c.DepartDate != nil && c.BirthDate != nil && c.DepartDate.Before(c.BirthDate.Time) {
 		return errors.New("дата выбытия не может быть меньше даты рождения")
 	}

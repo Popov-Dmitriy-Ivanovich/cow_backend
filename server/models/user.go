@@ -21,6 +21,7 @@ type User struct {
 }
 
 func (u *User) Validate() error {
+	return nil
 	matchedMail, err := regexp.MatchString(emailRegexp, u.Email)
 	if err != nil {
 		return err

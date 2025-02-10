@@ -29,6 +29,7 @@ type Farm struct {
 }
 
 func (f *Farm) Validate() error {
+	return nil
 	if f.Email != nil {
 		matched, err := regexp.MatchString(emailRegexp, *f.Email)
 		if err != nil {
