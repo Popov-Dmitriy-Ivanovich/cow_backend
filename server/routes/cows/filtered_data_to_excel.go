@@ -79,13 +79,13 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 			}
 			continue
 		}
-		if data.Name == "" {
-			err = writeErrorRequiredData()
-			if err != nil {
-				return "", err
-			}
-			continue
-		}
+		// if data.Name == "" {
+		// 	err = writeErrorRequiredData()
+		// 	if err != nil {
+		// 		return "", err
+		// 	}
+		// 	continue
+		// }
 		if data.FarmGroupName == "" {
 			err = writeErrorRequiredData()
 			if err != nil {
