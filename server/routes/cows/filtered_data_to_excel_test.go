@@ -9,8 +9,8 @@ import (
 
 func TestToExcelOld(t *testing.T) {
 	// Тестовый путь
-	testPathToExcelFile := "../frontend/static/excel/"
-	forDeleteTestPath := "../frontend/"
+	testPathToExcelFile := "./static/excel/"
+	forDeleteTestPath := "./static"
 
 	Name := "Буренка"
 	farm := "ООО Аурус"
@@ -140,7 +140,7 @@ func TestToExcelOld(t *testing.T) {
 		if _, err := os.Stat(filepath); os.IsNotExist(err) {
 			t.Errorf("Файл не был создан: %v", err)
 		} else {
-			t.Log("Файл создан")
+			t.Logf("Файл создан: %v", filepath)
 		}
 
 	})

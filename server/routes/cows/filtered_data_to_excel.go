@@ -11,7 +11,7 @@ import (
 
 // Переменные функции
 // Путь к файлу
-const PathToExcelFile = "../frontend/static/excel/"
+const PathToExcelFile = "./static/excel/"
 
 var (
 	cellName string
@@ -65,13 +65,13 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 			colNum++
 		}
 		// Проверим обязательные поля
-		if data.RSHNNumber == nil || *data.RSHNNumber == "" {
-			err = writeErrorRequiredData()
-			if err != nil {
-				return "", err
-			}
-			continue
-		}
+		// if data.RSHNNumber == nil || *data.RSHNNumber == "" {
+		// 	// err = writeErrorRequiredData()
+		// 	if err != nil {
+		// 		return "", err
+		// 	}
+		// 	continue
+		// }
 		if data.InventoryNumber == nil || *data.InventoryNumber == "" {
 			err = writeErrorRequiredData()
 			if err != nil {
@@ -105,16 +105,33 @@ func ToExcelOld(fsc []FilterSerializedCow) (string, error) {
 		// ===== //
 		// Записываем данные
 		Incr()
-		if err = f.SetCellValue(ListName, cellName, *data.RSHNNumber); err != nil {
-			return "", err
-		} else {
-			Incr()
+		if data.RSHNNumber != nil{ // РСХН всегда хранит номер
+		    if err = f.SetCellValue(ListName, cellName, *data.RSHNNumber); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
+		}else {
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
-		if err = f.SetCellValue(ListName, cellName, *data.InventoryNumber); err != nil {
-			return "b", err
-		} else {
-			Incr()
+		if data.InventoryNumber != nil {
+		    if err = f.SetCellValue(ListName, cellName, *data.InventoryNumber); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
+		}else {
+			if err = f.SetCellValue(ListName, cellName, ""); err != nil {
+				return "", err
+			} else {
+				Incr()
+			}
 		}
+		
 		if err = f.SetCellValue(ListName, cellName, data.Name); err != nil {
 			return "", err
 		} else {
