@@ -20,7 +20,27 @@ export default {
         MainPageBackground, ParticipantsBlock, 
         HozBlock,
         NewsBlock, MainStatistic, PurposesProect
-    }
+    },
+    // async created() {
+    //     let response = await fetch('/api/user/whoami', {
+    //         headers: {
+    //             'Authorization': this.getJwt()
+    //         },
+    //     });
+    //     let result = await response.json();
+    //     console.log(result);
+    // },
+    // methods: {
+    //     getJwt() {
+    //         let arr = document.cookie.split(';');
+    //         for (let i = 0; i < arr.length; i++) {
+    //             if (arr[i].split('=')[0] == 'jwt') {
+    //                 return arr[i].split('=')[1];
+    //             }
+    //         }
+    //         return null;
+    //     }
+    // }
 }
 </script>
 

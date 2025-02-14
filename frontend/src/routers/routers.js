@@ -135,14 +135,14 @@ const routes = [
     }
 ];
 
-// const scrollBehavior = function () {
-//     return { top: 0, left: 0 };
-// };
+const scrollBehavior = function () {
+    return { top: 0, left: 0 };
+};
 
 const router = createRouter({
     routes,
     history: createWebHistory(process.env.BASE_URL),
-    // scrollBehavior
+    scrollBehavior
 });
 
 function isLogged(cookie) {

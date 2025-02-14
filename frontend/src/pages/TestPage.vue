@@ -27,19 +27,26 @@
             <DAnimalFilters @applyFilters="findAnimals"/>
             <div>
                 <div class="sort">
-                    <div>Сортировать: </div>
-                    <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
-                        <!-- <option :value="null">-нет-</option> -->
-                        <option :value="'Name'">кличке</option>
-                        <option :value="null">РСХН</option>
-                        <option :value="'BirthDate'">дате рождения</option>
-                        <option :value="'InventoryNumber'">инвентарному номеру</option>
-                        
-                    </select>
-                    <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
-                        <option :value="false">по возрастанию</option>
-                        <option :value="true">по убыванию</option>
-                    </select>
+                    <div class="save-btns">
+                        <div>Сортировать: </div>
+                        <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
+                            <!-- <option :value="null">-нет-</option> -->
+                            <option :value="'Name'">кличке</option>
+                            <option :value="null">РСХН</option>
+                            <option :value="'BirthDate'">дате рождения</option>
+                            <option :value="'InventoryNumber'">инвентарному номеру</option>
+                            
+                        </select>
+                        <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
+                            <option :value="false">по возрастанию</option>
+                            <option :value="true">по убыванию</option>
+                        </select>
+                    </div>
+
+                    <div class="save-btns">
+                        <button class="save-table">Сохранить таблицу в CSV</button>
+                        <button class="save-table">Сохранить таблицу в XLS</button>
+                    </div>
                 </div>
 
                 <DCowsTable 
@@ -410,6 +417,8 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    justify-content: space-between;
+    width: 930px;
 }
 
 .filter-input {
@@ -419,7 +428,7 @@ export default {
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
-    border: 3px solid rgb(195, 200, 212);
+    border: 1px solid rgb(101, 102, 170);
     border-radius: 10px;
     transition: 0.3s;
     margin-right: 10px;
@@ -427,5 +436,28 @@ export default {
 
 .sort div {
     margin: 0 10px 0 15px;
+}
+
+.save-btns {
+    display: flex;
+    align-items: center;
+}
+
+.save-table {
+    background-color: white;
+    border: 1px solid rgb(101, 102, 170);
+    color: rgb(101, 102, 170);
+    padding: 0 7px;
+    height: 30px;
+    border-radius: 10px;
+    width: 190px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: 0.3s;
+}
+
+.save-table:hover {
+    background-color: rgb(101, 102, 170);
+    color: white;
 }
 </style>
