@@ -44,11 +44,22 @@
                     </div>
 
                     <div class="save-btns">
-                        <button class="save-table" @click="saveCSV">Сохранить таблицу в CSV</button>
-                        <button class="save-table" @click="saveXLS">Сохранить таблицу в XLS</button>
+                        <button class="save-table" @click="saveCSV">CSV</button>
+                        <button class="save-table" @click="saveXLS">XLS</button>
+                        <button class="delete-animals" @click="isApproveDelete = true">Удалить</button>
                     </div>
                 </div>
-
+                <Teleport to="body">
+                    <div class="modal-back" v-if="isApproveDelete" @click="isApproveDelete = false">
+                        <div class="modal" @click.stop="">
+                            <div>Вы действительно хотите удалить всех отфильтрованных животных?</div>
+                            <div class="delete-buttons">
+                                <div class="confirm-delete">Удалить</div>
+                                <div class="reject-delete" @click="isApproveDelete = false">Закрыть окно</div>
+                            </div>
+                        </div>
+                    </div>
+                </Teleport>
                 <DCowsTable 
                 v-if="isCows" 
                 v-bind:isSearch="search" 
@@ -120,6 +131,8 @@ export default {
             isLoading: false,
             sort: null,
             order: false,
+
+            isApproveDelete: false,
         }
     },
     methods: {
@@ -305,11 +318,11 @@ export default {
                 this.current_filters.sex = [1,2];
             }
             this.current_filters.pageNumber = 1;
-                this.current_filters.entitiesOnPage = 25;
-                if(!this.current_filters.orderBy) {
-                    this.current_filters.orderBy = 'RSHN';
-                    this.current_filters.orderByDesc = false;
-                }
+            this.current_filters.entitiesOnPage = 25;
+            if(!this.current_filters.orderBy) {
+                this.current_filters.orderBy = 'RSHN';
+                this.current_filters.orderByDesc = false;
+            }
         },
         async saveCSV() {
             if (!Object.keys(this.current_filters).length) {
@@ -482,7 +495,7 @@ export default {
     align-items: center;
     margin-bottom: 10px;
     justify-content: space-between;
-    width: 930px;
+    width: 990px;
 }
 
 .filter-input {
@@ -514,7 +527,7 @@ export default {
     padding: 0 7px;
     height: 30px;
     border-radius: 10px;
-    width: 190px;
+    width: 80px;
     cursor: pointer;
     margin: 0 5px;
     transition: 0.3s;
@@ -523,5 +536,76 @@ export default {
 .save-table:hover {
     background-color: rgb(101, 102, 170);
     color: white;
+}
+
+.delete-animals {
+    background-color: white;
+    border: 1px solid rgb(204, 99, 99);
+    color: rgb(204, 99, 99);
+    padding: 0 7px;
+    height: 30px;
+    border-radius: 10px;
+    width: 80px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: 0.3s;
+}
+
+.delete-animals:hover {
+    background-color: rgb(204, 99, 99);
+    color: white;
+}
+
+.modal-back {
+    background-color: rgba(0,0,0,0.2);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    font-family: Open Sans, sans-serif;
+    max-width: 700px;
+}
+
+.delete-buttons {
+    margin-top: 40px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.confirm-delete, .reject-delete {
+    padding: 8px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+}
+
+.reject-delete {
+    margin-left: 20px;
+    color: black;
+}
+
+.reject-delete:hover {
+    background-color: rgb(243, 240, 246);
+}
+
+.confirm-delete {
+    color: red;
+}
+
+.confirm-delete:hover {
+    background-color: rgb(255, 225, 225);
 }
 </style>

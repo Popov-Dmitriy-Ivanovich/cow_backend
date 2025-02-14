@@ -3,7 +3,6 @@
         <router-view></router-view>
         <MainFooter class="foot"/>
     </div>
-    
     <TopBar class="bar"/>
 </template>
 
