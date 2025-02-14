@@ -9,7 +9,7 @@ module.exports = defineConfig({
     devServer: {
       webSocketServer: false,
       // proxy: 'http://localhost:8080/'
-      proxy: 'http://genmilk.ru/'
+      proxy: 'http://genmilk.ru:8000/'
       
       // {
       //   '^/api': {

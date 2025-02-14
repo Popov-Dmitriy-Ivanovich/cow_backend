@@ -44,8 +44,8 @@
                     </div>
 
                     <div class="save-btns">
-                        <button class="save-table">Сохранить таблицу в CSV</button>
-                        <button class="save-table">Сохранить таблицу в XLS</button>
+                        <button class="save-table" @click="saveCSV">Сохранить таблицу в CSV</button>
+                        <button class="save-table" @click="saveXLS">Сохранить таблицу в XLS</button>
                     </div>
                 </div>
 
@@ -292,6 +292,46 @@ export default {
                 }
             }
             return null;
+        },
+        async saveCSV() {
+            let response = await fetch('/api/cows/filterCSV', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': this.getJwt()
+                },
+                body: JSON.stringify(this.current_filters),
+            });
+            let result = await response.json();
+            console.log(result);
+            let filename = result.LST;
+            let url = '/api/static/csv/' + filename;
+            let link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        },
+        async saveXLS() {
+            let response = await fetch('/api/cows/filterExcel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': this.getJwt()
+                },
+                body: JSON.stringify(this.current_filters),
+            });
+            let result = await response.json();
+            console.log(result);
+            let filename = result.LST;
+            let url = '/api/static/excel/' + filename;
+            let link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         }
     }
 }
