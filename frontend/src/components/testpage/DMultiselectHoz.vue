@@ -22,6 +22,15 @@ export default {
     methods: {
         HasSelected(newValue) {
             this.$emit('sendToMain', newValue);
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     },
     async created() {
@@ -29,7 +38,7 @@ export default {
         const response = await fetch('/api/farms?parrent_id=null',
             {
                 headers: {
-                    'Authorization': localStorage.getItem('jwt')
+                    'Authorization': this.getJwt()
                 }
             }
         );

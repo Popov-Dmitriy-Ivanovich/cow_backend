@@ -71,7 +71,7 @@ export default {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': localStorage.getItem('jwt'),
+                    'Authorization': this.getJwt(),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
@@ -91,9 +91,7 @@ export default {
                     categories: this.newX,
                 }
             });
-            console.log(this.options.xaxis.categories);
             this.series.push(obj);
-            console.log('функция 1');
         },
         async fetchDataLact() {
             this.series = [];
@@ -102,7 +100,7 @@ export default {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8',
-                    'Authorization': localStorage.getItem('jwt'),
+                    'Authorization': this.getJwt(),
                 },
                 body: JSON.stringify(this.changeFilters),
             });
@@ -121,7 +119,15 @@ export default {
             });
 
             this.series.push(obj);
-            console.log('функция 2');
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
         }
     },
     watch: {

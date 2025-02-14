@@ -6,7 +6,7 @@
             <div class="news-icon">✎</div>
             <div class="news-text">
                 <div class="piece-news-title">{{ item.Title }}</div>
-                <div class="news-description"><span>{{ item.Text }}</span></div>
+                <div class="news-description"><p>{{ item.Text }}</p></div>
             </div>
             <div class="news-date">{{ dateConverter(item.Date) }}</div>
         </div>
@@ -35,7 +35,15 @@ export default {
         let id_region = 36;
         const response = await fetch(`/api/regions/${id_region}/news`);
         const news_result = await response.json();
+        console.log(news_result);
         this.news = news_result;
+        for (let i = 0; i < this.news.length; i++) {
+            if (this.news[i].Text.includes('/n')) {
+                console.log('in if');
+                let arr = this.news[i].Text.split('/n');
+                this.news[i].Text = arr;
+            }
+        }
     }
 }
 </script>

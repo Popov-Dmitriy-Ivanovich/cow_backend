@@ -27,19 +27,26 @@
             <DAnimalFilters @applyFilters="findAnimals"/>
             <div>
                 <div class="sort">
-                    <div>Сортировать: </div>
-                    <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
-                        <!-- <option :value="null">-нет-</option> -->
-                        <option :value="'Name'">кличке</option>
-                        <option :value="null">РСХН</option>
-                        <option :value="'BirthDate'">дате рождения</option>
-                        <option :value="'InventoryNumber'">инвентарному номеру</option>
-                        
-                    </select>
-                    <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
-                        <option :value="false">по возрастанию</option>
-                        <option :value="true">по убыванию</option>
-                    </select>
+                    <div class="save-btns">
+                        <div>Сортировать: </div>
+                        <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
+                            <!-- <option :value="null">-нет-</option> -->
+                            <option :value="'Name'">кличке</option>
+                            <option :value="null">РСХН</option>
+                            <option :value="'BirthDate'">дате рождения</option>
+                            <option :value="'InventoryNumber'">инвентарному номеру</option>
+                            
+                        </select>
+                        <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
+                            <option :value="false">по возрастанию</option>
+                            <option :value="true">по убыванию</option>
+                        </select>
+                    </div>
+
+                    <div class="save-btns">
+                        <button class="save-table" @click="saveCSV">Сохранить таблицу в CSV</button>
+                        <button class="save-table" @click="saveXLS">Сохранить таблицу в XLS</button>
+                    </div>
                 </div>
 
                 <DCowsTable 
@@ -147,7 +154,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });
@@ -199,21 +206,17 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(search_params),
                 });
                 let result = await response.json();
-                
-                console.log(result, 'что приходит');
 
                 this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
 
                 if(this.isCows) this.search_error_cows = false;
                 if(this.isBulls) this.search_error_bulls = false;
                 if(this.isChild) this.search_error_child = false;
-
-                console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
 
                 if(result.LST.length == 0 || result.N == 0) {
                     if(this.isCows) this.search_error_cows = true;
@@ -239,7 +242,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8',
-                        'Authorization': localStorage.getItem('jwt')
+                        'Authorization': this.getJwt()
                     },
                     body: JSON.stringify(this.current_filters),
                 });
@@ -280,6 +283,55 @@ export default {
             this.search = false;
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
+        },
+        getJwt() {
+            let arr = document.cookie.split(';');
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].split('=')[0] == 'jwt') {
+                    return arr[i].split('=')[1];
+                }
+            }
+            return null;
+        },
+        async saveCSV() {
+            let response = await fetch('/api/cows/filterCSV', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': this.getJwt()
+                },
+                body: JSON.stringify(this.current_filters),
+            });
+            let result = await response.json();
+            console.log(result);
+            let filename = result.LST;
+            let url = '/api/static/csv/' + filename;
+            let link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        },
+        async saveXLS() {
+            let response = await fetch('/api/cows/filterExcel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': this.getJwt()
+                },
+                body: JSON.stringify(this.current_filters),
+            });
+            let result = await response.json();
+            console.log(result);
+            let filename = result.LST;
+            let url = '/api/static/excel/' + filename;
+            let link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
         }
     }
 }
@@ -405,6 +457,8 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    justify-content: space-between;
+    width: 930px;
 }
 
 .filter-input {
@@ -414,7 +468,7 @@ export default {
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
-    border: 3px solid rgb(195, 200, 212);
+    border: 1px solid rgb(101, 102, 170);
     border-radius: 10px;
     transition: 0.3s;
     margin-right: 10px;
@@ -422,5 +476,28 @@ export default {
 
 .sort div {
     margin: 0 10px 0 15px;
+}
+
+.save-btns {
+    display: flex;
+    align-items: center;
+}
+
+.save-table {
+    background-color: white;
+    border: 1px solid rgb(101, 102, 170);
+    color: rgb(101, 102, 170);
+    padding: 0 7px;
+    height: 30px;
+    border-radius: 10px;
+    width: 190px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: 0.3s;
+}
+
+.save-table:hover {
+    background-color: rgb(101, 102, 170);
+    color: white;
 }
 </style>

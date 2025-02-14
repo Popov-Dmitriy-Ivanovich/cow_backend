@@ -12,11 +12,13 @@
             </div>
                 <div class="item-block">
                 <div class="id-min-title">Коэф. инбридинга по родословной</div>
-                <div>{{ coeffByFamily || 'Нет информации' }}</div>
+                <div v-if="coeffByFamily || coeffByFamily === 0">{{ coeffByFamily }}</div>
+                <div v-else>Нет информации</div>
             </div>
             <div class="item-block">
                 <div class="id-min-title">Коэф. инбридинга по генотипу</div>
-                <div>{{ genetic.InbrindingCoeffByGenotype || 'Нет информации' }}</div>
+                <div v-if="genetic.InbrindingCoeffByGenotype || genetic.InbrindingCoeffByGenotype === 0">{{ genetic.InbrindingCoeffByGenotype }}</div>
+                <div v-else>Нет информации</div>
             </div>
         </div>
     </div>

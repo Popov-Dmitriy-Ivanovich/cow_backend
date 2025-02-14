@@ -1,15 +1,15 @@
 <template>
-    <div>
-        <div class="doc-title">Документы</div>
+    <div class="doc-title">Документы</div>
+    <div v-if="!isLoading"> 
         <div v-for="doc in cow_info" :key="doc.ID" class="doc-line">
             <div class="doc-name">{{ doc.Path || 'Нет информации' }}</div>
             <div class="doc-btns">
                 <a :href="`/api/static/documents/${doc.Path}`" :download="doc.Path" class="doc-link"><div class="doc-download btn">Скачать</div></a>
                 <!-- <div class="doc-delete btn">Удалить</div> -->
             </div>
-
         </div>
     </div>
+    <div v-else>Идёт загрузка...</div>
 </template>
 
 <script>
@@ -22,21 +22,24 @@ export default {
     data() {
         return {
             cow_info: [],
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let response = await fetch(`/api/cows/${this.$route.params.id}/documents`);
         let result = await response.json();
-        console.log(result);
         this.cow_info = result;
+        this.isLoading = false;
     },
     watch: {
         async uspeh(new_val) {
             if(new_val) {
+                this.isLoading = true;
                 let response = await fetch(`/api/cows/${this.$route.params.id}/documents`);
                 let result = await response.json();
-                console.log(result);
                 this.cow_info = result;
+                this.isLoading = false;
             }
         }
     }

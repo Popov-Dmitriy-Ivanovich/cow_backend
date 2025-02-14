@@ -16,11 +16,11 @@
             <label class="range">До: <input type='date' class="filter-input filter-date" v-model="filters.departDateTo"></label>
         </div>
         <div class="filter-category" v-if="!fromAnal">
-            <div>Животное мертво</div>
+            <div>Статус</div>
             <select class="filter-input" v-model="filters.isDead">
                 <option :value="null">не важно</option>
-                <option :value="true">да</option>
-                <option :value="false">нет</option>
+                <option :value="true">выбыло</option>
+                <option :value="false">живое</option>
             </select>
         </div>
         <div class="filter-category">
@@ -201,8 +201,6 @@ export default {
             // let send_filters = this.filters;
             let send_filters = {};
             Object.assign(send_filters, this.filters);
-            console.log(send_filters, 'filers');
-            console.log(JSON.stringify(send_filters))
             this.$emit('applyFilters', send_filters);
             window.scrollTo(0,0);
         },

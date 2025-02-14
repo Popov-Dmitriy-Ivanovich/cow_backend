@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="datagen-title">Данные о генотипировании</div>
+    <div class="datagen-title">Данные о генотипировании</div>
+    <div v-if="!isLoading">
         <div>Файл</div>
         <div class="datagen-download">    
             <div class="download-file">{{ cow_info.GtcFilePath || 'Нет информации'}} </div>
@@ -23,6 +23,7 @@
                 </tbody>
             </table>
     </div>
+    <div v-else>Идёт загрузка...</div>
 </template>
     
 <script>
@@ -31,9 +32,12 @@ export default {
         return {
             cow_info:{},
             blood_date: null,
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/genetic`);
@@ -43,7 +47,7 @@ export default {
             this.cow_info = result;
             if (this.cow_info.BloodDate) this.blood_date = this.dateConverter(this.cow_info.BloodDate);
         }
-
+        this.isLoading = false;
     },
     methods: {
         true_false(val) {

@@ -1,6 +1,6 @@
 <template>
-<div>
-    <div class="lac-title">Лактации</div>
+<div class="lac-title">Лактации</div>    
+<div v-if="!isLoading">
     <button @click="isTable=true;isChart=false" 
     class="table-chart"
     :class="{'active-btn':isTable}">
@@ -72,6 +72,7 @@
         <apexchart id="ControlMilking" width="600" type="bar" :options="options" :series="series"></apexchart>
     </div>
 </div>
+<div v-else>Идёт загрузка...</div>
 </template>
 
 <script>
@@ -94,15 +95,17 @@ export default {
             },
             series: [],
             param_milking: 'MilkAll',
+
+            isLoading: false,
         }
     },
     async created() {
+        this.isLoading = true;
         let mass_route = this.$route.path.split('/');
         let cow_id = mass_route[2];
         let response = await fetch(`/api/cows/${cow_id}/lactations`);
         let result = await response.json();
         this.cow_info = result;
-        console.log(this.cow_info);
 
         let serie = {name:'Удой полный',data: []};
         for (let i = 0; i < this.cow_info.length; i++) {
@@ -114,6 +117,7 @@ export default {
             serie.data.push(this.cow_info[i].MilkAll);
         }
         this.series.push(serie);
+        this.isLoading = false;
     },
     methods: {
         addParam(obj, arr, param) {
