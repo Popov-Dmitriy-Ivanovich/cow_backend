@@ -237,6 +237,7 @@ export default {
             this.isLoading = true;
             this.current_page = newVal;
             this.current_filters.pageNumber = newVal;
+            console.log(this.current_filters);
 
             let response = await fetch('/api/cows/filter', {
                     method: 'POST',
@@ -293,7 +294,27 @@ export default {
             }
             return null;
         },
+        setCurrentFilters() {
+            if (this.isCows) {
+                this.current_filters.sex = [4];
+            }
+            if (this.isBulls) {
+                this.current_filters.sex = [3];
+            }
+            if (this.isChild) {
+                this.current_filters.sex = [1,2];
+            }
+            this.current_filters.pageNumber = 1;
+                this.current_filters.entitiesOnPage = 25;
+                if(!this.current_filters.orderBy) {
+                    this.current_filters.orderBy = 'RSHN';
+                    this.current_filters.orderByDesc = false;
+                }
+        },
         async saveCSV() {
+            if (!Object.keys(this.current_filters).length) {
+                this.setCurrentFilters();
+            }
             let response = await fetch('/api/cows/filterCSV', {
                 method: 'POST',
                 headers: {
@@ -314,6 +335,9 @@ export default {
             link.remove();
         },
         async saveXLS() {
+            if (!Object.keys(this.current_filters).length) {
+                this.setCurrentFilters();
+            }
             let response = await fetch('/api/cows/filterExcel', {
                 method: 'POST',
                 headers: {
