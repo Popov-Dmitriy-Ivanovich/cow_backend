@@ -30,8 +30,8 @@ export default {
     async created() {
         const response = await fetch('/api/partners');
         const result = await response.json();
-        if(result.length > 4) {
-            for (let i = 0; i < 5; i++) {
+        if(result.length > 2) {
+            for (let i = 0; i < 3; i++) {
                 this.participants.push(result[i]);
             }
         } else {
