@@ -92,6 +92,8 @@ export default {
                     categories: this.newX,
                 }
             });
+
+            await this.getTitle();
         },
         async fetchDataLact() {
             this.err = false;
@@ -143,7 +145,43 @@ export default {
                 }
             }
             return null;
-        }
+        },
+        async getTitle() {
+            let mass_route = this.$route.path.split('/');
+            let year_id = mass_route[2];
+            let region_id = mass_route[3];
+            let district_id = mass_route[4];
+
+            let chartTitle = 'Генотипирование за ';
+            if (year_id == 40000) {
+                chartTitle += 'все года. ';
+            } else {
+                chartTitle += `${year_id} год. `
+            }
+
+            let res_region = await fetch(`/api/regions/${region_id}`);
+            let region = await res_region.json();
+            if (region) {
+                chartTitle += region.Name;
+            }
+            chartTitle += ', ';
+
+            let res_districts = await fetch(`/api/districts`);
+            let districts = await res_districts.json();
+            for (let i = 0; i < districts.length; i++) {
+                if (districts[i].ID == district_id) {
+                    chartTitle = chartTitle + districts[i].Name + ' район';
+                }
+            }
+
+            this.$refs.chartdistr.updateOptions({
+                xaxis: {
+                    title: {
+                        text: chartTitle,
+                    }
+                }
+            })
+        },
     },
     watch: {
         async changeFilters() {

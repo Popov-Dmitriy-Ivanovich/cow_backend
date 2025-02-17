@@ -98,9 +98,18 @@ export default {
                 this.series.push(illyear_serie);
             }
 
+            let chartTitle = 'Генотипирование за ';
+            if (year_id == 40000) {
+                chartTitle += 'все года';
+            } else {
+                chartTitle += `${year_id} год`
+            }
             this.$refs.chartyear.updateOptions({
                 xaxis: {
                     categories: this.newX,
+                    title: {
+                        text: chartTitle
+                    }
                 }
             });
         },
