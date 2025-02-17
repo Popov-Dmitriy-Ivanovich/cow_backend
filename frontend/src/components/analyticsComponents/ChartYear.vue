@@ -42,10 +42,15 @@ export default {
         }
     },
     async created() {
-        if (this.changeOpt === '' || this.changeOpt == 'ill') {
+        if (this.changeOpt === '') {
             await this.fetchData();
+            this.titleGenetic();
         } else if(this.changeOpt == 'lact') {
             await this.fetchDataLact();
+            this.titleMilk();
+        } else if (this.changeOpt == 'ill') {
+            await this.fetchData();
+            this.titleIll();
         }
     },
     methods: {
@@ -98,18 +103,9 @@ export default {
                 this.series.push(illyear_serie);
             }
 
-            let chartTitle = 'Генотипирование за ';
-            if (year_id == 40000) {
-                chartTitle += 'все года';
-            } else {
-                chartTitle += `${year_id} год`
-            }
             this.$refs.chartyear.updateOptions({
                 xaxis: {
                     categories: this.newX,
-                    title: {
-                        text: chartTitle
-                    }
                 }
             });
         },
@@ -162,21 +158,85 @@ export default {
                 }
             }
             return null;
+        },
+        titleGenetic() {
+            let mass_route = this.$route.path.split('/');
+            let year_id = mass_route[2];
+            let chartTitle = 'Генотипирование за ';
+            if (year_id == 40000) {
+                chartTitle += 'все года';
+            } else {
+                chartTitle += `${year_id} год`
+            }
+
+            this.$refs.chartyear.updateOptions({
+                xaxis: {
+                    title: {
+                        text: chartTitle,
+                    }
+                }
+            });
+        },
+        titleMilk() {
+            let mass_route = this.$route.path.split('/');
+            let year_id = mass_route[2];
+            let chartTitle = 'Средние показатели удоя за ';
+            if (year_id == 40000) {
+                chartTitle += 'все года';
+            } else {
+                chartTitle += `${year_id} год`
+            }
+
+            this.$refs.chartyear.updateOptions({
+                xaxis: {
+                    title: {
+                        text: chartTitle,
+                    }
+                }
+            });
+        },
+        titleIll() {
+            let mass_route = this.$route.path.split('/');
+            let year_id = mass_route[2];
+            let chartTitle = 'Моногенные заболевания за ';
+            if (year_id == 40000) {
+                chartTitle += 'все года';
+            } else {
+                chartTitle += `${year_id} год`
+            }
+
+            this.$refs.chartyear.updateOptions({
+                xaxis: {
+                    title: {
+                        text: chartTitle,
+                    }
+                }
+            });
         }
     },
     watch: {
         async changeFilters() {
-            if (this.changeOpt === '' || this.changeOpt == 'ill') {
+            if (this.changeOpt === '') {
                 await this.fetchData();
+                this.titleGenetic();
             } else if(this.changeOpt == 'lact') {
                 await this.fetchDataLact();
+                this.titleMilk();
+            } else if (this.changeOpt == 'ill') {
+                await this.fetchData();
+                this.titleIll();
             }
         },
         async changeOpt() {
-            if (this.changeOpt === '' || this.changeOpt == 'ill') {
+            if (this.changeOpt === '') {
                 await this.fetchData();
+                this.titleGenetic();
             } else if(this.changeOpt == 'lact') {
                 await this.fetchDataLact();
+                this.titleMilk();
+            } else if (this.changeOpt == 'ill') {
+                await this.fetchData();
+                this.titleIll();
             }
         }
     },

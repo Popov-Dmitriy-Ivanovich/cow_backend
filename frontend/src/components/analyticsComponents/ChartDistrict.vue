@@ -136,6 +136,8 @@ export default {
                     categories: this.newX,
                 }
             });
+
+            await this.getTitle();
         },
         getJwt() {
             let arr = document.cookie.split(';');
@@ -152,7 +154,16 @@ export default {
             let region_id = mass_route[3];
             let district_id = mass_route[4];
 
-            let chartTitle = 'Генотипирование за ';
+            let chartTitle;
+
+            if (this.changeOpt === '') {
+                chartTitle = 'Генотипирование за ';
+            } else if (this.changeOpt == 'ill') {
+                chartTitle = 'Моногенные заболевания за ';
+            } else if (this.changeOpt == 'lact') {
+                chartTitle = 'Срадние показатели удоя за ';
+            }
+
             if (year_id == 40000) {
                 chartTitle += 'все года. ';
             } else {
