@@ -55,7 +55,7 @@
                             <div>Вы действительно хотите удалить всех отфильтрованных животных?</div>
                             <div class="delete-buttons">
                                 <div class="confirm-delete">Удалить</div>
-                                <div class="reject-delete" @click="isApproveDelete = false">Закрыть окно</div>
+                                <div class="reject-delete" @click="isApproveDelete = false">Отмена</div>
                             </div>
                         </div>
                     </div>

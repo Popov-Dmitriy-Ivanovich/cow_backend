@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/pages/MainPage.vue';
 import LoginPage from '@/pages/LoginPage.vue';
 import HelpPage from '@/pages/HelpPage.vue';
-import RegistrationPage from '@/pages/RegistrationPage.vue';
+// import RegistrationPage from '@/pages/RegistrationPage.vue';
 // import AnimalsPage from '@/pages/AnimalsPage.vue';
 import ConcretAnimalPage from '@/pages/ConcretAnimalPage.vue';
 import ParticipantPage from '@/pages/ParticipantPage.vue';
@@ -39,11 +39,11 @@ const routes = [
         path: '/help',
         component: HelpPage
     },
-    {
-        path: '/registration',
-        component: RegistrationPage,
-        meta: {noAuth: true}
-    },
+    // {
+    //     path: '/registration',
+    //     component: RegistrationPage,
+    //     meta: {noAuth: true}
+    // },
     {
         path: '/animals',
         component: TestPage,
