@@ -11,10 +11,10 @@
             </div>
             <div class="search-block">
                 <div>
-                    <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div>
+                    <!-- <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div> -->
                     <input class="search-animals" 
                     type="text" 
-                    placeholder="Введите значение" 
+                    placeholder="Кличка, инвентарный номер, Сэлекс, РСХН" 
                     @keyup.enter="searchCowsOrBulls" 
                     
                     id="search-animals"
@@ -26,6 +26,9 @@
         <div class="filters-and-table">
             <DAnimalFilters @applyFilters="findAnimals"/>
             <div>
+                <div class="nanimals">
+                    Количество животных: {{ number_of_animals }}
+                </div>
                 <div class="sort">
                     <div class="save-btns">
                         <div>Сортировать: </div>
@@ -70,6 +73,7 @@
                 v-bind:filters="animal_filters"
                 @defPages="setPages"
                 @changePageButSearch="changePage"
+                @changeN="changeN"
                 v-bind:isLoading="isLoading"
                 /> 
                 
@@ -83,6 +87,7 @@
                 v-bind:filters="animal_filters"
                 @defPages="setPages"
                 @changePageButSearch="changePage"
+                @changeN="changeN"
                 v-bind:isLoading="isLoading"
                 />
 
@@ -96,6 +101,7 @@
                 v-bind:filters="animal_filters"
                 @defPages="setPages"
                 @changePageButSearch="changePage"
+                @changeN="changeN"
                 v-bind:isLoading="isLoading"
                 />
             </div>
@@ -133,6 +139,7 @@ export default {
             order: false,
 
             isApproveDelete: false,
+            number_of_animals: 0,
         }
     },
     methods: {
@@ -149,7 +156,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
-                search_params.entitiesOnPage = 25;
+                search_params.entitiesOnPage = 50;
                 if(this.sort) {
                     search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
@@ -173,6 +180,7 @@ export default {
                 });
                 let result = await response.json();
                 this.searching_animal = result.LST;
+                this.number_of_animals = result.N;
                 this.search = true;
 
                 this.total_pages = Math.ceil(result.N/search_params.entitiesOnPage);
@@ -205,7 +213,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
-                search_params.entitiesOnPage = 25;
+                search_params.entitiesOnPage = 50;
                 if(this.sort) {
                     search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
@@ -238,6 +246,7 @@ export default {
                 }
 
                 this.searching_animal = result.LST;
+                this.number_of_animals = result.N;
             } catch(err) {
                 if(this.isCows) this.search_error_cows = true;
                 if(this.isBulls) this.search_error_bulls = true;
@@ -298,6 +307,9 @@ export default {
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
         },
+        changeN(newN) {
+            this.number_of_animals = newN;
+        },
         getJwt() {
             let arr = document.cookie.split(';');
             for (let i = 0; i < arr.length; i++) {
@@ -318,7 +330,7 @@ export default {
                 this.current_filters.sex = [1,2];
             }
             this.current_filters.pageNumber = 1;
-            this.current_filters.entitiesOnPage = 25;
+            this.current_filters.entitiesOnPage = 50;
             if(!this.current_filters.orderBy) {
                 this.current_filters.orderBy = 'RSHN';
                 this.current_filters.orderByDesc = false;
@@ -393,6 +405,7 @@ export default {
 
 .flex-top {
     display: flex;
+    align-items: center;
 }
 
 .flex-logo {
@@ -435,11 +448,11 @@ export default {
 
 .search-block {
     background-color: white;
-    padding: 10px 40px 20px 40px;
-    border-radius: 5px;
+    padding: 30px 40px 30px 40px;
+    border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
 }
 
 .search-animals {
@@ -607,5 +620,15 @@ export default {
 
 .confirm-delete:hover {
     background-color: rgb(255, 225, 225);
+}
+
+.nanimals {
+    width: 990px;
+    text-align: right;
+    font-family: Open Sans, sans-serif;
+    font-size: 120%;
+    color: rgb(66, 66, 66);
+    padding-right: 40px;
+    padding-bottom: 15px;
 }
 </style>
