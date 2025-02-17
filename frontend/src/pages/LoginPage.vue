@@ -3,7 +3,7 @@
         <form class="login" id="login-form" method="post">
             <div class="login-title">
                 <div>Вход</div>
-                <div class="registration-link" @click="$router.push('/registration')">Регистрация</div>
+                <!-- <div class="registration-link" @click="$router.push('/registration')">Регистрация</div> -->
             </div>
             <label for="login-email" class="login-label">Почта</label><br>
             <input type="email" class="login-input" id="login-email" v-model="email"><br>

@@ -148,7 +148,7 @@ export default {
         let search_params = this.filters;
         search_params.sex = [3];
         search_params.pageNumber = 1;
-        search_params.entitiesOnPage = 25;
+        search_params.entitiesOnPage = 50;
         if(!search_params.orderBy) {
             search_params.orderBy = 'RSHN';
             search_params.orderByDesc = false;
@@ -168,8 +168,8 @@ export default {
         if(res_animals.LST.length == 0) this.errorr = true;
         //Передаю текущую первую страницу и кол-во страниц наверх
         this.$emit('defPages', search_params.pageNumber, Math.ceil(res_animals.N/search_params.entitiesOnPage));
+        this.$emit('changeN', res_animals.N);
         this.isLoadingBulls = false;
-        console.log(res_animals);
     },
     watch: {
         async cp(newValue) {
@@ -178,7 +178,7 @@ export default {
                 let search_params = {};
                 search_params.sex = [3];
                 search_params.pageNumber = newValue;
-                search_params.entitiesOnPage = 25;
+                search_params.entitiesOnPage = 50;
                 if(!search_params.orderBy) {
                     search_params.orderBy = 'RSHN';
                     search_params.orderByDesc = false;
