@@ -80,9 +80,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minMilking }}</span>
-                                <input type="range" :min="minMilking" :max="maxMilking" v-model="milking" class="range">
-                                <span>{{ maxMilking }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ milking }}</p> -->
                         </div>
@@ -97,9 +95,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minFat }}</span>
-                                <input type="range" :min="minFat" :max="maxFat" v-model="fat" class="range">
-                                <span>{{ maxFat }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ fat }}</p> -->
                         </div>
@@ -114,9 +110,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minProtein }}</span>
-                                <input type="range" :min="minProtein" :max="maxProtein" v-model="protein" class="range">
-                                <span>{{ maxProtein }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ protein }}</p> -->
                         </div>
@@ -131,9 +125,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minLact }}</span>
-                                <input type="range" :min="minLact" :max="maxLact" v-model="lact" class="range">
-                                <span>{{ maxLact }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ lact }}</p> -->
                         </div>
@@ -148,9 +140,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minOsem }}</span>
-                                <input type="range" :min="minOsem" :max="maxOsem" v-model="osem" class="range">
-                                <span>{{ maxOsem }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ osem }}</p> -->
                         </div>
@@ -165,9 +155,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minExterior }}</span>
-                                <input type="range" :min="minExterior" :max="maxExterior" v-model="exterior" class="range">
-                                <span>{{ maxExterior }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ exterior }}</p> -->
                         </div>
@@ -182,9 +170,7 @@
                     <td>
                         <div class="concret-range">
                             <div class="range-line">
-                                <span>{{ minInbriding }}</span>
-                                <input type="range" :min="minInbriding" :max="maxInbriding" v-model="inbriding" class="range">
-                                <span>{{ maxInbriding }}</span>
+                                <DoubleRange/>
                             </div>
                             <!-- <p class="current-value">{{ inbriding }}</p> -->
                         </div>
@@ -242,7 +228,12 @@
 </template>
 
 <script>
+import DoubleRange from '@/components/DoubleRange.vue';
+
 export default {
+    components: {
+        DoubleRange,
+    },
     data() {
         return {
             milking: 10,
