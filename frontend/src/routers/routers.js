@@ -13,17 +13,17 @@ import AnaliticYear from '@/pages/AnaliticYear.vue';
 import AnaliticRegion from '@/pages/AnaliticRegion.vue';
 import AnaliticDistrict from '@/pages/AnaliticDistrict.vue';
 import MainChartComp from '@/pages/MainChartComp.vue';
-import GUIPage from '@/pages/GUIPage.vue';
-import CowDownload from '@/components/gui/CowDownload.vue';
-import MenuGUI from '@/components/gui/MenuGUI.vue';
-import ContrMilkDownload from '@/components/gui/ContrMilkDownload.vue';
-import EventsDownload from '@/components/gui/EventsDownload.vue';
-import GenotypeDownload from '@/components/gui/GenotypeDownload.vue';
-import RatingDownload from '@/components/gui/RatingDownload.vue';
-import LactDownload from '@/components/gui/LactDownload.vue';
-import ExteriorDownload from '@/components/gui/ExteriorDownload.vue';
-import GtcDownload from '@/components/gui/GtcDownload.vue';
-import ExteriorMainDownload from '@/components/gui/ExteriorMainDownload.vue'
+// import GUIPage from '@/pages/GUIPage.vue';
+// import CowDownload from '@/components/gui/CowDownload.vue';
+// import MenuGUI from '@/components/gui/MenuGUI.vue';
+// import ContrMilkDownload from '@/components/gui/ContrMilkDownload.vue';
+// import EventsDownload from '@/components/gui/EventsDownload.vue';
+// import GenotypeDownload from '@/components/gui/GenotypeDownload.vue';
+// import RatingDownload from '@/components/gui/RatingDownload.vue';
+// import LactDownload from '@/components/gui/LactDownload.vue';
+// import ExteriorDownload from '@/components/gui/ExteriorDownload.vue';
+// import GtcDownload from '@/components/gui/GtcDownload.vue';
+// import ExteriorMainDownload from '@/components/gui/ExteriorMainDownload.vue'
 
 const routes = [
     {
@@ -86,53 +86,53 @@ const routes = [
             }
         ]
     },
-    {
-        path: '/gui',
-        component: GUIPage,
-        meta: {requiresAuth: true},
-        children: [
-            {
-                path: '',
-                component: MenuGUI
-            },
-            {
-                path: 'downloadCow',
-                component: CowDownload
-            },
-            {
-                path: 'downloadControlMilking',
-                component: ContrMilkDownload
-            },
-            {
-                path: 'downloadEvents',
-                component: EventsDownload
-            },
-            {
-                path: 'downloadGenotype',
-                component: GenotypeDownload
-            },
-            {
-                path: 'downloadRating',
-                component: RatingDownload
-            },
-            {
-                path: 'downloadLactations',
-                component: LactDownload
-            },
-            {
-                path: 'downloadExterior',
-                component: ExteriorDownload
-            },
-            {
-                path: 'downloadGtc',
-                component: GtcDownload
-            },
-            {
-                path: 'exteriorDownload',
-                component: ExteriorMainDownload
-            }
-        ]
-    }
+    // {
+    //     path: '/gui',
+    //     component: GUIPage,
+    //     meta: {requiresAuth: true},
+    //     children: [
+    //         {
+    //             path: '',
+    //             component: MenuGUI
+    //         },
+    //         {
+    //             path: 'downloadCow',
+    //             component: CowDownload
+    //         },
+    //         {
+    //             path: 'downloadControlMilking',
+    //             component: ContrMilkDownload
+    //         },
+    //         {
+    //             path: 'downloadEvents',
+    //             component: EventsDownload
+    //         },
+    //         {
+    //             path: 'downloadGenotype',
+    //             component: GenotypeDownload
+    //         },
+    //         {
+    //             path: 'downloadRating',
+    //             component: RatingDownload
+    //         },
+    //         {
+    //             path: 'downloadLactations',
+    //             component: LactDownload
+    //         },
+    //         {
+    //             path: 'downloadExterior',
+    //             component: ExteriorDownload
+    //         },
+    //         {
+    //             path: 'downloadGtc',
+    //             component: GtcDownload
+    //         },
+    //         {
+    //             path: 'exteriorDownload',
+    //             component: ExteriorMainDownload
+    //         }
+    //     ]
+    // }
 ];
 
 const scrollBehavior = function () {
