@@ -1,3 +1,7 @@
+# ВАЖНО
+
+На момент 20 фев. 2025 года ДЕВ сервер (genmilk.ru:44300) запускается файлом compose_kafka.yaml ```bash docker compose -f compose_kafka.yaml up -d --build``` ПРОД сервер (genmilk.ru) запускается файлом compose.yaml ```bash docker compose up -d --build```
+
 
 # ЗАПУСК ПРОЕКТА  
 
