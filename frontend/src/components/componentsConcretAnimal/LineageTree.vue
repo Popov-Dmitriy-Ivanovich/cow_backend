@@ -15,17 +15,6 @@
                 </div>
             </div>
             <div class="column">
-                <div class="main-cow__mother animal-block isParent" v-if="Object.keys(mother).length" @click="clickToParent(mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ mother.Name || ' '}}</div><div>&#9792;</div></div>
-                    <div>{{ mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ mother.RSHNNumber || ' '}}</div>
-                    <div>{{ mother.BirthDate || ' '}}</div>
-                    <div>{{ mother.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-                <div class="white-block-parent"></div>
                 <div class="main-cow__father animal-block isParent" v-if="Object.keys(father).length" @click="clickToParent(father.ID)">
                     <div class="name-flex"><div class="parent-name">{{ father.Name || ' '}}</div><div>♂</div></div>
                     <div>{{ father.IdentificationNumber || ' '}}</div>
@@ -36,42 +25,20 @@
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
                 </div>
+                <div class="white-block-parent"></div>
+                <div class="main-cow__mother animal-block isParent" v-if="Object.keys(mother).length" @click="clickToParent(mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ mother.Name || ' '}}</div><div>&#9792;</div></div>
+                    <div>{{ mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ mother.RSHNNumber || ' '}}</div>
+                    <div>{{ mother.BirthDate || ' '}}</div>
+                    <div>{{ mother.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
             </div>
             
             <div class="column">
-                <div class="main-cow__mother__mother animal-block isParent" v-if="Object.keys(grandmother_mother).length"  @click="clickToParent(grandmother_mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ grandmother_mother.Name || ' '}}</div><div>♀</div></div>
-                    <div>{{ grandmother_mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ grandmother_mother.RSHNNumber || ' '}}</div>
-                    <div>{{ grandmother_mother.BirthDate || ' '}}</div>
-                    <div>{{ grandmother_mother.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-                <div class="white-block-grandparent_mini"></div>
-                <div class="main-cow__mother__father animal-block isParent" v-if="Object.keys(grandfather_mother).length"  @click="clickToParent(grandfather_mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ grandfather_mother.Name || ' '}}</div><div>♂</div></div>
-                    <div>{{ grandfather_mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ grandfather_mother.RSHNNumber || ' '}}</div>
-                    <div>{{ grandfather_mother.BirthDate || ' '}}</div>
-                    <div>{{ grandfather_mother.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-                <div class="white-block-grandparent"></div>
-                <div class="main-cow__father__mother animal-block isParent" v-if="Object.keys(grandmother_father).length"  @click="clickToParent(grandmother_father.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ grandmother_father.Name || ' '}}</div><div>♀</div></div>
-                    <div>{{ grandmother_father.IdentificationNumber || ' '}}</div>
-                    <div>{{ grandmother_father.RSHNNumber || ' '}}</div>
-                    <div>{{ grandmother_father.BirthDate || ' '}}</div>
-                    <div>{{ grandmother_father.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-                <div class="white-block-grandparent_mini"></div>
                 <div class="main-cow__father__father animal-block isParent" v-if="Object.keys(grandfather_father).length"  @click="clickToParent(grandfather_father.ID)">
                     <div class="name-flex"><div class="parent-name">{{ grandfather_father.Name || ' '}}</div><div>♂</div></div>
                     <div>{{ grandfather_father.IdentificationNumber || ' '}}</div>
@@ -82,60 +49,58 @@
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
                 </div>
+                <div class="white-block-grandparent_mini"></div>
+                <div class="main-cow__father__mother animal-block isParent" v-if="Object.keys(grandmother_father).length"  @click="clickToParent(grandmother_father.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ grandmother_father.Name || ' '}}</div><div>♀</div></div>
+                    <div>{{ grandmother_father.IdentificationNumber || ' '}}</div>
+                    <div>{{ grandmother_father.RSHNNumber || ' '}}</div>
+                    <div>{{ grandmother_father.BirthDate || ' '}}</div>
+                    <div>{{ grandmother_father.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
+                <div class="white-block-grandparent"></div> 
+                <div class="main-cow__mother__father animal-block isParent" v-if="Object.keys(grandfather_mother).length"  @click="clickToParent(grandfather_mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ grandfather_mother.Name || ' '}}</div><div>♂</div></div>
+                    <div>{{ grandfather_mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ grandfather_mother.RSHNNumber || ' '}}</div>
+                    <div>{{ grandfather_mother.BirthDate || ' '}}</div>
+                    <div>{{ grandfather_mother.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
+                <div class="white-block-grandparent_mini"></div>
+                <div class="main-cow__mother__mother animal-block isParent" v-if="Object.keys(grandmother_mother).length"  @click="clickToParent(grandmother_mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ grandmother_mother.Name || ' '}}</div><div>♀</div></div>
+                    <div>{{ grandmother_mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ grandmother_mother.RSHNNumber || ' '}}</div>
+                    <div>{{ grandmother_mother.BirthDate || ' '}}</div>
+                    <div>{{ grandmother_mother.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
             </div>
 
             <div class="column">
-                <div class="main-cow__mother__mother__mother animal-block isParent" v-if="Object.keys(mother_grandmother_mother).length" @click="clickToParent(mother_grandmother_mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ mother_grandmother_mother.Name || ' '}}</div><div>♀</div></div>
-                    <div>{{ mother_grandmother_mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ mother_grandmother_mother.RSHNNumber || ' '}}</div>
-                    <div>{{ mother_grandmother_mother.BirthDate || ' '}}</div>
-                    <div>{{ mother_grandmother_mother.BreedName || ' '}}</div>
+                <div class="main-cow__father__father__father animal-block isParent" v-if="Object.keys(father_grandfather_father).length" @click="clickToParent(father_grandfather_father.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ father_grandfather_father.Name || ' '}}</div><div>♂</div></div>
+                    <div>{{ father_grandfather_father.IdentificationNumber || ' '}}</div>
+                    <div>{{ father_grandfather_father.RSHNNumber || ' '}}</div>
+                    <div>{{ father_grandfather_father.BirthDate || ' '}}</div>
+                    <div>{{ father_grandfather_father.BreedName || ' '}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
                 </div>
-                <div class="main-cow__mother__mother__father animal-block isParent" v-if="Object.keys(mother_grandmother_father).length" @click="clickToParent(mother_grandmother_father.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ mother_grandmother_father.Name || ' '}}</div><div>♂</div></div>
-                    <div>{{ mother_grandmother_father.IdentificationNumber || ' '}}</div>
-                    <div>{{ mother_grandmother_father.RSHNNumber || ' '}}</div>
-                    <div>{{ mother_grandmother_father.BirthDate || ' '}}</div>
-                    <div>{{ mother_grandmother_father.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-
-
-
-
-                <div class="main-cow__father__mother__mother animal-block isParent" v-if="Object.keys(mother_grandfather_mother).length" @click="clickToParent(mother_grandfather_mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ mother_grandfather_mother.Name || ' '}}</div><div>♀</div></div>
-                    <div>{{ mother_grandfather_mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ mother_grandfather_mother.RSHNNumber || ' '}}</div>
-                    <div>{{ mother_grandfather_mother.BirthDate || ' '}}</div>
-                    <div>{{ mother_grandfather_mother.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-                <div class="main-cow__father__mother__father animal-block isParent" v-if="Object.keys(father_grandfather_mother).length" @click="clickToParent(father_grandfather_mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ father_grandfather_mother.Name || ' '}}</div><div>♂</div></div>
-                    <div>{{ father_grandfather_mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ father_grandfather_mother.RSHNNumber || ' '}}</div>
-                    <div>{{ father_grandfather_mother.BirthDate || ' '}}</div>
-                    <div>{{ father_grandfather_mother.BreedName || ' '}}</div>
-                </div>
-                <div v-else class="animal-block animal-block-noinfo">
-                    <div>Нет информации</div>
-                </div>
-
-                <div class="main-cow__mother__father__mother animal-block isParent" v-if="Object.keys(father_grandmother_mother).length" @click="clickToParent(father_grandmother_mother.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ father_grandmother_mother.Name || ' '}}</div><div>♀</div></div>
-                    <div>{{ father_grandmother_mother.IdentificationNumber || ' '}}</div>
-                    <div>{{ father_grandmother_mother.RSHNNumber || ' '}}</div>
-                    <div>{{ father_grandmother_mother.BirthDate || ' '}}</div>
-                    <div>{{ father_grandmother_mother.BreedName || ' '}}</div>
+                <div class="main-cow__father__father__mother animal-block isParent" v-if="Object.keys(mother_grandfather_father).length" @click="clickToParent(mother_grandfather_father.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ mother_grandfather_father.Name || ' '}}</div><div>♀</div></div>
+                    <div>{{ mother_grandfather_father.IdentificationNumber || ' '}}</div>
+                    <div>{{ mother_grandfather_father.RSHNNumber || ' '}}</div>
+                    <div>{{ mother_grandfather_father.BirthDate || ' '}}</div>
+                    <div>{{ mother_grandfather_father.BreedName || ' '}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
@@ -150,23 +115,52 @@
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
                 </div>
-
-                <div class="main-cow__father__father__mother animal-block isParent" v-if="Object.keys(mother_grandfather_father).length" @click="clickToParent(mother_grandfather_father.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ mother_grandfather_father.Name || ' '}}</div><div>♀</div></div>
-                    <div>{{ mother_grandfather_father.IdentificationNumber || ' '}}</div>
-                    <div>{{ mother_grandfather_father.RSHNNumber || ' '}}</div>
-                    <div>{{ mother_grandfather_father.BirthDate || ' '}}</div>
-                    <div>{{ mother_grandfather_father.BreedName || ' '}}</div>
+                <div class="main-cow__mother__father__mother animal-block isParent" v-if="Object.keys(father_grandmother_mother).length" @click="clickToParent(father_grandmother_mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ father_grandmother_mother.Name || ' '}}</div><div>♀</div></div>
+                    <div>{{ father_grandmother_mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ father_grandmother_mother.RSHNNumber || ' '}}</div>
+                    <div>{{ father_grandmother_mother.BirthDate || ' '}}</div>
+                    <div>{{ father_grandmother_mother.BreedName || ' '}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
                 </div>
-                <div class="main-cow__father__father__father animal-block isParent" v-if="Object.keys(father_grandfather_father).length" @click="clickToParent(father_grandfather_father.ID)">
-                    <div class="name-flex"><div class="parent-name">{{ father_grandfather_father.Name || ' '}}</div><div>♂</div></div>
-                    <div>{{ father_grandfather_father.IdentificationNumber || ' '}}</div>
-                    <div>{{ father_grandfather_father.RSHNNumber || ' '}}</div>
-                    <div>{{ father_grandfather_father.BirthDate || ' '}}</div>
-                    <div>{{ father_grandfather_father.BreedName || ' '}}</div>
+                <div class="main-cow__father__mother__father animal-block isParent" v-if="Object.keys(father_grandfather_mother).length" @click="clickToParent(father_grandfather_mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ father_grandfather_mother.Name || ' '}}</div><div>♂</div></div>
+                    <div>{{ father_grandfather_mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ father_grandfather_mother.RSHNNumber || ' '}}</div>
+                    <div>{{ father_grandfather_mother.BirthDate || ' '}}</div>
+                    <div>{{ father_grandfather_mother.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
+                <div class="main-cow__father__mother__mother animal-block isParent" v-if="Object.keys(mother_grandfather_mother).length" @click="clickToParent(mother_grandfather_mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ mother_grandfather_mother.Name || ' '}}</div><div>♀</div></div>
+                    <div>{{ mother_grandfather_mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ mother_grandfather_mother.RSHNNumber || ' '}}</div>
+                    <div>{{ mother_grandfather_mother.BirthDate || ' '}}</div>
+                    <div>{{ mother_grandfather_mother.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
+                <div class="main-cow__mother__mother__father animal-block isParent" v-if="Object.keys(mother_grandmother_father).length" @click="clickToParent(mother_grandmother_father.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ mother_grandmother_father.Name || ' '}}</div><div>♂</div></div>
+                    <div>{{ mother_grandmother_father.IdentificationNumber || ' '}}</div>
+                    <div>{{ mother_grandmother_father.RSHNNumber || ' '}}</div>
+                    <div>{{ mother_grandmother_father.BirthDate || ' '}}</div>
+                    <div>{{ mother_grandmother_father.BreedName || ' '}}</div>
+                </div>
+                <div v-else class="animal-block animal-block-noinfo">
+                    <div>Нет информации</div>
+                </div>
+                <div class="main-cow__mother__mother__mother animal-block isParent" v-if="Object.keys(mother_grandmother_mother).length" @click="clickToParent(mother_grandmother_mother.ID)">
+                    <div class="name-flex"><div class="parent-name">{{ mother_grandmother_mother.Name || ' '}}</div><div>♀</div></div>
+                    <div>{{ mother_grandmother_mother.IdentificationNumber || ' '}}</div>
+                    <div>{{ mother_grandmother_mother.RSHNNumber || ' '}}</div>
+                    <div>{{ mother_grandmother_mother.BirthDate || ' '}}</div>
+                    <div>{{ mother_grandmother_mother.BreedName || ' '}}</div>
                 </div>
                 <div v-else class="animal-block animal-block-noinfo">
                     <div>Нет информации</div>
@@ -410,7 +404,7 @@ export default {
 
 .white-block-parent {
     width: 150px;
-    height: 200px;
+    height: 390px;
 }
 
 .white-block-grandparent {
@@ -431,5 +425,17 @@ export default {
 .name-flex {
     display: flex;
     border-bottom: 1px solid rgb(188, 185, 194);
+}
+
+.main-cow__father__father {
+    margin-bottom: 90px;
+}
+
+.main-cow__father__mother {
+    margin-bottom: 60px;
+}
+
+.main-cow__mother__father {
+    margin-bottom: 80px;
 }
 </style>
