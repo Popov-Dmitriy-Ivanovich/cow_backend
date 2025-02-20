@@ -79,6 +79,7 @@ export default {
 <style scoped>
 .parent-range {
     width: 230px;
+    position: relative;
 }
 
 .price-input{
@@ -93,8 +94,8 @@ export default {
   align-items: center;
 }
 .field input{
-  width: 100%;
-  height: 100%;
+  width: 45px;
+  /* height: 100%; */
   outline: none;
   font-size: 19px;
   margin-left: 12px;
@@ -119,6 +120,7 @@ input[type="number"]::-webkit-inner-spin-button {
   position: relative;
   background: #ddd;
   border-radius: 5px;
+  margin-top: 15px;
 }
 .slider .progress{
   height: 100%;
@@ -159,5 +161,15 @@ input[type="range"]::-moz-range-thumb{
   pointer-events: auto;
   -moz-appearance: none;
   box-shadow: 0 0 6px rgba(0,0,0,0.05);
+}
+
+.input-min {
+  left: -15%;
+  position: absolute;
+}
+
+.input-max {
+  right: -10%;
+  position: absolute;
 }
 </style>
