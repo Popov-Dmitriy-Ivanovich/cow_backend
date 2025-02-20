@@ -27,7 +27,7 @@ export default {
         return {
             currentValueMin: 0,
             currentValueMax: 2,
-            maxValue: 10,
+            maxValue: 20,
             minValue: 0,
         }
     },
@@ -85,7 +85,7 @@ export default {
 .price-input{
   width: 100%;
   display: flex;
-  margin: 30px 0 35px;
+  margin: 28px 0 0 0;
 }
 .price-input .field{
   display: flex;
@@ -94,10 +94,10 @@ export default {
   align-items: center;
 }
 .field input{
-  width: 45px;
+  width: 68px;
   /* height: 100%; */
   outline: none;
-  font-size: 19px;
+  font-size: 17px;
   margin-left: 12px;
   border-radius: 5px;
   text-align: center;
@@ -164,12 +164,12 @@ input[type="range"]::-moz-range-thumb{
 }
 
 .input-min {
-  left: -15%;
+  left: -19%;
   position: absolute;
 }
 
 .input-max {
-  right: -10%;
+  right: -14%;
   position: absolute;
 }
 </style>
