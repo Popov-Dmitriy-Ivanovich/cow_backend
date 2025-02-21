@@ -1,6 +1,7 @@
 <template>
     <div class="lineage-title">Родословное дерево</div>
-    <div v-if="!isLoading">
+    <div v-if="!isLoading" class="lineage">
+        <div class="lineage-back"></div>
         <div class="parent-lineagetree">
             <div class="column">
                 <div class="main-cow animal-block">
@@ -343,11 +344,25 @@ export default {
 </script>
 
 <style scoped>
+.lineage {
+    position: relative;
+}
+
 .lineage-title {
     font-size: 130%;
     color: rgb(37, 0, 132);
     padding-bottom: 30px;
     width: max-content;
+}
+
+.lineage-back {
+    position: absolute;
+    width: 830px;
+    height: 100%;
+    background-image: url('../../../static/lineage.png');
+    background-size: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .lineage-column {
@@ -375,11 +390,6 @@ export default {
     justify-content: center;
     align-items: center;
 }
-
-/* .animal-block:hover {
-    background-color: rgb(250, 250, 254);
-    border: 1px solid rgb(184, 180, 208);
-} */
 
 .isParent {
     cursor: pointer;
@@ -427,7 +437,7 @@ export default {
     border-bottom: 1px solid rgb(188, 185, 194);
 }
 
-.main-cow__father__father {
+/* .main-cow__father__father {
     margin-bottom: 90px;
 }
 
@@ -437,5 +447,9 @@ export default {
 
 .main-cow__mother__father {
     margin-bottom: 80px;
+} */
+
+.column {
+    z-index: 4;
 }
 </style>
