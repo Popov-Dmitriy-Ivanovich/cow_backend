@@ -1,13 +1,19 @@
 <template>
-<div class="page-numbers">
-    <div v-for="page in getPaginationRange" :key="page">
-        <div v-if="page=='...'" class="page-dots">{{ page }}</div>
-        <div v-else class="page-number" 
-        @click="changeCurrentPage(page)" 
-        :class="{'current-page-number':page==this.currentPage}"
-        >{{ page }}</div>
+    <div>
+        <div class="page-numbers">
+            <div v-for="page in getPaginationRange" :key="page">
+                <div v-if="page=='...'" class="page-dots">{{ page }}</div>
+                <div v-else class="page-number" 
+                @click="changeCurrentPage(page)" 
+                :class="{'current-page-number':page==this.currentPage}"
+                >{{ page }}</div>
+            </div>
+        </div>
+        <div class="page-input">
+            <div>Перейти на страницу с номером</div>
+            <input type="number" class="input-of-npage" v-model="inputPage" @keyup.enter="changeCurrentPage(inputPage)">
+        </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -15,6 +21,7 @@ export default {
     data() {
         return {
             new_curr_page: -1,
+            inputPage: 1,
         }
     },
     props:{
@@ -61,6 +68,11 @@ export default {
 
             return pages;
         }
+    },
+    watch: {
+        currentPage(new_val) {
+            this.inputPage = new_val;
+        }
     }
 }
 </script>
@@ -94,5 +106,26 @@ export default {
 
 .current-page-number {
     background-color: rgb(239, 236, 248);
+}
+
+.page-input {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    font-family: Open Sans, sans-serif;
+    align-items: center;
+}
+
+.input-of-npage {
+    padding: 0 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    border: 2px solid rgb(195, 200, 212);
+    border-radius: 5px;
+    height: 30px;
+    width: 80px;
+    margin: 0 6px;
+    text-align: center;
 }
 </style>

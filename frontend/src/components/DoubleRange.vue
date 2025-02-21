@@ -27,7 +27,7 @@ export default {
         return {
             currentValueMin: 0,
             currentValueMax: 2,
-            maxValue: 10,
+            maxValue: 20,
             minValue: 0,
         }
     },
@@ -79,12 +79,13 @@ export default {
 <style scoped>
 .parent-range {
     width: 230px;
+    position: relative;
 }
 
 .price-input{
   width: 100%;
   display: flex;
-  margin: 30px 0 35px;
+  margin: 28px 0 0 0;
 }
 .price-input .field{
   display: flex;
@@ -93,10 +94,10 @@ export default {
   align-items: center;
 }
 .field input{
-  width: 100%;
-  height: 100%;
+  width: 68px;
+  /* height: 100%; */
   outline: none;
-  font-size: 19px;
+  font-size: 17px;
   margin-left: 12px;
   border-radius: 5px;
   text-align: center;
@@ -119,6 +120,7 @@ input[type="number"]::-webkit-inner-spin-button {
   position: relative;
   background: #ddd;
   border-radius: 5px;
+  margin-top: 15px;
 }
 .slider .progress{
   height: 100%;
@@ -159,5 +161,15 @@ input[type="range"]::-moz-range-thumb{
   pointer-events: auto;
   -moz-appearance: none;
   box-shadow: 0 0 6px rgba(0,0,0,0.05);
+}
+
+.input-min {
+  left: -19%;
+  position: absolute;
+}
+
+.input-max {
+  right: -14%;
+  position: absolute;
 }
 </style>

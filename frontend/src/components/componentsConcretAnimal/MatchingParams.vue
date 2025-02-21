@@ -300,17 +300,18 @@ export default {
 .range-line {
     display: flex;
     justify-content: space-around;
-    width: 300px;
+    /* width: 300px; */
+    padding-bottom: 8px;
 }
 
 .current-value {
     align-self: center;
 }
 
-.range-label {
-    /* text-align: center; */
+/* .range-label {
+    text-align: center;
     margin: 10px 0;
-}
+} */
 
 .match-table {
     margin-top: 40px;
@@ -324,6 +325,10 @@ table {
 th {
     font-weight: normal;
     padding-left: 8px;
+}
+
+td {
+    vertical-align: bottom;
 }
 
 .btn-select {
