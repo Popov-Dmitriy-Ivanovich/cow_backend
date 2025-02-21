@@ -3,7 +3,7 @@
         <div class="animals-table">
         <div class="table-header">
             <div class="animal-rshn">Номер РСХН</div>
-            <div class="animal-inv">Инвентарный номер</div>
+            <div class="animal-inv">Инв. номер</div>
             <div class="animal-name">Кличка</div>
             <div class="animal-hoz">Хозяйство</div>
             <div class="animal-bdate">Дата рождения</div>
@@ -218,7 +218,6 @@ export default {
     min-height: 500px;
     background-color: white;
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
-    margin: 0 50px 0 10px;
     font-family: Open Sans, sans-serif;
     padding: 20px 30px;
     overflow-x: auto;

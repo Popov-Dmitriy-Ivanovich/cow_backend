@@ -302,7 +302,6 @@ export default {
     font-family: Open Sans, sans-serif;
     display: flex;
     flex-direction: column;
-
 }
 
 .filter-title {

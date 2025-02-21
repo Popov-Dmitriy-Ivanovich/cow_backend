@@ -1,111 +1,133 @@
 <template>
     <div class="animals">
-        <div class="flex-top">
-            <div class="flex-logo">
-                <div class="animal-title">Животные</div>
-                <div class="cows-bulls">
-                    <button class="cow-btn" :class="{'current-animal-btn': isCows}" @click="cowsClick">Коровы</button>
-                    <button class="bull-btn" :class="{'current-animal-btn': isBulls}" @click="bullsClick">Быки</button>
-                    <button class="cow-btn" :class="{'current-animal-btn': isChild}" @click="childClick">Молодняк</button>
-                </div>
-            </div>
-            <div class="search-block">
-                <div>
-                    <!-- <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div> -->
-                    <input class="search-animals" 
-                    type="text" 
-                    placeholder="Кличка, инвентарный номер, Сэлекс, РСХН" 
-                    @keyup.enter="searchCowsOrBulls" 
-                    
-                    id="search-animals"
-                    autocomplete="off">
-                </div>
-                <button class="search-btn" @click="searchCowsOrBulls">Найти</button>
-            </div>
-        </div>
-        <div class="filters-and-table">
-            <DAnimalFilters @applyFilters="findAnimals"/>
-            <div>
-                <div class="nanimals">
-                    Количество животных: {{ number_of_animals }}
-                </div>
-                <div class="sort">
-                    <div class="save-btns">
-                        <div>Сортировать: </div>
-                        <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
-                            <!-- <option :value="null">-нет-</option> -->
-                            <option :value="'Name'">кличке</option>
-                            <option :value="null">РСХН</option>
-                            <option :value="'BirthDate'">дате рождения</option>
-                            <option :value="'InventoryNumber'">инвентарному номеру</option>
-                            
-                        </select>
-                        <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
-                            <option :value="false">по возрастанию</option>
-                            <option :value="true">по убыванию</option>
-                        </select>
-                    </div>
-
-                    <div class="save-btns">
-                        <button class="save-table" @click="saveCSV">CSV</button>
-                        <button class="save-table" @click="saveXLS">XLS</button>
-                        <button class="delete-animals" @click="isApproveDelete = true">Удалить</button>
+        <Teleport to="body">
+            <div class="modal-back" v-if="isApproveDelete" @click="isApproveDelete = false">
+                <div class="modal" @click.stop="">
+                    <div>Вы действительно хотите удалить всех отфильтрованных животных?</div>
+                    <div class="delete-buttons">
+                        <div class="confirm-delete">Удалить</div>
+                        <div class="reject-delete" @click="isApproveDelete = false">Отмена</div>
                     </div>
                 </div>
-                <Teleport to="body">
-                    <div class="modal-back" v-if="isApproveDelete" @click="isApproveDelete = false">
-                        <div class="modal" @click.stop="">
-                            <div>Вы действительно хотите удалить всех отфильтрованных животных?</div>
-                            <div class="delete-buttons">
-                                <div class="confirm-delete">Удалить</div>
-                                <div class="reject-delete" @click="isApproveDelete = false">Отмена</div>
+            </div>
+        </Teleport>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="flex-logo">
+                            <div class="animal-title">Животные</div>
+                            <div class="cows-bulls">
+                                <button class="cow-btn" :class="{'current-animal-btn': isCows}" @click="cowsClick">Коровы</button>
+                                <button class="bull-btn" :class="{'current-animal-btn': isBulls}" @click="bullsClick">Быки</button>
+                                <button class="cow-btn" :class="{'current-animal-btn': isChild}" @click="childClick">Молодняк</button>
                             </div>
                         </div>
-                    </div>
-                </Teleport>
-                <DCowsTable 
-                v-if="isCows" 
-                v-bind:isSearch="search" 
-                v-bind:search_result="searching_animal" 
-                v-bind:search_error="search_error_cows"
-                v-bind:cp="current_page"
-                v-bind:tp="total_pages"
-                v-bind:filters="animal_filters"
-                @defPages="setPages"
-                @changePageButSearch="changePage"
-                @changeN="changeN"
-                v-bind:isLoading="isLoading"
-                /> 
-                
-                <DBullsTable 
-                v-if="isBulls" 
-                v-bind:isSearch="search" 
-                v-bind:search_result="searching_animal" 
-                v-bind:search_error="search_error_bulls"
-                v-bind:cp="current_page"
-                v-bind:tp="total_pages"
-                v-bind:filters="animal_filters"
-                @defPages="setPages"
-                @changePageButSearch="changePage"
-                @changeN="changeN"
-                v-bind:isLoading="isLoading"
-                />
+                    </td>
+                    <td class="ceil-search">
+                        <div class="search-block">
+                            <div>
+                                <!-- <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div> -->
+                                <input class="search-animals" 
+                                type="text" 
+                                placeholder="Кличка, инвентарный номер, Сэлекс, РСХН" 
+                                @keyup.enter="searchCowsOrBulls" 
+                                
+                                id="search-animals"
+                                autocomplete="off">
+                            </div>
+                            <button class="search-btn" @click="searchCowsOrBulls">Найти</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
 
-                <DChildTable 
-                v-if="isChild" 
-                v-bind:isSearch="search" 
-                v-bind:search_result="searching_animal" 
-                v-bind:search_error="search_error_child"
-                v-bind:cp="current_page"
-                v-bind:tp="total_pages"
-                v-bind:filters="animal_filters"
-                @defPages="setPages"
-                @changePageButSearch="changePage"
-                @changeN="changeN"
-                v-bind:isLoading="isLoading"
-                />
-            </div>
-        </div>
+                    </td>
+                    <td class="ceil-line">
+                        <div class="count-animals">
+                            <div class="nanimals">
+                                Количество животных: {{ number_of_animals }}
+                            </div>
+                            <div class="animals-on-page">
+                                <div>На странице:</div>
+                                <input type="number" class="input-nanimals" v-model="animal_filters.entitiesOnPage" @keyup.enter="searchCowsOrBulls">
+                            </div>
+                        </div>
+                        <div class="sort">
+                            <div class="save-btns">
+                                <div>Сортировать по: </div>
+                                <select v-model="sort" v-on:change="searchCowsOrBulls"  class="filter-input">
+                                    <!-- <option :value="null">-нет-</option> -->
+                                    <option :value="null">РСХН</option>
+                                    <option :value="'Name'">Кличка</option>
+                                    <option :value="'InventoryNumber'">Инв. номер</option>
+                                    <option :value="'BirthDate'">Дата рождения</option>
+                                </select>
+                                <select class="filter-input" v-on:change="searchCowsOrBulls" v-model="order">
+                                    <option :value="false">по возрастанию</option>
+                                    <option :value="true">по убыванию</option>
+                                </select>
+                            </div>
+
+                            <div class="save-btns">
+                                <button class="delete-animals" @click="isApproveDelete = true">Удалить</button>
+                                <button class="save-table" @click="saveCSV">CSV</button>
+                                <button class="save-table" @click="saveXLS">XLS</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="ceil-filter">
+                        <DAnimalFilters @applyFilters="findAnimals"/>
+                    </td>
+                    <td class="ceil-animal">
+                        <DCowsTable 
+                        v-if="isCows" 
+                        v-bind:isSearch="search" 
+                        v-bind:search_result="searching_animal" 
+                        v-bind:search_error="search_error_cows"
+                        v-bind:cp="current_page"
+                        v-bind:tp="total_pages"
+                        v-bind:filters="animal_filters"
+                        @defPages="setPages"
+                        @changePageButSearch="changePage"
+                        @changeN="changeN"
+                        v-bind:isLoading="isLoading"
+                        /> 
+                        
+                        <DBullsTable 
+                        v-if="isBulls" 
+                        v-bind:isSearch="search" 
+                        v-bind:search_result="searching_animal" 
+                        v-bind:search_error="search_error_bulls"
+                        v-bind:cp="current_page"
+                        v-bind:tp="total_pages"
+                        v-bind:filters="animal_filters"
+                        @defPages="setPages"
+                        @changePageButSearch="changePage"
+                        @changeN="changeN"
+                        v-bind:isLoading="isLoading"
+                        />
+
+                        <DChildTable 
+                        v-if="isChild" 
+                        v-bind:isSearch="search" 
+                        v-bind:search_result="searching_animal" 
+                        v-bind:search_error="search_error_child"
+                        v-bind:cp="current_page"
+                        v-bind:tp="total_pages"
+                        v-bind:filters="animal_filters"
+                        @defPages="setPages"
+                        @changePageButSearch="changePage"
+                        @changeN="changeN"
+                        v-bind:isLoading="isLoading"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -132,7 +154,7 @@ export default {
             current_filters: {},
             current_page: 1,
             total_pages: 1,
-            animal_filters: {},
+            animal_filters: {entitiesOnPage: 50},
 
             isLoading: false,
             sort: null,
@@ -156,7 +178,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
-                search_params.entitiesOnPage = 50;
+                search_params.entitiesOnPage = this.animal_filters.entitiesOnPage;
                 if(this.sort) {
                     search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
@@ -213,7 +235,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
-                search_params.entitiesOnPage = 50;
+                search_params.entitiesOnPage = this.animal_filters.entitiesOnPage;
                 if(this.sort) {
                     search_params.orderByDesc = this.order;
                     search_params.orderBy = this.sort;
@@ -388,7 +410,7 @@ export default {
 
 <style scoped>
 .animals {
-    margin-top: 110px;
+    margin-top: 130px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -409,12 +431,10 @@ export default {
 }
 
 .flex-logo {
-    padding: 10px 50px 0 0; 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0 20px;
     min-width: max-content;
 }
 
@@ -456,7 +476,7 @@ export default {
 }
 
 .search-animals {
-    width: 550px;
+    width: 770px;
     height: 30px;
     padding: 0 15px;
     font-size: 110%;
@@ -508,7 +528,7 @@ export default {
     align-items: center;
     margin-bottom: 10px;
     justify-content: space-between;
-    width: 990px;
+    width: 100%;
 }
 
 .filter-input {
@@ -521,11 +541,7 @@ export default {
     border: 1px solid rgb(101, 102, 170);
     border-radius: 10px;
     transition: 0.3s;
-    margin-right: 10px;
-}
-
-.sort div {
-    margin: 0 10px 0 15px;
+    margin-left: 15px;
 }
 
 .save-btns {
@@ -622,13 +638,53 @@ export default {
     background-color: rgb(255, 225, 225);
 }
 
+.count-animals {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
 .nanimals {
-    width: 990px;
-    text-align: right;
     font-family: Open Sans, sans-serif;
     font-size: 120%;
     color: rgb(66, 66, 66);
     padding-right: 40px;
     padding-bottom: 15px;
+}
+
+.ceil-animal {
+    vertical-align: top;
+}
+
+.ceil-line {
+    padding-top: 20px;
+}
+
+.ceil-filter {
+    padding-right: 20px;
+}
+
+.ceil-search {
+    vertical-align: bottom;
+}
+
+.animals-on-page {
+    display: flex;
+    align-items: center;
+    font-family: Open Sans, sans-serif;
+}
+
+.input-nanimals {
+    padding: 0 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid rgb(101, 102, 170);
+    border-radius: 10px;
+    height: 30px;
+    width: 80px;
+    margin: 0 6px;
+    text-align: center;
 }
 </style>
