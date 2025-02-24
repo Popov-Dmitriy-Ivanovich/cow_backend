@@ -194,10 +194,11 @@ export default {
     },
     methods: {
         fetchFilters(){
-            if (this.filters.inbrindingCoeffByFamilyFrom==='') this.filters.inbrindingCoeffByFamilyFrom = null;
-            if (this.filters.inbrindingCoeffByFamilyTo==='') this.filters.inbrindingCoeffByFamilyTo = null;
-            if (this.filters.inbrindingCoeffByGenotypeFrom==='') this.filters.inbrindingCoeffByGenotypeFrom = null;
-            if (this.filters.inbrindingCoeffByGenotypeTo==='') this.filters.inbrindingCoeffByGenotypeTo = null;
+            for (let key in this.filters) {
+                if (this.filters[key] === '') {
+                    this.filters[key] = null;
+                }
+            }
             // let send_filters = this.filters;
             let send_filters = {};
             Object.assign(send_filters, this.filters);

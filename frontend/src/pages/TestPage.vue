@@ -5,7 +5,7 @@
                 <div class="modal" @click.stop="">
                     <div>Вы действительно хотите удалить всех отфильтрованных животных?</div>
                     <div class="delete-buttons">
-                        <div class="confirm-delete">Удалить</div>
+                        <div class="confirm-delete" @click="deleteFiltered">Удалить</div>
                         <div class="reject-delete" @click="isApproveDelete = false">Отмена</div>
                     </div>
                 </div>
@@ -221,7 +221,6 @@ export default {
                 if(this.isChild) this.search_error_child = true;
             }
             this.isLoading = false;
-            console.log(this.isLoading);
         },
         async findAnimals(filters){
             try {
@@ -235,6 +234,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
+                console.log(this.animal_filters);
                 search_params.entitiesOnPage = this.animal_filters.entitiesOnPage;
                 if(this.sort) {
                     search_params.orderByDesc = this.order;
@@ -269,13 +269,14 @@ export default {
 
                 this.searching_animal = result.LST;
                 this.number_of_animals = result.N;
+                Object.assign(this.animal_filters, search_params);
             } catch(err) {
                 if(this.isCows) this.search_error_cows = true;
                 if(this.isBulls) this.search_error_bulls = true;
                 if(this.isChild) this.search_error_child = true;
             }
             this.isLoading = false;
-            this.animal_filters = filters;
+            // this.animal_filters = search_params;
         },
         async changePage(newVal) {
             this.isLoading = true;
@@ -403,6 +404,25 @@ export default {
             document.body.appendChild(link);
             link.click();
             link.remove();
+        },
+        async deleteFiltered() {
+            if (!Object.keys(this.current_filters).length) {
+                this.setCurrentFilters();
+            }
+            let response = await fetch('/api/cows/delByFilters', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': this.getJwt()
+                },
+                body: JSON.stringify(this.current_filters),
+            });
+            let result = await response.json();
+            if (result.N) {
+                this.isApproveDelete = false;
+                await this.findAnimals(this.current_filters);
+            }
+            
         }
     }
 }
