@@ -71,7 +71,7 @@
                             </div>
 
                             <div class="save-btns">
-                                <button class="delete-animals" @click="isApproveDelete = true">Удалить</button>
+                                <button class="delete-animals" @click="isApproveDelete = true" v-if="isAdmin">Удалить</button>
                                 <button class="save-table" @click="saveCSV">CSV</button>
                                 <button class="save-table" @click="saveXLS">XLS</button>
                             </div>
@@ -162,6 +162,8 @@ export default {
 
             isApproveDelete: false,
             number_of_animals: 0,
+
+            isAdmin: false,
         }
     },
     methods: {
@@ -453,6 +455,20 @@ export default {
             this.isCows = false;
             this.isChild = true;
             this.isBulls = false;
+        }
+    },
+    async created() {
+        let response = await fetch('/api/user/whoami',{
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': this.getJwt()
+            },
+        });
+        let result = await response.json();
+        if (result.RoleId === 4) {
+            this.isAdmin = true;
+        } else {
+            this.isAdmin = false;
         }
     }
 }
