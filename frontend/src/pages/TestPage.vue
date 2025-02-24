@@ -224,6 +224,7 @@ export default {
         },
         async findAnimals(filters){
             try {
+                this.$store.commit('SET_FILTERS_2', filters);
                 this.isLoading = true;
                 this.current_page = 1;
                 this.search = true;
@@ -301,31 +302,43 @@ export default {
             this.total_pages = total;
         },
         bullsClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = false;
             this.isBulls = true;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_bulls = false;
             // document.getElementById('search-animals').value = '';
         },
         cowsClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = true;
             this.isChild = false;
             this.isBulls = false;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_cows = false;
             // document.getElementById('search-animals').value = '';
         },
         childClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = true;
             this.isBulls = false;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
@@ -423,6 +436,23 @@ export default {
                 await this.findAnimals(this.current_filters);
             }
             
+        }
+    },
+    mounted() {
+        if (this.$store.getters.ISCOWS) {
+            this.isCows = true;
+            this.isChild = false;
+            this.isBulls = false;
+        }
+        if (this.$store.getters.ISBULLS) {
+            this.isCows = false;
+            this.isChild = false;
+            this.isBulls = true;
+        }
+        if (this.$store.getters.ISCHILD) {
+            this.isCows = false;
+            this.isChild = true;
+            this.isBulls = false;
         }
     }
 }
