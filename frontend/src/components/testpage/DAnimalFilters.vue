@@ -3,7 +3,11 @@
         <div class="filter-title">Фильтры</div>
         <div class="filter-category">
             <div>Название хозяйства/фермы</div>
-            <MultiselectHoz @sendToMain="setIdHoz" v-bind:clearHoz="clearHoz"/>
+            <MultiselectHoz 
+            @sendToMain="setIdHoz" 
+            v-bind:clearHoz="clearHoz"
+            v-bind:value-from-outside="hozIdFromOutside"
+            />
         </div>
         <div class="filter-category">
             <div>Дата рождения</div>
@@ -25,7 +29,11 @@
         </div>
         <div class="filter-category">
             <div>Порода</div>
-            <MultiselectBreeds @sendToMain="setIdBreed" v-bind:clearBreed="clearBreed"/>
+            <MultiselectBreeds 
+            @sendToMain="setIdBreed" 
+            v-bind:clearBreed="clearBreed"
+            v-bind:value-from-outside="breedIdFromOutside"
+            />
         </div>
         <div class="filter-category">
             <div>Дата внесения данных о КРС</div>
@@ -190,6 +198,9 @@ export default {
             list_ill_parameters: 0,
 
             isVisibleIll: false,
+
+            hozIdFromOutside: null,
+            breedIdFromOutside: null,
         }
     },
     methods: {
@@ -332,12 +343,7 @@ export default {
                 this.list_ill_parameters = 4;
             }
 
-            if (this.$store.getters.SHOWFILTERS) {
-                this.showFilters = this.$store.getters.SHOWFILTERS;
-            }
-            if (!this.$store.getters.CURRENTANIMALS.length) {
-                this.$emit('applyFilters', this.filters);
-            }
+            this.$emit('applyFilters', this.filters);
             
         }
     },
