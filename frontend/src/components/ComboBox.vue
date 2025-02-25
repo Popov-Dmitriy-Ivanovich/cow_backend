@@ -40,6 +40,10 @@ export default {
         },
         clear: {
             type: Boolean,
+        },
+        valueFromOutside: {
+            type: Number,
+            default: null,
         }
     },
     data() {
@@ -84,6 +88,19 @@ export default {
         },
         start_value(new_val) {
             this.list = new_val;
+        },
+        valueFromOutside(new_val) {
+            if (new_val) {
+                this.selected_value = [];
+                this.selected_value.push(new_val);
+                console.log(this.start_value.length);
+                for (let val of this.start_value) {
+                    if (val.id === new_val) {
+                        this.text1 = val.name;
+                    }
+                }
+                this.isVisible = false;
+            }
         }
     }
 }

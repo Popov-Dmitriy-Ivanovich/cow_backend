@@ -5,7 +5,7 @@
                 <div class="modal" @click.stop="">
                     <div>Вы действительно хотите удалить всех отфильтрованных животных?</div>
                     <div class="delete-buttons">
-                        <div class="confirm-delete">Удалить</div>
+                        <div class="confirm-delete" @click="deleteFiltered">Удалить</div>
                         <div class="reject-delete" @click="isApproveDelete = false">Отмена</div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             </div>
 
                             <div class="save-btns">
-                                <button class="delete-animals" @click="isApproveDelete = true">Удалить</button>
+                                <button class="delete-animals" @click="isApproveDelete = true" v-if="isAdmin">Удалить</button>
                                 <button class="save-table" @click="saveCSV">CSV</button>
                                 <button class="save-table" @click="saveXLS">XLS</button>
                             </div>
@@ -162,6 +162,8 @@ export default {
 
             isApproveDelete: false,
             number_of_animals: 0,
+
+            isAdmin: false,
         }
     },
     methods: {
@@ -221,10 +223,10 @@ export default {
                 if(this.isChild) this.search_error_child = true;
             }
             this.isLoading = false;
-            console.log(this.isLoading);
         },
         async findAnimals(filters){
             try {
+                this.$store.commit('SET_FILTERS_2', filters);
                 this.isLoading = true;
                 this.current_page = 1;
                 this.search = true;
@@ -235,6 +237,7 @@ export default {
                 if(this.isCows) search_params.sex = [4];
                 if(this.isBulls) search_params.sex = [3];
                 if(this.isChild) search_params.sex = [1,2];
+                console.log(this.animal_filters);
                 search_params.entitiesOnPage = this.animal_filters.entitiesOnPage;
                 if(this.sort) {
                     search_params.orderByDesc = this.order;
@@ -269,13 +272,14 @@ export default {
 
                 this.searching_animal = result.LST;
                 this.number_of_animals = result.N;
+                Object.assign(this.animal_filters, search_params);
             } catch(err) {
                 if(this.isCows) this.search_error_cows = true;
                 if(this.isBulls) this.search_error_bulls = true;
                 if(this.isChild) this.search_error_child = true;
             }
             this.isLoading = false;
-            this.animal_filters = filters;
+            // this.animal_filters = search_params;
         },
         async changePage(newVal) {
             this.isLoading = true;
@@ -300,31 +304,43 @@ export default {
             this.total_pages = total;
         },
         bullsClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = false;
             this.isBulls = true;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_bulls = false;
             // document.getElementById('search-animals').value = '';
         },
         cowsClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = true;
             this.isChild = false;
             this.isBulls = false;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_cows = false;
             // document.getElementById('search-animals').value = '';
         },
         childClick() {
-            console.log(this.search_error_bulls, this.search_error_child, this.search_error_cows);
             this.searching_animal = [];
             this.isCows = false;
             this.isChild = true;
             this.isBulls = false;
+
+            this.$store.commit('SET_ISCOWS', this.isCows);
+            this.$store.commit('SET_ISBULLS', this.isBulls);
+            this.$store.commit('SET_ISCHILD', this.isChild);
+
             this.search = false;
             this.search_error_child = false;
             // document.getElementById('search-animals').value = '';
@@ -403,6 +419,56 @@ export default {
             document.body.appendChild(link);
             link.click();
             link.remove();
+        },
+        async deleteFiltered() {
+            if (!Object.keys(this.current_filters).length) {
+                this.setCurrentFilters();
+            }
+            let response = await fetch('/api/cows/delByFilters', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'Authorization': this.getJwt()
+                },
+                body: JSON.stringify(this.current_filters),
+            });
+            let result = await response.json();
+            if (result.N) {
+                this.isApproveDelete = false;
+                await this.findAnimals(this.current_filters);
+            }
+            
+        }
+    },
+    mounted() {
+        if (this.$store.getters.ISCOWS) {
+            this.isCows = true;
+            this.isChild = false;
+            this.isBulls = false;
+        }
+        if (this.$store.getters.ISBULLS) {
+            this.isCows = false;
+            this.isChild = false;
+            this.isBulls = true;
+        }
+        if (this.$store.getters.ISCHILD) {
+            this.isCows = false;
+            this.isChild = true;
+            this.isBulls = false;
+        }
+    },
+    async created() {
+        let response = await fetch('/api/user/whoami',{
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': this.getJwt()
+            },
+        });
+        let result = await response.json();
+        if (result.RoleId === 4) {
+            this.isAdmin = true;
+        } else {
+            this.isAdmin = false;
         }
     }
 }

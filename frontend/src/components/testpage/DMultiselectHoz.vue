@@ -1,5 +1,5 @@
 <template>
-    <ComboBox v-bind:start_value="options" @valueHasSelected="HasSelected" v-bind:clear="clearHoz"></ComboBox>
+    <ComboBox v-bind:start_value="options" @valueHasSelected="HasSelected" v-bind:clear="clearHoz" v-bind:valueFromOutside="value"></ComboBox>
 </template>
     
 <script>
@@ -9,6 +9,9 @@ export default {
     props: {
         clearHoz: {
             type: Boolean,
+        },
+        valueFromOutside: {
+            type: Number,
         }
     },
     components: {
@@ -17,11 +20,27 @@ export default {
     data() {
          return {
             options: [],
+            value: null,
         }
     },
     methods: {
         HasSelected(newValue) {
             this.$emit('sendToMain', newValue);
+        },
+        async getHoz() {
+            const response = await fetch('/api/farms?parrent_id=null',
+                {
+                    headers: {
+                        'Authorization': this.getJwt()
+                    }
+                }
+            );
+            const hozs = await response.json();
+            this.options = [];
+            for (let i = 0; i < hozs.length; i++) {
+                let hoz = {name: hozs[i].Name, id: hozs[i].ID};
+                this.options.push(hoz);
+            }
         },
         getJwt() {
             let arr = document.cookie.split(';');
@@ -33,19 +52,13 @@ export default {
             return null;
         }
     },
-    async created() {
-        this.options = [];
-        const response = await fetch('/api/farms?parrent_id=null',
-            {
-                headers: {
-                    'Authorization': this.getJwt()
-                }
-            }
-        );
-        const hozs = await response.json();
-        for (let i = 0; i < hozs.length; i++) {
-            let hoz = {name: hozs[i].Name, id: hozs[i].ID};
-            this.options.push(hoz);
+    async mounted() {
+       await this.getHoz();
+    },
+    watch: {
+        async valueFromOutside(newVal) {
+            await this.getHoz();
+            this.value = newVal;
         }
     }
 }

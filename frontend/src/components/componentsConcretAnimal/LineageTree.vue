@@ -437,18 +437,6 @@ export default {
     border-bottom: 1px solid rgb(188, 185, 194);
 }
 
-/* .main-cow__father__father {
-    margin-bottom: 90px;
-}
-
-.main-cow__father__mother {
-    margin-bottom: 60px;
-}
-
-.main-cow__mother__father {
-    margin-bottom: 80px;
-} */
-
 .column {
     z-index: 4;
 }
