@@ -3,9 +3,8 @@
         <div class="part-text">
             Участники
         </div>
-        <div class="part-text-low">Для реализации программы образован консорциум из более 30 
-            компаний, включая крупные агропромышленные холдинги, образовательные 
-            учреждения и генетические лаборатории</div>
+        <div class="part-text-low">Для реализации проекта образован консорциум из нескольких компаний, 
+            включая крупные агропромышленные холдинги, образовательные учреждения и генетические лаборатории.</div>
         <div class="part-blocks">
             <div v-for="participant in participants" :key="participant[0]" class="part-block">
                 <ParticipantItem v-bind:participant="participant"/>
