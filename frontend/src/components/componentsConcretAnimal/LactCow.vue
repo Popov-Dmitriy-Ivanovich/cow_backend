@@ -15,36 +15,48 @@
             <thead>
                 <tr class="lac-header">
                     <th>Номер лактации</th>
-                    <th>Кратность осеменения</th>
-                    <th>Дата осеменения</th>
-                    <th>Количество телят</th>
-                    <th>Аборт</th>
+                    <!-- <th>Кратность осеменения</th> -->
+                    <th>Дата осеменения к текущей лактации</th>
+                    <!-- <th>Количество телят</th> -->
+                    <!-- <th>Аборт</th> -->
                     <th>Дата отела</th>
-                    <th>Суммарный удой, кг</th>
-                    <th>Суммарный удой за 305 дней, кг</th>
-                    <th>Суммарный жир, кг</th>
-                    <th>Суммарный жир за 305 дней, кг</th>
-                    <th>Суммарный белок, кг</th>
-                    <th>Суммарный белок за 305 дней, кг</th>
                     <th>Количество дойных дней</th>
-                    <th>Длительность сервис-периода</th>
+                    <th>Удой за всю лактацию, кг</th>
+                    <th>Содержание жира за всю лактацию, %</th>
+                    <th>Выход молочного жира за всю лактацию, кг</th>
+                    <th>Содержание белка за всю лактацию, %</th>
+                    <th>Выход молочного белка за всю лактацию, кг</th>
+                    <th>Удой за 305 дней, кг</th>
+                    <th>Содержание жира за 305 дней лактации, %</th>
+                    <th>Выход молочного жира за 305 дней, кг</th>
+                    <th>Содержание белка за 305 дней лактации, %</th>
+                    <th>Выход молочного белка за 305 дней, кг</th>
+                    <th>Дата запуска</th>
+                    <th>Результат отёла</th>
+                    <th>Сервис-период, дней</th>
                 </tr>
             </thead>
             <tbody class="lac-tablebody">
                 <tr v-for="lact in cow_info" :key="lact.Number">
                     <td>{{ lact.Number || 'Нет информации'}}</td>
-                    <td>{{ lact.InsemenationNum || 'Нет информации'}}</td>
+                    <!-- <td>{{ lact.InsemenationNum || 'Нет информации'}}</td> -->
                     <td v-if="lact.InsemenationDate">{{ dateConverter(lact.InsemenationDate) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.CalvingCount">{{ lact.CalvingCount || 'Нет информации'}}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.Abort===true || lact.Abort===false">{{ yesNo(lact.Abort) }}</td><td v-else>Нет информации</td>
+                    <!-- <td v-if="lact.CalvingCount">{{ lact.CalvingCount || 'Нет информации'}}</td><td v-else>Нет информации</td> -->
+                    <!-- <td v-if="lact.Abort===true || lact.Abort===false">{{ yesNo(lact.Abort) }}</td><td v-else>Нет информации</td> -->
                     <td v-if="lact.CalvingDate">{{ dateConverter(lact.CalvingDate) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.MilkAll">{{ Math.floor(lact.MilkAll) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.Milk305">{{ Math.floor(lact.Milk305) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.FatAll">{{ Math.floor(lact.FatAll) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.Fat305">{{ Math.floor(lact.Fat305) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.ProteinAll">{{ Math.floor(lact.ProteinAll) }}</td><td v-else>Нет информации</td>
-                    <td v-if="lact.Protein305">{{ Math.floor(lact.Protein305) }}</td><td v-else>Нет информации</td>
                     <td>{{ lact.Days || 'Нет информации'}}</td>
+                    <td v-if="lact.MilkAll">{{ Math.floor(lact.MilkAll) }}</td><td v-else>Нет информации</td>
+                    <td></td>
+                    <td v-if="lact.FatAll">{{ Math.floor(lact.FatAll) }}</td><td v-else>Нет информации</td>
+                    <td></td>
+                    <td v-if="lact.ProteinAll">{{ Math.floor(lact.ProteinAll) }}</td><td v-else>Нет информации</td>
+                    <td v-if="lact.Milk305">{{ Math.floor(lact.Milk305) }}</td><td v-else>Нет информации</td>
+                    <td></td>
+                    <td v-if="lact.Fat305">{{ Math.floor(lact.Fat305) }}</td><td v-else>Нет информации</td>
+                    <td></td>
+                    <td v-if="lact.Protein305">{{ Math.floor(lact.Protein305) }}</td><td v-else>Нет информации</td>
+                    <td></td>
+                    <td></td>
                     <td>{{ lact.ServicePeriod || 'Нет информации'}}</td>
                 </tr>
             </tbody>

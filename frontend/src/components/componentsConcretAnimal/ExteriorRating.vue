@@ -2,15 +2,15 @@
     <div class="extrat-title">Оценка экстерьера</div>
     <div v-if="!isLoading">
         <div class="exterior-title">
-            <div>Общая оценка экстерьера: {{ cow_info.Rating || 'Нет информации'}}</div>
-            <div class="krs-photo" v-if="cow_info.PicturePath">
+            <div>Общая оценка экстерьера: {{ cow_info.Rating || 'Нет информации'}} ({{ checkRating(cow_info.Rating) }})</div>
+
+            <!-- <div class="krs-photo" v-if="cow_info.PicturePath">
                 <img width="100%" :src="logo">
             </div>
-            <div v-else class="krs-photo no-photo">Фото КРС</div>
-            
+            <div v-else class="krs-photo no-photo">Фото КРС</div> -->
         </div>
         <div>
-            <div class="ext-9mark-title" @click="show9Mark">> Признаки с 9-бальной оценкой</div>
+            <div class="ext-9mark-title" @click="show9Mark">> Линейные признаки</div>
             <div class="ext-9mark" :class="{'ext-hide': !isVisible9Mark}">
                 <div class="column">
                     <div class="mark-with-num">
@@ -133,16 +133,20 @@
                     </div> 
                 </div> 
             </div>
-            <div class="ext-100mark-title" @click="show100Mark">> Признаки со 100-бальной оценкой</div>
+            <div class="ext-100mark-title" @click="show100Mark">> Признаки со 100-балльной оценкой</div>
             <div class="ext-100mark" :class="{'ext-hide': !isVisible100Mark}">
                 <div class="column">
                     <div class="mark-with-num">
-                        <div class="ext-param">Молочная сила: </div>
+                        <div class="ext-param">Молочный тип: </div>
                         <div>{{ cow_info.MilkStrength || 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
-                        <div class="ext-param">Телосложение: </div>
+                        <div class="ext-param">Туловище: </div>
                         <div>{{ cow_info.BodyStructure || 'Нет информации'}}</div>
+                    </div>
+                    <div class="mark-with-num">
+                        <div class="ext-param">Крестец: </div>
+                        <div>{{ 'Нет информации'}}</div>
                     </div>
                     <div class="mark-with-num">
                         <div class="ext-param">Конечности: </div>
@@ -206,7 +210,19 @@ export default {
             console.log(path);
             let block = document.getElementsByClassName('krs-photo');
             block.style.backgroundImage = `url('/api/static/exterior/${path}')`;
-        }
+        },
+        checkRating(rating) {
+            if (rating) {
+                if (rating <= 64) return 'Низкая';
+                if (rating > 64 && rating <= 74) return 'Средняя';
+                if (rating > 74 && rating <= 79) return 'Хорошая';
+                if (rating > 79 && rating <= 84) return 'Хорошая+';
+                if (rating > 84 && rating <= 89) return 'Очень хорошая';
+                if (rating > 89) return 'Отличная';
+            } else {
+                return 'Нет информации';
+            }
+        },
     },
     computed: {
         logo() {
@@ -225,6 +241,7 @@ export default {
 }
 
 .exterior-title {
+    font-size: 130%;
     display: flex;
     align-items: start;
     justify-content: space-between;

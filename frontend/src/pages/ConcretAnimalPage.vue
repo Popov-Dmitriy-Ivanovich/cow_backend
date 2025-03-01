@@ -74,7 +74,7 @@ export default {
 }
 
 .animal-sideblock {
-    padding-left: 90px;
+    padding-left: 70px;
 }
 
 .link-to-prev {

@@ -22,8 +22,8 @@
                     <th class="cm-dry">Сухое вещество, %</th>
                     <th class="cm-zhir">Жир, %</th>
                     <th class="cm-belok">Белок, %</th>
-                    <th>Жир, кг</th>
-                    <th>Белок, кг</th>
+                    <!-- <th>Жир, кг</th>
+                    <th>Белок, кг</th> -->
                     <th>Количество соматических клеток</th>
                 </tr>
             </thead>
@@ -37,8 +37,8 @@
                     <td v-if="milking.DryMatter">{{ milking.DryMatter.toFixed(2) }}</td><td v-else>Нет информации</td>
                     <td v-if="milking.Fat">{{ milking.Fat.toFixed(1) }}</td><td v-else>Нет информации</td>
                     <td v-if="milking.Protein">{{ milking.Protein.toFixed(1) }}</td><td v-else>Нет информации</td>
-                    <td>{{ milking.FatRegard || 'Нет информации'}}</td>
-                    <td>{{ milking.ProteinRegard || 'Нет информации'}}</td>
+                    <!-- <td>{{ milking.FatRegard || 'Нет информации'}}</td>
+                    <td>{{ milking.ProteinRegard || 'Нет информации'}}</td> -->
                     <td>{{ milking.SomaticNucCount || 'Нет информации'}}</td>
                 </tr>
             </tbody>

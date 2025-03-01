@@ -7,7 +7,7 @@
                 <div>{{ cow_info.InventoryNumber || 'Нет информации' }}</div>
             </div>
             <div class="item-block">
-                <div class="id-min-title">ID Селекса</div>
+                <div class="id-min-title">ID Селэкса</div>
                 <div>{{ cow_info.SelecsNumber || 'Нет информации' }}</div>
             </div>
             <!-- <div class="item-block">
