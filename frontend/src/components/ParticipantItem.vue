@@ -1,7 +1,7 @@
 <template>
 <div class="participant">
     <div class="partic-logo">
-        <img  width="100%" :src="logo">
+        <img  height="80px" :src="logo">
     </div>
     <div class="partic-description"> {{ participant.Description }}</div>
 </div>
@@ -65,8 +65,10 @@ export default {
     }
 
     .partic-logo {
-        height: min-content;
+        /* height: min-content; */
         margin: 15px 0;
+        display: flex;
+        justify-content: center;
     }
 
     .partic-description {
