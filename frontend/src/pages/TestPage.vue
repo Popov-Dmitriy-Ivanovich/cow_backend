@@ -30,7 +30,7 @@
                                 <!-- <div class="search-text">Поиск по кличке, инвентарному номеру, Сэлекс или идентификационному номеру РСХН</div> -->
                                 <input class="search-animals" 
                                 type="text" 
-                                placeholder="Кличка, инвентарный номер, Сэлекс, РСХН" 
+                                placeholder="Кличка, инвентарный номер, Селэкс, РСХН" 
                                 @keyup.enter="searchCowsOrBulls" 
                                 
                                 id="search-animals"
@@ -80,7 +80,10 @@
                 </tr>
                 <tr>
                     <td class="ceil-filter">
-                        <DAnimalFilters @applyFilters="findAnimals"/>
+                        <DAnimalFilters 
+                        @applyFilters="findAnimals" 
+                        v-bind:is-bulls="isBulls" 
+                        v-bind:is-child="isChild"/>
                     </td>
                     <td class="ceil-animal">
                         <DCowsTable 
@@ -729,6 +732,7 @@ export default {
 
 .ceil-filter {
     padding-right: 20px;
+    vertical-align: top;
 }
 
 .ceil-search {

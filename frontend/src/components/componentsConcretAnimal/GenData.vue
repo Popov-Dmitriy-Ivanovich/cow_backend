@@ -6,6 +6,7 @@
             <div class="download-file">{{ cow_info.GtcFilePath || 'Нет информации'}} </div>
             <div class="download-btn" v-if="cow_info.GtcFilePath"><a :href="`/api/static/gtc/${cow_info.GtcFilePath}`" :download="cow_info.GtcFilePath" class="download-gtc">Скачать файл</a></div>
         </div>
+        <div class="gen-description">Файл содержит исходные данные для снипов, моногенных заболеваний и расчета коэффициента инбридинга по генотипу</div>
         <table class="genfile-table">
                 <thead>
                     <tr class="genfile-header">
@@ -122,5 +123,11 @@ td {
 .download-gtc {
     color: rgb(37, 0, 132);
     text-decoration: none;
+}
+
+.gen-description {
+    margin-top: 10px;
+    font-size: 80%;
+    color: rgb(26, 26, 26);
 }
 </style>

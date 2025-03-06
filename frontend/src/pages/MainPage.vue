@@ -4,7 +4,7 @@
     <HozBlock/>
     <PurposesProect/>
     <NewsBlock/>
-    <MainStatistic/>
+    <!-- <MainStatistic/> -->
 </template>
 
 <script>
@@ -12,14 +12,16 @@ import MainPageBackground from '@/components/MainPageBackground.vue'
 import ParticipantsBlock from '@/components/ParticipantsBlock.vue'
 import HozBlock from '@/components/HozBlock.vue'
 import NewsBlock from '@/components/NewsBlock.vue'
-import MainStatistic from '@/components/MainStatistic.vue';
+// import MainStatistic from '@/components/MainStatistic.vue';
 import PurposesProect from '@/components/PurposesProect.vue'
 
 export default {
     components: {
         MainPageBackground, ParticipantsBlock, 
         HozBlock,
-        NewsBlock, MainStatistic, PurposesProect
+        NewsBlock, 
+        // MainStatistic, 
+        PurposesProect
     },
     // async created() {
     //     let response = await fetch('/api/user/whoami', {

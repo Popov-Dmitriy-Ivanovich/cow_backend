@@ -3,7 +3,7 @@
         <a href="http://www.vsau.ru/"><img src="../img/logo.png" width="75" class="img-logo"></a><div class="logo" @click="$router.push('/')">GenMilk</div>
         <div class="topbar-links" id="topbar-links">
             <div class="point-of-bar" @click="$router.push('/animals')" v-if="token">Животные</div>
-            <div class="point-of-bar" @click="$router.push('/analytics')" v-if="token">Аналитика</div>
+            <div class="point-of-bar" @click="$router.push('/analytics')" v-if="token">Статистика</div>
             <!-- <div class="point-of-bar" @click="$router.push('/gui')" v-if="token">Загрузка файлов</div> -->
             <div class="point-of-bar" @click="$router.push('/help')">Помощь</div>
             <div class="point-of-bar" @click="$router.push('/')">О проекте</div>

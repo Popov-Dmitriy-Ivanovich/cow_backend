@@ -8,7 +8,7 @@
             <div class="animal-bdate">{{ dateConverter(bdate(animal_item.BirthDate)) }}</div>
             <div class="animal-genfact">{{ isGen(animal_item.Genotyped) }}</div>
 
-            <div v-if="animal_item.DepartDate" class="animal-dateout">{{ dateConverter(animal_item.DepartDate) }}</div>
+            <!-- <div v-if="animal_item.DepartDate" class="animal-dateout">{{ dateConverter(animal_item.DepartDate) }}</div>
             <div v-else-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout"> - </div>
 
             <div v-if="animal_item.IsDead===true || animal_item.IsDead===false" class="animal-dead">{{ isGen(animal_item.IsDead) }}</div>
@@ -51,13 +51,13 @@
             <div v-else-if="filters.inbrindingCoeffByGenotypeFrom || filters.inbrindingCoeffByGenotypeTo" class="animal-kfen"> - </div>
 
             <div v-if="animal_item.Events" class="animal-krod">{{ dateConverter(cevent) }}</div>
-            <div v-else-if="filters.illDateFrom || filters.illDateTo" class="animal-krod"> - </div>
+            <div v-else-if="filters.illDateFrom || filters.illDateTo" class="animal-krod"> - </div> -->
             
             <!-- <div v-if="illname.length" class="illflex">
                 <div class="animal-ill" v-for="id in illname.length" :key="id"><div>{{ illname[id] }}</div> <div>{{ illstatus[id] }}</div></div>
             </div>
             <div v-else-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes" class="animal-krod"> - </div> -->
-            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HCD }}</div>
+            <!-- <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HCD }}</div>
             <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH1 }}</div>
             <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH3 }}</div>
             <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.HH4 }}</div>
@@ -70,7 +70,7 @@
             <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.MF }}</div>
             <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.FGFR2 }}</div>
             <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.IH }}</div>
-            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.FXID }}</div>
+            <div v-if="Object.keys(illmassobj).length" class="animal-krod">{{ illmassobj.FXID }}</div> -->
         </div>
     </div>
 </template>
@@ -225,7 +225,7 @@ export default {
 }
 
 .animal-genfact {
-    width: 120px;
+    width: 100px;
 }
 
 .animal-dateout {

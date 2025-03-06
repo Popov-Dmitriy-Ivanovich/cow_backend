@@ -7,9 +7,9 @@
                 <div class="animal-name">Кличка</div>
                 <div class="animal-hoz">Хозяйство</div>
                 <div class="animal-bdate">Дата рождения</div>
-                <div class="animal-genfact">Факт генотипирования</div>
+                <div class="animal-genfact">Индекс</div>
                 
-                <div v-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout">Дата выбытия</div>
+                <!-- <div v-if="filters.departDateFrom || filters.departDateTo" class="animal-dateout">Дата выбытия</div>
                 <div v-if="filters.isDead===true || filters.isDead===false" class="animal-dead">Животное мертво</div>
                 <div v-if="filters.breedId" class="animal-breed">Порода</div>
                 <div v-if="filters.genotypingDateFrom || filters.genotypingDateTo" class="animal-dategen">Дата генотипирования</div>
@@ -66,7 +66,7 @@
                 </div>
                 <div v-if="filters.monogeneticIllneses && filters.monogeneticIllneses.length || filters.isIll || filters.hasAnyIllnes || filters.isIll === false || filters.hasAnyIllnes===false" class="animal-krod">
                     FXID
-                </div>
+                </div> -->
             </div>
             <div v-if="!isSearch&!search_error">
                 <div v-for="animal in animals" :key="animal[0]">
@@ -221,7 +221,7 @@ export default {
     box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 29px 0px;
     font-family: Open Sans, sans-serif;
     padding: 20px 30px;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     font-size: 90%;
 }
 

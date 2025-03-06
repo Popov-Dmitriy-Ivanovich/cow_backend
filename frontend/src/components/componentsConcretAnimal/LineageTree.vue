@@ -1,5 +1,5 @@
 <template>
-    <div class="lineage-title">Родословное дерево</div>
+    <!-- <div class="lineage-title">Родословное дерево</div> -->
     <div v-if="!isLoading" class="lineage">
         <div class="lineage-back"></div>
         <div class="parent-lineagetree">
